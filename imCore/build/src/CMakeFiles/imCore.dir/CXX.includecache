@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/Graphics/Texture.cpp
+Texture.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/Graphics/Texture.h
+
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/Graphics/Texture.h
+

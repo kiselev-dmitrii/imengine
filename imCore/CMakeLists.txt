@@ -65,7 +65,7 @@ endif()
 #################################################################
 
 ###### COMPILER #################################################
-if (MINGW or CMAKE_COMPILER_IS_GNUCXX)
+if (MINGW OR CMAKE_COMPILER_IS_GNUCXX)
 	add_definitions(-std=c++11)		#C++11
 	add_definitions(-Wall)			#Все предупреджения
 else() 
