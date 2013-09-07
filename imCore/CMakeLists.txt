@@ -84,7 +84,9 @@ add_subdirectory(tests)
 ###### DOCUMENTATIONS ###########################################
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
-	add_subdirectory(docs)
+	# It's just copy file from docs/Doxyfile.in to build/docs/Doxyfile
+	configure_file(${imCore_SOURCE_DIR}/docs/Doxyfile.in
+               	   ${imCore_BINARY_DIR}/docs/Doxyfile @ONLY)	
+    add_subdirectory(docs)
 endif()
 #################################################################
-

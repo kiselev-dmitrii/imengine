@@ -126,6 +126,19 @@ TextureTest/fast:
 	$(MAKE) -f tests\CMakeFiles\TextureTest.dir\build.make tests/CMakeFiles/TextureTest.dir/build
 .PHONY : TextureTest/fast
 
+#=============================================================================
+# Target rules for targets named docs
+
+# Build rule for target.
+docs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 docs
+.PHONY : docs
+
+# fast build rule for target.
+docs/fast:
+	$(MAKE) -f docs\CMakeFiles\docs.dir\build.make docs/CMakeFiles/docs.dir/build
+.PHONY : docs/fast
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -136,6 +149,7 @@ help:
 	@echo ... rebuild_cache
 	@echo ... imCore
 	@echo ... TextureTest
+	@echo ... docs
 .PHONY : help
 
 

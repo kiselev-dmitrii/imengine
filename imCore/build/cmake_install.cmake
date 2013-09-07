@@ -31,6 +31,7 @@ IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   INCLUDE("C:/cygwin/home/sol/coding/projects/imEngine/imCore/build/src/imCore/cmake_install.cmake")
   INCLUDE("C:/cygwin/home/sol/coding/projects/imEngine/imCore/build/tests/cmake_install.cmake")
+  INCLUDE("C:/cygwin/home/sol/coding/projects/imEngine/imCore/build/docs/cmake_install.cmake")
 
 ENDIF(NOT CMAKE_INSTALL_LOCAL_ONLY)
 

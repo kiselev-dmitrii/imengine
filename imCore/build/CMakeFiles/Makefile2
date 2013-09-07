@@ -76,7 +76,7 @@ src/imCore/preinstall:
 src/imCore/CMakeFiles/imCore.dir/all:
 	$(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/depend
 	$(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles  2
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles  3
 	@echo Built target imCore
 .PHONY : src/imCore/CMakeFiles/imCore.dir/all
 
@@ -152,6 +152,56 @@ tests/CMakeFiles/TextureTest.dir/clean:
 
 # clean rule for target.
 clean: tests/CMakeFiles/TextureTest.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory docs
+
+# Convenience name for "all" pass in the directory.
+docs/all: docs/CMakeFiles/docs.dir/all
+.PHONY : docs/all
+
+# Convenience name for "clean" pass in the directory.
+docs/clean: docs/CMakeFiles/docs.dir/clean
+.PHONY : docs/clean
+
+# Convenience name for "preinstall" pass in the directory.
+docs/preinstall:
+.PHONY : docs/preinstall
+
+#=============================================================================
+# Target rules for target docs/CMakeFiles/docs.dir
+
+# All Build rule for target.
+docs/CMakeFiles/docs.dir/all:
+	$(MAKE) -f docs\CMakeFiles\docs.dir\build.make docs/CMakeFiles/docs.dir/depend
+	$(MAKE) -f docs\CMakeFiles\docs.dir\build.make docs/CMakeFiles/docs.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles  2
+	@echo Built target docs
+.PHONY : docs/CMakeFiles/docs.dir/all
+
+# Include target in all.
+all: docs/CMakeFiles/docs.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+docs/CMakeFiles/docs.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles 1
+	$(MAKE) -f CMakeFiles\Makefile2 docs/CMakeFiles/docs.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles 0
+.PHONY : docs/CMakeFiles/docs.dir/rule
+
+# Convenience name for target.
+docs: docs/CMakeFiles/docs.dir/rule
+.PHONY : docs
+
+# clean rule for target.
+docs/CMakeFiles/docs.dir/clean:
+	$(MAKE) -f docs\CMakeFiles\docs.dir\build.make docs/CMakeFiles/docs.dir/clean
+.PHONY : docs/CMakeFiles/docs.dir/clean
+
+# clean rule for target.
+clean: docs/CMakeFiles/docs.dir/clean
 .PHONY : clean
 
 #=============================================================================
