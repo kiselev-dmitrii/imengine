@@ -152,6 +152,10 @@
       </Unit>
       <Unit filename="C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Graphics/Texture/Texture.h">
       </Unit>
+      <Unit filename="C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Debug.h">
+      </Unit>
+      <Unit filename="C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Uncopyable.h">
+      </Unit>
       <Unit filename="C:/cygwin/home/sol/coding/projects/imEngine/imCore/CMakeLists.txt">
           <Option virtualFolder="CMake Files\" />
       </Unit>

@@ -1,5 +1,12 @@
 #include "Texture.h"
 
-Texture::Texture()
-{
+namespace imCore {
+
+Texture::Texture() {
 }
+
+Texture::~Texture() {
+
+}
+
+} //namespace imCore

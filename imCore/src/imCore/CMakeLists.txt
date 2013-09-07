@@ -6,6 +6,9 @@ set(imCoreSources
    )
 set(imCoreHeaders
         Graphics/Texture/Texture.h
+
+        Utils/Uncopyable.h
+        Utils/Debug.h
    )
 #################################################################
 
