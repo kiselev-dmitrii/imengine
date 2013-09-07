@@ -114,29 +114,29 @@ imCore/fast:
 	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/build
 .PHONY : imCore/fast
 
-Graphics/Texture.obj: Graphics/Texture.cpp.obj
-.PHONY : Graphics/Texture.obj
+Graphics/Texture/Texture.obj: Graphics/Texture/Texture.cpp.obj
+.PHONY : Graphics/Texture/Texture.obj
 
 # target to build an object file
-Graphics/Texture.cpp.obj:
-	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj
-.PHONY : Graphics/Texture.cpp.obj
+Graphics/Texture/Texture.cpp.obj:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj
+.PHONY : Graphics/Texture/Texture.cpp.obj
 
-Graphics/Texture.i: Graphics/Texture.cpp.i
-.PHONY : Graphics/Texture.i
+Graphics/Texture/Texture.i: Graphics/Texture/Texture.cpp.i
+.PHONY : Graphics/Texture/Texture.i
 
 # target to preprocess a source file
-Graphics/Texture.cpp.i:
-	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.i
-.PHONY : Graphics/Texture.cpp.i
+Graphics/Texture/Texture.cpp.i:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.i
+.PHONY : Graphics/Texture/Texture.cpp.i
 
-Graphics/Texture.s: Graphics/Texture.cpp.s
-.PHONY : Graphics/Texture.s
+Graphics/Texture/Texture.s: Graphics/Texture/Texture.cpp.s
+.PHONY : Graphics/Texture/Texture.s
 
 # target to generate assembly for a file
-Graphics/Texture.cpp.s:
-	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.s
-.PHONY : Graphics/Texture.cpp.s
+Graphics/Texture/Texture.cpp.s:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.s
+.PHONY : Graphics/Texture/Texture.cpp.s
 
 # Help Target
 help:
@@ -147,9 +147,9 @@ help:
 	@echo ... edit_cache
 	@echo ... imCore
 	@echo ... rebuild_cache
-	@echo ... Graphics/Texture.obj
-	@echo ... Graphics/Texture.i
-	@echo ... Graphics/Texture.s
+	@echo ... Graphics/Texture/Texture.obj
+	@echo ... Graphics/Texture/Texture.i
+	@echo ... Graphics/Texture/Texture.s
 .PHONY : help
 
 

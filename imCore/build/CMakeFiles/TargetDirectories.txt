@@ -1,1 +1,2 @@
-C:/cygwin/home/sol/coding/projects/imEngine/imCore/build/src/CMakeFiles/imCore.dir
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/build/tests/CMakeFiles/TextureTest.dir
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/build/src/imCore/CMakeFiles/imCore.dir

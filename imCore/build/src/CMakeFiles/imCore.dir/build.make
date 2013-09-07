@@ -51,38 +51,38 @@ include src/CMakeFiles/imCore.dir/progress.make
 # Include the compile flags for this target's objects.
 include src/CMakeFiles/imCore.dir/flags.make
 
-src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj: src/CMakeFiles/imCore.dir/flags.make
-src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj: src/CMakeFiles/imCore.dir/includes_CXX.rsp
-src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj: ../src/Graphics/Texture.cpp
+src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj: src/CMakeFiles/imCore.dir/flags.make
+src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj: src/CMakeFiles/imCore.dir/includes_CXX.rsp
+src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj: ../src/Graphics/Texture/Texture.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj"
-	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src && C:\Apps\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\imCore.dir\Graphics\Texture.cpp.obj -c C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\Graphics\Texture.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src && C:\Apps\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\imCore.dir\Graphics\Texture\Texture.cpp.obj -c C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\Graphics\Texture\Texture.cpp
 
-src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/imCore.dir/Graphics/Texture.cpp.i"
-	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src && C:\Apps\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -E C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\Graphics\Texture.cpp > CMakeFiles\imCore.dir\Graphics\Texture.cpp.i
+src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.i"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src && C:\Apps\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -E C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\Graphics\Texture\Texture.cpp > CMakeFiles\imCore.dir\Graphics\Texture\Texture.cpp.i
 
-src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/imCore.dir/Graphics/Texture.cpp.s"
-	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src && C:\Apps\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -S C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\Graphics\Texture.cpp -o CMakeFiles\imCore.dir\Graphics\Texture.cpp.s
+src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.s"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src && C:\Apps\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -S C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\Graphics\Texture\Texture.cpp -o CMakeFiles\imCore.dir\Graphics\Texture\Texture.cpp.s
 
-src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj.requires:
-.PHONY : src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj.requires
+src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.requires:
+.PHONY : src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.requires
 
-src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj.provides: src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj.requires
-	$(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj.provides.build
-.PHONY : src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj.provides
+src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.provides: src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.requires
+	$(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.provides.build
+.PHONY : src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.provides
 
-src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj.provides.build: src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj
+src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.provides.build: src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj
 
 # Object files for target imCore
 imCore_OBJECTS = \
-"CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj"
+"CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj"
 
 # External object files for target imCore
 imCore_EXTERNAL_OBJECTS =
 
-src/libimCore.dll: src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj
+src/libimCore.dll: src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj
 src/libimCore.dll: src/CMakeFiles/imCore.dir/build.make
 src/libimCore.dll: ../deps/win32/lib/libglew32.dll.a
 src/libimCore.dll: ../deps/win32/lib/DevIL.dll
@@ -96,7 +96,7 @@ src/libimCore.dll: src/CMakeFiles/imCore.dir/link.txt
 src/CMakeFiles/imCore.dir/build: src/libimCore.dll
 .PHONY : src/CMakeFiles/imCore.dir/build
 
-src/CMakeFiles/imCore.dir/requires: src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj.requires
+src/CMakeFiles/imCore.dir/requires: src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.requires
 .PHONY : src/CMakeFiles/imCore.dir/requires
 
 src/CMakeFiles/imCore.dir/clean:

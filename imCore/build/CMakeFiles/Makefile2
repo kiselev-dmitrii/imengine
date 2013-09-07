@@ -55,53 +55,103 @@ CMAKE_SOURCE_DIR = C:\cygwin\home\sol\coding\projects\imEngine\imCore
 CMAKE_BINARY_DIR = C:\cygwin\home\sol\coding\projects\imEngine\imCore\build
 
 #=============================================================================
-# Directory level rules for directory src
+# Directory level rules for directory src/imCore
 
 # Convenience name for "all" pass in the directory.
-src/all: src/CMakeFiles/imCore.dir/all
-.PHONY : src/all
+src/imCore/all: src/imCore/CMakeFiles/imCore.dir/all
+.PHONY : src/imCore/all
 
 # Convenience name for "clean" pass in the directory.
-src/clean: src/CMakeFiles/imCore.dir/clean
-.PHONY : src/clean
+src/imCore/clean: src/imCore/CMakeFiles/imCore.dir/clean
+.PHONY : src/imCore/clean
 
 # Convenience name for "preinstall" pass in the directory.
-src/preinstall:
-.PHONY : src/preinstall
+src/imCore/preinstall:
+.PHONY : src/imCore/preinstall
 
 #=============================================================================
-# Target rules for target src/CMakeFiles/imCore.dir
+# Target rules for target src/imCore/CMakeFiles/imCore.dir
 
 # All Build rule for target.
-src/CMakeFiles/imCore.dir/all:
-	$(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/depend
-	$(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles  1
+src/imCore/CMakeFiles/imCore.dir/all:
+	$(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/depend
+	$(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles  2
 	@echo Built target imCore
-.PHONY : src/CMakeFiles/imCore.dir/all
+.PHONY : src/imCore/CMakeFiles/imCore.dir/all
 
 # Include target in all.
-all: src/CMakeFiles/imCore.dir/all
+all: src/imCore/CMakeFiles/imCore.dir/all
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-src/CMakeFiles/imCore.dir/rule: cmake_check_build_system
+src/imCore/CMakeFiles/imCore.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles 1
-	$(MAKE) -f CMakeFiles\Makefile2 src/CMakeFiles/imCore.dir/all
+	$(MAKE) -f CMakeFiles\Makefile2 src/imCore/CMakeFiles/imCore.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles 0
-.PHONY : src/CMakeFiles/imCore.dir/rule
+.PHONY : src/imCore/CMakeFiles/imCore.dir/rule
 
 # Convenience name for target.
-imCore: src/CMakeFiles/imCore.dir/rule
+imCore: src/imCore/CMakeFiles/imCore.dir/rule
 .PHONY : imCore
 
 # clean rule for target.
-src/CMakeFiles/imCore.dir/clean:
-	$(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/clean
-.PHONY : src/CMakeFiles/imCore.dir/clean
+src/imCore/CMakeFiles/imCore.dir/clean:
+	$(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/clean
+.PHONY : src/imCore/CMakeFiles/imCore.dir/clean
 
 # clean rule for target.
-clean: src/CMakeFiles/imCore.dir/clean
+clean: src/imCore/CMakeFiles/imCore.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory tests
+
+# Convenience name for "all" pass in the directory.
+tests/all: tests/CMakeFiles/TextureTest.dir/all
+.PHONY : tests/all
+
+# Convenience name for "clean" pass in the directory.
+tests/clean: tests/CMakeFiles/TextureTest.dir/clean
+.PHONY : tests/clean
+
+# Convenience name for "preinstall" pass in the directory.
+tests/preinstall:
+.PHONY : tests/preinstall
+
+#=============================================================================
+# Target rules for target tests/CMakeFiles/TextureTest.dir
+
+# All Build rule for target.
+tests/CMakeFiles/TextureTest.dir/all:
+	$(MAKE) -f tests\CMakeFiles\TextureTest.dir\build.make tests/CMakeFiles/TextureTest.dir/depend
+	$(MAKE) -f tests\CMakeFiles\TextureTest.dir\build.make tests/CMakeFiles/TextureTest.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles  1
+	@echo Built target TextureTest
+.PHONY : tests/CMakeFiles/TextureTest.dir/all
+
+# Include target in all.
+all: tests/CMakeFiles/TextureTest.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+tests/CMakeFiles/TextureTest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles 1
+	$(MAKE) -f CMakeFiles\Makefile2 tests/CMakeFiles/TextureTest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles 0
+.PHONY : tests/CMakeFiles/TextureTest.dir/rule
+
+# Convenience name for target.
+TextureTest: tests/CMakeFiles/TextureTest.dir/rule
+.PHONY : TextureTest
+
+# clean rule for target.
+tests/CMakeFiles/TextureTest.dir/clean:
+	$(MAKE) -f tests\CMakeFiles\TextureTest.dir\build.make tests/CMakeFiles/TextureTest.dir/clean
+.PHONY : tests/CMakeFiles/TextureTest.dir/clean
+
+# clean rule for target.
+clean: tests/CMakeFiles/TextureTest.dir/clean
 .PHONY : clean
 
 #=============================================================================

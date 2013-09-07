@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/Graphics/Texture.cpp" "C:/cygwin/home/sol/coding/projects/imEngine/imCore/build/src/CMakeFiles/imCore.dir/Graphics/Texture.cpp.obj"
+  "C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/Graphics/Texture/Texture.cpp" "C:/cygwin/home/sol/coding/projects/imEngine/imCore/build/src/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

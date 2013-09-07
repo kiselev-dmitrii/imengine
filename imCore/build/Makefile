@@ -110,8 +110,21 @@ imCore: cmake_check_build_system
 
 # fast build rule for target.
 imCore/fast:
-	$(MAKE) -f src\CMakeFiles\imCore.dir\build.make src/CMakeFiles/imCore.dir/build
+	$(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/build
 .PHONY : imCore/fast
+
+#=============================================================================
+# Target rules for targets named TextureTest
+
+# Build rule for target.
+TextureTest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 TextureTest
+.PHONY : TextureTest
+
+# fast build rule for target.
+TextureTest/fast:
+	$(MAKE) -f tests\CMakeFiles\TextureTest.dir\build.make tests/CMakeFiles/TextureTest.dir/build
+.PHONY : TextureTest/fast
 
 # Help Target
 help:
@@ -122,6 +135,7 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... imCore
+	@echo ... TextureTest
 .PHONY : help
 
 

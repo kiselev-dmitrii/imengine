@@ -67,7 +67,7 @@ endif()
 ###### COMPILER #################################################
 if (MINGW OR CMAKE_COMPILER_IS_GNUCXX)
 	add_definitions(-std=c++11)		#C++11
-	add_definitions(-Wall)			#Все предупреджения
+	add_definitions(-Wall)			#All warnings turn on
 else() 
 	message(ERROR " Support only MinGW or G++")
 	return()
@@ -75,6 +75,7 @@ endif()
 #################################################################
 
 ###### SUBDIRS ##################################################
-add_subdirectory(src)
+add_subdirectory(src/imCore)
+add_subdirectory(tests)
 #################################################################
 

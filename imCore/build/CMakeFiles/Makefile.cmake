@@ -39,7 +39,8 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/2.8.11.2/CMakeSystem.cmake"
   "../cmake/FindAssimp.cmake"
   "../cmake/FindGLM.cmake"
-  "../src/CMakeLists.txt"
+  "../src/imCore/CMakeLists.txt"
+  "../tests/CMakeLists.txt"
   )
 
 # The corresponding makefile is:
@@ -51,10 +52,12 @@ SET(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 SET(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
-  "src/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "src/imCore/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "tests/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 SET(CMAKE_DEPEND_INFO_FILES
-  "src/CMakeFiles/imCore.dir/DependInfo.cmake"
+  "src/imCore/CMakeFiles/imCore.dir/DependInfo.cmake"
+  "tests/CMakeFiles/TextureTest.dir/DependInfo.cmake"
   )
