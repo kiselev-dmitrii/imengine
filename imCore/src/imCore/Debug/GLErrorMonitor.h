@@ -10,8 +10,11 @@ namespace imCore {
  */
 class GLErrorMonitor {
 public:
+        /// Возвращает последнуюю ошибку OpenGL
+        static GLenum   lastError();
+
         /// Преобразование OpenGL перечисления в его строковый эквивалент
-        static String   glEnumToString(GLenum en);
+        static String   glEnumToString(GLenum enumeration);
 };
 
 } //namespace imCore

@@ -11,9 +11,9 @@ namespace imCore {
 
 /** @brief Синглтон для логирования в файл либо в консоль
  *
- *  По умолчанию, вывод ведется в файлы log.txt и out.txt.
+ *  По умолчанию, лог ведется в файл log.txt
  *  Существует возможность переключить вывод в рантайме с
- *  помощью метода set*ToConsole
+ *  помощью метода setLogToConsole
  */
 class Logger : public Uncopyable {
 public:
@@ -23,34 +23,25 @@ public:
                         ~Logger();
 
         /// Устанавливает вывод в консоль вместо файла
-        void            setOutToConsole(bool enable);
-        /// Устанавливает лог в консоль вместо файла
-        void            setLogToConsole(bool enable);
+        void            setConsoleOutput(bool enable);
 
-        /// Записывает в выход сообщение message с временным штампом
-        void            addOutMessage(const String& message, ...);
+        /// Записывает в лог сообщение message
+        void            addMessage(const String& message, ...);
         /// Записывает в лог сообщение message с временным штампом
-        void            addLogMessage(const String& message, ...);
-
-        /// Возвращает ссылку на выходной поток для лога
+        void            addTimestampMessage(const String& message, ...);
+        /// Записывает в лог последнее сообщение об OpenGL ошибке если оно есть
+        void            addLastGLError(const String& file, int line, const String& function);
+        /// Возвращает ссылку на поток
         std::ostream&   log();
-        std::ostream&   out();
 
 private:
         /// Закрытый конструктор
         Logger();
-        /// Помещает сообщение в некоторый поток
-        void            writeMessage(std::ostream& stream, const String& message);
 
 private:
-        std::ostream*   m_out;
         std::ostream*   m_log;
-
-        std::ofstream   m_outFileStream;
         std::ofstream   m_logFileStream;
         const String    m_logFilename = "log.txt";
-        const String    m_outFilename = "out.txt";
-
         static Timer    m_timer;
 };
 

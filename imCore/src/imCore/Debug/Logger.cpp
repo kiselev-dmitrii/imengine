@@ -1,21 +1,18 @@
 #include "Logger.h"
 #include <cstdio>
 #include <cstdarg>
+#include "GLErrorMonitor.h"
 
 namespace imCore {
 
 Timer Logger::m_timer;
 
 Logger::Logger() {
-        m_outFileStream.open(m_outFilename);
         m_logFileStream.open(m_logFilename);
-
-        m_out = &m_outFileStream;
         m_log = &m_logFileStream;
 }
 
 Logger::~Logger() {
-        m_outFileStream.close();
         m_logFileStream.close();
 }
 
@@ -24,17 +21,12 @@ Logger* Logger::instance() {
         return &instance;
 }
 
-void Logger::setLogToConsole(bool enable) {
+void Logger::setConsoleOutput(bool enable) {
         if (enable) m_log = &std::clog;
         else m_log = &m_logFileStream;
 }
 
-void Logger::setOutToConsole(bool enable) {
-        if (enable) m_out = &std::cout;
-        else m_out = &m_outFileStream;
-}
-
-void Logger::addOutMessage(const String &message, ...) {
+void Logger::addMessage(const String &message, ...) {
         // Распаковка аргументов
         va_list args;
         va_start(args, message);
@@ -42,10 +34,10 @@ void Logger::addOutMessage(const String &message, ...) {
         vsnprintf(buffer, 512, message.c_str(), args);
         va_end(args);
 
-        writeMessage(*m_out, buffer);
+        log() << buffer << std::endl;
 }
 
-void Logger::addLogMessage(const String &message, ...) {
+void Logger::addTimestampMessage(const String &message, ...) {
         // Распаковка аргументов
         va_list args;
         va_start(args, message);
@@ -53,20 +45,17 @@ void Logger::addLogMessage(const String &message, ...) {
         vsnprintf(buffer, 512, message.c_str(), args);
         va_end(args);
 
-        writeMessage(*m_log, buffer);
+        log() << '[' << m_timer.timestamp() << ']' << '\t' << buffer << std::endl;
 }
 
-void Logger::writeMessage(std::ostream &stream, const String &message) {
-        stream << '[' << m_timer.timestamp() << ']' << '\t' << message << std::endl;
+void Logger::addLastGLError(const String &file, int line, const String &function) {
+        GLenum error = GLErrorMonitor::lastError();
+        if (error == GL_NO_ERROR) return;
+        log() << "Function " << function << " return " << GLErrorMonitor::glEnumToString(error) << "; file: " <<  file << "; line: " << line << std::endl;
 }
 
 std::ostream& Logger::log() {
         return *m_log;
 }
-
-std::ostream& Logger::out() {
-        return *m_out;
-}
-
 
 } //namespace imCore

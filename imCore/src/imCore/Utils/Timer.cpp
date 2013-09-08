@@ -22,7 +22,7 @@ String Timer::timestamp() {
 
         String result = std::to_string(hours) + ":" +
                         std::to_string(minutes) + ":" +
-                        std::to_string(seconds) + ":"+
+                        std::to_string(seconds) + "::"+
                         std::to_string(ticks);
         return result;
 }

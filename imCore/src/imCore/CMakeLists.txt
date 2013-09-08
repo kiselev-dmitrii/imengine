@@ -7,8 +7,8 @@ set(imCoreSources
 
         Utils/Timer.cpp
 
-        Debug/GLErrorMonitor.cpp
         Debug/Logger.cpp
+        Debug/GLErrorMonitor.cpp
    )
 set(imCoreHeaders
         Graphics/Texture/Texture.h
@@ -18,8 +18,8 @@ set(imCoreHeaders
         Utils/Timer.h
 
         Debug/Debug.h
-        Debug/GLErrorMonitor.h
         Debug/Logger.h
+        Debug/GLErrorMonitor.h
    )
 #################################################################
 
