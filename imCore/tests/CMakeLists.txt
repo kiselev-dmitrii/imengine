@@ -1,7 +1,13 @@
 include_directories(${imCoreIncludeDirs})
 include_directories(${imCore_SOURCE_DIR}/src)
 
-add_executable(TextureTest TextureTest.cpp)
-add_executable(LoggerTest LoggerTest.cpp)
+set(TESTS
+        TextureTest
+        LoggerTest
+        TimerTest
+)
 
-target_link_libraries(LoggerTest imCore)
+foreach(TEST ${TESTS})
+        add_executable(${TEST} ${TEST}.cpp)
+        target_link_libraries(${TEST} imCore)
+endforeach(TEST)

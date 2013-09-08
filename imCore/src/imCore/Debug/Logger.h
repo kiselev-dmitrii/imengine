@@ -28,9 +28,9 @@ public:
         void            setLogToConsole(bool enable);
 
         /// Записывает в выход сообщение message с временным штампом
-        void            outMessage(const String& message, ...);
+        void            addOutMessage(const String& message, ...);
         /// Записывает в лог сообщение message с временным штампом
-        void            logMessage(const String& message, ...);
+        void            addLogMessage(const String& message, ...);
 
         /// Возвращает ссылку на выходной поток для лога
         std::ostream&   log();

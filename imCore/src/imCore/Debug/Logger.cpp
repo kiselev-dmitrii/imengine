@@ -34,7 +34,7 @@ void Logger::setOutToConsole(bool enable) {
         else m_out = &m_outFileStream;
 }
 
-void Logger::outMessage(const String &message, ...) {
+void Logger::addOutMessage(const String &message, ...) {
         // Распаковка аргументов
         va_list args;
         va_start(args, message);
@@ -45,7 +45,7 @@ void Logger::outMessage(const String &message, ...) {
         writeMessage(*m_out, buffer);
 }
 
-void Logger::logMessage(const String &message, ...) {
+void Logger::addLogMessage(const String &message, ...) {
         // Распаковка аргументов
         va_list args;
         va_start(args, message);
