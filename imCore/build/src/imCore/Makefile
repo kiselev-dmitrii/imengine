@@ -114,6 +114,54 @@ imCore/fast:
 	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/build
 .PHONY : imCore/fast
 
+Debug/GLErrorMonitor.obj: Debug/GLErrorMonitor.cpp.obj
+.PHONY : Debug/GLErrorMonitor.obj
+
+# target to build an object file
+Debug/GLErrorMonitor.cpp.obj:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj
+.PHONY : Debug/GLErrorMonitor.cpp.obj
+
+Debug/GLErrorMonitor.i: Debug/GLErrorMonitor.cpp.i
+.PHONY : Debug/GLErrorMonitor.i
+
+# target to preprocess a source file
+Debug/GLErrorMonitor.cpp.i:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.i
+.PHONY : Debug/GLErrorMonitor.cpp.i
+
+Debug/GLErrorMonitor.s: Debug/GLErrorMonitor.cpp.s
+.PHONY : Debug/GLErrorMonitor.s
+
+# target to generate assembly for a file
+Debug/GLErrorMonitor.cpp.s:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.s
+.PHONY : Debug/GLErrorMonitor.cpp.s
+
+Debug/Logger.obj: Debug/Logger.cpp.obj
+.PHONY : Debug/Logger.obj
+
+# target to build an object file
+Debug/Logger.cpp.obj:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj
+.PHONY : Debug/Logger.cpp.obj
+
+Debug/Logger.i: Debug/Logger.cpp.i
+.PHONY : Debug/Logger.i
+
+# target to preprocess a source file
+Debug/Logger.cpp.i:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.i
+.PHONY : Debug/Logger.cpp.i
+
+Debug/Logger.s: Debug/Logger.cpp.s
+.PHONY : Debug/Logger.s
+
+# target to generate assembly for a file
+Debug/Logger.cpp.s:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.s
+.PHONY : Debug/Logger.cpp.s
+
 Graphics/Texture/Texture.obj: Graphics/Texture/Texture.cpp.obj
 .PHONY : Graphics/Texture/Texture.obj
 
@@ -138,6 +186,30 @@ Graphics/Texture/Texture.cpp.s:
 	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.s
 .PHONY : Graphics/Texture/Texture.cpp.s
 
+Utils/Timer.obj: Utils/Timer.cpp.obj
+.PHONY : Utils/Timer.obj
+
+# target to build an object file
+Utils/Timer.cpp.obj:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj
+.PHONY : Utils/Timer.cpp.obj
+
+Utils/Timer.i: Utils/Timer.cpp.i
+.PHONY : Utils/Timer.i
+
+# target to preprocess a source file
+Utils/Timer.cpp.i:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.i
+.PHONY : Utils/Timer.cpp.i
+
+Utils/Timer.s: Utils/Timer.cpp.s
+.PHONY : Utils/Timer.s
+
+# target to generate assembly for a file
+Utils/Timer.cpp.s:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.s
+.PHONY : Utils/Timer.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -147,9 +219,18 @@ help:
 	@echo ... edit_cache
 	@echo ... imCore
 	@echo ... rebuild_cache
+	@echo ... Debug/GLErrorMonitor.obj
+	@echo ... Debug/GLErrorMonitor.i
+	@echo ... Debug/GLErrorMonitor.s
+	@echo ... Debug/Logger.obj
+	@echo ... Debug/Logger.i
+	@echo ... Debug/Logger.s
 	@echo ... Graphics/Texture/Texture.obj
 	@echo ... Graphics/Texture/Texture.i
 	@echo ... Graphics/Texture/Texture.s
+	@echo ... Utils/Timer.obj
+	@echo ... Utils/Timer.i
+	@echo ... Utils/Timer.s
 .PHONY : help
 
 

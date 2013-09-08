@@ -101,6 +101,20 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+tests/CMakeFiles/LoggerTest.dir/rule:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f CMakeFiles\Makefile2 tests/CMakeFiles/LoggerTest.dir/rule
+.PHONY : tests/CMakeFiles/LoggerTest.dir/rule
+
+# Convenience name for target.
+LoggerTest: tests/CMakeFiles/LoggerTest.dir/rule
+.PHONY : LoggerTest
+
+# fast build rule for target.
+LoggerTest/fast:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f tests\CMakeFiles\LoggerTest.dir\build.make tests/CMakeFiles/LoggerTest.dir/build
+.PHONY : LoggerTest/fast
+
+# Convenience name for target.
 tests/CMakeFiles/TextureTest.dir/rule:
 	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f CMakeFiles\Makefile2 tests/CMakeFiles/TextureTest.dir/rule
 .PHONY : tests/CMakeFiles/TextureTest.dir/rule
@@ -113,6 +127,30 @@ TextureTest: tests/CMakeFiles/TextureTest.dir/rule
 TextureTest/fast:
 	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f tests\CMakeFiles\TextureTest.dir\build.make tests/CMakeFiles/TextureTest.dir/build
 .PHONY : TextureTest/fast
+
+LoggerTest.obj: LoggerTest.cpp.obj
+.PHONY : LoggerTest.obj
+
+# target to build an object file
+LoggerTest.cpp.obj:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f tests\CMakeFiles\LoggerTest.dir\build.make tests/CMakeFiles/LoggerTest.dir/LoggerTest.cpp.obj
+.PHONY : LoggerTest.cpp.obj
+
+LoggerTest.i: LoggerTest.cpp.i
+.PHONY : LoggerTest.i
+
+# target to preprocess a source file
+LoggerTest.cpp.i:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f tests\CMakeFiles\LoggerTest.dir\build.make tests/CMakeFiles/LoggerTest.dir/LoggerTest.cpp.i
+.PHONY : LoggerTest.cpp.i
+
+LoggerTest.s: LoggerTest.cpp.s
+.PHONY : LoggerTest.s
+
+# target to generate assembly for a file
+LoggerTest.cpp.s:
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build && $(MAKE) -f tests\CMakeFiles\LoggerTest.dir\build.make tests/CMakeFiles/LoggerTest.dir/LoggerTest.cpp.s
+.PHONY : LoggerTest.cpp.s
 
 TextureTest.obj: TextureTest.cpp.obj
 .PHONY : TextureTest.obj
@@ -144,9 +182,13 @@ help:
 	@echo ... all (the default if no target is provided)
 	@echo ... clean
 	@echo ... depend
+	@echo ... LoggerTest
 	@echo ... TextureTest
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... LoggerTest.obj
+	@echo ... LoggerTest.i
+	@echo ... LoggerTest.s
 	@echo ... TextureTest.obj
 	@echo ... TextureTest.i
 	@echo ... TextureTest.s

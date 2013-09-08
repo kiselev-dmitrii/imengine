@@ -4,5 +4,5 @@
 # compile CXX with C:/Apps/MinGW/bin/g++.exe
 CXX_FLAGS = @CMakeFiles/TextureTest.dir/includes_CXX.rsp   -std=c++11 -Wall
 
-CXX_DEFINES = 
+CXX_DEFINES = -DIM_DEBUG
 

@@ -63,6 +63,7 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 SET(CMAKE_DEPEND_INFO_FILES
   "src/imCore/CMakeFiles/imCore.dir/DependInfo.cmake"
+  "tests/CMakeFiles/LoggerTest.dir/DependInfo.cmake"
   "tests/CMakeFiles/TextureTest.dir/DependInfo.cmake"
   "docs/CMakeFiles/docs.dir/DependInfo.cmake"
   )

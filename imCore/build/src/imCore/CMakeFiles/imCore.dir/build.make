@@ -75,14 +75,92 @@ src/imCore/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.provides: src/
 
 src/imCore/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.provides.build: src/imCore/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj
 
+src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj: src/imCore/CMakeFiles/imCore.dir/flags.make
+src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj: src/imCore/CMakeFiles/imCore.dir/includes_CXX.rsp
+src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj: ../src/imCore/Utils/Timer.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles $(CMAKE_PROGRESS_2)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src\imCore && C:\Apps\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\imCore.dir\Utils\Timer.cpp.obj -c C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\imCore\Utils\Timer.cpp
+
+src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/imCore.dir/Utils/Timer.cpp.i"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src\imCore && C:\Apps\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -E C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\imCore\Utils\Timer.cpp > CMakeFiles\imCore.dir\Utils\Timer.cpp.i
+
+src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/imCore.dir/Utils/Timer.cpp.s"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src\imCore && C:\Apps\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -S C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\imCore\Utils\Timer.cpp -o CMakeFiles\imCore.dir\Utils\Timer.cpp.s
+
+src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj.requires:
+.PHONY : src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj.requires
+
+src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj.provides: src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj.requires
+	$(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj.provides.build
+.PHONY : src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj.provides
+
+src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj.provides.build: src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj
+
+src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj: src/imCore/CMakeFiles/imCore.dir/flags.make
+src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj: src/imCore/CMakeFiles/imCore.dir/includes_CXX.rsp
+src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj: ../src/imCore/Debug/GLErrorMonitor.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src\imCore && C:\Apps\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\imCore.dir\Debug\GLErrorMonitor.cpp.obj -c C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\imCore\Debug\GLErrorMonitor.cpp
+
+src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.i"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src\imCore && C:\Apps\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -E C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\imCore\Debug\GLErrorMonitor.cpp > CMakeFiles\imCore.dir\Debug\GLErrorMonitor.cpp.i
+
+src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.s"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src\imCore && C:\Apps\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -S C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\imCore\Debug\GLErrorMonitor.cpp -o CMakeFiles\imCore.dir\Debug\GLErrorMonitor.cpp.s
+
+src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj.requires:
+.PHONY : src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj.requires
+
+src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj.provides: src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj.requires
+	$(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj.provides.build
+.PHONY : src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj.provides
+
+src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj.provides.build: src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj
+
+src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj: src/imCore/CMakeFiles/imCore.dir/flags.make
+src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj: src/imCore/CMakeFiles/imCore.dir/includes_CXX.rsp
+src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj: ../src/imCore/Debug/Logger.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\CMakeFiles $(CMAKE_PROGRESS_4)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src\imCore && C:\Apps\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles\imCore.dir\Debug\Logger.cpp.obj -c C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\imCore\Debug\Logger.cpp
+
+src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/imCore.dir/Debug/Logger.cpp.i"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src\imCore && C:\Apps\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -E C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\imCore\Debug\Logger.cpp > CMakeFiles\imCore.dir\Debug\Logger.cpp.i
+
+src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/imCore.dir/Debug/Logger.cpp.s"
+	cd /d C:\cygwin\home\sol\coding\projects\imEngine\imCore\build\src\imCore && C:\Apps\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_FLAGS) -S C:\cygwin\home\sol\coding\projects\imEngine\imCore\src\imCore\Debug\Logger.cpp -o CMakeFiles\imCore.dir\Debug\Logger.cpp.s
+
+src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj.requires:
+.PHONY : src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj.requires
+
+src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj.provides: src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj.requires
+	$(MAKE) -f src\imCore\CMakeFiles\imCore.dir\build.make src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj.provides.build
+.PHONY : src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj.provides
+
+src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj.provides.build: src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj
+
 # Object files for target imCore
 imCore_OBJECTS = \
-"CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj"
+"CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj" \
+"CMakeFiles/imCore.dir/Utils/Timer.cpp.obj" \
+"CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj" \
+"CMakeFiles/imCore.dir/Debug/Logger.cpp.obj"
 
 # External object files for target imCore
 imCore_EXTERNAL_OBJECTS =
 
 src/imCore/libimCore.dll: src/imCore/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj
+src/imCore/libimCore.dll: src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj
+src/imCore/libimCore.dll: src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj
+src/imCore/libimCore.dll: src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj
 src/imCore/libimCore.dll: src/imCore/CMakeFiles/imCore.dir/build.make
 src/imCore/libimCore.dll: ../deps/win32/lib/libglew32.dll.a
 src/imCore/libimCore.dll: ../deps/win32/lib/DevIL.dll
@@ -97,6 +175,9 @@ src/imCore/CMakeFiles/imCore.dir/build: src/imCore/libimCore.dll
 .PHONY : src/imCore/CMakeFiles/imCore.dir/build
 
 src/imCore/CMakeFiles/imCore.dir/requires: src/imCore/CMakeFiles/imCore.dir/Graphics/Texture/Texture.cpp.obj.requires
+src/imCore/CMakeFiles/imCore.dir/requires: src/imCore/CMakeFiles/imCore.dir/Utils/Timer.cpp.obj.requires
+src/imCore/CMakeFiles/imCore.dir/requires: src/imCore/CMakeFiles/imCore.dir/Debug/GLErrorMonitor.cpp.obj.requires
+src/imCore/CMakeFiles/imCore.dir/requires: src/imCore/CMakeFiles/imCore.dir/Debug/Logger.cpp.obj.requires
 .PHONY : src/imCore/CMakeFiles/imCore.dir/requires
 
 src/imCore/CMakeFiles/imCore.dir/clean:

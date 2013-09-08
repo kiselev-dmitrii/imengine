@@ -6,9 +6,19 @@
 
 #IncludeRegexTransform: 
 
-C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Graphics/Texture/Texture.cpp
-Texture.h
-C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Graphics/Texture/Texture.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Timer.cpp
+Timer.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Timer.h
 
-C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Graphics/Texture/Texture.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Timer.h
+ctime
+-
+Types.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Types.h
+
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Types.h
+string
+-
+vector
+-
 

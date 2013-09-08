@@ -4,5 +4,5 @@
 # compile CXX with C:/Apps/MinGW/bin/g++.exe
 CXX_FLAGS = @CMakeFiles/imCore.dir/includes_CXX.rsp   -std=c++11 -Wall
 
-CXX_DEFINES = -DimCore_EXPORTS
+CXX_DEFINES = -DIM_DEBUG -DimCore_EXPORTS
 

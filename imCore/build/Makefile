@@ -114,6 +114,19 @@ imCore/fast:
 .PHONY : imCore/fast
 
 #=============================================================================
+# Target rules for targets named LoggerTest
+
+# Build rule for target.
+LoggerTest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 LoggerTest
+.PHONY : LoggerTest
+
+# fast build rule for target.
+LoggerTest/fast:
+	$(MAKE) -f tests\CMakeFiles\LoggerTest.dir\build.make tests/CMakeFiles/LoggerTest.dir/build
+.PHONY : LoggerTest/fast
+
+#=============================================================================
 # Target rules for targets named TextureTest
 
 # Build rule for target.
@@ -148,6 +161,7 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... imCore
+	@echo ... LoggerTest
 	@echo ... TextureTest
 	@echo ... docs
 .PHONY : help
