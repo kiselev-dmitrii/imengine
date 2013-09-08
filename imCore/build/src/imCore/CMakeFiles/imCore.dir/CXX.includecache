@@ -6,19 +6,37 @@
 
 #IncludeRegexTransform: 
 
-C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Timer.cpp
-Timer.h
-C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Timer.h
-
-C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Timer.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Debug/../Utils/Timer.h
 ctime
 -
 Types.h
-C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Types.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Debug/../Utils/Types.h
 
-C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Utils/Types.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Debug/../Utils/Types.h
 string
 -
 vector
+-
+
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Debug/../Utils/Uncopyable.h
+
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Debug/Logger.cpp
+Logger.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Debug/Logger.h
+cstdio
+-
+cstdarg
+-
+
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Debug/Logger.h
+../Utils/Types.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Debug/../Utils/Types.h
+../Utils/Uncopyable.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Debug/../Utils/Uncopyable.h
+../Utils/Timer.h
+C:/cygwin/home/sol/coding/projects/imEngine/imCore/src/imCore/Debug/../Utils/Timer.h
+fstream
+-
+iostream
 -
 

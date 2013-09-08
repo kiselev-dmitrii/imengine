@@ -60,5 +60,13 @@ void Logger::writeMessage(std::ostream &stream, const String &message) {
         stream << '[' << m_timer.timestamp() << ']' << '\t' << message << std::endl;
 }
 
+std::ostream& Logger::log() {
+        return *m_log;
+}
+
+std::ostream& Logger::out() {
+        return *m_out;
+}
+
 
 } //namespace imCore

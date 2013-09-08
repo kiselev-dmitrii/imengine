@@ -32,6 +32,10 @@ public:
         /// Записывает в лог сообщение message с временным штампом
         void            logMessage(const String& message, ...);
 
+        /// Возвращает ссылку на выходной поток для лога
+        std::ostream&   log();
+        std::ostream&   out();
+
 private:
         /// Закрытый конструктор
         Logger();

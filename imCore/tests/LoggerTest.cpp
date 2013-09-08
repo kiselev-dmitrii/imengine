@@ -16,6 +16,7 @@ int main() {
         logger->setOutToConsole(true);
         logger->logMessage("Log to console2");
         logger->outMessage("Out to console1");
+        logger->out() << "Just Test" << std::endl;
 
         logger->setOutToConsole(false);
         logger->setLogToConsole(false);
@@ -23,12 +24,15 @@ int main() {
         logger->outMessage("Out to file4");
 
         logger->setLogToConsole(true);
+
+        logger->log() << "MASSIVE OPERATIONS:" << std::endl;
         logger->logMessage("Start of long operation");
         for (long long i=0; i < 34*100500; ++i) {
                 int* arr = new int [100500];
                 delete arr;
         }
         logger->logMessage("End of long operation");
+
 
         return 0;
 }
