@@ -7,8 +7,8 @@
 namespace imCore {
         typedef std::string             String;
         typedef std::vector<String>     StringList;
-        typedef unsigned int            UInt;
-        typedef unsigned long           ULong;
+        typedef unsigned int            uint;
+        typedef unsigned long           ulong;
 }
 
 #endif // TYPES_H

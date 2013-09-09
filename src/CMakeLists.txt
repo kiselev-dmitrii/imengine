@@ -4,7 +4,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 ###### imCore SOURCES AND HEADERS ######################################
 set(imCoreSources
         ### GRAPHICS BASED ON OPENGL ###
-        imCore/Graphics/GLStateManager.cpp
+        imCore/Graphics/StateManager.cpp
 
         imCore/Graphics/Texture/Texture.cpp
         imCore/Graphics/Texture/Texture1D.cpp
@@ -24,10 +24,11 @@ set(imCoreSources
         imCore/Debug/Logger.cpp
         imCore/Debug/GLErrorMonitor.cpp
         imCore/Debug/Profiler.cpp
+        imCore/Debug/ProfilerManager.cpp
    )
 set(imCoreHeaders
         ### GRAPHICS BASED ON OPENGL ###
-        imCore/Graphics/GLStateManager.h
+        imCore/Graphics/StateManager.h
 
         imCore/Graphics/Texture/Texture.h
         imCore/Graphics/Texture/Texture1D.h
@@ -50,6 +51,7 @@ set(imCoreHeaders
         imCore/Debug/Logger.h
         imCore/Debug/GLErrorMonitor.h
         imCore/Debug/Profiler.h
+        imCore/Debug/ProfilerManager.h
    )
 #################################################################
 

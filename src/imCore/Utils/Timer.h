@@ -20,13 +20,13 @@ public:
         /// Время в формате строки hours:mins:secs:clocks
         String          timestamp();
         /// Возвращает прошедшее время в часах
-        ULong           hours();
+        ulong           hours();
         /// Возвращает прошедшее время в минутах
-        ULong           minutes();
+        ulong           minutes();
         /// Возвращает прошедшее время в секундах
-        ULong           seconds();
+        ulong           seconds();
         /// Возвращает прошедшее время в тактах
-        ULong           ticks();
+        ulong           ticks();
 
 private:
         clock_t m_resetTime;

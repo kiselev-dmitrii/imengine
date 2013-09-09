@@ -2,6 +2,7 @@
 #define DEBUG_H
 
 #include "Logger.h"
+#include "ProfilerManager.h"
 #include <iostream>
 #include <assert.h>
 
@@ -25,6 +26,15 @@
         /// Утверждения времени выполнения
         #define IM_ASSERT(expression)\
                 assert(expression)
+
+        /// Начать профилирование секции
+        #define IM_START_PROFILER(name)\
+                imCore::ProfilerManager::instance()->startProfiler(name)
+
+        /// Закончить профилирование секции
+        #define IM_END_PROFILER(name)\
+                imCore::ProfilerManager::instance()->endProfiler(name)
+
 
         /// Вызов OpenGL функции с логом
         #define IM_GLCALL(function)\
