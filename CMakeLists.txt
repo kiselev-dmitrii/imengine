@@ -7,6 +7,18 @@ if(WIN32)
 	set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "deps/win32/include/")
 	set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "deps/win32/lib/")
 endif()
+
+# All binaries (*.dll and *.exe) will be placed to build/bin directory
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
+        ${PROJECT_BINARY_DIR}/bin
+        CACHE PATH
+        "Single Directory for all"
+    )
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
+        ${PROJECT_BINARY_DIR}/bin
+        CACHE PATH
+        "Single Directory for all"
+    )
 #################################################################
 
 ###### LIBRARIES ################################################

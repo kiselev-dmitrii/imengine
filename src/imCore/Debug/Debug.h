@@ -38,7 +38,8 @@
 
         /// Вызов OpenGL функции с логом
         #define IM_GLCALL(function)\
-                function
+                function;\
+                imCore::Logger::instance()->addLastGLError(__FILE__, __LINE__, #function)
 
 #else
         #define IM_SHOW(variable)

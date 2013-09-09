@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstdarg>
 #include "GLErrorMonitor.h"
+#include "Debug.h"
 
 namespace imCore {
 
@@ -51,6 +52,7 @@ void Logger::addTimestampMessage(const String &message, ...) {
 void Logger::addLastGLError(const String &file, int line, const String &function) {
         GLenum error = GLErrorMonitor::lastError();
         if (error == GL_NO_ERROR) return;
+        log() << '[' << m_timer.timestamp() << ']' << '\t';
         log() << "Function " << function << " return " << GLErrorMonitor::glEnumToString(error) << "; file: " <<  file << "; line: " << line << std::endl;
 }
 
