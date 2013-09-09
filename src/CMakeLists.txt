@@ -16,9 +16,7 @@ set(imCoreSources
         imCore/System/Window.cpp
         imCore/System/Keyboard.cpp
         imCore/System/Mouse.cpp
-
-        ### UTILS ###
-        imCore/Utils/Timer.cpp
+        imCore/System/Timer.cpp
 
         ### DEBUG ###
         imCore/Debug/Logger.cpp
@@ -40,11 +38,11 @@ set(imCoreHeaders
         imCore/System/Window.h
         imCore/System/Keyboard.h
         imCore/System/Mouse.cpp
+        imCore/System/Timer.h
 
         ### UTILS ###
         imCore/Utils/Uncopyable.h
         imCore/Utils/Types.h
-        imCore/Utils/Timer.h
 
         ### DEBUG ###
         imCore/Debug/Debug.h

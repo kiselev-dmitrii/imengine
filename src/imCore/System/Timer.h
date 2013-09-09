@@ -2,7 +2,7 @@
 #define TIMER_H
 
 #include <ctime>
-#include "Types.h"
+#include "../Utils/Types.h"
 
 namespace imCore {
 

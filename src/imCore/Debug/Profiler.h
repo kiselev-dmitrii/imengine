@@ -2,7 +2,7 @@
 #define PROFILER_H
 
 #include "../Utils/Types.h"
-#include "../Utils/Timer.h"
+#include "../System/Timer.h"
 
 namespace imCore {
 
