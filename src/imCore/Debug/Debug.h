@@ -2,7 +2,7 @@
 #define DEBUG_H
 
 #include "Logger.h"
-#include "ProfilerManager.h"
+#include "ProfileContext.h"
 #include <iostream>
 #include <assert.h>
 
@@ -29,11 +29,11 @@
 
         /// Начать профилирование секции
         #define IM_START_PROFILER(name)\
-                imCore::ProfilerManager::instance()->startProfiler(name)
+                imCore::ProfileContext::instance()->startProfiler(name)
 
         /// Закончить профилирование секции
         #define IM_END_PROFILER(name)\
-                imCore::ProfilerManager::instance()->endProfiler(name)
+                imCore::ProfileContext::instance()->endProfiler(name)
 
 
         /// Вызов OpenGL функции с логом

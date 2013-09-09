@@ -19,8 +19,7 @@ set(imCoreSources
         ### DEBUG ###
         imCore/Debug/Logger.cpp
         imCore/Debug/GLErrorMonitor.cpp
-        imCore/Debug/Profiler.cpp
-        imCore/Debug/ProfilerManager.cpp
+        imCore/Debug/ProfileContext.cpp
    )
 set(imCoreHeaders
         ### GRAPHICS BASED ON OPENGL ###
@@ -44,8 +43,7 @@ set(imCoreHeaders
         imCore/Debug/Debug.h
         imCore/Debug/Logger.h
         imCore/Debug/GLErrorMonitor.h
-        imCore/Debug/Profiler.h
-        imCore/Debug/ProfilerManager.h
+        imCore/Debug/ProfileContext.h
    )
 #################################################################
 
