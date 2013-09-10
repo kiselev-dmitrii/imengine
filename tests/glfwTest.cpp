@@ -4,10 +4,12 @@
 
 int main() {
 
-        if(!glewInit()) return -1;
         if(!glfwInit()) return -1;
-        IM_SHOW(glfwGetTime());
+        if(!glewInit()) IM_PRINT("BAD");
 
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         GLFWwindow* window = glfwCreateWindow(800, 600, "Title", NULL, NULL);
         if (!window) {
                 glfwTerminate();
@@ -16,9 +18,14 @@ int main() {
 
         glfwMakeContextCurrent(window);
 
+        IM_SHOW(glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MAJOR));
+        IM_SHOW(glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MINOR));
+        IM_SHOW(glfwGetWindowAttrib(window, GLFW_OPENGL_PROFILE));
+
+        GLuint fbo;
+        IM_GLCALL(glGenBuffers(1, &fbo));
 
         while (!glfwWindowShouldClose(window)) {
-                IM_GLCALL(glBindTexture(GL_TEXTURE_2D, 33));
                 glfwSwapBuffers(window);
                 glfwPollEvents();
         }

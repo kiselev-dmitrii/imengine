@@ -9,12 +9,21 @@ set(imCoreSources
         imCore/Graphics/Texture/Texture2D.cpp
         imCore/Graphics/Texture/Texture3D.cpp
         imCore/Graphics/Texture/CubeTexture.cpp
+        imCore/Graphics/Buffer/BufferObject.cpp
+        imCore/Graphics/Buffer/VertexBuffer.cpp
+        imCore/Graphics/Buffer/IndexBuffer.cpp
+        imCore/Graphics/Buffer/UniformBuffer.cpp
+
+        ### MATHEMATICS ###
+        imCore/Math/AABB.cpp
+        imCore/Math/Noise.cpp
 
         ### SYSTEM OPERATIONS ###
         imCore/System/Window.cpp
         imCore/System/Keyboard.cpp
         imCore/System/Mouse.cpp
         imCore/System/Timer.cpp
+        imCore/System/BaseApplication.cpp
 
         ### DEBUG ###
         imCore/Debug/Logger.cpp
@@ -28,12 +37,22 @@ set(imCoreHeaders
         imCore/Graphics/Texture/Texture2D.h
         imCore/Graphics/Texture/Texture3D.h
         imCore/Graphics/Texture/CubeTexture.h
+        imCore/Graphics/Buffer/BufferObject.h
+        imCore/Graphics/Buffer/VertexBuffer.h
+        imCore/Graphics/Buffer/IndexBuffer.h
+        imCore/Graphics/Buffer/UniformBuffer.h
+
+        ### MATHEMATICS ###
+        imCore/Math/Common.h
+        imCore/Math/AABB.h
+        imCore/Math/Noise.h
 
         ### SYSTEM OPERATIONS ###
         imCore/System/Window.h
         imCore/System/Keyboard.h
         imCore/System/Mouse.cpp
         imCore/System/Timer.h
+        imCore/System/BaseApplication.h
 
         ### UTILS ###
         imCore/Utils/Uncopyable.h
