@@ -14,6 +14,10 @@ set(imCoreSources
         imCore/Graphics/Buffer/IndexBuffer.cpp
         imCore/Graphics/Buffer/UniformBuffer.cpp
 
+        ### FILE RESOURCES ###
+        imCore/FileResource/Mesh.cpp
+        imCore/FileResource/Font.cpp
+
         ### MATHEMATICS ###
         imCore/Math/AABB.cpp
         imCore/Math/Noise.cpp
@@ -41,6 +45,10 @@ set(imCoreHeaders
         imCore/Graphics/Buffer/VertexBuffer.h
         imCore/Graphics/Buffer/IndexBuffer.h
         imCore/Graphics/Buffer/UniformBuffer.h
+
+        ### FILE RESOURCES ###
+        imCore/FileResource/Mesh.h
+        imCore/FileResource/Font.h
 
         ### MATHEMATICS ###
         imCore/Math/Common.h

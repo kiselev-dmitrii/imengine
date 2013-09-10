@@ -22,8 +22,6 @@ int main() {
         IM_SHOW(glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MINOR));
         IM_SHOW(glfwGetWindowAttrib(window, GLFW_OPENGL_PROFILE));
 
-        GLuint fbo;
-        IM_GLCALL(glGenBuffers(1, &fbo));
 
         while (!glfwWindowShouldClose(window)) {
                 glfwSwapBuffers(window);
