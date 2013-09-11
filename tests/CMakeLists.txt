@@ -6,7 +6,6 @@ set(TESTS
         LoggerTest
         TimerTest
         ProfileTest
-        glfwTest
 )
 
 foreach(TEST ${TESTS})

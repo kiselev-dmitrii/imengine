@@ -23,6 +23,10 @@
         #define IM_TODO\
                 imCore::Logger::instance()->addTimestampMessage("Function %s is not imlemented in %s in line %s", __FUNCTION__, __FILE__, __LINE__)
 
+        /// Вывод ошибки в лог
+        #define IM_ERROR(text)\
+                imCore::Logger::instance()->addTimestampMessage("ERROR: \"%s\" in %s, line %u, file %s", text, __FUNCTION__, __LINE__, __FILE__)
+
         /// Утверждения времени выполнения
         #define IM_ASSERT(expression)\
                 assert(expression)
