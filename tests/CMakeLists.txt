@@ -6,6 +6,7 @@ set(TESTS
         LoggerTest
         TimerTest
         ProfileTest
+        WindowTest
 )
 
 foreach(TEST ${TESTS})
