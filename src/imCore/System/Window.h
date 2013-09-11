@@ -6,15 +6,6 @@
 #include <GLFW/glfw3.h>
 
 namespace imCore {
-/** @brief Структура для хранения информации о контексте OpenGL
- */
-struct Context {
-        int     majorVersion;
-        int     minorVersion;
-        int     profile;
-        int     samples;
-};
-
 
 /** @brief Класс окна, основанного на библиотеке GLFW3.
  *
@@ -28,10 +19,8 @@ public:
         /// Деструктор
         ~Window();
 
-        /// Отображает окно
-        void            show();
-        /// Скрывает окно
-        void            hide();
+        /// Создает и отображает окно
+        bool            open();
 
         /// Вовзвращает заголовок окна
         String          title();
@@ -42,33 +31,32 @@ public:
         ivec2           position();
         /// Устанавливает позицию окна
         void            setPosition(const ivec2& position);
-
-        /// Устанавливает полноэкранный режим
-        void            setFullscreen(bool enable);
-        /// Определяет, запущено ли окно в полный экран
-        bool            fullscreen();
+        void            setPosition(int x, int y);
 
         /// Возвращает размеры окна
         ivec2           size();
         /// Устанавливает размеры окна
         void            setSize(const ivec2& size);
-        /// Вовзвращает размеры фреймбуфера
-        ivec2           framebufferSize();
+        void            setSize(int width, int height);
+
+        /// Определяет, запущено ли окно в полный экран
+        bool            isFullscreen();
+        /// Устанавливает полноэкранный режим
+        void            setFullscreen(bool isFullscreen);
+
+        /// Возвращает координаты центра окна
+        ivec2           center();
 
         /// Возвращает ссылку на GLFW окно
-        GLFWwindow*     rawWindow();
-
-private:
-        /// Создает окно
-        void            createWindow();
+        GLFWwindow*     glfwWindow();
 
 private:
         GLFWwindow*     m_window;
         String          m_title;
         ivec2           m_position;
         ivec2           m_size;
-        bool            m_isFullscreen;
-        Context         m_context;
+        ivec2           m_isFullscreen;
+
 };
 
 } //namespace imCore
