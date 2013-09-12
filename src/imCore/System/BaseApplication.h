@@ -11,7 +11,31 @@ namespace imCore {
  */
 class BaseApplication {
 public:
-        BaseApplication();
+        /// Запускает приложение
+        int     exec();
+
+protected:
+        virtual void    init() = 0;
+        virtual void    update() = 0;
+        virtual void    render() = 0;
+        virtual void    destroy() = 0;
+
+        /// События клавиатуры
+        virtual void    keyPressEvent()         {}
+        virtual void    keyReleaseEvent()       {}
+
+        /// События мыши
+        virtual void    mouseWheelEvent()       {}
+        virtual void    mousePressEvent()       {}
+        virtual void    mouseReleaseEvent()     {}
+
+private:
+        /// Инициализация библиотек, создание базового окна
+        bool    initBaseApplication();
+        /// Выполнение главного цикла
+        void    runMainLoop();
+        /// Завершение приложения
+        void    terminateApplication();
 };
 
 } //namespace imCore
