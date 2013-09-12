@@ -15,7 +15,7 @@ public:
         int     exec();
 
 protected:
-        virtual void    init() = 0;
+        virtual void    initialize() = 0;
         virtual void    update() = 0;
         virtual void    render() = 0;
         virtual void    destroy() = 0;
@@ -31,11 +31,11 @@ protected:
 
 private:
         /// Инициализация библиотек, создание базового окна
-        bool    initBaseApplication();
+        bool    init();
         /// Выполнение главного цикла
-        void    runMainLoop();
+        void    loop();
         /// Завершение приложения
-        void    terminateApplication();
+        void    quit();
 };
 
 } //namespace imCore

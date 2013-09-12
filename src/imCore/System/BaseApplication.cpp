@@ -1,28 +1,27 @@
 #include "BaseApplication.h"
 #include "../Debug/Debug.h"
-#include <GLFW/glfw3.h>
 
 namespace imCore {
 
 int BaseApplication::exec() {
-        if (!initBaseApplication()) {
+        if (!init()) {
                 IM_ERROR("Cannot init application");
                 return -1;
         }
-        runMainLoop();
-        terminateApplication();
+        loop();
+        quit();
         return 0;
 }
 
-bool BaseApplication::initBaseApplication() {
+bool BaseApplication::init() {
         return false;
 }
 
-void BaseApplication::runMainLoop() {
+void BaseApplication::loop() {
 
 }
 
-void BaseApplication::terminateApplication() {
+void BaseApplication::quit() {
 
 }
 

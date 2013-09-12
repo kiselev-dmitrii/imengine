@@ -3,17 +3,15 @@
 
 #include "../Math/Common.h"
 #include "../Utils/Types.h"
-#include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
 
 namespace imCore {
 
-/** @brief Класс окна, основанного на библиотеке GLFW3.
+/** @brief Класс окна, основанного на библиотеке SDL.
  *
- *  Для работы с классом Window необходимо, чтобы GLFW3 был
- *  проинициализирован. Каждое вновь созданное окно становится активным,
- *  т.е. к нему привязывается контекст OpenGL.
- *  При переходе из/в полноэкранный режим, скорее всего будет изменятся
- *  указатель glfwWindow, так что его лучше заного получать из соответствующего метода.
+ *  Перед вызовом метода create, необходимо чтобы библиотека SDL
+ *  была проинициализирована. Метод create непосредственно создает окно.
+ *  До вызова create, вызовы методов кэшируются и применяются при создании окна.
  */
 class Window {
 public:
@@ -22,27 +20,28 @@ public:
         /// Деструктор
         ~Window();
 
-        /// Создает окно
+        /// Создает окно и контекст
         bool            create();
+
+        /// Определяет, видимо ли окно
+        bool            isVisible();
         /// Отображает окно
         void            show();
         /// Скрывает окно
         void            hide();
-        /// Определяет, видимо ли окно
-        bool            isVisible();
 
         /// Вовзвращает заголовок окна
         String          title();
         /// Устанавливает заголовок окна
         void            setTitle(const String& title);
 
-        /// Возвращает позицию окна. Не очень быстрый метод
+        /// Возвращает позицию окна.
         ivec2           position();
         /// Устанавливает позицию окна
         void            setPosition(const ivec2& position);
         void            setPosition(int x, int y);
 
-        /// Возвращает размеры окна. Не очень быстрый метод
+        /// Возвращает размеры окна.
         ivec2           size();
         /// Устанавливает размеры окна
         void            setSize(const ivec2& size);
@@ -53,21 +52,28 @@ public:
         /// Устанавливает полноэкранный режим
         void            setFullscreen(bool isFullscreen);
 
-        /// Возвращает координаты центра окна. Не очень быстрый метод
+        /// Возвращает координаты центра окна.
         ivec2           center();
 
         /// Возвращает ссылку на GLFW окно
-        GLFWwindow*     glfwWindow();
+        SDL_Window*     rawWindow();
 
 private:
-        /// Разрушает окно
+        /// Создает окно
+        bool            createWindow();
+        /// Создает контекст
+        bool            createContext();
+        /// Удаляет контекст и разрушает окно
         void            destroy();
 
 private:
-        GLFWwindow*     m_window;
+        SDL_Window*     m_window;
+        SDL_GLContext   m_context;
+
         String          m_title;
         ivec2           m_position;
         ivec2           m_size;
+        ivec2           m_prevSize;
         bool            m_isVisible;
         bool            m_isFullscreen;
 

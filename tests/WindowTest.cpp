@@ -1,42 +1,80 @@
+#include <GL/glew.h>
+#include <SDL2/SDL.h>
 #include <imCore/System/Window.h>
 #include <imCore/Debug/Debug.h>
-#include <GLFW/glfw3.h>
+#undef main
 
 using namespace imCore;
 
+bool isPressed(uint scancode) {
+        const Uint8* state = SDL_GetKeyboardState(NULL);
+        return state[scancode];
+}
+
 int main() {
-        if (!glfwInit()) {
-                IM_ERROR("Cannot initialize GLFW");
+        if (SDL_Init(SDL_INIT_VIDEO)) {
+                IM_ERROR("Could not init SDL");
                 return -1;
         }
 
-        Window window;
-        window.create();
-        window.setPosition(30, 30);
-        window.show();
-        window.setTitle("WindowTest Application");
+        Window win;
+        win.create();
 
-        while(!glfwWindowShouldClose(window.glfwWindow())) {
-                GLFWwindow* win = window.glfwWindow();
-                if (glfwGetKey(win, GLFW_KEY_T)) {
-                        if (window.isVisible()) window.hide();
-                        else window.show();
-                }
-
-                if (glfwGetKey(window.glfwWindow(), GLFW_KEY_F)) {
-                        window.setFullscreen(!window.isFullscreen());
-                }
-
-                if (glfwGetKey(win, GLFW_KEY_LEFT)) window.setPosition(window.position() + ivec2(-1,0));
-                if (glfwGetKey(win, GLFW_KEY_RIGHT)) window.setPosition(window.position() + ivec2(1,0));
-                if (glfwGetKey(win, GLFW_KEY_DOWN)) window.setPosition(window.position() + ivec2(0,1));
-                if (glfwGetKey(win, GLFW_KEY_UP)) window.setPosition(window.position() + ivec2(0,-1));
-
-                if (glfwGetKey(win, GLFW_KEY_MINUS))  window.setSize(window.size() - ivec2(1));
-                if (glfwGetKey(win, GLFW_KEY_EQUAL))  window.setSize(window.size() + ivec2(1));
-
-                glfwSwapBuffers(win);
-                glfwPollEvents();
+        if (glewInit() != GLEW_OK) {
+                IM_ERROR("Could not init GLEW");
+                return -1;
         }
 
+        glClearColor(1,0,0,0);
+
+        SDL_Event event;
+        bool running = true;
+        while (running) {
+                while (SDL_PollEvent(&event)) {
+                        switch (event.type) {
+                                case SDL_KEYDOWN:{
+                                        SDL_Keycode key = event.key.keysym.sym;
+                                        //IM_PRINT("Key pressed :" << char(event.key.keysym.sym));
+                                        if (key == SDLK_EQUALS) win.setSize(win.size() + ivec2(1,1));
+                                        if (key == SDLK_MINUS) win.setSize(win.size() + ivec2(-1,-1));
+                                        if (key == SDLK_a) win.setPosition(win.position() + ivec2(-1,0));
+                                        if (key == SDLK_d) win.setPosition(win.position() + ivec2(1,0));
+                                        if (key == SDLK_w) win.setPosition(win.position() + ivec2(0,-1));
+                                        if (key == SDLK_s) win.setPosition(win.position() + ivec2(0,1));
+                                        if (key == SDLK_f) win.setFullscreen(!win.isFullscreen());
+                                        if (key == SDLK_t) win.setTitle("WindowTest");
+                                        if (key == SDLK_s) win.show();
+                                        if (key == SDLK_h) win.hide();
+                                        if (key == SDLK_m) SDL_WarpMouseInWindow(win.rawWindow(), win.center().x, win.center().y);
+
+                                        if (key == SDLK_F1) {
+                                                IM_PRINT(win.size().x << " " << win.size().y);
+                                        }
+                                }
+
+                                        break;
+                                case SDL_KEYUP:
+                                        IM_PRINT("Key released :" << char(event.key.keysym.sym));
+                                        break;
+                                case SDL_MOUSEMOTION:
+                                        IM_PRINT("Mouse moved :" << event.motion.x << " " << event.motion.y);
+                                        break;
+                                case SDL_MOUSEWHEEL:
+                                        IM_PRINT("Mouse wheel :" << event.wheel.x << " " << event.wheel.y);
+                                        break;
+                                case SDL_QUIT:
+                                        IM_PRINT("Close");
+                                        running = false;
+                                        break;
+                        }
+                }
+                if (isPressed(SDL_SCANCODE_LEFT)) win.setPosition(win.position() + ivec2(-1,0));
+                if (isPressed(SDL_SCANCODE_RIGHT)) win.setPosition(win.position() + ivec2(1,0));
+                if (isPressed(SDL_SCANCODE_UP)) win.setPosition(win.position() + ivec2(0,-1));
+                if (isPressed(SDL_SCANCODE_DOWN)) win.setPosition(win.position() + ivec2(0,1));
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                SDL_GL_SwapWindow(win.rawWindow());
+        }
+
+        return 0;
 }

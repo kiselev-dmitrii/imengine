@@ -25,14 +25,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
 # Here determines the values of the varibales imEngineIncludeDirs and imEngineLibs,
 # which contains paths to extarnal libs (to *.h and *.a respectively) 
 
-#GLFW
-find_package(GLFW3 REQUIRED)
-if(NOT GLFW3_FOUND)
-        message(ERROR " GLFW3 not found!")
+#SDL2
+find_package(SDL2 REQUIRED)
+if(NOT SDL2_FOUND)
+        message(ERROR " SDL2 not found!")
         return()
 else()
-        list(APPEND imEngineIncludeDirs ${GLFW3_INCLUDE_PATH})
-        list(APPEND imEngineLibs ${GLFW3_LIBRARY})
+        list(APPEND imEngineIncludeDirs ${SDL2_INCLUDE_DIR})
+        list(APPEND imEngineLibs ${SDL2_LIBRARY})
 endif()
 
 # OpenGL
