@@ -4,6 +4,7 @@
 #include "../Math/Common.h"
 #include "../Utils/Types.h"
 #include <SDL2/SDL.h>
+#undef main
 
 namespace imCore {
 

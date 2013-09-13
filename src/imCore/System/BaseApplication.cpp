@@ -31,7 +31,7 @@ bool BaseApplication::initSDL() {
 }
 
 bool BaseApplication::createMainWindow() {
-        if (m_mainWindow.create()) return false;
+        if (!m_mainWindow.create()) return false;
         IM_LOG("Main window created");
         return true;
 }
@@ -71,6 +71,17 @@ void BaseApplication::loop() {
                                         mouseWheelEvent(event.wheel.y, event.wheel.x);
                                         break;
 
+                                case SDL_WINDOWEVENT:
+                                        switch (event.window.event) {
+                                                case SDL_WINDOWEVENT_RESIZED:
+                                                        windowResizeEvent(event.window.data1, event.window.data2);
+                                                        break;
+                                                case SDL_WINDOWEVENT_MINIMIZED:
+                                                        windowMinimizeEvent();
+                                                        break;
+                                        }
+                                        break;
+
                                 case SDL_QUIT:
                                         running = false;
                                         break;
@@ -85,6 +96,8 @@ void BaseApplication::loop() {
 }
 
 void BaseApplication::quit() {
+        destroy();
+
         m_mainWindow.destroy();
         SDL_Quit();
 }

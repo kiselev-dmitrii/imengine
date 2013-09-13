@@ -39,6 +39,11 @@ protected:
         /// Вертикальное и горизонтальное приращение записывается в deltaVertical и deltaHorizontal
         virtual void    mouseWheelEvent(int deltaVertical, int deltaHorizontal) {}
 
+        /// Вызывается при изменении размеров окна
+        virtual void    windowResizeEvent(int x, int y)                         {}
+        /// Вызывается минимизации окна
+        virtual void    windowMinimizeEvent()                                   {}
+
 private:
         /// Инициализация библиотек, создание базового окна
         bool    init();

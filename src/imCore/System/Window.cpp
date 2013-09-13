@@ -6,7 +6,7 @@ namespace imCore {
 Window::Window() :
         m_window(nullptr),
         m_title("No title"),
-        m_position(0,0),
+        m_position(10,10),
         m_size(800, 600),
         m_prevSize(m_size),
         m_isVisible(true),
@@ -107,7 +107,7 @@ SDL_Window* Window::rawWindow() {
 }
 
 bool Window::createWindow() {
-        Uint32 flags = SDL_WINDOW_OPENGL;
+        Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
         if (m_isFullscreen) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
         if (!m_isVisible) flags |= SDL_WINDOW_HIDDEN;
 

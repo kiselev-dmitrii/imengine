@@ -4,6 +4,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 set(TESTS
         WindowTest
         DebugTest
+        BaseApplicationTest
 )
 
 foreach(TEST ${TESTS})

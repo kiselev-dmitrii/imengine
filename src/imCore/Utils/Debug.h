@@ -33,19 +33,19 @@ namespace Debug {
 
         /// Трасировка с сообщением
         #define IM_TRACE(text)\
-                std::clog << Debug::currentTimeStamp() << " TRACE: Function " <<  __FUNCTION__ << "(...) , File: " << __FILE__ << ", Line: " << __LINE__ << ", Text: " << text << std::endl;
+                std::clog << imCore::Debug::currentTimeStamp() << " TRACE: Function " <<  __FUNCTION__ << "(...) , File: " << __FILE__ << ", Line: " << __LINE__ << ", Text: " << text << std::endl;
 
         /// Вывод сообщения, что функция не реализована
         #define IM_TODO\
-                std::clog << Debug::currentTimeStamp() << " TODO: Function " <<  __FUNCTION__ << "(...) , Fine: " << __FILE__ << ", Line: " << __LINE__ << std::endl;
+                std::clog << imCore::Debug::currentTimeStamp() << " TODO: Function " <<  __FUNCTION__ << "(...) , Fine: " << __FILE__ << ", Line: " << __LINE__ << std::endl;
 
         /// Вывод ошибки в лог
         #define IM_ERROR(text)\
-                std::clog << Debug::currentTimeStamp() << " ERROR: Function " <<  __FUNCTION__ << "(...) , Fine: " << __FILE__ << ", Line: " << __LINE__ << ", Cause: " << text << std::endl;
+                std::clog << imCore::Debug::currentTimeStamp() << " ERROR: Function " <<  __FUNCTION__ << "(...) , Fine: " << __FILE__ << ", Line: " << __LINE__ << ", Cause: " << text << std::endl;
 
         /// Просто сообщение в лог
         #define IM_LOG(text)\
-                std::clog << Debug::currentTimeStamp() << " LOG: " << text << std::endl;
+                std::clog << imCore::Debug::currentTimeStamp() << " LOG: " << text << std::endl;
 
         /// Утверждения времени выполнения
         #define IM_ASSERT(expression)\
@@ -54,7 +54,7 @@ namespace Debug {
         /// Вызов OpenGL функции с логом
         #define IM_GLCALL(call)\
                 call;\
-                Debug::checkGlErrors(__FUNCTION__, __FILE__, __LINE__, #call)
+                imCore::Debug::checkGlErrors(__FUNCTION__, __FILE__, __LINE__, #call)
 
 #else
         #define IM_VAR(variable)
