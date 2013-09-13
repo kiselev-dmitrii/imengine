@@ -26,13 +26,12 @@ set(imCoreSources
         imCore/System/Window.cpp
         imCore/System/Keyboard.cpp
         imCore/System/Mouse.cpp
-        imCore/System/Timer.cpp
         imCore/System/BaseApplication.cpp
 
-        ### DEBUG ###
-        imCore/Debug/Logger.cpp
-        imCore/Debug/GLErrorMonitor.cpp
-        imCore/Debug/ProfileContext.cpp
+        ### UTILS ###
+        imCore/Utils/StreamUtils.cpp
+        imCore/Utils/GLUtils.cpp
+        imCore/Utils/Debug.cpp
    )
 set(imCoreHeaders
         ### GRAPHICS BASED ON OPENGL ###
@@ -59,18 +58,14 @@ set(imCoreHeaders
         imCore/System/Window.h
         imCore/System/Keyboard.h
         imCore/System/Mouse.cpp
-        imCore/System/Timer.h
         imCore/System/BaseApplication.h
 
         ### UTILS ###
         imCore/Utils/Uncopyable.h
         imCore/Utils/Types.h
-
-        ### DEBUG ###
-        imCore/Debug/Debug.h
-        imCore/Debug/Logger.h
-        imCore/Debug/GLErrorMonitor.h
-        imCore/Debug/ProfileContext.h
+        imCore/Utils/StreamUtils.h
+        imCore/Utils/GLUtils.h
+        imCore/Utils/Debug.h
    )
 #################################################################
 

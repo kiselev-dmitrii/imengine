@@ -1,7 +1,7 @@
 #include <GL/glew.h>
-#include <SDL2/SDL.h>
 #include <imCore/System/Window.h>
-#include <imCore/Debug/Debug.h>
+#include <imCore/Utils/Debug.h>
+#include <SDL2/SDL.h>
 #undef main
 
 using namespace imCore;
@@ -35,12 +35,12 @@ int main() {
                                 case SDL_KEYDOWN:{
                                         SDL_Keycode key = event.key.keysym.sym;
                                         //IM_PRINT("Key pressed :" << char(event.key.keysym.sym));
-                                        if (key == SDLK_EQUALS) win.setSize(win.size() + ivec2(1,1));
-                                        if (key == SDLK_MINUS) win.setSize(win.size() + ivec2(-1,-1));
-                                        if (key == SDLK_a) win.setPosition(win.position() + ivec2(-1,0));
-                                        if (key == SDLK_d) win.setPosition(win.position() + ivec2(1,0));
-                                        if (key == SDLK_w) win.setPosition(win.position() + ivec2(0,-1));
-                                        if (key == SDLK_s) win.setPosition(win.position() + ivec2(0,1));
+                                        if (key == SDLK_EQUALS) win.setSize(win.size() + IVec2(1,1));
+                                        if (key == SDLK_MINUS) win.setSize(win.size() + IVec2(-1,-1));
+                                        if (key == SDLK_a) win.setPosition(win.position() + IVec2(-1,0));
+                                        if (key == SDLK_d) win.setPosition(win.position() + IVec2(1,0));
+                                        if (key == SDLK_w) win.setPosition(win.position() + IVec2(0,-1));
+                                        if (key == SDLK_s) win.setPosition(win.position() + IVec2(0,1));
                                         if (key == SDLK_f) win.setFullscreen(!win.isFullscreen());
                                         if (key == SDLK_t) win.setTitle("WindowTest");
                                         if (key == SDLK_s) win.show();
@@ -68,10 +68,10 @@ int main() {
                                         break;
                         }
                 }
-                if (isPressed(SDL_SCANCODE_LEFT)) win.setPosition(win.position() + ivec2(-1,0));
-                if (isPressed(SDL_SCANCODE_RIGHT)) win.setPosition(win.position() + ivec2(1,0));
-                if (isPressed(SDL_SCANCODE_UP)) win.setPosition(win.position() + ivec2(0,-1));
-                if (isPressed(SDL_SCANCODE_DOWN)) win.setPosition(win.position() + ivec2(0,1));
+                if (isPressed(SDL_SCANCODE_LEFT)) win.setPosition(win.position() + IVec2(-1,0));
+                if (isPressed(SDL_SCANCODE_RIGHT)) win.setPosition(win.position() + IVec2(1,0));
+                if (isPressed(SDL_SCANCODE_UP)) win.setPosition(win.position() + IVec2(0,-1));
+                if (isPressed(SDL_SCANCODE_DOWN)) win.setPosition(win.position() + IVec2(0,1));
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                 SDL_GL_SwapWindow(win.rawWindow());
         }

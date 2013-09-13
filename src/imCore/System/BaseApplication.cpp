@@ -1,5 +1,5 @@
 #include "BaseApplication.h"
-#include "../Debug/Debug.h"
+#include "../Utils/Debug.h"
 
 namespace imCore {
 

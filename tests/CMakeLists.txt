@@ -2,11 +2,8 @@ include_directories(${imEngineIncludeDirs})
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 set(TESTS
-        TextureTest
-        LoggerTest
-        TimerTest
-        ProfileTest
         WindowTest
+        DebugTest
 )
 
 foreach(TEST ${TESTS})

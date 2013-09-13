@@ -1,12 +1,8 @@
-#include "GLErrorMonitor.h"
+#include "GLUtils.h"
 
 namespace imCore {
 
-GLenum GLErrorMonitor::lastError() {
-        return glGetError();
-}
-
-String GLErrorMonitor::glEnumToString(GLenum enumeration) {
+String GLUtils::convertEnumToString(GLenum enumeration) {
         switch (enumeration) {
                 case GL_NONE: 		                return "GL_NONE"; break;
 

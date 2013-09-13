@@ -36,15 +36,15 @@ public:
         void            setTitle(const String& title);
 
         /// Возвращает позицию окна.
-        ivec2           position();
+        IVec2           position();
         /// Устанавливает позицию окна
-        void            setPosition(const ivec2& position);
+        void            setPosition(const IVec2& position);
         void            setPosition(int x, int y);
 
         /// Возвращает размеры окна.
-        ivec2           size();
+        IVec2           size();
         /// Устанавливает размеры окна
-        void            setSize(const ivec2& size);
+        void            setSize(const IVec2& size);
         void            setSize(int width, int height);
 
         /// Определяет, запущено ли окно в полный экран
@@ -53,7 +53,7 @@ public:
         void            setFullscreen(bool isFullscreen);
 
         /// Возвращает координаты центра окна.
-        ivec2           center();
+        IVec2           center();
 
         /// Возвращает ссылку на GLFW окно
         SDL_Window*     rawWindow();
@@ -71,9 +71,9 @@ private:
         SDL_GLContext   m_context;
 
         String          m_title;
-        ivec2           m_position;
-        ivec2           m_size;
-        ivec2           m_prevSize;
+        IVec2           m_position;
+        IVec2           m_size;
+        IVec2           m_prevSize;
         bool            m_isVisible;
         bool            m_isFullscreen;
 
