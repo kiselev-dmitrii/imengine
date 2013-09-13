@@ -1,6 +1,8 @@
 #ifndef BASEAPPLICATION_H
 #define BASEAPPLICATION_H
 
+#include "Window.h"
+
 namespace imCore {
 
 /** @brief Данный класс служит для ициниализации окна,
@@ -12,22 +14,30 @@ namespace imCore {
 class BaseApplication {
 public:
         /// Запускает приложение
-        int     exec();
+        int             exec();
 
 protected:
+        /// Выполняется при инициализации приложения
         virtual void    initialize() = 0;
+        /// Данный метод нужно переопределить для обновления состояния объектов
         virtual void    update() = 0;
+        /// Данный метод необходимо переопределить для отрисовки объектов
         virtual void    render() = 0;
+        /// Выполняется при уничтожении приложения
         virtual void    destroy() = 0;
 
-        /// События клавиатуры
-        virtual void    keyPressEvent()         {}
-        virtual void    keyReleaseEvent()       {}
+        /// Вызывается при нажатии на клавишу
+        virtual void    keyPressEvent(int key)                                  {}
+        /// Вызывается при отжатии клавиши
+        virtual void    keyReleaseEvent(int key)                                {}
 
-        /// События мыши
-        virtual void    mouseWheelEvent()       {}
-        virtual void    mousePressEvent()       {}
-        virtual void    mouseReleaseEvent()     {}
+        /// Вызывается при нажатии на кнопку мыши
+        virtual void    mousePressEvent(int x, int y, char button)              {}
+        /// Вызывается при отжатии кнопки мыши
+        virtual void    mouseReleaseEvent(int x, int y, char button)            {}
+        /// Вызывается при изменении позиции колесика мыши.
+        /// Вертикальное и горизонтальное приращение записывается в deltaVertical и deltaHorizontal
+        virtual void    mouseWheelEvent(int deltaVertical, int deltaHorizontal) {}
 
 private:
         /// Инициализация библиотек, создание базового окна
@@ -36,6 +46,13 @@ private:
         void    loop();
         /// Завершение приложения
         void    quit();
+
+        bool    initSDL();
+        bool    createMainWindow();
+        bool    initGLEW();
+
+private:
+        Window  m_mainWindow;
 };
 
 } //namespace imCore

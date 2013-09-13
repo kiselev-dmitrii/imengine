@@ -25,7 +25,7 @@ void Debug::checkGlErrors(const String &function, const String &file, uint line,
         if (error == GL_NO_ERROR) return;
         std::clog << currentTimeStamp() <<
                      " GLError: Function: " << function << "(...) ,  File: " << file << ", Line: " << line <<
-                     "Cause: " << "Call " << call << " return " << GLUtils::convertEnumToString(error) << std::endl;
+                     ", Cause: " << "Call " << call << " return " << GLUtils::convertEnumToString(error) << std::endl;
 }
 
 } //namespace imCore

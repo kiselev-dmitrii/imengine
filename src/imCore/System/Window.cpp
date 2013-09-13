@@ -22,6 +22,14 @@ bool Window::create() {
         return createContext();
 }
 
+void Window::destroy() {
+        if (m_context) SDL_GL_DeleteContext(m_context);
+        if (m_window) SDL_DestroyWindow(m_window);
+
+        m_context = nullptr;
+        m_window = nullptr;
+}
+
 bool Window::isVisible() {
         return m_isVisible;
 }
@@ -123,11 +131,6 @@ bool Window::createContext() {
                 return false;
         }
         return true;
-}
-
-void Window::destroy() {
-        if (m_context) SDL_GL_DeleteContext(m_context);
-        if (m_window) SDL_DestroyWindow(m_window);
 }
 
 } //namespace imCore

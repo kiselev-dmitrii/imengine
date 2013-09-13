@@ -12,6 +12,9 @@ namespace imCore {
  *  Перед вызовом метода create, необходимо чтобы библиотека SDL
  *  была проинициализирована. Метод create непосредственно создает окно.
  *  До вызова create, вызовы методов кэшируются и применяются при создании окна.
+ *
+ *  Метод destroy необходимо вызывать перед завершением SDL. Собственно поэтому он
+ *  и введен, чтобы управлять порядком удаления
  */
 class Window {
 public:
@@ -22,6 +25,8 @@ public:
 
         /// Создает окно и контекст
         bool            create();
+        /// Удаляет окно и уничтожает контекст
+        void            destroy();
 
         /// Определяет, видимо ли окно
         bool            isVisible();
@@ -41,7 +46,7 @@ public:
         void            setPosition(const IVec2& position);
         void            setPosition(int x, int y);
 
-        /// Возвращает размеры окна.
+        /// Возвращает размеры окна. Если isFullscreen == true, то возвращает разрешение экрана
         IVec2           size();
         /// Устанавливает размеры окна
         void            setSize(const IVec2& size);
@@ -63,8 +68,6 @@ private:
         bool            createWindow();
         /// Создает контекст
         bool            createContext();
-        /// Удаляет контекст и разрушает окно
-        void            destroy();
 
 private:
         SDL_Window*     m_window;
@@ -73,7 +76,7 @@ private:
         String          m_title;
         IVec2           m_position;
         IVec2           m_size;
-        IVec2           m_prevSize;
+        IVec2           m_prevSize;     //необходим для запоминания размера перед входов в Fullscreen
         bool            m_isVisible;
         bool            m_isFullscreen;
 
