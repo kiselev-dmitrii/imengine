@@ -102,4 +102,8 @@ void BaseApplication::quit() {
         SDL_Quit();
 }
 
+Window* BaseApplication::mainWindow() {
+        return &m_mainWindow;
+}
+
 } //namespace imCore

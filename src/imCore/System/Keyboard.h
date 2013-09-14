@@ -1,11 +1,49 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
+#include <SDL2/SDL.h>
+#undef main
+
 namespace imCore {
 
+/** @brief Модификатор клавиатуры
+ */
+enum class KeyboardModifiers {
+        NONE = KMOD_NONE,
+
+        LSHIFT = KMOD_LSHIFT,
+        RSHIFT = KMOD_RSHIFT,
+        SHIFT = KMOD_CTRL,
+
+        LCTRL = KMOD_LCTRL,
+        RCTRL = KMOD_RCTRL,
+        CTRL = KMOD_CTRL,
+
+        LALT = KMOD_LALT,
+        RALT = KMOD_RALT,
+        ALT = KMOD_ALT,
+
+        LSUPER = KMOD_LGUI,
+        RSUPER = KMOD_RGUI,
+        SUPER = KMOD_GUI,
+
+        NUM = KMOD_NUM,
+        CAPS = KMOD_CAPS,
+        MODE = KMOD_MODE,
+        RESERVED = KMOD_RESERVED
+};
+
+/** @brief Класс для работы с клавиатурой.
+ *
+ *  Данный класс является оберткой для библиотеки SDL.
+ */
 class Keyboard {
 public:
-        Keyboard();
+        /// Определяет нажата ли клавиша с кодом key
+        bool                    isKeyPressed(int key);
+
+        /// Возвращает нажатый модификатор (Shift, Alt)
+        KeyboardModifiers       modifiers();
 };
 
 } //namespace imCore

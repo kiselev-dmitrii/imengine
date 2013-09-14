@@ -3,6 +3,8 @@
 
 #include "../Math/Common.h"
 #include "../Utils/Types.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 #include <SDL2/SDL.h>
 #undef main
 
@@ -47,6 +49,8 @@ public:
         void            setPosition(const IVec2& position);
         void            setPosition(int x, int y);
 
+        /// Возвращает координаты центра окна.
+        IVec2           center();
         /// Возвращает размеры окна. Если isFullscreen == true, то возвращает разрешение экрана
         IVec2           size();
         /// Устанавливает размеры окна
@@ -58,8 +62,10 @@ public:
         /// Устанавливает полноэкранный режим
         void            setFullscreen(bool isFullscreen);
 
-        /// Возвращает координаты центра окна.
-        IVec2           center();
+        /// Возвращает указатель на клавиатуру связанную с окном
+        Keyboard*       keyboard();
+        /// Возвращает указатель на мышку связанную с окном
+        Mouse*          mouse();
 
         /// Возвращает ссылку на GLFW окно
         SDL_Window*     rawWindow();
@@ -69,6 +75,8 @@ private:
         bool            createWindow();
         /// Создает контекст
         bool            createContext();
+        /// Создает устройства ввода
+        void            createInput();
 
 private:
         SDL_Window*     m_window;
@@ -81,6 +89,8 @@ private:
         bool            m_isVisible;
         bool            m_isFullscreen;
 
+        Keyboard*       m_keyboard;
+        Mouse*          m_mouse;
 };
 
 } //namespace imCore
