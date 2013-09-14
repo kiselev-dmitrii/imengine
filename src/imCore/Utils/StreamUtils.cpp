@@ -4,6 +4,11 @@ using std::endl;
 
 namespace imCore {
 
+std::ostream &StreamUtils::operator<<(std::ostream &stream, const IVec2 &vec) {
+        stream << "(" << vec.x << ", " << vec.y << ")";
+        return stream;
+}
+
 std::ostream &StreamUtils::operator<<(std::ostream &stream, const Vec2 &vec) {
         stream << "(" << vec.x << ", " << vec.y << ")";
         return stream;

@@ -8,7 +8,8 @@ namespace imCore {
 
 /** @brief Модификатор клавиатуры
  */
-enum class KeyboardModifiers {
+namespace KeyboardModifiers {
+enum Enum {
         NONE = KMOD_NONE,
 
         LSHIFT = KMOD_LSHIFT,
@@ -32,6 +33,7 @@ enum class KeyboardModifiers {
         MODE = KMOD_MODE,
         RESERVED = KMOD_RESERVED
 };
+}
 
 /** @brief Класс для работы с клавиатурой.
  *
@@ -42,8 +44,8 @@ public:
         /// Определяет нажата ли клавиша с кодом key
         bool                    isKeyPressed(int key);
 
-        /// Возвращает нажатый модификатор (Shift, Alt)
-        KeyboardModifiers       modifiers();
+        /// Возвращает битовый массив нажатых модификаторов
+        KeyboardModifiers::Enum modifiers();
 };
 
 } //namespace imCore

@@ -7,8 +7,8 @@ bool Keyboard::isKeyPressed(int key) {
         return state[SDL_GetScancodeFromKey(key)];
 }
 
-KeyboardModifiers Keyboard::modifiers() {
-        return KeyboardModifiers(SDL_GetModState());
+KeyboardModifiers::Enum Keyboard::modifiers() {
+        return KeyboardModifiers::Enum(SDL_GetModState());
 }
 
 } //namespace imCore

@@ -7,11 +7,13 @@
 namespace imCore {
 class Window;
 
-enum class MouseButton {
+namespace MouseButton {
+enum Enum {
         LEFT = SDL_BUTTON(1),
         MIDDLE = SDL_BUTTON(2),
         RIGHT = SDL_BUTTON(3)
 };
+}
 
 /** @brief Класс мышки, основанного на библиотеке SDL
  */
@@ -33,7 +35,7 @@ public:
         bool    isVisible();
 
         /// Определяет, нажата ли кнопка мыши button
-        bool    isButtonPressed(MouseButton button);
+        bool    isButtonPressed(MouseButton::Enum button);
 
 private:
         SDL_Window*     m_rawWindow;

@@ -11,7 +11,8 @@ protected:
 
         void update() {
                 //IM_TRACE("Objects updated");
-
+                testKeyboard();
+                testMouse();
         }
 
         void render() {
@@ -60,6 +61,28 @@ protected:
 
         void windowMinimizeEvent() {
                 IM_TRACE("");
+        }
+
+        void testKeyboard() {
+                Keyboard* keyboard = mainWindow()->keyboard();
+                if (keyboard->isKeyPressed(SDLK_UP)) mainWindow()->setPosition(mainWindow()->position() + IVec2(0, -1));
+                if (keyboard->isKeyPressed(SDLK_DOWN)) mainWindow()->setPosition(mainWindow()->position() + IVec2(0, 1));
+                if (keyboard->isKeyPressed(SDLK_LEFT)) mainWindow()->setPosition(mainWindow()->position() + IVec2(-1, 0));
+                if (keyboard->isKeyPressed(SDLK_RIGHT)) mainWindow()->setPosition(mainWindow()->position() + IVec2(1, 0));
+
+                if (keyboard->modifiers() & KeyboardModifiers::ALT) IM_PRINT("MODIFIER: ALT PRESSED");
+        }
+
+        void testMouse() {
+                Keyboard* keyboard = mainWindow()->keyboard();
+                Mouse* mouse = mainWindow()->mouse();
+                if (keyboard->isKeyPressed(SDLK_c)) mouse->setPosition(mainWindow()->center());
+                if (keyboard->isKeyPressed(SDLK_h)) mouse->setVisible(false);
+                if (keyboard->isKeyPressed(SDLK_s)) mouse->setVisible(true);
+                if (mouse->isButtonPressed(MouseButton::MIDDLE)) {
+                        IM_VAR(mouse->isVisible());
+                        IM_VAR(mouse->position());
+                }
         }
 
 };

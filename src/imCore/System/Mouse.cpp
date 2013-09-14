@@ -31,8 +31,8 @@ bool Mouse::isVisible() {
         return SDL_ShowCursor(-1);
 }
 
-bool Mouse::isButtonPressed(MouseButton button) {
-        return SDL_GetMouseState(NULL, NULL) & int(button);
+bool Mouse::isButtonPressed(MouseButton::Enum button) {
+        return SDL_GetMouseState(NULL, NULL) & button;
 }
 
 

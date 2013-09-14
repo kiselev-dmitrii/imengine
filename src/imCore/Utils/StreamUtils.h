@@ -9,6 +9,7 @@ namespace imCore {
 /** @brief Наборы функций и операторов для удобного ввода-вывода
   */
 namespace StreamUtils {
+        std::ostream &operator<<(std::ostream &stream, const IVec2 &vec);
         std::ostream &operator<<(std::ostream &stream, const Vec2 &vec);
         std::ostream &operator<<(std::ostream &stream, const Vec3 &vec);
         std::ostream &operator<<(std::ostream &stream, const Vec4 &vec);
