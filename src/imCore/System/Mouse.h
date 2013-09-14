@@ -7,6 +7,8 @@
 namespace imCore {
 class Window;
 
+/** @brief Кнопки мыши
+ */
 namespace MouseButton {
 enum Enum {
         LEFT = SDL_BUTTON(1),

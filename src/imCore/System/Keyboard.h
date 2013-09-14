@@ -6,7 +6,7 @@
 
 namespace imCore {
 
-/** @brief Модификатор клавиатуры
+/** @brief Модификаторы клавиатуры
  */
 namespace KeyboardModifiers {
 enum Enum {
