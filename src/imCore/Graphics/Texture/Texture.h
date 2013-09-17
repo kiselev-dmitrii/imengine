@@ -2,8 +2,89 @@
 #define TEXTURE_H
 
 #include <GL/glew.h>
+#include <memory>
+#include "../../Math/Common.h"
+#include "../../Utils/Types.h"
 
 namespace imCore {
+
+/** @brief Определяет тип компоненты пикселя текстуры. ХАРАКТЕРИСТИКА ЗАГРУЖАЕМЫХ ДАННЫХ
+ *  Вообщем это тип массива изображения
+ */
+namespace TextureSrcType {
+enum Enum {
+        UBYTE                   = GL_UNSIGNED_BYTE,     ///< наиболее популярный
+        BYTE                    = GL_BYTE,
+        USHORT                  = GL_UNSIGNED_SHORT,
+        SHORT                   = GL_SHORT,
+        UINT                    = GL_UNSIGNED_INT,
+        INT                     = GL_INT,
+        FLOAT                   = GL_FLOAT
+};
+}
+
+/** @brief Определяет как трактуются загружаемые в текстуру данные. ХАРАКТЕРИСТИКА ЗАГРУЖАЕМЫХ ДАННЫХ.
+ *  То есть это формат массива изображения. Он определяет лишь взаимное
+ *  расположение компонент и их количество на один пиксель.
+  */
+namespace TextureSrcFormat {
+enum Enum {
+        RGBA                    = GL_RGBA,      ///< 4 компоненты
+        BGRA                    = GL_BGRA,
+
+        RGB                     = GL_RGB,       ///< 3 компоненты
+        BGR                     = GL_BGR,
+
+        RG                      = GL_RG,        ///< 2 компоненты
+
+        R                       = GL_RED,       ///< 1 компонента
+        DETPTH                  = GL_DEPTH
+};
+}
+
+/** @brief Внутренний формат текстуры. Задает способ хранения и интерпретации данных.
+ *
+ *  Множество внутренних форматов делится на группы:
+ *      - Нормализованные:
+ *              Хранятся в видеопамяти как целые числа, но при чтении переводятся к [0;1] или [-1;1].
+ *              Нормализованные беззнаковые будем обозначать через NORM_*, а знаковые - SNORM_*
+ *      - Ненормализованные:
+ *              Данные хранятся в видеопамяти либо в целочисленном либо во float-point формате.
+ *              При чтении преобразование типа не происходит.
+ *              Ненормализованые через FLOAT_*, INT_* или UINT_*
+ *  Также форматы могут быть цветовыми или depth.
+ */
+namespace TextureInternalFormat {
+enum Enum {
+        // Цветовые
+        COLOR_NORM_3_COMP_8_BIT                 = GL_RGB8,
+        COLOR_NORM_4_COMP_8_BIT                 = GL_RGBA8,
+
+        // Цветовые float-point
+        COLOR_FLOAT_3_COMP_32_BIT               = GL_RGB32F,
+        COLOR_FLOAT_4_COMP_32_BIT               = GL_RGBA32F,
+
+        // Depth нормализованные форматы
+        DEPTH_NORM_1_COMP_16_BIT                = GL_DEPTH_COMPONENT16,
+        DEPTH_NORM_1_COMP_24_BIT                = GL_DEPTH_COMPONENT24,
+        DEPTH_NORM_1_COMP_32_BIT                = GL_DEPTH_COMPONENT32,
+
+        // Depth ненормализованные
+        DEPTH_FLOAT_1_COMP_32_BIT               = GL_DEPTH_COMPONENT32F
+};
+}
+
+/** @brief Точка привязки текстуры
+ */
+namespace TextureTarget {
+enum Enum {
+        TEXTURE_1D              = GL_TEXTURE_1D,
+        TEXTURE_2D              = GL_TEXTURE_2D,
+        TEXTURE_3D              = GL_TEXTURE_3D,
+        CUBEMAP                 = GL_TEXTURE_CUBE_MAP
+};
+}
+
 
 /** @brief Метод интерполяции, при уменьшении текстуры
  */
@@ -18,6 +99,7 @@ enum Enum {
 };
 }
 
+
 /** @brief Метод интерполяции, при увеличении текстуры
  */
 namespace TextureMagFilter {
@@ -27,7 +109,8 @@ enum Enum {
 };
 }
 
-/** @brief Режим оборачивания текстуры на полигон
+
+/** @brief Режим накладывания текстуры на полигон
  */
 namespace TextureWrapMode {
 enum Enum {
@@ -38,21 +121,106 @@ enum Enum {
 };
 }
 
+
+/** @brief Перечисление функций сравнения
+  *
+  * В GLSL команда textureProj(sampler, coord) для sampler*Shadow эквивалентна:
+  * cmp(texture2DProj(sampler, coord.xy).r, coord.z) ? 1 : 0
+  * Данная команда служит для установки конкретного оператора сравнения
+  */
+namespace TextureCompareFunction {
+enum Enum {
+        LESS_OR_EQUAL                   = GL_LEQUAL,     //cmp = '<='
+        LESS                            = GL_LESS,       //cmp = '<'
+
+        GREATER_OR_EQUAL                = GL_GEQUAL,     //cmp = '>='
+        GREATER                         = GL_GREATER,    //cmp = '>'
+
+        EQUAL                           = GL_EQUAL,      //cmp = '=='
+        NOT_EQUAL                       = GL_NOTEQUAL,   //cmp = '!='
+
+        ALWAYS                          = GL_ALWAYS,     //cmp = 'true'
+        NEVER                           = GL_NEVER       //cmp = 'false'
+};
+}
+
+
+/** @brief Режим сравнения. Актуально для текстур глубины
+ */
+namespace TextureCompareMode {
+enum Enum {
+        REF_TO_TEXTURE                  = GL_COMPARE_REF_TO_TEXTURE,
+        NONE                            = GL_NONE
+};
+}
+
+
 /** @brief Базовый класс для работы с текстурами.
  *
- *  Большинство методов кэшируется. Действительно, OpenGL-объект создается лишь
- *  в последний момент, при вызове метода bind(). Если OGL-объект уже создан выполняется обычный
- *  glTextureBind. Кроме того, отслеживается id последней забинденного объекта.
- *  @todo Реализовать класс
+ *  Предполагается, что контекст OpenGL уже создан.
+ *  Текстура может загружать себя из файла с помощью библиотеки DevIL
  */
 class Texture {
 public:
         /// Конструктор
-        explicit        Texture();
-        /// Виртуальный деструктор
+        explicit        Texture(TextureTarget::Enum target);
+        /// Деструктор
         virtual         ~Texture();
 
-private:
+        /// Возвращает ширину текстуры
+        int             width();
+        /// Возвращает высоту текстуры
+        int             height();
+        /// Возвращает глубину
+        int             depth();
+
+        /// Установка интерполяции при увеличении
+        void            setMagnificationFilter(TextureMagFilter::Enum filter);
+        /// Установка интерполяции при уменьшении
+        void            setMinimizationFilter(TextureMinFilter::Enum filter);
+
+        /// Установка режима накладывания текстуры
+        void            setWrap(TextureWrapMode::Enum mode);
+        /// Установка режима накладывания текстуры по координате S
+        void            setWrapS(TextureWrapMode::Enum mode);
+        /// Установка режима накладывания текстуры по координате T
+        void            setWrapT(TextureWrapMode::Enum mode);
+        /// Установка режима накладывания текстуры по координате R
+        void            setWrapR(TextureWrapMode::Enum mode);
+
+        /// Опредеяет наименьший уровень мипмапа
+        void            setMinMipLevel(uint min);
+        /// Опеределяет наибольший уровень мипмапа
+        void            setMaxMipLevel(uint max);
+
+        /// Устанавилвает режим сравнения (актуально для ShadowMap);
+        void            setCompareMode(TextureCompareMode::Enum mode);
+        /// Устанавилвает функцию сравнения (актуально для ShadowMap)
+        void            setCompareFunction(TextureCompareFunction::Enum func);
+
+        /// Устанавливает цвет границы текстуры (полезно например при CLAMP_TO_BORDER)
+        void            setBorderColor(const Vec4& color);
+
+        /// Генерирует mip-уровни
+        void            generateMipmaps();
+
+        /// Делает текстуру текущей
+        void            bind();
+        /// Отвязывает текстуру
+        void            unbind();
+
+        /// Возвращает OGL дескриптор текстуры
+        GLuint          rawTexture();
+
+protected:
+        GLuint                  m_handle;
+        TextureTarget::Enum     m_target;
+
+        GLsizei                 m_width;
+        GLsizei                 m_height;
+        GLsizei                 m_depth;
+
+        static GLuint           s_boundHandle;
 };
 
 } //namespace imCore
