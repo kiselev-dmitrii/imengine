@@ -1,4 +1,6 @@
 #include <GL/glew.h>
+#include <IL/il.h>
+#include <IL/ilu.h>
 #include "BaseApplication.h"
 #include "../Utils/Debug.h"
 
@@ -15,6 +17,7 @@ bool BaseApplication::init() {
         if (!initSDL()) return false;
         if (!createMainWindow()) return false;
         if (!initGLEW()) return false;
+        if (!initDevIL()) return false;
 
         initialize();
 
@@ -44,6 +47,25 @@ bool BaseApplication::initGLEW() {
                 return false;
         }
         IM_LOG("GLEW initialized. Version " << glewGetString(GLEW_VERSION))
+        return true;
+}
+
+bool BaseApplication::initDevIL() {
+        // Проверка версии библиотек
+        if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION) {
+                IM_LOG("Incorect DevIL version");
+                return false;
+        }
+        if (iluGetInteger(ILU_VERSION_NUM) < ILU_VERSION) {
+                IM_LOG("Incorect ILU version");
+                return false;
+        }
+
+        // Собствено инициализация
+        ilInit();
+        iluInit();
+        IM_LOG("DevIL and ILU initialized");
+
         return true;
 }
 

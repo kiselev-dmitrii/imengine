@@ -58,6 +58,7 @@ private:
         bool    initSDL();
         bool    createMainWindow();
         bool    initGLEW();
+        bool    initDevIL();
 
 private:
         Window  m_mainWindow;

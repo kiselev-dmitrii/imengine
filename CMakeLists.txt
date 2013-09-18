@@ -55,13 +55,13 @@ else()
         list(APPEND imEngineLibs ${GLEW_LIBRARIES})
 endif()
 
-# DevIL 
+# DevIL
 find_package(DevIL REQUIRED)
 if(NOT IL_FOUND)
 	message(ERROR " DevIL not found!")
 	return()
 else()
-        list(APPEND imEngineIncludeDirs ${DEVIL_INCLUDE_DIR})
+        list(APPEND imEngineIncludeDirs ${IL_INCLUDE_DIR})
         list(APPEND imEngineLibs ${IL_LIBRARIES})
         list(APPEND imEngineLibs ${ILU_LIBRARIES})
 endif()
