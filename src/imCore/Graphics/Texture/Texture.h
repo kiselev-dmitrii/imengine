@@ -174,6 +174,16 @@ public:
         /// Возвращает глубину
         int             depth();
 
+        /// Определяет была ли выделена видеопамять под текстуру.
+        bool            wasMemoryAllocated();
+
+        /// Возвращает внутренний формат текстуры. Неопределено, если wasMemoryAllocated() == false
+        TextureInternalFormat::Enum     internalFormat();
+        /// Возвращает формат данных текстуры (взаимное расположение компонент в пикселе и их число)
+        TextureSrcFormat::Enum          sourceFormat();
+        /// Возвращает тип данных текстуры
+        TextureSrcType::Enum            sourceType();
+
         /// Установка интерполяции при увеличении
         void            setMagnificationFilter(TextureMagFilter::Enum filter);
         /// Установка интерполяции при уменьшении
@@ -213,14 +223,19 @@ public:
         GLuint          rawTexture();
 
 protected:
-        GLuint                  m_handle;
-        TextureTarget::Enum     m_target;
+        GLuint                          m_handle;
+        TextureTarget::Enum             m_target;
 
-        GLsizei                 m_width;
-        GLsizei                 m_height;
-        GLsizei                 m_depth;
+        // Параметры, которые должны быть установлены после загрузки
+        GLsizei                         m_width;
+        GLsizei                         m_height;
+        GLsizei                         m_depth;
+        TextureInternalFormat::Enum     m_internalFormat;
+        TextureSrcType::Enum            m_srcType;
+        TextureSrcFormat::Enum          m_srcFormat;
+        bool                            m_wasMemoryAllocated;   //была ли выделена память под текстуру
 
-        static GLuint           s_boundHandle;
+        static GLuint                   s_boundHandle;
 };
 
 } //namespace imCore

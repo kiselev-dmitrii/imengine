@@ -221,6 +221,10 @@ String GLUtils::convertEnumToString(GLenum enumeration) {
                 case GL_LINEAR_MIPMAP_LINEAR:			return "GL_LINEAR_MIPMAP_LINEAR"; break;
 
                 //Типы:
+                case GL_UNSIGNED_BYTE:                  return "GL_UNSIGNED_BYTE"; break;
+                case GL_BYTE:                           return "GL_BYTE"; break;
+                case GL_UNSIGNED_SHORT:                 return "GL_UNSIGNED_SHORT"; break;
+                case GL_SHORT:                          return "GL_SHORT"; break;
                 case GL_FLOAT:				return "GL_FLOAT"; break;
                 case GL_FLOAT_VEC2:			return "GL_FLOAT_VEC2"; break;
                 case GL_FLOAT_VEC3:			return "GL_FLOAT_VEC3"; break;

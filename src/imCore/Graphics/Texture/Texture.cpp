@@ -8,9 +8,10 @@ GLuint Texture::s_boundHandle = 0;
 Texture::Texture(TextureTarget::Enum target) {
         m_target = target;
         IM_GLCALL(glGenTextures(1, &m_handle));
-        bind();
+        bind();                                         //первый bind определяет тип текстуры
 
         m_width = m_height = m_depth = 0;
+        m_wasMemoryAllocated = false;
 }
 
 Texture::~Texture() {
@@ -27,6 +28,25 @@ int Texture::height() {
 
 int Texture::depth() {
         return m_depth;
+}
+
+bool Texture::wasMemoryAllocated() {
+        return m_wasMemoryAllocated;
+}
+
+TextureInternalFormat::Enum Texture::internalFormat() {
+        IM_ASSERT(m_wasMemoryAllocated);
+        return m_internalFormat;
+}
+
+TextureSrcFormat::Enum Texture::sourceFormat() {
+        IM_ASSERT(m_wasMemoryAllocated);
+        return m_srcFormat;
+}
+
+TextureSrcType::Enum Texture::sourceType() {
+        IM_ASSERT(m_wasMemoryAllocated);
+        return m_srcType;
 }
 
 void Texture::setMagnificationFilter(TextureMagFilter::Enum filter) {
@@ -86,6 +106,8 @@ void Texture::setBorderColor(const Vec4 &color) {
 }
 
 void Texture::generateMipmaps() {
+        IM_ASSERT(m_wasMemoryAllocated);
+
         bind();
         IM_GLCALL(glGenerateMipmap(m_target));
 }

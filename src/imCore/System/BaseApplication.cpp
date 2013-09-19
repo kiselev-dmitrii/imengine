@@ -53,11 +53,11 @@ bool BaseApplication::initGLEW() {
 bool BaseApplication::initDevIL() {
         // Проверка версии библиотек
         if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION) {
-                IM_LOG("Incorect DevIL version");
+                IM_ERROR("Incorect DevIL version");
                 return false;
         }
         if (iluGetInteger(ILU_VERSION_NUM) < ILU_VERSION) {
-                IM_LOG("Incorect ILU version");
+                IM_ERROR("Incorect ILU version");
                 return false;
         }
 

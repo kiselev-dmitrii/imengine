@@ -9,6 +9,7 @@ namespace imCore {
         typedef std::vector<String>     StringList;
         typedef unsigned int            uint;
         typedef unsigned long           ulong;
+        typedef unsigned char           ubyte;
 }
 
 #endif // TYPES_H

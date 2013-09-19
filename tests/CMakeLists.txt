@@ -5,6 +5,7 @@ set(TESTS
         WindowTest
         DebugTest
         BaseApplicationTest
+        Texture1DTest
 )
 
 foreach(TEST ${TESTS})
