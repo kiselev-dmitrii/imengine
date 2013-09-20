@@ -30,6 +30,64 @@ int Texture::depth() {
         return m_depth;
 }
 
+int Texture::numberOfChannels() {
+        IM_ASSERT(m_wasMemoryAllocated);
+
+        switch (m_srcFormat) {
+                case TextureSrcFormat::BGRA:
+                case TextureSrcFormat::RGBA:
+                        return 4;
+                        break;
+
+                case TextureSrcFormat::BGR:
+                case TextureSrcFormat::RGB:
+                        return 3;
+                        break;
+
+                case TextureSrcFormat::RG:
+                        return 2;
+                        break;
+
+                case TextureSrcFormat::R:
+                case TextureSrcFormat::DEPTH:
+                        return 1;
+                        break;
+        }
+
+        return 0;
+}
+
+int Texture::sizeOfComponent() {
+        IM_ASSERT(m_wasMemoryAllocated);
+
+        switch (m_srcType) {
+                case TextureSrcType::BYTE:
+                case TextureSrcType::UBYTE:
+                        return sizeof(GLbyte);
+                        break;
+
+                case TextureSrcType::INT:
+                case TextureSrcType::UINT:
+                        return sizeof(GLint);
+                        break;
+
+                case TextureSrcType::SHORT:
+                case TextureSrcType::USHORT:
+                        return sizeof(GLshort);
+                        break;
+
+                case TextureSrcType::FLOAT:
+                        return sizeof(GLfloat);
+                        break;
+        }
+
+        return 0;
+}
+
+int Texture::sizeOfData() {
+        return width() * height() * depth() * sizeOfComponent() * numberOfChannels();
+}
+
 bool Texture::wasMemoryAllocated() {
         return m_wasMemoryAllocated;
 }
@@ -122,6 +180,14 @@ void Texture::bind() {
 void Texture::unbind() {
         IM_GLCALL(glBindTexture(m_target, 0));
         s_boundHandle = 0;
+}
+
+std::shared_ptr<ubyte> Texture::rawData() {
+        IM_ASSERT(m_wasMemoryAllocated);
+
+        ubyte* data = new ubyte [sizeOfData()];
+        IM_GLCALL(glGetTexImage(m_target, 0, m_srcFormat, m_srcType, data));
+        return std::shared_ptr<ubyte>(data);
 }
 
 GLuint Texture::rawTexture() {

@@ -18,7 +18,7 @@ private:
 
 void Application::initialize() {
         m_texture = new Texture1D("resources/texture/texture_1d_test.png");
-        m_texture->save("resources/texture/out.png");
+        m_texture->save("resources/texture/out1.png");
 
         IM_VAR(m_texture->width());
         IM_VAR(m_texture->height());

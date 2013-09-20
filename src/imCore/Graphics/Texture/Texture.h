@@ -38,7 +38,7 @@ enum Enum {
         RG                      = GL_RG,        ///< 2 компоненты
 
         R                       = GL_RED,       ///< 1 компонента
-        DETPTH                  = GL_DEPTH
+        DEPTH                   = GL_DEPTH
 };
 }
 
@@ -163,19 +163,26 @@ enum Enum {
 class Texture {
 public:
         /// Конструктор
-        explicit        Texture(TextureTarget::Enum target);
+        explicit                Texture(TextureTarget::Enum target);
         /// Деструктор
-        virtual         ~Texture();
+        virtual                 ~Texture();
 
         /// Возвращает ширину текстуры
-        int             width();
+        int                     width();
         /// Возвращает высоту текстуры
-        int             height();
+        int                     height();
         /// Возвращает глубину
-        int             depth();
+        int                     depth();
+
+        /// Возвращает количество каналов (количество компонент на пиксель)
+        int                     numberOfChannels();
+        /// Возвращает размер одной компоненты
+        int                     sizeOfComponent();
+        /// Возвращает размер текстуры в байтах
+        int                     sizeOfData();
 
         /// Определяет была ли выделена видеопамять под текстуру.
-        bool            wasMemoryAllocated();
+        bool                    wasMemoryAllocated();
 
         /// Возвращает внутренний формат текстуры. Неопределено, если wasMemoryAllocated() == false
         TextureInternalFormat::Enum     internalFormat();
@@ -185,42 +192,46 @@ public:
         TextureSrcType::Enum            sourceType();
 
         /// Установка интерполяции при увеличении
-        void            setMagnificationFilter(TextureMagFilter::Enum filter);
+        void                    setMagnificationFilter(TextureMagFilter::Enum filter);
         /// Установка интерполяции при уменьшении
-        void            setMinimizationFilter(TextureMinFilter::Enum filter);
+        void                    setMinimizationFilter(TextureMinFilter::Enum filter);
 
         /// Установка режима накладывания текстуры
-        void            setWrap(TextureWrapMode::Enum mode);
+        void                    setWrap(TextureWrapMode::Enum mode);
         /// Установка режима накладывания текстуры по координате S
-        void            setWrapS(TextureWrapMode::Enum mode);
+        void                    setWrapS(TextureWrapMode::Enum mode);
         /// Установка режима накладывания текстуры по координате T
-        void            setWrapT(TextureWrapMode::Enum mode);
+        void                    setWrapT(TextureWrapMode::Enum mode);
         /// Установка режима накладывания текстуры по координате R
-        void            setWrapR(TextureWrapMode::Enum mode);
+        void                    setWrapR(TextureWrapMode::Enum mode);
 
         /// Опредеяет наименьший уровень мипмапа
-        void            setMinMipLevel(uint min);
+        void                    setMinMipLevel(uint min);
         /// Опеределяет наибольший уровень мипмапа
-        void            setMaxMipLevel(uint max);
+        void                    setMaxMipLevel(uint max);
 
         /// Устанавилвает режим сравнения (актуально для ShadowMap);
-        void            setCompareMode(TextureCompareMode::Enum mode);
+        void                    setCompareMode(TextureCompareMode::Enum mode);
         /// Устанавилвает функцию сравнения (актуально для ShadowMap)
-        void            setCompareFunction(TextureCompareFunction::Enum func);
+        void                    setCompareFunction(TextureCompareFunction::Enum func);
 
         /// Устанавливает цвет границы текстуры (полезно например при CLAMP_TO_BORDER)
-        void            setBorderColor(const Vec4& color);
+        void                    setBorderColor(const Vec4& color);
 
         /// Генерирует mip-уровни
-        void            generateMipmaps();
+        void                    generateMipmaps();
 
         /// Делает текстуру текущей
-        void            bind();
+        void                    bind();
         /// Отвязывает текстуру
-        void            unbind();
+        void                    unbind();
+
+        /// Возвращает данные внутри текстуры.
+        ///Медленный метод, поскольку требуется синхронизация GPU и CPU
+        std::shared_ptr<ubyte>  rawData();
 
         /// Возвращает OGL дескриптор текстуры
-        GLuint          rawTexture();
+        GLuint                  rawTexture();
 
 protected:
         GLuint                          m_handle;
