@@ -46,8 +46,6 @@ void Texture1D::allocate(int width, TextureInternalFormat::Enum internal, Textur
 
 void Texture1D::save(const String &filename, bool overwrite) {
         IM_ASSERT(m_wasMemoryAllocated);
-        IM_ASSERT(m_srcType == TextureSrcType::UBYTE);
-        IM_ASSERT(m_srcFormat == TextureSrcFormat::RGB);
 
         Image img;
         img.load(width(), height(), depth(), numberOfChannels(), sourceFormat(), sourceType(), rawData().get());

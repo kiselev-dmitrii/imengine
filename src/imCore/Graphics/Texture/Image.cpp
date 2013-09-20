@@ -23,7 +23,7 @@ void Image::load(const String &filename) {
                 IM_ERROR("Cannot load image from file " << filename);
                 return;
         }
-        IM_LOG("Load image from file: " << filename);
+        IM_LOG("Image was loaded from file: " << filename);
 }
 
 void Image::load(int width, int height, int depth, int numChannels, ILenum srcFormat, ILenum srcType, void *data) {
@@ -44,7 +44,7 @@ void Image::save(const String &filename, bool overwrite) {
                 IM_ERROR("Can't save image to file " << filename);
                 return;
         }
-        IM_LOG("Image was saved to file \'" << filename);
+        IM_LOG("Image was saved to file: " << filename);
 }
 
 int Image::width() {
