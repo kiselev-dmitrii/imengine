@@ -16,6 +16,9 @@ set(imCoreSources
         imCore/Graphics/Buffer/IndexBuffer.cpp
         imCore/Graphics/Buffer/UniformBuffer.cpp
 
+        imCore/Graphics/Shader/Shader.cpp
+        imCore/Graphics/Shader/Program.cpp
+
         ### FILE RESOURCES ###
         imCore/FileResource/Mesh.cpp
         imCore/FileResource/Font.cpp
@@ -29,11 +32,13 @@ set(imCoreSources
         imCore/System/Keyboard.cpp
         imCore/System/Mouse.cpp
         imCore/System/BaseApplication.cpp
+        imCore/System/Filesystem.cpp
 
         ### UTILS ###
         imCore/Utils/StreamUtils.cpp
         imCore/Utils/GLUtils.cpp
         imCore/Utils/Debug.cpp
+        imCore/Utils/StringUtils.cpp
    )
 set(imCoreHeaders
         ### GRAPHICS BASED ON OPENGL ###
@@ -49,6 +54,9 @@ set(imCoreHeaders
         imCore/Graphics/Buffer/IndexBuffer.h
         imCore/Graphics/Buffer/UniformBuffer.h
 
+        imCore/Graphics/Shader/Shader.h
+        imCore/Graphics/Shader/Program.h
+
         ### FILE RESOURCES ###
         imCore/FileResource/Mesh.h
         imCore/FileResource/Font.h
@@ -63,6 +71,7 @@ set(imCoreHeaders
         imCore/System/Keyboard.h
         imCore/System/Mouse.cpp
         imCore/System/BaseApplication.h
+        imCore/System/Filesystem.h
 
         ### UTILS ###
         imCore/Utils/Uncopyable.h
@@ -70,6 +79,7 @@ set(imCoreHeaders
         imCore/Utils/StreamUtils.h
         imCore/Utils/GLUtils.h
         imCore/Utils/Debug.h
+        imCore/Utils/StringUtils.h
    )
 #################################################################
 

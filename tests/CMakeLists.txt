@@ -7,6 +7,7 @@ set(TESTS
         BaseApplicationTest
         Texture1DTest
         Texture2DTest
+        FilesystemTest
 )
 
 foreach(TEST ${TESTS})

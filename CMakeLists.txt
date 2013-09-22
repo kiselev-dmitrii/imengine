@@ -84,6 +84,17 @@ if(NOT GLM_FOUND)
 else()
         list(APPEND imEngineIncludeDirs ${GLM_INCLUDE_DIRS})
 endif()
+
+# BOOST::Filesystem
+find_package(Boost COMPONENTS filesystem system REQUIRED)
+if (NOT Boost_FOUND)
+        message(ERROR " Boost::filesystem or Boost::system not found!")
+        return()
+else()
+        list(APPEND imEngineIncludeDirs ${Boost_INCLUDE_DIRS})
+        list(APPEND imEngineLibs ${Boost_LIBRARIES})
+endif()
+
 #################################################################
 
 

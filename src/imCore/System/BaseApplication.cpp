@@ -46,7 +46,7 @@ bool BaseApplication::initGLEW() {
                 IM_ERROR("Could not init GLEW: " << glewGetErrorString(glewError));
                 return false;
         }
-        IM_LOG("GLEW initialized. Version " << glewGetString(GLEW_VERSION))
+        IM_LOG("GLEW initialized. Version " << glewGetString(GLEW_VERSION));
         return true;
 }
 
