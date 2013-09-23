@@ -2,6 +2,7 @@
 #include <imCore/System/BaseApplication.h>
 #include <imCore/Utils/StringUtils.h>
 #include <imCore/Utils/Debug.h>
+#include <cstdio>
 #include "showTriangle.glsl"
 
 using namespace imCore;
@@ -87,6 +88,13 @@ void Application::keyPressEvent(int key) {
                m_redTriangle->removeAllShaders();
                m_redTriangle->addShadersFromFile("resources/shaders/test/color.glsl");
                m_redTriangle->build();
+        }
+
+        if (key == SDLK_3) {
+                float r = (float)rand()/(float)RAND_MAX;
+                float g = (float)rand()/(float)RAND_MAX;
+                float b = (float)rand()/(float)RAND_MAX;
+                m_redTriangle->setUniform("uColor", Vec3(r, g, b));
         }
 }
 
