@@ -52,6 +52,9 @@ public:
         /// Возвращает лог компиляции. Перед компиляцией лог очищается, а после - заполняется
         String                  log();
 
+        /// Определяет, скомпилирован ли шейдер уже
+        bool                    isCompiled();
+
 private:
         /// Получает статус компиляции. Используется glGet* - функция вредит производительности
         bool                    compileStatus();
@@ -74,6 +77,8 @@ private:
         String                  m_source;
         String                  m_path;                 //путь к исходнику
         String                  m_log;
+
+        bool                    m_isCompiled;
 };
 
 } //namespace imCore

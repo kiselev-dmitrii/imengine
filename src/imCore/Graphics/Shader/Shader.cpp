@@ -7,7 +7,10 @@
 
 namespace imCore {
 
-Shader::Shader(ShaderType::Enum type) {
+Shader::Shader(ShaderType::Enum type) :
+        m_type(type),
+        m_isCompiled(false)
+{
         IM_GLCALL(m_handle = glCreateShader(type));
         IM_LOG("Shader" << m_handle << ": created, type: " << GLUtils::convertEnumToString(m_type));
 }
@@ -28,6 +31,7 @@ GLuint Shader::handle() {
 void Shader::setSource(const String &source, const String &path) {
         m_source = source;
         m_path = path;
+        m_isCompiled = false;
 }
 
 String Shader::source() {
@@ -41,6 +45,7 @@ void Shader::loadFromFile(const String &path) {
                 return;
         }
         m_path = path;
+        m_isCompiled = false;
 }
 
 void Shader::setMacroDefines(const StringList &defines) {
@@ -58,11 +63,14 @@ bool Shader::compile() {
         uploadSourceToGL();
         IM_GLCALL(glCompileShader(m_handle));
 
-        bool status = compileStatus();
-        if (!status) IM_ERROR("Shader" << m_handle << ": compilation error" << std::endl << log());
-        else IM_LOG("Shader" << m_handle << ": successfull compilation");
+        if (!compileStatus()) {
+                IM_ERROR("Shader" << m_handle << ": compilation error:" << std::endl << log());
+                return false;
+        }
 
-        return status;
+        IM_LOG("Shader" << m_handle << ": successfull compilation");
+        m_isCompiled = true;
+        return true;
 }
 
 String Shader::log() {
@@ -76,6 +84,10 @@ String Shader::log() {
         IM_GLCALL(glGetShaderInfoLog(m_handle, length, 0, &m_log[0]));
 
         return m_log;
+}
+
+bool Shader::isCompiled() {
+        return m_isCompiled;
 }
 
 bool Shader::compileStatus() {
@@ -93,7 +105,7 @@ void Shader::uploadSourceToGL() {
 
 String Shader::preprocessSource(const String &source) {
         String result = addDefinesToSource(source, m_macroDefines);
-        result.insert(0, "#version 300\n");
+        result.insert(0, "#version 330\n");
         // Если путь к GLSL файлу не был указан, то обработка инклюдов не исполняется
         if (m_path != "") result = resolveIncludes(result, Filesystem::parentPath(m_path));
 

@@ -86,7 +86,7 @@ else()
 endif()
 
 # BOOST::Filesystem
-find_package(Boost COMPONENTS filesystem system REQUIRED)
+find_package(Boost COMPONENTS filesystem system regex REQUIRED)
 if (NOT Boost_FOUND)
         message(ERROR " Boost::filesystem or Boost::system not found!")
         return()
