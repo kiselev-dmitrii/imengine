@@ -73,6 +73,7 @@ void Program::addShadersFromFile(const String &path) {
 void Program::removeShader(ShaderType::Enum type) {
         for (auto it = m_shaders.begin(); it != m_shaders.end(); ++it) {
                 if ((*it)->type() == type) {
+                        IM_GLCALL(glDetachShader(m_handle, (*it)->handle()));
                         delete (*it);
                         m_shaders.erase(it);
                         return;
@@ -82,7 +83,10 @@ void Program::removeShader(ShaderType::Enum type) {
 }
 
 void Program::removeAllShaders() {
-        for (Shader* shader: m_shaders) delete shader;
+        for (Shader* shader: m_shaders) {
+                IM_GLCALL(glDetachShader(m_handle, shader->handle()));
+                delete shader;
+        }
         m_shaders.clear();
 }
 

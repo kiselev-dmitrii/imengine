@@ -14,6 +14,11 @@ public:
         void    destroy();
 
         void    keyPressEvent(int key);
+
+private:
+        void    createVAO();
+        void    createProgram();
+
 private:
         Program*        m_redTriangle;
         GLuint          m_vao;
@@ -21,16 +26,7 @@ private:
 
 };
 
-void Application::initialize() {
-        glClearColor(0,0,0,0);
-
-        /// Программа
-        m_redTriangle = new Program();
-        m_redTriangle->addShaders(showTriangleSource);
-        m_redTriangle->setMacroDefines({"RED"});
-        m_redTriangle->build();
-
-        /// VAO & VBO
+void Application::createVAO() {
         glGenVertexArrays(1, &m_vao);
         glBindVertexArray(m_vao);
 
@@ -46,6 +42,21 @@ void Application::initialize() {
 
         glEnableVertexAttribArray(ProgramAttributeLocations::POSITION);
         glVertexAttribPointer(ProgramAttributeLocations::POSITION, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) nullptr);
+
+}
+
+void Application::createProgram() {
+        m_redTriangle = new Program();
+        m_redTriangle->addShaders(showTriangleSource);
+        m_redTriangle->setMacroDefines({"RED"});
+        m_redTriangle->build();
+
+}
+
+void Application::initialize() {
+        glClearColor(0,0,0,0);
+        createProgram();
+        createVAO();
 
 }
 
@@ -67,9 +78,15 @@ void Application::destroy() {
 }
 
 void Application::keyPressEvent(int key) {
-        if (key == SDLK_r) {
+        if (key == SDLK_1) {
                 m_redTriangle->setMacroDefines({"GREEN"});
                 m_redTriangle->build();
+        }
+
+        if (key == SDLK_2) {
+               m_redTriangle->removeAllShaders();
+               m_redTriangle->addShadersFromFile("resources/shaders/test/color.glsl");
+               m_redTriangle->build();
         }
 }
 
