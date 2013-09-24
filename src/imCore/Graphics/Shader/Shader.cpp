@@ -10,7 +10,8 @@ namespace imCore {
 
 Shader::Shader(ShaderType::Enum type) :
         m_type(type),
-        m_isCompiled(false)
+        m_isCompiled(false),
+        m_parentProgram(nullptr)
 {
         IM_GLCALL(m_handle = glCreateShader(type));
         IM_LOG("Shader" << m_handle << ": created, type: " << GLUtils::convertEnumToString(m_type));
@@ -102,12 +103,10 @@ void Shader::attachToProgram(Program *program) {
 }
 
 void Shader::detachFromProgram() {
-        IM_ASSERT(program);
-
         if (m_parentProgram) {
                 IM_GLCALL(glDetachShader(m_parentProgram->handle(), m_handle));
-                m_parentProgram = nullptr;
                 IM_LOG("Shader" << m_handle << ": was detached from Program" << m_parentProgram->handle());
+                m_parentProgram = nullptr;
         }
 }
 

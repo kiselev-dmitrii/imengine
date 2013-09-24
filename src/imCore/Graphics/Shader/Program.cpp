@@ -30,6 +30,7 @@ void Program::addShader(const String &source, ShaderType::Enum type, const Strin
 
         Shader* shader = new Shader(type);
         shader->setSource(source, path);
+        shader->attachToProgram(this);
         m_shaders.push_back(shader);
 }
 
@@ -41,6 +42,7 @@ void Program::addShaderFromFile(const String &path, ShaderType::Enum type) {
 
         Shader* shader = new Shader(type);
         shader->loadFromFile(path);
+        shader->attachToProgram(this);
         m_shaders.push_back(shader);
 }
 
@@ -73,7 +75,7 @@ void Program::addShadersFromFile(const String &path) {
 void Program::removeShader(ShaderType::Enum type) {
         for (auto it = m_shaders.begin(); it != m_shaders.end(); ++it) {
                 if ((*it)->type() == type) {
-                        IM_GLCALL(glDetachShader(m_handle, (*it)->handle()));
+                        (*it)->detachFromProgram();
                         delete (*it);
                         m_shaders.erase(it);
                         return;
@@ -84,7 +86,7 @@ void Program::removeShader(ShaderType::Enum type) {
 
 void Program::removeAllShaders() {
         for (Shader* shader: m_shaders) {
-                IM_GLCALL(glDetachShader(m_handle, shader->handle()));
+                shader->detachFromProgram();
                 delete shader;
         }
         m_shaders.clear();
@@ -116,7 +118,6 @@ bool Program::build() {
                 IM_ERROR("Program" << m_handle << ": can't compile shaders.");
                 return false;
         }
-        attachShaders();
         bindDefaultAttributeLocations();
         if (!linkProgram()) {
                 IM_ERROR("Program" << m_handle << ": can't link shaders." << std::endl << log());
@@ -232,13 +233,6 @@ bool Program::compileShaders() {
                 m_log += shader->log();
         }
         return true;
-}
-
-void Program::attachShaders() {
-        for (Shader* shader: m_shaders) {
-                IM_GLCALL(glAttachShader(m_handle, shader->handle()));
-                IM_LOG("Shader" << shader->handle() << " attached to Program" << m_handle);
-        }
 }
 
 void Program::bindDefaultAttributeLocations() {

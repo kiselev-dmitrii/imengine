@@ -93,17 +93,17 @@ public:
 private:
         /// Компилирует шейдеры из m_shaders
         bool            compileShaders();
-        /// Присеодинеяет шейдеры из m_shaders к программе
-        void            attachShaders();
-        /// Устанавливает стандартным входным атрибутам (im_vPosition, im_vNormal, im_vTangent, im_vTexCoord)
-        /// стандартные индексы из ProgramAttributeLocations
+
+        /// Устанавливает атрибутам (im_vPosition, im_vNormal, im_vTangent, im_vTexCoord) индексы из ProgramAttributeLocations
         void            bindDefaultAttributeLocations();
+
         /// Линкует программу
         bool            linkProgram();
         /// Возвращает статус линковки
         bool            linkStatus();
         /// Возвращает лог линковки
         String          linkLog();
+
         /// Получает информацию о всех uniform-переменных в шейдерах
         void            loadUniformInformation();
         /// Получает информацию о всех аттрибутах шейдеров
