@@ -46,6 +46,7 @@ bool BaseApplication::initGLEW() {
                 IM_ERROR("Could not init GLEW: " << glewGetErrorString(glewError));
                 return false;
         }
+        glGetError();                                                           // сбрасывает буфер ошибок OpenGL
         IM_LOG("GLEW initialized. Version " << glewGetString(GLEW_VERSION));
         return true;
 }
