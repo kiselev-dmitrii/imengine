@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "Program.h"
 #include "../../Utils/Debug.h"
 #include "../../Utils/GLUtils.h"
 #include "../../Utils/StringUtils.h"
@@ -88,6 +89,26 @@ String Shader::log() {
 
 bool Shader::isCompiled() {
         return m_isCompiled;
+}
+
+void Shader::attachToProgram(Program *program) {
+        IM_ASSERT(program);
+
+        if (!m_parentProgram) {
+                m_parentProgram = program;
+                IM_GLCALL(glAttachShader(m_parentProgram->handle(), m_handle));
+                IM_LOG("Shader" << m_handle << ": was attached to Program" << m_parentProgram->handle());
+        }
+}
+
+void Shader::detachFromProgram() {
+        IM_ASSERT(program);
+
+        if (m_parentProgram) {
+                IM_GLCALL(glDetachShader(m_parentProgram->handle(), m_handle));
+                m_parentProgram = nullptr;
+                IM_LOG("Shader" << m_handle << ": was detached from Program" << m_parentProgram->handle());
+        }
 }
 
 bool Shader::compileStatus() {

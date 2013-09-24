@@ -6,6 +6,8 @@
 
 namespace imCore {
 
+class Program;
+
 /** @brief Тип шейдера.
  */
 namespace ShaderType {
@@ -51,9 +53,13 @@ public:
         bool                    compile();
         /// Возвращает лог компиляции. Перед компиляцией лог очищается, а после - заполняется
         String                  log();
-
         /// Определяет, скомпилирован ли шейдер уже
         bool                    isCompiled();
+
+        /// Прикрепляет шейдер к программе
+        void                    attachToProgram(Program* program);
+        /// Открепляет шейдер от программы
+        void                    detachFromProgram();
 
 private:
         /// Получает статус компиляции. Используется glGet* - функция вредит производительности
@@ -79,6 +85,7 @@ private:
         String                  m_log;
 
         bool                    m_isCompiled;
+        Program*                m_parentProgram;
 };
 
 } //namespace imCore

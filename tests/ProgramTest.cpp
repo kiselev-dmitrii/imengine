@@ -96,6 +96,12 @@ void Application::keyPressEvent(int key) {
                 float b = (float)rand()/(float)RAND_MAX;
                 m_redTriangle->setUniform("uColor", Vec3(r, g, b));
         }
+
+        if (key == SDLK_4) IM_VAR(m_redTriangle->isBuilded());
+        if (key == SDLK_5) IM_VAR(m_redTriangle->log());
+        if (key == SDLK_6) IM_VAR(m_redTriangle->uniformLocation("uColor"));
+        if (key == SDLK_7) IM_VAR(m_redTriangle->attributeLocation("im_vPosition"));
+
 }
 
 
