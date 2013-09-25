@@ -18,12 +18,15 @@ public:
 
 private:
         void    createVAO();
-        void    createProgram();
+        void    createProgram1();
+        void    createProgram2();
 
 private:
-        Program*        m_redTriangle;
         GLuint          m_vao;
         GLuint          m_vbo;
+
+        Program*        m_program1;
+        Program*        m_program2;
 
 };
 
@@ -46,17 +49,29 @@ void Application::createVAO() {
 
 }
 
-void Application::createProgram() {
-        m_redTriangle = new Program();
-        m_redTriangle->loadSource(showTriangleSource);
-        m_redTriangle->setDefines({"RED"});
-        m_redTriangle->build();
+void Application::createProgram1() {
+        IM_LOG("Create Program1");
+        m_program1 = new Program();
+        m_program1->loadSource(showTriangleSource);
+        m_program1->setDefines({"RED"});
+        m_program1->build();
+}
 
+void Application::createProgram2() {
+        IM_LOG("Create Program2");
+        m_program2 = new Program();
+        m_program2->loadSourceFromFile("resources/shaders/test/color.glsl");
+        m_program2->build();
+
+        m_program2->bind();
+        m_program2->setUniform("uColor", Vec3(0.3, 0.3, 0.8));
+        m_program2->unbind();
 }
 
 void Application::initialize() {
         glClearColor(0,0,0,0);
-        createProgram();
+        createProgram1();
+        createProgram2();
         createVAO();
 
 }
@@ -67,7 +82,6 @@ void Application::update() {
 
 void Application::render() {
         glClear(GL_COLOR_BUFFER_BIT);
-        m_redTriangle->bind();
 
         glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
         glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -75,31 +89,55 @@ void Application::render() {
 }
 
 void Application::destroy() {
-        delete m_redTriangle;
+        delete m_program1;
+        delete m_program2;
 }
 
 void Application::keyPressEvent(int key) {
-        if (key == SDLK_1) {
-                m_redTriangle->setDefines({"GREEN"});
-                m_redTriangle->build();
+        switch (key) {
+                case SDLK_1: {
+                        IM_LOG("Program1 binding...");
+                        m_program1->bind();
+                        break;
+                }
+                case SDLK_2: {
+                        IM_LOG("Program2 binding...");
+                        m_program2->bind();
+                        break;
+                }
+
+                case SDLK_3: {
+                        IM_LOG("Program2: set uniform");
+                        float r = (float)rand()/(float)RAND_MAX;
+                        float g = (float)rand()/(float)RAND_MAX;
+                        float b = (float)rand()/(float)RAND_MAX;
+                        m_program2->bind();
+                        m_program2->setUniform("uColor", Vec3(r, g, b));
+                        break;
+                }
+                case SDLK_4: {
+                        IM_LOG("Program1 rebuilding...");
+                        m_program1->setDefines({"GREEN"});
+                        m_program1->build();
+                        break;
+                }
+                case SDLK_5: {
+                        IM_LOG("Program2 rebuilding...");
+                        m_program2->build();
+                        break;
+                }
+                case SDLK_6: {
+                        IM_LOG("Program1 info...");
+                        IM_VAR(m_program1->handle());
+                        IM_VAR(m_program1->source(ShaderType::VERTEX));
+                        IM_VAR(m_program1->source(ShaderType::FRAGMENT));
+                        IM_VAR(m_program1->defines());
+                        IM_VAR(m_program1->log());
+                        IM_VAR(m_program1->attributeLocation("im_vPosition"));
+                        break;
+                }
         }
 
-        if (key == SDLK_2) {
-               m_redTriangle->loadSourceFromFile("resources/shaders/test/color.glsl");
-               m_redTriangle->build();
-               m_redTriangle->setUniform("uColor", Vec3(0.3, 0.3, 0.8));
-        }
-
-        if (key == SDLK_3) {
-                float r = (float)rand()/(float)RAND_MAX;
-                float g = (float)rand()/(float)RAND_MAX;
-                float b = (float)rand()/(float)RAND_MAX;
-                m_redTriangle->setUniform("uColor", Vec3(r, g, b));
-        }
-
-        if (key == SDLK_5) IM_VAR(m_redTriangle->log());
-        if (key == SDLK_6) IM_VAR(m_redTriangle->uniformLocation("uColor"));
-        if (key == SDLK_7) IM_VAR(m_redTriangle->attributeLocation("im_vPosition"));
 
 }
 

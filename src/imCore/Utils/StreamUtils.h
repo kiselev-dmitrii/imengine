@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../Math/Common.h"
+#include "Types.h"
 
 namespace imCore {
 
@@ -16,6 +17,9 @@ namespace StreamUtils {
         std::ostream &operator<<(std::ostream &stream, const Mat3 &mat);
         std::ostream &operator<<(std::ostream &stream, const Mat4 &mat);
         std::ostream &operator<<(std::ostream &stream, const Quat &q);
+
+        std::ostream &operator<<(std::ostream &stream, const StringList &stringList);
+
 } //namespace StreamUtils
 
 } //namespace imCore

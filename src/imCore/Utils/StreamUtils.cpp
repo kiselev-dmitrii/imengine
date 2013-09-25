@@ -1,4 +1,5 @@
 #include "StreamUtils.h"
+#include "StringUtils.h"
 
 using std::endl;
 
@@ -43,6 +44,11 @@ std::ostream &StreamUtils::operator<<(std::ostream &stream, const Mat4 &mat) {
 
 std::ostream &StreamUtils::operator<<(std::ostream &stream, const Quat &q) {
         stream << "(" << q[0] << ", " << q[1] << ", " << q[2] << ", " << q[3] << ")";
+        return stream;
+}
+
+std::ostream &StreamUtils::operator<<(std::ostream &stream, const StringList &stringList) {
+        stream << "{" << StringUtils::join(stringList, ", ") << "}";
         return stream;
 }
 
