@@ -12,5 +12,18 @@
 проверять: если объект является последним забинденым, то ничего не делать. Также не стоит использовать GET функции, так как из-за них серьезно проседает FPS.
 Необходимо также наследовать все OGL объекты от какого нибудь класса Resource, который будет содержать имя ресурса и возможно другие штучки.
 
-
+9. Про glActiveTexture - текстуры, помимо совего таргета всегда биндятся в активный текстурный блок. Изначально этот блок - GL_TEXTURE0. 
+Вообщем смысл: в классе текстре изменить метод bind, на bind(int unit = 0); 
+void Texture::bind(int unit) {
+	if (s_activeUnit != unit) {
+		glActiveTexture(GL_TEXTURE0 + unit);
+		glBindTexture(m_target, m_handle);
+		s_activeUnit = unit;
+		s_boundHandle = m_handle;
+	}
+	if (s_boundHandle != m_handle) {
+		glBindTexture(m_target, m_handle);
+		s_boundHandle = m_handle;
+	}
+}
 

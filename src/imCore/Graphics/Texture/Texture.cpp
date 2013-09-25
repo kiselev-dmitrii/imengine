@@ -4,6 +4,7 @@
 namespace imCore {
 
 GLuint Texture::s_boundHandle = 0;
+GLuint Texture::s_currentUnit = 0;
 
 Texture::Texture(TextureTarget::Enum target) {
         m_target = target;
@@ -170,7 +171,13 @@ void Texture::generateMipmaps() {
         IM_GLCALL(glGenerateMipmap(m_target));
 }
 
-void Texture::bind() {
+void Texture::bind(GLuint unit) {
+        if (s_currentUnit != unit) {
+                IM_GLCALL(glActiveTexture(GL_TEXTURE0 + unit));
+                IM_GLCALL(glBindTexture(m_target, m_handle));
+                s_currentUnit = unit;
+                s_boundHandle = m_handle;
+        }
         if (s_boundHandle != m_handle) {
                 IM_GLCALL(glBindTexture(m_target, m_handle));
                 s_boundHandle = m_handle;

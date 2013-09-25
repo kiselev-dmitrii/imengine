@@ -221,8 +221,8 @@ public:
         /// Генерирует mip-уровни
         void                    generateMipmaps();
 
-        /// Делает текстуру текущей
-        void                    bind();
+        /// Привязывает текстуру к текстурному блоку с номером unit
+        void                    bind(GLuint unit = 0);
         /// Отвязывает текстуру
         void                    unbind();
 
@@ -247,6 +247,7 @@ protected:
         bool                            m_wasMemoryAllocated;   //была ли выделена память под текстуру
 
         static GLuint                   s_boundHandle;
+        static GLuint                   s_currentUnit;
 };
 
 } //namespace imCore
