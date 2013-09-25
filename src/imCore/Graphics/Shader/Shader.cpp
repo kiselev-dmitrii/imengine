@@ -4,148 +4,58 @@
 #include "../../Utils/GLUtils.h"
 #include "../../Utils/StringUtils.h"
 #include "../../System/Filesystem.h"
-#include <fstream>
 
 namespace imCore {
 
-Shader::Shader(ShaderType::Enum type) :
-        m_type(type),
-        m_isCompiled(false),
-        m_parentProgram(nullptr)
-{
-        IM_GLCALL(m_handle = glCreateShader(type));
+Shader::Shader() {
+        m_handle = 0;
+        m_program = nullptr;
+}
+
+void Shader::create(ShaderType::Enum type) {
+        m_type = type;
+        IM_GLCALL(m_handle = glCreateShader(m_type));
         IM_LOG("Shader" << m_handle << ": created, type: " << GLUtils::convertEnumToString(m_type));
 }
 
-Shader::~Shader() {
+void Shader::destroy() {
+        IM_ASSERT(m_handle);
+
         IM_GLCALL(glDeleteShader(m_handle));
         IM_LOG("Shader" << m_handle << ": removed, type: " << GLUtils::convertEnumToString(m_type));
 }
 
-ShaderType::Enum Shader::type() {
-        return m_type;
+void Shader::uploadSource(const String &str, const StringList &defines, const String &path) {
+        IM_ASSERT(m_handle);
+
+        String source = preprocess(str, defines, path);
+        const char* pointer = source.c_str();
+        IM_GLCALL(glShaderSource(m_handle, 1, &pointer, NULL));
+        IM_LOG("Shader" << m_handle << ": sources was loaded");
 }
 
-GLuint Shader::handle() {
-        return m_handle;
-}
-
-void Shader::setSource(const String &source, const String &path) {
-        m_source = source;
-        m_path = path;
-        m_isCompiled = false;
-}
-
-String Shader::source() {
-        return m_source;
-}
-
-void Shader::loadFromFile(const String &path) {
-        m_source = Filesystem::readTextFile(path);
-        if (m_source == "") {
-                IM_ERROR("Can't open shader " << path);
-                return;
-        }
-        m_path = path;
-        m_isCompiled = false;
-}
-
-void Shader::setMacroDefines(const StringList &defines) {
-        m_macroDefines = defines;
-}
-
-StringList Shader::macroDefines() {
-        return m_macroDefines;
-}
-
-bool Shader::compile() {
-        IM_LOG("Shader" << m_handle << ": compiling");
-
-        m_log.clear();
-        uploadSourceToGL();
-        IM_GLCALL(glCompileShader(m_handle));
-
-        if (!compileStatus()) {
-                IM_ERROR("Shader" << m_handle << ": compilation error:" << std::endl << log());
-                return false;
-        }
-
-        IM_LOG("Shader" << m_handle << ": successfull compilation");
-        m_isCompiled = true;
-        return true;
-}
-
-String Shader::log() {
-        if (!m_log.empty()) return m_log;
-
-        // Получаем длину лога
-        GLint length;
-        IM_GLCALL(glGetShaderiv(m_handle, GL_INFO_LOG_LENGTH, &length));
-
-        m_log.resize(length);
-        IM_GLCALL(glGetShaderInfoLog(m_handle, length, 0, &m_log[0]));
-
-        return m_log;
-}
-
-bool Shader::isCompiled() {
-        return m_isCompiled;
-}
-
-void Shader::attachToProgram(Program *program) {
-        IM_ASSERT(program);
-
-        if (!m_parentProgram) {
-                m_parentProgram = program;
-                IM_GLCALL(glAttachShader(m_parentProgram->handle(), m_handle));
-                IM_LOG("Shader" << m_handle << ": was attached to Program" << m_parentProgram->handle());
-        }
-}
-
-void Shader::detachFromProgram() {
-        if (m_parentProgram) {
-                IM_GLCALL(glDetachShader(m_parentProgram->handle(), m_handle));
-                IM_LOG("Shader" << m_handle << ": was detached from Program" << m_parentProgram->handle());
-                m_parentProgram = nullptr;
-        }
-}
-
-bool Shader::compileStatus() {
-        int status = GL_FALSE;
-        IM_GLCALL(glGetShaderiv(m_handle, GL_COMPILE_STATUS, &status));
-        return status;
-}
-
-void Shader::uploadSourceToGL() {
-        String preprocessedSource = preprocessSource(m_source);
-
-        const char* sourcePointer = preprocessedSource.c_str();
-        IM_GLCALL(glShaderSource(m_handle, 1, &sourcePointer, NULL));
-}
-
-String Shader::preprocessSource(const String &source) {
-        String result = addDefinesToSource(source, m_macroDefines);
+String Shader::preprocess(const String &source, const StringList &defines, const String &path) {
+        String result = addDefines(source, defines);
         result.insert(0, "#version 330\n");
-        // Если путь к GLSL файлу не был указан, то обработка инклюдов не исполняется
-        if (m_path != "") result = resolveIncludes(result, Filesystem::parentPath(m_path));
+        if (path != "") result = resolveIncludes(result, Filesystem::parentPath(path));
 
         return result;
 }
 
-String Shader::addDefinesToSource(const String &source, const StringList &defineList) {
-        String defines;
-        for(const String& def: defineList) defines += "#define " + def + "\n";
+String Shader::addDefines(const String &source, const StringList &defines) {
+        String defineLines;
+        for(const String& def: defines) defineLines += "#define " + def + "\n";
 
-        String result = defines + source;
+        String result = defineLines + source;
         return result;
 }
 
-String Shader::resolveIncludes(const String &source, const String &sourcePathDir) {
-        StringList lines = StringUtils::split(source, "\n");
+String Shader::resolveIncludes(const String &source, const String &sourceDir) {
+         StringList lines = StringUtils::split(source, "\n");
 
         for (String &line: lines) {
                 if (line.find("#include") != String::npos) {
-                        auto includePath = Filesystem::joinPath(sourcePathDir, extractPathFromInclude(line));
+                        auto includePath = Filesystem::joinPath(sourceDir, extractPath(line));
                         auto includeSource = Filesystem::readTextFile(includePath);
                         if (includeSource == "") {
                                 IM_ERROR("Shader" << m_handle << ": compilation error: can't include file " << includePath);
@@ -158,12 +68,69 @@ String Shader::resolveIncludes(const String &source, const String &sourcePathDir
         return StringUtils::join(lines, "\n");
 }
 
-String Shader::extractPathFromInclude(const String &includeString) {
+String Shader::extractPath(const String &includeString) {
         int start = includeString.find("\"") + 1;
         int end = includeString.find("\"", start) - 1;
-
         return includeString.substr(start, end - start + 1);
 }
 
+bool Shader::compile() {
+        IM_ASSERT(m_handle);
+        IM_LOG("Shader" << m_handle << ": compiling");
+
+        m_log.clear();
+        IM_GLCALL(glCompileShader(m_handle));
+        m_log = getCompileLog(m_handle);
+
+        if (!getCompileStatus(m_handle)) {
+                IM_ERROR("Shader" << m_handle << ": compilation failed:" << std::endl << log());
+                return false;
+        } else {
+                IM_LOG("Shader" << m_handle << ": successfull compilation");
+                return true;
+        }
+}
+
+String Shader::getCompileLog(GLuint handle) {
+        String result;
+
+        GLint length;
+        IM_GLCALL(glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &length));
+        result.resize(length);
+        IM_GLCALL(glGetShaderInfoLog(handle, length, 0, &result[0]));
+
+        return result;
+}
+
+bool Shader::getCompileStatus(GLuint handle) {
+        int result = GL_FALSE;
+        IM_GLCALL(glGetShaderiv(handle, GL_COMPILE_STATUS, &result));
+        return result;
+}
+
+String Shader::log() {
+        return m_log;
+}
+
+void Shader::attach(Program *program) {
+        IM_ASSERT(m_handle);
+        IM_ASSERT(program);
+
+        if (!m_program) {
+                m_program = program;
+                IM_GLCALL(glAttachShader(m_program->handle(), m_handle));
+                IM_LOG("Shader" << m_handle << ": was attached to Program" << m_program->handle());
+        }
+}
+
+void Shader::detach() {
+        IM_ASSERT(m_handle);
+
+        if (m_program) {
+                IM_GLCALL(glDetachShader(m_program->handle(), m_handle));
+                IM_LOG("Shader" << m_handle << ": was detached from Program" << m_program->handle());
+                m_program = nullptr;
+        }
+}
 
 } //namespace imCore

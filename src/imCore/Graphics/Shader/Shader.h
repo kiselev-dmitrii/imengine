@@ -20,72 +20,56 @@ enum Enum {
 };
 }
 
+
 /** @brief Шейдер - часть программы, выполняемой на GPU.
  *  Подменяет определенную часть графического конвейера (подменяемая часть зависит от типа).
+ *  Поскольку данный объект не будет использоваться непосредственно пользователем, то
+ *  вместо конструктора и деструктора используются методы create и destroy, которые
+ *  действительно создают OpenGL объекты.
  */
 class Shader {
 public:
-        /// Создает шейдерный объект типа type
-        Shader(ShaderType::Enum type);
-        /// Удаляет шейдерный объект
-        ~Shader();
+        /// Конструктор.
+        Shader();
 
-        /// Возвращает тип шейдера
-        ShaderType::Enum        type();
-        /// Возвращает OpenGL дескриптор шейдера
-        GLuint                  handle();
+        /// Создает шейдерный OpenGL объект
+        void    create(ShaderType::Enum type);
+        /// Удаляет шейдерную программу
+        void    destroy();
 
-        /// Устанавливает исходный код, который затем будет скомпилирован командой compile.
-        /// Здесь sourcePath необходим для того чтобы использовать относительные пути в #include в шейдерах.
-        /// Если не указан, то #include директивы будут игнорироваться
-        void                    setSource(const String& source, const String& path = "");
-        /// Возвращает текущий используемый исходный код
-        String                  source();
-        /// Загружает исходный код из файла
-        void                    loadFromFile(const String& path);
+        /// Загружает исходники в видеопамять из str, предварительно совершив препроцессинг
+        void    uploadSource(const String& str, const StringList& defines, const String& path = "");
+        /// Компилирование шейдера. Возвращает true при успехе
+        bool    compile();
+        /// Возвращает лог компиляци программы
+        String  log();
 
-        /// Устанавливает макропеременные с которыми будет скомпилирован код
-        void                    setMacroDefines(const StringList& defines);
-        /// Возвращает набор макоропеременных с которыми будет скомпилирован код
-        StringList              macroDefines();
-
-        /// Компилирует текущий исходный код. Возвращает true, если компиляция прошла успешно
-        bool                    compile();
-        /// Возвращает лог компиляции. Перед компиляцией лог очищается, а после - заполняется
-        String                  log();
-        /// Определяет, скомпилирован ли шейдер уже
-        bool                    isCompiled();
-
-        /// Прикрепляет шейдер к программе
-        void                    attachToProgram(Program* program);
-        /// Открепляет шейдер от программы
-        void                    detachFromProgram();
+        /// Присоединяет шейдер к программе
+        void    attach(Program* program);
+        /// Отсоединяет шейдер
+        void    detach();
 
 private:
-        /// Получает статус компиляции. Используется glGet* - функция вредит производительности
-        bool                    compileStatus();
-        /// Грузит в GL тексты шейдера в GPU
-        void                    uploadSourceToGL();
-
-        /// Делает препроцесс исходника: добавляет макроопределения, инклюдит файлы
-        String                  preprocessSource(const String& source);
-        /// Добавляет в начало шейдера версию дейфаны
-        String                  addDefinesToSource(const String& source, const StringList& defineList);
+        /// Осуществляет препроцесс
+        String  preprocess(const String& source, const StringList& defines, const String& path);
+        /// Добавляет в начало шейдера source дейфаны defines
+        String  addDefines(const String& source, const StringList& defines);
         /// Обрабатывает директивы #include
-        String                  resolveIncludes(const String& source, const String& sourcePathDir);
+        String  resolveIncludes(const String& source, const String& sourceDir);
         /// Возвращает путь из директивы #include
-        String                  extractPathFromInclude(const String& includeString);
+        String  extractPath(const String& includeString);
+
+        /// Возвращает лог компиляции для шейдера c дескриптором handle
+        String  getCompileLog(GLuint handle);
+        /// Возвращает статус компиляции
+        bool    getCompileStatus(GLuint handle);
 
 private:
         GLuint                  m_handle;
         ShaderType::Enum        m_type;
-        StringList              m_macroDefines;
-        String                  m_source;
-        String                  m_path;                 //путь к исходнику
         String                  m_log;
+        Program*                m_program;
 
-        bool                    m_isCompiled;
-        Program*                m_parentProgram;
 };
 
 } //namespace imCore

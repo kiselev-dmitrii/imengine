@@ -48,8 +48,8 @@ void Application::createVAO() {
 
 void Application::createProgram() {
         m_redTriangle = new Program();
-        m_redTriangle->addShaders(showTriangleSource);
-        m_redTriangle->setMacroDefines({"RED"});
+        m_redTriangle->loadSource(showTriangleSource);
+        m_redTriangle->setDefines({"RED"});
         m_redTriangle->build();
 
 }
@@ -80,14 +80,14 @@ void Application::destroy() {
 
 void Application::keyPressEvent(int key) {
         if (key == SDLK_1) {
-                m_redTriangle->setMacroDefines({"GREEN"});
+                m_redTriangle->setDefines({"GREEN"});
                 m_redTriangle->build();
         }
 
         if (key == SDLK_2) {
-               m_redTriangle->removeAllShaders();
-               m_redTriangle->addShadersFromFile("resources/shaders/test/color.glsl");
+               m_redTriangle->loadSourceFromFile("resources/shaders/test/color.glsl");
                m_redTriangle->build();
+               m_redTriangle->setUniform("uColor", Vec3(0.3, 0.3, 0.8));
         }
 
         if (key == SDLK_3) {
@@ -97,11 +97,6 @@ void Application::keyPressEvent(int key) {
                 m_redTriangle->setUniform("uColor", Vec3(r, g, b));
         }
 
-        if (key == SDLK_8) {
-                m_redTriangle->removeAllShaders();
-        }
-
-        if (key == SDLK_4) IM_VAR(m_redTriangle->isBuilded());
         if (key == SDLK_5) IM_VAR(m_redTriangle->log());
         if (key == SDLK_6) IM_VAR(m_redTriangle->uniformLocation("uColor"));
         if (key == SDLK_7) IM_VAR(m_redTriangle->attributeLocation("im_vPosition"));

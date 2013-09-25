@@ -1,6 +1,5 @@
 #include "Program.h"
 #include "../../Utils/Debug.h"
-#include "../../Utils/GLUtils.h"
 #include "../../Utils/StringUtils.h"
 #include "../../System/Filesystem.h"
 
@@ -8,45 +7,29 @@ namespace imCore {
 
 GLuint Program::s_boundHandle = 0;
 
-Program::Program() :
-        m_isBuilded(false)
-{
+Program::Program() {
         IM_GLCALL(m_handle = glCreateProgram());
         IM_LOG("Program" << m_handle << ": created");
 }
 
 Program::~Program() {
-        removeAllShaders();
-
         IM_GLCALL(glDeleteProgram(m_handle));
         IM_LOG("Program" << m_handle << ": removed");
 }
 
-void Program::addShader(const String &source, ShaderType::Enum type, const String &path) {
-        if (this->shader(type)) {
-                IM_ERROR("Program" << m_handle << ": shader " << GLUtils::convertEnumToString(type) << " was already added");
-                return;
-        }
-
-        Shader* shader = new Shader(type);
-        shader->setSource(source, path);
-        shader->attachToProgram(this);
-        m_shaders.push_back(shader);
+GLuint Program::handle() {
+        return m_handle;
 }
 
-void Program::addShaderFromFile(const String &path, ShaderType::Enum type) {
-        if (this->shader(type)) {
-                IM_ERROR("Program" << m_handle << ": shader " << GLUtils::convertEnumToString(type) << " was already added");
-                return;
-        }
-
-        Shader* shader = new Shader(type);
-        shader->loadFromFile(path);
-        shader->attachToProgram(this);
-        m_shaders.push_back(shader);
+void Program::loadSource(const String &source, const String &path) {
+        m_sources = parseGLSL(source);
+        m_path = path;
 }
 
-void Program::addShaders(const String &source, const String &path) {
+Program::ShaderInfoList Program::parseGLSL(const String &source) {
+        ShaderInfoList result;
+
+        // Синтаксические особенности файла
         const String shaderSeparator = "///###";
         const StringList keywords = {"VERTEX", "FRAGMENT", "GEOMETRY", "TESS_CONTROL", "TESS_EVAL"};
         const std::vector<ShaderType::Enum> shaderTypes = {ShaderType::VERTEX, ShaderType::FRAGMENT, ShaderType::GEOMETRY, ShaderType::TESS_CONTROL, ShaderType::TESS_EVAL};
@@ -55,87 +38,126 @@ void Program::addShaders(const String &source, const String &path) {
         StringList sources = StringUtils::split(source, shaderSeparator);
         for (String& source: sources) source.insert(0, shaderSeparator);
 
-        // Определяем тип шейдера по коду и создаем соотв. шейдер
+        // Определяем тип шейдера по коду и добавляем в результат
         for (String& source: sources) for (size_t i = 0; i < keywords.size(); ++i) {
                 // Если в первой строчке найден тип шейдера, то добовляем его
-               if (source.substr(0, 30).find(keywords[i]) != String::npos) addShader(source, shaderTypes[i], path);
+               if (source.substr(0, 30).find(keywords[i]) != String::npos) {
+                       ShaderInfo info;
+                       info.source = source;
+                       info.type = shaderTypes[i];
+                       result.push_back(info);
+               }
         }
+
+        return result;
 }
 
-void Program::addShadersFromFile(const String &path) {
+void Program::loadSourceFromFile(const String &path) {
         String source = Filesystem::readTextFile(path);
         if (source == "") {
-                IM_ERROR("Can't add shader from file " << path);
+                IM_ERROR("Program" << m_handle << ": can't read file " << path);
                 return;
         }
-
-        addShaders(source, path);
+        loadSource(source, path);
 }
 
-void Program::removeShader(ShaderType::Enum type) {
-        for (auto it = m_shaders.begin(); it != m_shaders.end(); ++it) {
-                if ((*it)->type() == type) {
-                        (*it)->detachFromProgram();
-                        delete (*it);
-                        m_shaders.erase(it);
-                        return;
-                }
+String Program::source(ShaderType::Enum type) {
+        for (ShaderInfo& info: m_sources) {
+                if (info.type == type) return info.source;
         }
-        IM_ERROR("Program" << m_handle << ": can't find shader with type " << GLUtils::convertEnumToString(type));
+        return "";
 }
 
-void Program::removeAllShaders() {
-        for (Shader* shader: m_shaders) {
-                shader->detachFromProgram();
-                delete shader;
-        }
-        m_shaders.clear();
+void Program::setDefines(const StringList &defines) {
+        m_defines = defines;
 }
 
-Shader* Program::shader(ShaderType::Enum type) {
-        for (Shader* shader: m_shaders) {
-                if (shader->type() == type) return shader;
-        }
-        return nullptr;
-}
-
-void Program::setMacroDefines(const StringList &defines) {
-        m_macroDefines = defines;
-}
-
-StringList Program::macroDefines() {
-        return m_macroDefines;
+StringList Program::defines() {
+        return m_defines;
 }
 
 bool Program::build() {
-        // Удаляет информацию, которая генерируется в процессе сборки
+        IM_LOG("Program" << m_handle << ": building");
+
         m_log.clear();
-        m_uniformLocations.clear();
-        m_attributeLocations.clear();
-
-        // Производим непосредственно сборку
-        if (!compileShaders()) {
-                IM_ERROR("Program" << m_handle << ": can't compile shaders.");
-                return false;
-        }
+        ShaderList shaders = createShaders(m_sources, m_defines, m_path);
         bindDefaultAttributeLocations();
-        if (!linkProgram()) {
-                IM_ERROR("Program" << m_handle << ": can't link shaders." << std::endl << log());
-                return false;
+        bool linkingResult = linkProgram();
+        destroyShaders(shaders);
+
+        if (linkingResult) {
+                // Получаем информацию о индексах атрибутов и юниформов
+                loadUniformInformation();
+                loadAttributeInformation();
         }
-        m_isBuilded = true;
 
-        // Получаем информацию о индексах атрибутов и юниформов
-        loadUniformInformation();
-        loadAttributeInformation();
-
-        IM_LOG("Program" << m_handle << ": building is complete");
-
-        return true;
+        return linkingResult;
 }
 
-bool Program::isBuilded() {
-        return m_isBuilded;
+Program::ShaderList Program::createShaders(const ShaderInfoList &sources, const StringList &defines, const String &path) {
+        IM_LOG("Program" << m_handle << ": creating all shaders...");
+        ShaderList result;
+
+        for(const ShaderInfo& info: sources) {
+                Shader shader;
+                shader.create(info.type);
+                shader.uploadSource(info.source, defines, path);
+                shader.compile();
+                shader.attach(this);
+                m_log += shader.log();
+
+                result.push_back(shader);
+        }
+
+        return result;
+}
+
+void Program::bindDefaultAttributeLocations() {
+        IM_GLCALL(glBindAttribLocation(m_handle, ProgramAttributeLocations::POSITION, "im_vPosition"));
+        IM_GLCALL(glBindAttribLocation(m_handle, ProgramAttributeLocations::NORMAL, "im_vNormal"));
+        IM_GLCALL(glBindAttribLocation(m_handle, ProgramAttributeLocations::TANGENT, "im_vTangent"));
+        IM_GLCALL(glBindAttribLocation(m_handle, ProgramAttributeLocations::TEXCOORD, "im_vTexCoord"));
+}
+
+bool Program::linkProgram() {
+        IM_LOG("Program" << m_handle << ": linking...");
+
+        IM_GLCALL(glLinkProgram(m_handle));
+        m_log += "\n" + getLinkLog(m_handle);
+
+        if (!getLinkStatus(m_handle)) {
+                IM_ERROR("Program" << m_handle << ": linking error:" << std::endl << log());
+                return false;
+        } else {
+                IM_LOG("Program" << m_handle << ": successfull linking");
+                return true;
+        }
+}
+
+bool Program::getLinkStatus(GLuint handle) {
+        GLint result = GL_FALSE;
+        IM_GLCALL(glGetProgramiv(handle, GL_LINK_STATUS, &result));
+        return result;
+}
+
+String Program::getLinkLog(GLuint handle) {
+        String result;
+
+        GLint length;
+        IM_GLCALL(glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &length));
+        result.resize(length);
+        IM_GLCALL(glGetProgramInfoLog(handle, length, 0, &result[0]));
+
+        return result;
+}
+
+void Program::destroyShaders(ShaderList &shaders) {
+        IM_LOG("Program" << m_handle << ": destroying all shaders...");
+
+        for(Shader& shader: shaders) {
+                shader.detach();
+                shader.destroy();
+        }
 }
 
 String Program::log() {
@@ -154,10 +176,6 @@ void Program::bind() {
 void Program::unbind() {
         IM_GLCALL(glUseProgram(0));
         s_boundHandle = 0;
-}
-
-GLuint Program::handle() {
-        return m_handle;
 }
 
 bool Program::setUniform(const String &name, float value) {
@@ -219,51 +237,6 @@ GLuint Program::attributeLocation(const String &name) {
         auto it = m_attributeLocations.find(name);
         if (it == m_attributeLocations.end()) return -1;
         return it->second;
-}
-
-bool Program::compileShaders() {
-        for (Shader* shader: m_shaders) {
-                shader->setMacroDefines(m_macroDefines);
-
-                if (!shader->compile()) {
-                        m_log += shader->log();
-                        return false;
-                }
-
-                m_log += shader->log();
-        }
-        return true;
-}
-
-void Program::bindDefaultAttributeLocations() {
-        IM_GLCALL(glBindAttribLocation(m_handle, ProgramAttributeLocations::POSITION, "im_vPosition"));
-        IM_GLCALL(glBindAttribLocation(m_handle, ProgramAttributeLocations::NORMAL, "im_vNormal"));
-        IM_GLCALL(glBindAttribLocation(m_handle, ProgramAttributeLocations::TANGENT, "im_vTangent"));
-        IM_GLCALL(glBindAttribLocation(m_handle, ProgramAttributeLocations::TEXCOORD, "im_vTexCoord"));
-}
-
-bool Program::linkProgram() {
-        IM_LOG("Program" << m_handle << ": linking...");
-        IM_GLCALL(glLinkProgram(m_handle));
-        m_log += "\n" + linkLog();
-        return linkStatus();
-}
-
-bool Program::linkStatus() {
-        GLint result = GL_FALSE;
-        IM_GLCALL(glGetProgramiv(m_handle, GL_LINK_STATUS, &result));
-        return result;
-}
-
-String Program::linkLog() {
-        String result;
-
-        GLint length;
-        IM_GLCALL(glGetProgramiv(m_handle, GL_INFO_LOG_LENGTH, &length));
-        result.resize(length);
-
-        IM_GLCALL(glGetProgramInfoLog(m_handle, length, 0, &result[0]));
-        return result;
 }
 
 void Program::loadUniformInformation() {

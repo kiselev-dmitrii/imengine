@@ -1,14 +1,13 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
-#include "../../Utils/Types.h"
-#include "../../Math/Common.h"
 #include <map>
 #include "Shader.h"
+#include "../../Utils/Types.h"
+#include "../../Math/Common.h"
+
 
 namespace imCore {
-
-typedef std::map<String, GLuint> MapStringUint;
 
 /** @brief Стандартные индексы вершинных входных атрибутов
  *
@@ -27,44 +26,36 @@ enum Enum {
 };
 }
 
+
 /** @brief Представляет собой программу для GPU.
  *
- *  Фактически, является лишь контейнером шейдеров.
  *  Целую программу (набор шейдеров) можно полностью держать в одном файле с расширением *.glsl.
  *  После сборки программы, определяется список активных uniform переменных и их locations;
  */
 class Program {
 public:
-        /// Создает пустую программу.
+        /// Создает пустую программу
         Program();
         /// Деструктор. Разрушает программу
         ~Program();
 
-        /// Добавляет шейдер из строки
-        void            addShader(const String& source, ShaderType::Enum type, const String& path = "");
-         /// Добавляет шейдер из файла
-        void            addShaderFromFile(const String& path, ShaderType::Enum type);
-        /// Аналогично, добавляет несколько шейдеров  (парсит текст и разбирает его)
-        void            addShaders(const String& source, const String& path = "");
-        /// Добавляет сразу несколько шейдеров из файла. То есть он парсит файл и разбирает его на шейдеры
-        void            addShadersFromFile(const String& path);
-        /// Удаляет шейдер определенного типа
-        void            removeShader(ShaderType::Enum type);
-        /// Удаляет все шейдеры из программы.
-        void            removeAllShaders();
-        /// Возвращает указатель на шейдер по типу. Если шейдер не найден, возвращает null
-        Shader*         shader(ShaderType::Enum type);
+        /// Возвращает OpenGL дескриптор программы
+        GLuint          handle();
 
-       /// Устанавливает макропеременные с которыми будет скомпилирован код
-        void            setMacroDefines(const StringList& defines);
-        /// Возвращает набор макроопределений
-        StringList      macroDefines();
+        /// Загружает программу из строки содержащей исходный код
+        void            loadSource(const String& source, const String& path = "");
+        /// Загружает программу из glsl файла.
+        void            loadSourceFromFile(const String& path);
+        /// Возвращает исходник шейдера определенного типа или пустую строку, если шейдера с данными типом нет
+        String          source(ShaderType::Enum type);
 
-        /// Собирает добавленные шейдеры в единую программу.
-        /// Данную процедуру можно выполнять несколько раз, например, если исходники изменились, то можно заного пересобрать
+        /// Устанавливает дефайны, с которыми будет компилироваться исходник
+        void            setDefines(const StringList& defines);
+        /// Возвращает список дефайнов
+        StringList      defines();
+
+        /// Осуществляет сборку программы. Возвращает true, если сборка осуществлена успешно
         bool            build();
-        /// Определяет, готова ли программа для использования
-        bool            isBuilded();
         /// Возвращает лог сборки
         String          log();
 
@@ -73,10 +64,7 @@ public:
         /// Отвязывает текущую программу от контекста
         void            unbind();
 
-        /// Возвращает GL дескриптор программы
-        GLuint          handle();
-
-        /// Установка uniform-переменной
+        /// Установка uniform-переменной.  Возвращают false, если переменная с данным именем отсутствует в программе.
         bool            setUniform(const String& name, float value);
         bool            setUniform(const String& name, int value);
         bool            setUniform(const String& name, const Vec2& value);
@@ -84,25 +72,37 @@ public:
         bool            setUniform(const String& name, const Vec4& value);
         bool            setUniform(const String& name, const Mat3& value);
         bool            setUniform(const String& name, const Mat4& value);
-
-        /// Возвращает индекс uniform переменной
+        /// Возвращает индекс uniform переменной или -1, если переменная отсутствует в программе
         GLuint          uniformLocation(const String& name);
-        /// Вовзращает индекс вершинного входного атрибута
+        /// Вовзращает индекс вершинного входного атрибута или -1, если переменная отсутствует в программе
         GLuint          attributeLocation(const String& name);
 
 private:
-        /// Компилирует шейдеры из m_shaders
-        bool            compileShaders();
+        /// Структура, по которой можно создать шейдер
+        struct ShaderInfo {
+                ShaderType::Enum        type;
+                String                  source;
+        };
+        typedef std::vector<ShaderInfo>         ShaderInfoList;
+        typedef std::vector<Shader>             ShaderList;
+        typedef std::map<String, GLuint>        MapStringUint;
 
-        /// Устанавливает атрибутам (im_vPosition, im_vNormal, im_vTangent, im_vTexCoord) индексы из ProgramAttributeLocations
+private:
+        /// Разбирает на состовляющие *.glsl файл
+        ShaderInfoList  parseGLSL(const String& source);
+
+        /// Создает, компилирует и присоединяет OpenGL шейдеры
+        ShaderList      createShaders(const ShaderInfoList& sources, const StringList& defines, const String& path);
+        /// Устанавливает стандартным атрибутам индексы из ProgramAttributeLocations
         void            bindDefaultAttributeLocations();
-
         /// Линкует программу
         bool            linkProgram();
-        /// Возвращает статус линковки
-        bool            linkStatus();
-        /// Возвращает лог линковки
-        String          linkLog();
+        /// Возвращает OpenGL статус линковки
+        bool            getLinkStatus(GLuint handle);
+        /// Возвращает OpenGL лог линковки
+        String          getLinkLog(GLuint handle);
+        /// Отсоединяет и удаляет OpenGL шейдеры
+        void            destroyShaders(ShaderList& shaders);
 
         /// Получает информацию о всех uniform-переменных в шейдерах
         void            loadUniformInformation();
@@ -110,16 +110,21 @@ private:
         void            loadAttributeInformation();
 
 private:
-        GLuint                  m_handle;
-        StringList              m_macroDefines;
-        std::vector<Shader*>    m_shaders;
-        String                  m_log;
-        bool                    m_isBuilded;
+        /// Данные касающиеся создания шейдеров
+        ShaderInfoList  m_sources;
+        StringList      m_defines;
+        String          m_path;
 
-        static GLuint           s_boundHandle;
+        /// Данные касающиеся самой программы
+        GLuint          m_handle;
+        String          m_log;
 
-        MapStringUint           m_uniformLocations;
-        MapStringUint           m_attributeLocations;
+        /// Кэш индексов переменных в программе
+        MapStringUint   m_uniformLocations;
+        MapStringUint   m_attributeLocations;
+
+        /// Текущая используемая программа
+        static GLuint   s_boundHandle;
 
 };
 
