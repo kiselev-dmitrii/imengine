@@ -16,7 +16,7 @@ void Program::destroy() {
         IM_ASSERT(m_handle);
 
         IM_GLCALL(glDeleteProgram(m_handle));
-        IM_LOG("Program" << m_handle << ": removed");
+        IM_LOG("Program" << m_handle << ": destroyed");
 }
 
 GLuint Program::handle() {
@@ -103,7 +103,7 @@ Program::ShaderList Program::createShaders(const ShaderInfoList &sources, const 
         for(const ShaderInfo& info: sources) {
                 Shader shader;
                 shader.create(info.type);
-                shader.uploadSource(info.source, defines, path);
+                shader.loadSource(info.source, defines, path);
                 shader.compile();
                 shader.attach(this);
                 m_log += shader.log();
@@ -167,7 +167,7 @@ String Program::log() {
 }
 
 void Program::bind() {
-        if (s_boundHandle != m_handle) {
+        if (m_handle != s_boundHandle) {
                 IM_GLCALL(glUseProgram(m_handle));
                 s_boundHandle = m_handle;
 

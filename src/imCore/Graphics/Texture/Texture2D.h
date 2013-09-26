@@ -11,17 +11,13 @@ namespace imCore {
  */
 class Texture2D : public Texture {
 public:
-        /// Создает пустую двумерную текстуру. Видеопамять выделяется
-        Texture2D(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat);
-        /// Создает двумерную текстуру, заполненную данными из src
-        Texture2D(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid* src);
-        /// Создает двумерную текстуру из файла изображения
-        Texture2D(const String& filename);
+        /// Создает двумерную текстуру
+        void            create();
 
         /// Загружает данные в текстуру из src
-        void            upload(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid* src);
+        void            load(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid* src);
         /// Загружает данные в текстуру из зображения filename
-        void            upload(const String& filename);
+        void            load(const String& filename);
         /// Выделяет область пустую область видеопамяти. Предыдущее содержание уничтожается
         void            allocate(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat);
 

@@ -2,46 +2,29 @@
 #include "Image.h"
 #include "../../Utils/Debug.h"
 #include "../../Utils/GLUtils.h"
-#include "../../Utils/Types.h"
 
 namespace imCore {
 
-Texture1D::Texture1D(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType,
-                     TextureSrcFormat::Enum srcFormat) : Texture(TextureTarget::TEXTURE_1D) {
-        allocate(width, internal, srcType, srcFormat);
+void Texture1D::create() {
+        Texture::create(TextureTarget::TEXTURE_1D);
 }
 
-Texture1D::Texture1D(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType,
-                     TextureSrcFormat::Enum srcFormat, GLvoid *src) : Texture(TextureTarget::TEXTURE_1D) {
-        upload(width, internal, srcType, srcFormat, src);
-}
-
-Texture1D::Texture1D(const String &filename) : Texture(TextureTarget::TEXTURE_1D){
-        upload(filename);
-}
-
-void Texture1D::upload(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid *src) {
+void Texture1D::load(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid *src) {
         bind();
 
         IM_GLCALL(glTexImage1D(m_target, 0, internal, width, 0, srcFormat, srcType, src));
-        m_width = width;
-        m_height = 1;
-        m_depth = 1;
-        m_internalFormat = internal;
-        m_srcType = srcType;
-        m_srcFormat = srcFormat;
-        m_wasMemoryAllocated = true;
+        updateTextureInformation(width, 1, 1, internal, srcType, srcFormat, true);
 
-        IM_LOG("Texture memory was allocated: handle: " << m_handle << ", target: " << GLUtils::convertEnumToString(m_target));
+        IM_LOG("Texture" << m_handle << ": memory was allocated");
 }
 
-void Texture1D::upload(const String &filename) {
+void Texture1D::load(const String &filename) {
         Image img(filename);
-        upload(img.width(), (TextureInternalFormat::Enum) img.format(), img.type(), img.format(), img.data());
+        load(img.width(), (TextureInternalFormat::Enum) img.format(), img.type(), img.format(), img.data());
 }
 
 void Texture1D::allocate(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat) {
-        upload(width, internal, srcType, srcFormat, NULL);
+        load(width, internal, srcType, srcFormat, NULL);
 }
 
 void Texture1D::save(const String &filename, bool overwrite) {

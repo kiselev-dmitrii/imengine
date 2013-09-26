@@ -22,10 +22,10 @@ void Shader::destroy() {
         IM_ASSERT(m_handle);
 
         IM_GLCALL(glDeleteShader(m_handle));
-        IM_LOG("Shader" << m_handle << ": removed, type: " << GLUtils::convertEnumToString(m_type));
+        IM_LOG("Shader" << m_handle << ": destroyed, type: " << GLUtils::convertEnumToString(m_type));
 }
 
-void Shader::uploadSource(const String &str, const StringList &defines, const String &path) {
+void Shader::loadSource(const String &str, const StringList &defines, const String &path) {
         IM_ASSERT(m_handle);
 
         String source = preprocess(str, defines, path);

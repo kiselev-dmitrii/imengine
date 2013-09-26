@@ -1,23 +1,37 @@
 #include "Texture.h"
 #include "../../Utils/Debug.h"
+#include "../../Utils/GLUtils.h"
 
 namespace imCore {
 
 GLuint Texture::s_boundHandle = 0;
-GLuint Texture::s_currentUnit = 0;
+int    Texture::s_currentUnit = 0;
 
-Texture::Texture(TextureTarget::Enum target) {
-        m_target = target;
-        IM_GLCALL(glGenTextures(1, &m_handle));
-        bind();                                         //первый bind определяет тип текстуры
-
+Texture::Texture()  {
+        m_handle = 0;
         m_width = m_height = m_depth = 0;
         m_wasMemoryAllocated = false;
 }
 
-Texture::~Texture() {
-        IM_GLCALL(glDeleteTextures(1, &m_handle));
+void Texture::create(TextureTarget::Enum target) {
+        m_target = target;
+        IM_GLCALL(glGenTextures(1, &m_handle));
+        IM_LOG("Texture" << m_handle << ": created " << GLUtils::convertEnumToString(m_target));
+
+        bind();                                         //первый bind определяет тип текстуры
 }
+
+void Texture::destroy() {
+        IM_ASSERT(m_handle);
+
+        IM_GLCALL(glDeleteTextures(1, &m_handle));
+        IM_LOG("Texture" << m_handle << ": destroyed");
+}
+
+GLuint Texture::handle() {
+        return m_handle;
+}
+
 
 int Texture::width() {
         return m_width;
@@ -171,14 +185,14 @@ void Texture::generateMipmaps() {
         IM_GLCALL(glGenerateMipmap(m_target));
 }
 
-void Texture::bind(GLuint unit) {
-        if (s_currentUnit != unit) {
+void Texture::bind(int unit) {
+        if (unit != s_currentUnit && unit != -1) {
                 IM_GLCALL(glActiveTexture(GL_TEXTURE0 + unit));
                 IM_GLCALL(glBindTexture(m_target, m_handle));
                 s_currentUnit = unit;
                 s_boundHandle = m_handle;
         }
-        if (s_boundHandle != m_handle) {
+        if (m_handle != s_boundHandle) {
                 IM_GLCALL(glBindTexture(m_target, m_handle));
                 s_boundHandle = m_handle;
         }
@@ -197,8 +211,16 @@ std::shared_ptr<ubyte> Texture::data() {
         return std::shared_ptr<ubyte>(data);
 }
 
-GLuint Texture::handle() {
-        return m_handle;
+void Texture::updateTextureInformation(GLsizei width, GLsizei height, GLsizei depth, TextureInternalFormat::Enum internalFormat,
+                                       TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, bool wasMemoryAllocated) {
+        m_width = width;
+        m_height = height;
+        m_depth = depth;
+        m_internalFormat = internalFormat;
+        m_srcType = srcType;
+        m_srcFormat = srcFormat;
+        m_wasMemoryAllocated = wasMemoryAllocated;
 }
+
 
 } //namespace imCore

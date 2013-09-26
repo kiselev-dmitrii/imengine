@@ -35,7 +35,7 @@ public:
         void    destroy();
 
         /// Загружает исходники в видеопамять из str, предварительно совершив препроцессинг
-        void    uploadSource(const String& str, const StringList& defines, const String& path = "");
+        void    loadSource(const String& str, const StringList& defines, const String& path = "");
         /// Компилирование шейдера. Возвращает true при успехе
         bool    compile();
         /// Возвращает лог компиляци программы

@@ -12,17 +12,13 @@ namespace imCore {
  */
 class Texture1D : public Texture {
 public:
-        /// Создает пустую одномерную текстуру размера width (видеопамять выделяется)
-        Texture1D(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat);
-        /// Создает одномерную текстуру заполненую данными из src
-        Texture1D(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid* src);
-        /// Создает одномерную текстуру из файла изображения
-        Texture1D(const String& filename);
+        /// Создает одномерную текстуру
+        void            create();
 
         /// Загружает данные в текстуру из src
-        void            upload(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid* src);
+        void            load(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid* src);
         /// Загружает данные в текстуру из изображения filename
-        void            upload(const String& filename);
+        void            load(const String& filename);
         /// Выделяет область памяти размера width
         void            allocate(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat);
 
