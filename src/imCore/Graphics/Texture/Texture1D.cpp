@@ -48,7 +48,7 @@ void Texture1D::save(const String &filename, bool overwrite) {
         IM_ASSERT(m_wasMemoryAllocated);
 
         Image img;
-        img.load(width(), height(), depth(), numberOfChannels(), sourceFormat(), sourceType(), rawData().get());
+        img.load(width(), height(), depth(), numberOfChannels(), sourceFormat(), sourceType(), data().get());
         img.save(filename, overwrite);
 }
 

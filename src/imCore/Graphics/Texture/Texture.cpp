@@ -189,7 +189,7 @@ void Texture::unbind() {
         s_boundHandle = 0;
 }
 
-std::shared_ptr<ubyte> Texture::rawData() {
+std::shared_ptr<ubyte> Texture::data() {
         IM_ASSERT(m_wasMemoryAllocated);
 
         ubyte* data = new ubyte [sizeOfData()];
@@ -197,8 +197,8 @@ std::shared_ptr<ubyte> Texture::rawData() {
         return std::shared_ptr<ubyte>(data);
 }
 
-GLuint Texture::rawTexture() {
-        return m_target;
+GLuint Texture::handle() {
+        return m_handle;
 }
 
 } //namespace imCore

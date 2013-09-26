@@ -228,10 +228,10 @@ public:
 
         /// Возвращает данные внутри текстуры.
         ///Медленный метод, поскольку требуется синхронизация GPU и CPU
-        std::shared_ptr<ubyte>  rawData();
+        std::shared_ptr<ubyte>  data();
 
         /// Возвращает OGL дескриптор текстуры
-        GLuint                  rawTexture();
+        GLuint                  handle();
 
 protected:
         GLuint                          m_handle;
