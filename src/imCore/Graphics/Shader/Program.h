@@ -34,11 +34,10 @@ enum Enum {
  */
 class Program {
 public:
-        /// Создает пустую программу
-        Program();
-        /// Деструктор. Разрушает программу
-        ~Program();
-
+        /// Создает программу
+        void            create();
+        /// Уничтожает программу
+        void            destroy();
         /// Возвращает OpenGL дескриптор программы
         GLuint          handle();
 

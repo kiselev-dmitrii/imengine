@@ -25,8 +25,8 @@ private:
         GLuint          m_vao;
         GLuint          m_vbo;
 
-        Program*        m_program1;
-        Program*        m_program2;
+        Program         m_program1;
+        Program         m_program2;
 
 };
 
@@ -51,21 +51,21 @@ void Application::createVAO() {
 
 void Application::createProgram1() {
         IM_LOG("Create Program1");
-        m_program1 = new Program();
-        m_program1->loadSource(showTriangleSource);
-        m_program1->setDefines({"RED"});
-        m_program1->build();
+        m_program1.create();
+        m_program1.loadSource(showTriangleSource);
+        m_program1.setDefines({"RED"});
+        m_program1.build();
 }
 
 void Application::createProgram2() {
         IM_LOG("Create Program2");
-        m_program2 = new Program();
-        m_program2->loadSourceFromFile("resources/shaders/test/color.glsl");
-        m_program2->build();
+        m_program2.create();
+        m_program2.loadSourceFromFile("resources/shaders/test/color.glsl");
+        m_program2.build();
 
-        m_program2->bind();
-        m_program2->setUniform("uColor", Vec3(0.3, 0.3, 0.8));
-        m_program2->unbind();
+        m_program2.bind();
+        m_program2.setUniform("uColor", Vec3(0.3, 0.3, 0.8));
+        m_program2.unbind();
 }
 
 void Application::initialize() {
@@ -89,20 +89,20 @@ void Application::render() {
 }
 
 void Application::destroy() {
-        delete m_program1;
-        delete m_program2;
+        m_program1.destroy();
+        m_program2.destroy();
 }
 
 void Application::keyPressEvent(int key) {
         switch (key) {
                 case SDLK_1: {
                         IM_LOG("Program1 binding...");
-                        m_program1->bind();
+                        m_program1.bind();
                         break;
                 }
                 case SDLK_2: {
                         IM_LOG("Program2 binding...");
-                        m_program2->bind();
+                        m_program2.bind();
                         break;
                 }
 
@@ -111,29 +111,29 @@ void Application::keyPressEvent(int key) {
                         float r = (float)rand()/(float)RAND_MAX;
                         float g = (float)rand()/(float)RAND_MAX;
                         float b = (float)rand()/(float)RAND_MAX;
-                        m_program2->bind();
-                        m_program2->setUniform("uColor", Vec3(r, g, b));
+                        m_program2.bind();
+                        m_program2.setUniform("uColor", Vec3(r, g, b));
                         break;
                 }
                 case SDLK_4: {
                         IM_LOG("Program1 rebuilding...");
-                        m_program1->setDefines({"GREEN"});
-                        m_program1->build();
+                        m_program1.setDefines({"GREEN"});
+                        m_program1.build();
                         break;
                 }
                 case SDLK_5: {
                         IM_LOG("Program2 rebuilding...");
-                        m_program2->build();
+                        m_program2.build();
                         break;
                 }
                 case SDLK_6: {
                         IM_LOG("Program1 info...");
-                        IM_VAR(m_program1->handle());
-                        IM_VAR(m_program1->source(ShaderType::VERTEX));
-                        IM_VAR(m_program1->source(ShaderType::FRAGMENT));
-                        IM_VAR(m_program1->defines());
-                        IM_VAR(m_program1->log());
-                        IM_VAR(m_program1->attributeLocation("im_vPosition"));
+                        IM_VAR(m_program1.handle());
+                        IM_VAR(m_program1.source(ShaderType::VERTEX));
+                        IM_VAR(m_program1.source(ShaderType::FRAGMENT));
+                        IM_VAR(m_program1.defines());
+                        IM_VAR(m_program1.log());
+                        IM_VAR(m_program1.attributeLocation("im_vPosition"));
                         break;
                 }
         }

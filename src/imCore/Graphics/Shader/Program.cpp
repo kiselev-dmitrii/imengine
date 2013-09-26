@@ -7,12 +7,14 @@ namespace imCore {
 
 GLuint Program::s_boundHandle = 0;
 
-Program::Program() {
+void Program::create() {
         IM_GLCALL(m_handle = glCreateProgram());
         IM_LOG("Program" << m_handle << ": created");
 }
 
-Program::~Program() {
+void Program::destroy() {
+        IM_ASSERT(m_handle);
+
         IM_GLCALL(glDeleteProgram(m_handle));
         IM_LOG("Program" << m_handle << ": removed");
 }
