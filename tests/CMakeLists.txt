@@ -9,6 +9,7 @@ set(TESTS
         Texture2DTest
         FilesystemTest
         ProgramTest
+        GeometryShaderTest
 )
 
 foreach(TEST ${TESTS})
