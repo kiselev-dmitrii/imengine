@@ -14,7 +14,6 @@ set(imCoreSources
         imCore/Graphics/Buffer/BufferObject.cpp
         imCore/Graphics/Buffer/VertexBuffer.cpp
         imCore/Graphics/Buffer/IndexBuffer.cpp
-        imCore/Graphics/Buffer/UniformBuffer.cpp
 
         imCore/Graphics/Shader/Shader.cpp
         imCore/Graphics/Shader/Program.cpp
@@ -52,7 +51,6 @@ set(imCoreHeaders
         imCore/Graphics/Buffer/BufferObject.h
         imCore/Graphics/Buffer/VertexBuffer.h
         imCore/Graphics/Buffer/IndexBuffer.h
-        imCore/Graphics/Buffer/UniformBuffer.h
 
         imCore/Graphics/Shader/Shader.h
         imCore/Graphics/Shader/Program.h
