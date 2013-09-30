@@ -136,7 +136,7 @@ void Application::keyPressEvent(int key) {
 void Application::destroy() {
         m_program.destroy();
         m_texture.destroy();
-        m_program.destroy();
+        m_vbo.destroy();
 }
 
 int main() {

@@ -13,7 +13,7 @@ void Texture2D::load(int width, int height, TextureInternalFormat::Enum internal
         bind();
 
         IM_GLCALL(glTexImage2D(m_target, 0, internal, width, height, 0, srcFormat, srcType, src));
-        updateTextureInformation(width, height, 1, internal, srcType, srcFormat, true);
+        updateTextureInformation(width, height, 1, 1, internal, srcType, srcFormat, true);
 
         IM_LOG("Texture" << m_handle << ": memory was allocated");
 }

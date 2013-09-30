@@ -10,6 +10,7 @@ int    Texture::s_currentUnit = 0;
 Texture::Texture()  {
         m_handle = 0;
         m_width = m_height = m_depth = 0;
+        m_numberOfImages = 0;
         m_wasMemoryAllocated = false;
 }
 
@@ -43,6 +44,10 @@ int Texture::height() {
 
 int Texture::depth() {
         return m_depth;
+}
+
+uint Texture::numberOfImages() {
+        return m_numberOfImages;
 }
 
 int Texture::numberOfChannels() {
@@ -100,7 +105,7 @@ int Texture::sizeOfComponent() {
 }
 
 int Texture::sizeOfData() {
-        return width() * height() * depth() * sizeOfComponent() * numberOfChannels();
+        return numberOfImages() * width() * height() * depth() * sizeOfComponent() * numberOfChannels();
 }
 
 bool Texture::wasMemoryAllocated() {
@@ -211,11 +216,12 @@ std::shared_ptr<ubyte> Texture::data() {
         return std::shared_ptr<ubyte>(data);
 }
 
-void Texture::updateTextureInformation(GLsizei width, GLsizei height, GLsizei depth, TextureInternalFormat::Enum internalFormat,
+void Texture::updateTextureInformation(GLsizei width, GLsizei height, GLsizei depth, uint numberOfImages, TextureInternalFormat::Enum internalFormat,
                                        TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, bool wasMemoryAllocated) {
         m_width = width;
         m_height = height;
         m_depth = depth;
+        m_numberOfImages = numberOfImages;
         m_internalFormat = internalFormat;
         m_srcType = srcType;
         m_srcFormat = srcFormat;

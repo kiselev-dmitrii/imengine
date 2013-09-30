@@ -13,7 +13,7 @@ void Texture1D::load(int width, TextureInternalFormat::Enum internal, TextureSrc
         bind();
 
         IM_GLCALL(glTexImage1D(m_target, 0, internal, width, 0, srcFormat, srcType, src));
-        updateTextureInformation(width, 1, 1, internal, srcType, srcFormat, true);
+        updateTextureInformation(width, 1, 1, 1, internal, srcType, srcFormat, true);
 
         IM_LOG("Texture" << m_handle << ": memory was allocated");
 }

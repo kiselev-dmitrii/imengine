@@ -178,6 +178,8 @@ public:
         int                             height();
         /// Возвращает глубину
         int                             depth();
+        /// Возвращает количество изображений в текстуре
+        uint                            numberOfImages();
 
         /// Возвращает количество каналов (количество компонент на пиксель)
         int                             numberOfChannels();
@@ -238,7 +240,7 @@ public:
 
 protected:
         /// Метод служит для того, чтобы обновлять информацию о текстуре после ее загрузки
-        void                            updateTextureInformation(GLsizei width, GLsizei height, GLsizei depth,  TextureInternalFormat::Enum internalFormat,
+        void                            updateTextureInformation(GLsizei width, GLsizei height, GLsizei depth, uint numberOfImages,  TextureInternalFormat::Enum internalFormat,
                                                                  TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, bool wasMemoryAllocated);
 
 protected:
@@ -249,6 +251,7 @@ protected:
         GLsizei                         m_width;
         GLsizei                         m_height;
         GLsizei                         m_depth;
+        uint                            m_numberOfImages;         //количество изображений (например в cupemap их 6)
         TextureInternalFormat::Enum     m_internalFormat;
         TextureSrcType::Enum            m_srcType;
         TextureSrcFormat::Enum          m_srcFormat;
