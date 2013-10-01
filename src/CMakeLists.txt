@@ -85,11 +85,18 @@ set(imCoreHeaders
 
 
 ###### imFramework SOURCES and HEADERS ##########################
-#set(imFrameworkHeaders
-#)
-#set(imFrameworkSources
-#)
+set(imFrameworkHeaders
+        ### APPLICATION ###
+        imFramework/Application/GraphicApplication.h
+        imFramework/Application/PhysicApplication.h
+)
+set(imFrameworkSources
+        ### APPLICATION ###
+        imFramework/Application/GraphicApplication.cpp
+        imFramework/Application/PhysicApplication.cpp
+)
 #################################################################
 
-add_library(${PROJECT_NAME} SHARED ${imCoreSources} ${imCoreHeaders})
+add_library(${PROJECT_NAME} SHARED ${imCoreSources} ${imCoreHeaders}
+                                   ${imFrameworkHeaders} ${imFrameworkSources})
 target_link_libraries(imEngine ${imEngineLibs})
