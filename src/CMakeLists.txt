@@ -19,6 +19,8 @@ set(imCoreSources
         imCore/Graphics/Shader/Shader.cpp
         imCore/Graphics/Shader/Program.cpp
 
+        imCore/Graphics/Render/Renderer.cpp
+
         ### FILE RESOURCES ###
         imCore/FileResource/Mesh.cpp
         imCore/FileResource/Font.cpp
@@ -57,6 +59,8 @@ set(imCoreHeaders
         imCore/Graphics/Shader/Shader.h
         imCore/Graphics/Shader/Program.h
 
+        imCore/Graphics/Render/Renderer.h
+
         ### FILE RESOURCES ###
         imCore/FileResource/Mesh.h
         imCore/FileResource/Font.h
@@ -89,11 +93,17 @@ set(imFrameworkHeaders
         ### APPLICATION ###
         imFramework/Application/GraphicApplication.h
         imFramework/Application/PhysicApplication.h
+
+        ### GAME OBJECTS ###
+        imFramework/GameObjects/Model.h
 )
 set(imFrameworkSources
         ### APPLICATION ###
         imFramework/Application/GraphicApplication.cpp
         imFramework/Application/PhysicApplication.cpp
+
+        ### GAME OBJECTS ###
+        imFramework/GameObjects/Model.cpp
 )
 #################################################################
 

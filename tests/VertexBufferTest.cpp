@@ -2,6 +2,7 @@
 #include <imCore/Graphics/Shader/Program.h>
 #include <imCore/Graphics/Texture/Texture2D.h>
 #include <imCore/Graphics/Buffer/VertexBuffer.h>
+#include <imCore/Graphics/Render/Renderer.h>
 
 #include <imCore/Utils/GLUtils.h>
 #include <imCore/Utils/Debug.h>
@@ -77,10 +78,9 @@ void Application::update() {
 }
 
 void Application::render() {
-        glClear(GL_COLOR_BUFFER_BIT);
-
+        Renderer::clearBuffers();
         m_vbo.bind();
-        glDrawArrays(GL_POINTS, 0, 3);
+        Renderer::renderVertices(Primitive::POINT, 3);
 }
 
 void Application::windowResizeEvent(int x, int y) {

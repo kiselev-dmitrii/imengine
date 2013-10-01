@@ -9,6 +9,8 @@ namespace imFramework {
  *
  *  Подраземенвается, что классы приложений ниже в иерархии будут работать с графикой, GUI,
  *  добавлять объекты на сцену.
+ *  @todo
+ *      - Реализовать
  */
 class GraphicApplication : public imCore::BaseApplication {
 protected:

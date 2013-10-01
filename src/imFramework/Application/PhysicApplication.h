@@ -9,6 +9,8 @@ namespace imFramework {
  *
  *  Предполагается, что классы приложений ниже в иерархии будут использовать
  *  встроенный в imEngine движок Bullet Physics.
+ *  @todo
+ *      - Реализовать
  */
 class PhysicApplication : public GraphicApplication {
 protected:
