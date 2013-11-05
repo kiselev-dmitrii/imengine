@@ -118,6 +118,11 @@ add_subdirectory(tests)
 #################################################################
 
 
+###### COPY RESOURCES ###########################################
+file(COPY ${PROJECT_SOURCE_DIR}/resources DESTINATION ${PROJECT_BINARY_DIR}/bin/)
+#################################################################
+
+
 ###### DOCUMENTATIONS ###########################################
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
