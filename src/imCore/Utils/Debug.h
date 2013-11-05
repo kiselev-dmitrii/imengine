@@ -3,6 +3,7 @@
 
 #include "StreamUtils.h"
 #include "Types.h"
+#include <chrono>
 
 using namespace imCore::StreamUtils;
 
@@ -56,6 +57,16 @@ namespace Debug {
                 call;\
                 imCore::Debug::checkGlErrors(__FUNCTION__, __FILE__, __LINE__, #call)
 
+        /// Профилирование кода
+        #define IM_PROFILE(name, code)\
+                {\
+                        auto start = std::chrono::system_clock::now();\
+                        code;\
+                        auto end = std::chrono::system_clock::now();\
+                        std::chrono::duration<double> elapsed_seconds = end-start;\
+                        std::clog << "PROFILER: " << name << ": " << elapsed_seconds.count() << " sec." << std::endl;\
+                }
+
 #else
         #define IM_VAR(variable)
         #define IM_PRINT(text)
@@ -64,6 +75,7 @@ namespace Debug {
         #define IM_ERROR(text)
         #define IM_ASSERT(expression)
         #define IM_GLCALL(call) call
+        #define IM_PROFILER(name, code) code
 #endif
 
 
