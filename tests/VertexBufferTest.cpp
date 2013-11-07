@@ -1,13 +1,14 @@
-#include <imCore/System/BaseApplication.h>
-#include <imCore/Graphics/Shader/Program.h>
-#include <imCore/Graphics/Texture/Texture2D.h>
-#include <imCore/Graphics/Buffer/VertexBuffer.h>
-#include <imCore/Graphics/Render/Renderer.h>
+#include <imEngine/Application/BaseApplication.h>
+#include <imEngine/Graphics/GAPI/Shader/Program.h>
+#include <imEngine/Graphics/GAPI/Texture/Texture2D.h>
+#include <imEngine/Graphics/GAPI/Buffer/VertexBuffer.h>
+#include <imEngine/Graphics/GAPI/Render/Renderer.h>
 
-#include <imCore/Utils/GLUtils.h>
-#include <imCore/Utils/Debug.h>
+#include <imEngine/Utils/GLUtils.h>
+#include <imEngine/Utils/Debug.h>
 
-using namespace imCore;
+using namespace imEngine;
+using namespace GAPI;
 
 class Application : public BaseApplication {
 protected:

@@ -1,9 +1,9 @@
 #include <GL/glew.h>
-#include <imCore/Utils/Debug.h>
-#include <imCore/Utils/Types.h>
+#include <imEngine/Utils/Debug.h>
+#include <imEngine/Utils/Types.h>
 #include <map>
 
-using namespace imCore;
+using namespace imEngine;
 
 void foo() {
         IM_TRACE("Nothing to do");

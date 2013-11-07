@@ -1,11 +1,11 @@
-#include <imCore/Graphics/Shader/Program.h>
-#include <imCore/System/BaseApplication.h>
-#include <imCore/Utils/StringUtils.h>
-#include <imCore/Utils/Debug.h>
+#include <imEngine/Graphics/GAPI/Shader/Program.h>
+#include <imEngine/Application/BaseApplication.h>
+#include <imEngine/Utils/StringUtils.h>
+#include <imEngine/Utils/Debug.h>
 #include <cstdio>
 #include "showTriangle.glsl"
 
-using namespace imCore;
+using namespace imEngine;
 
 class Application : public BaseApplication {
 public:
@@ -25,8 +25,8 @@ private:
         GLuint          m_vao;
         GLuint          m_vbo;
 
-        Program         m_program1;
-        Program         m_program2;
+        GAPI::Program   m_program1;
+        GAPI::Program   m_program2;
 
 };
 
@@ -44,8 +44,8 @@ void Application::createVAO() {
         glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
         glBufferData(GL_ARRAY_BUFFER, sizeof(triangle), triangle, GL_STATIC_DRAW);
 
-        glEnableVertexAttribArray(ProgramAttributeLocations::POSITION);
-        glVertexAttribPointer(ProgramAttributeLocations::POSITION, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) nullptr);
+        glEnableVertexAttribArray(GAPI::ProgramAttributeLocations::POSITION);
+        glVertexAttribPointer(GAPI::ProgramAttributeLocations::POSITION, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) nullptr);
 
 }
 
@@ -129,8 +129,8 @@ void Application::keyPressEvent(int key) {
                 case SDLK_6: {
                         IM_LOG("Program1 info...");
                         IM_VAR(m_program1.handle());
-                        IM_VAR(m_program1.source(ShaderType::VERTEX));
-                        IM_VAR(m_program1.source(ShaderType::FRAGMENT));
+                        IM_VAR(m_program1.source(GAPI::ShaderType::VERTEX));
+                        IM_VAR(m_program1.source(GAPI::ShaderType::FRAGMENT));
                         IM_VAR(m_program1.defines());
                         IM_VAR(m_program1.log());
                         IM_VAR(m_program1.attributeLocation("im_vPosition"));

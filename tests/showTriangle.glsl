@@ -1,4 +1,4 @@
-imCore::String showTriangleSource = R"(
+imEngine::String showTriangleSource = R"(
 
 ///### VERTEX SHADER ###///
 in vec3 im_vPosition;

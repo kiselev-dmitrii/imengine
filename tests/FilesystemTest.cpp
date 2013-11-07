@@ -1,10 +1,10 @@
-#include <imCore/System/Filesystem.h>
-#include <imCore/Utils/Types.h>
-#include <imCore/Utils/Debug.h>
-#include <imCore/Utils/StringUtils.h>
+#include <imEngine/System/Filesystem.h>
+#include <imEngine/Utils/Types.h>
+#include <imEngine/Utils/Debug.h>
+#include <imEngine/Utils/StringUtils.h>
 #include <regex>
 
-using namespace imCore;
+using namespace imEngine;
 
 String getPathFromInclude(const String& includeString) {
         int start = includeString.find("\"") + 1;

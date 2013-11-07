@@ -1,9 +1,9 @@
-#include <imCore/System/BaseApplication.h>
-#include <imCore/Utils/Debug.h>
+#include <imEngine/Application/BaseApplication.h>
+#include <imEngine/Utils/Debug.h>
 
-using namespace imCore;
+using namespace imEngine;
 
-class TestApplication : public imCore::BaseApplication {
+class TestApplication : public imEngine::BaseApplication {
 protected:
         void initialize() {
                 IM_TRACE("Application initialized");

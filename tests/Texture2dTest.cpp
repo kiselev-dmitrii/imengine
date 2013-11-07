@@ -1,9 +1,10 @@
-#include <imCore/System/BaseApplication.h>
-#include <imCore/Graphics/Texture/Texture2D.h>
-#include <imCore/Utils/GLUtils.h>
-#include <imCore/Utils/Debug.h>
+#include <imEngine/Application/BaseApplication.h>
+#include <imEngine/Graphics/GAPI/Texture/Texture2D.h>
+#include <imEngine/Utils/GLUtils.h>
+#include <imEngine/Utils/Debug.h>
 
-using namespace imCore;
+using namespace imEngine;
+using namespace GAPI;
 
 class Application : public BaseApplication {
 public:
@@ -13,8 +14,8 @@ public:
         void    destroy();
 
 private:
-        Texture2D       m_texture1;
-        Texture2D       m_texture2;
+        GAPI::Texture2D       m_texture1;
+        GAPI::Texture2D       m_texture2;
 };
 
 void Application::initialize() {

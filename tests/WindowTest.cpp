@@ -1,10 +1,10 @@
 #include <GL/glew.h>
-#include <imCore/System/Window.h>
-#include <imCore/Utils/Debug.h>
+#include <imEngine/System/Window.h>
+#include <imEngine/Utils/Debug.h>
 #include <SDL2/SDL.h>
 #undef main
 
-using namespace imCore;
+using namespace imEngine;
 
 bool isPressed(uint scancode) {
         const Uint8* state = SDL_GetKeyboardState(NULL);
