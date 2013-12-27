@@ -10,6 +10,7 @@ set(TESTS
         FilesystemTest
         ProgramTest
         VertexBufferTest
+        TextureManagerTest
 )
 
 foreach(TEST ${TESTS})

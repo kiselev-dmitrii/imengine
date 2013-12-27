@@ -11,7 +11,11 @@ ResourceManagerBase::~ResourceManagerBase() {
         removeAll();
 }
 
-StringList ResourceManagerBase::resourceList() {
+const String& ResourceManagerBase::directory() {
+        return m_directory;
+}
+
+StringList ResourceManagerBase::list() {
         StringList list = Filesystem::tree(m_directory);
         for (String& file: list) file.replace(0, m_directory.length(), "");
 

@@ -22,7 +22,7 @@ public:
         /// Возвращает путь к директории с ресурсами
         const String&   directory();
         /// Возвращает список доступных ресурсов (и загруженных и тех, которые на диске)
-        StringList      resourceList();
+        StringList      list();
 
         /// Перезагружает все ресурсы
         void            reloadAll();

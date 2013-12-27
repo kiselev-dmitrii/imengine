@@ -2,6 +2,7 @@
 #define GRAPHICAPPLICATION_H
 
 #include "BaseApplication.h"
+#include <imEngine/Resources/ResourceManager.h>
 
 namespace imEngine {
 
@@ -26,12 +27,12 @@ protected:
         /// Обработка стандартных клавиш (развернуть, и т.д)
         void            keyPressEvent(int key);
 
+protected:
+        /// Менеджер ресурсов
+        ResourceManager*        resources();
+
 private:
-        /*
-        ResourceManager m_resourceManager;
-        SceneManager    m_sceneManager;
-        GuiManager      m_guiManager;
-        */
+        ResourceManager         m_resourceManager;
 };
 
 } //namespace imEngine
