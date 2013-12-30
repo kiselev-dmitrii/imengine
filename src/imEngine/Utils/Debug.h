@@ -67,6 +67,10 @@ namespace Debug {
                         std::clog << "PROFILER: " << name << ": " << elapsed_seconds.count() << " sec." << std::endl;\
                 }
 
+        /// Пометка переменной как неиспользуемой.
+        #define IM_UNUSED(variable)\
+                (void)variable
+
 #else
         #define IM_VAR(variable)
         #define IM_PRINT(text)

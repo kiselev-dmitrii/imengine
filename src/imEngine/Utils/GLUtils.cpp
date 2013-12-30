@@ -7,15 +7,14 @@ String GLUtils::convertEnumToString(GLenum enumeration) {
                 case GL_NONE: 		                return "GL_NONE"; break;
 
                 //Биндинги для BufferObjects
-                case GL_ARRAY_BUFFER:	                return "GL_ARRAY_BUFFER"; break;
-                case GL_ATOMIC_COUNTER_BUFFER:          return "GL_ATOMIC_COUNTER_BUFFER"; break;
-                case GL_COPY_READ_BUFFER:	        return "GL_COPY_READ_BUFFER"; break;
+                case GL_ARRAY_BUFFER:                   return "GL_ARRAY_BUFFER"; break;
+                case GL_COPY_READ_BUFFER:               return "GL_COPY_READ_BUFFER"; break;
                 case GL_COPY_WRITE_BUFFER:              return "GL_COPY_WRITE_BUFFER"; break;
                 case GL_DRAW_INDIRECT_BUFFER:           return "GL_DRAW_INDIRECT_BUFFER"; break;
-                case GL_ELEMENT_ARRAY_BUFFER:	        return "GL_ELEMENT_ARRAY_BUFFER"; break;
-                case GL_PIXEL_PACK_BUFFER:	        return "GL_PIXEL_PACK_BUFFER"; break;
-                case GL_PIXEL_UNPACK_BUFFER:	        return "GL_PIXEL_UNPACK_BUFFER"; break;
-                case GL_TEXTURE_BUFFER:		        return "GL_TEXTURE_BUFFER"; break;
+                case GL_ELEMENT_ARRAY_BUFFER:           return "GL_ELEMENT_ARRAY_BUFFER"; break;
+                case GL_PIXEL_PACK_BUFFER:              return "GL_PIXEL_PACK_BUFFER"; break;
+                case GL_PIXEL_UNPACK_BUFFER:            return "GL_PIXEL_UNPACK_BUFFER"; break;
+                case GL_TEXTURE_BUFFER:		  return "GL_TEXTURE_BUFFER"; break;
                 case GL_TRANSFORM_FEEDBACK_BUFFER:      return "GL_TRANSFORM_FEEDBACK_BUFFER"; break;
                 case GL_UNIFORM_BUFFER:		        return "GL_UNIFORM_BUFFER"; break;
 
@@ -194,7 +193,6 @@ String GLUtils::convertEnumToString(GLenum enumeration) {
                 case GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:	        return "GL_CUBE_MAP_NEGATIVE_Z"; break;
 
                 //Текстурные параметры:
-                case GL_DEPTH_STENCIL_TEXTURE_MODE:		return "GL_DEPTH_STENCIL_TEXTURE_MODE"; break;
                 case GL_TEXTURE_BASE_LEVEL:		        return "GL_TEXTURE_BASE_LEVEL"; break;
                 case GL_TEXTURE_COMPARE_FUNC:			return "GL_TEXTURE_COMPARE_FUNC"; break;
                 case GL_TEXTURE_COMPARE_MODE:			return "GL_TEXTURE_COMPARE_MODE"; break;

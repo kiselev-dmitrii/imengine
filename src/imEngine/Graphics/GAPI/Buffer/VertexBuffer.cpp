@@ -25,7 +25,7 @@ void VertexBuffer::unbind() {
 void VertexBuffer::connect(GLuint attributeIndex, GLuint attributeSize, GLenum attributeType, GLsizei offset, GLsizei stride) {
         bind();
         IM_GLCALL(glEnableVertexAttribArray(attributeIndex));
-        IM_GLCALL(glVertexAttribPointer(attributeIndex, attributeSize, attributeType, GL_FALSE, stride, (GLubyte *)offset));
+        IM_GLCALL(glVertexAttribPointer(attributeIndex, attributeSize, attributeType, GL_FALSE, stride, reinterpret_cast<GLubyte*>(offset)));
 }
 
 

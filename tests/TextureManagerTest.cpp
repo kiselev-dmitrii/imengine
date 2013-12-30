@@ -15,8 +15,6 @@ void TestApplication::initialize() {
         GraphicApplication::initialize();
 
         IM_VAR(resources()->textures()->list());
-        auto tex = resources()->textures()->texture2D("energy.png");
-        auto tex1 = resources()->textures()->texture2D("energy.png");
 }
 
 void TestApplication::update() {
