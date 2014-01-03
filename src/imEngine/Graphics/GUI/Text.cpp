@@ -10,7 +10,9 @@ struct SymbolGeometry {
         Vec4    texCoords;      // Текстурные координаты глифа в атласе
 };
 
-Text::Text(const String &text, const FontPtr font) {
+Text::Text(const String &text, const FontPtr font) :
+        m_depth(0.0f)
+{
         setText(text);
         setFont(font);
 
@@ -31,11 +33,6 @@ void Text::setText(const String &text) {
 void Text::setFont(const FontPtr &font) {
         if (font == m_font) return;
         m_font = font;
-
-        // Привязываем новую текстуру к программе
-        m_font->texture()->bind(0);
-        program().setUniform("u_texture", 0);
-
         m_needToUpdateVBO = true;
 }
 
@@ -54,9 +51,6 @@ void Text::setDepth(float depth) {
 void Text::setColor(const Vec3 &color) {
         if (color == m_color) return;
         m_color = color;
-
-        // Указываем новый цвет
-        program().setUniform("u_color", m_color);
 }
 
 void Text::setWindow(Window *window) {
@@ -70,7 +64,11 @@ void Text::render() {
                 m_needToUpdateVBO = false;
         }
 
-        // Размер окна нужно постоянно обновлять, мало что там юзер с окном сделает
+
+        program().bind();
+        m_font->texture()->bind(0);
+        program().setUniform("u_texture", 0);
+        program().setUniform("u_color", m_color);
         program().setUniform("u_windowSize", Vec2(m_window->size()));
 
         // Биндим наш буфер и рисуем
