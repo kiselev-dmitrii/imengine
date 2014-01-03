@@ -2,6 +2,7 @@
 #define VERTEXARRAY_H
 
 #include <GL/glew.h>
+#include <memory>
 
 namespace imEngine {
 
@@ -38,6 +39,11 @@ private:
 
         static GLuint   s_boundHandle;
 };
+
+
+/** @brief Умный указатель с подсчетом ссылок для VertexArray
+ */
+typedef std::shared_ptr<VertexArray> VertexArrayPtr;
 
 
 } //namespace imEngine

@@ -8,6 +8,9 @@ namespace imEngine {
 class Label : public Widget {
 public:
         explicit        Label(Widget* parent = 0);
+
+private:
+        const String&   m_text;
 };
 
 } //namespace imEngine

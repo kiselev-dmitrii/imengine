@@ -179,6 +179,7 @@ void Program::unbind() {
 }
 
 bool Program::setUniform(const String &name, float value) {
+        bind();
         GLuint location = uniformLocation(name);
         if (location < 0 ) return false;
         IM_GLCALL(glUniform1f(location, value));
@@ -186,6 +187,7 @@ bool Program::setUniform(const String &name, float value) {
 }
 
 bool Program::setUniform(const String &name, int value) {
+        bind();
         GLuint location = uniformLocation(name);
         if (location < 0 ) return false;
         IM_GLCALL(glUniform1i(location, value));
@@ -193,6 +195,7 @@ bool Program::setUniform(const String &name, int value) {
 }
 
 bool Program::setUniform(const String &name, const Vec2 &value) {
+        bind();
         GLuint location = uniformLocation(name);
         if (location < 0 ) return false;
         IM_GLCALL(glUniform2f(location, value.x, value.y));
@@ -200,6 +203,7 @@ bool Program::setUniform(const String &name, const Vec2 &value) {
 }
 
 bool Program::setUniform(const String &name, const Vec3 &value) {
+        bind();
         GLuint location = uniformLocation(name);
         if (location < 0 ) return false;
         IM_GLCALL(glUniform3f(location, value.x, value.y, value.z));
@@ -207,6 +211,7 @@ bool Program::setUniform(const String &name, const Vec3 &value) {
 }
 
 bool Program::setUniform(const String &name, const Vec4 &value) {
+        bind();
         GLuint location = uniformLocation(name);
         if (location < 0 ) return false;
         IM_GLCALL(glUniform4f(location, value.x, value.y, value.z, value.w));
@@ -214,6 +219,7 @@ bool Program::setUniform(const String &name, const Vec4 &value) {
 }
 
 bool Program::setUniform(const String &name, const Mat3 &value) {
+        bind();
         GLuint location = uniformLocation(name);
         if (location < 0 ) return false;
         IM_GLCALL(glUniformMatrix3fv(location, 1, GL_FALSE, &value[0][0]));
@@ -221,6 +227,7 @@ bool Program::setUniform(const String &name, const Mat3 &value) {
 }
 
 bool Program::setUniform(const String &name, const Mat4 &value) {
+        bind();
         GLuint location = uniformLocation(name);
         if (location < 0 ) return false;
         IM_GLCALL(glUniformMatrix4fv(location, 1, GL_FALSE, &value[0][0]));

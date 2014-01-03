@@ -2,6 +2,7 @@
 #define FONT_H
 
 #include <imEngine/Graphics/GAPI/Texture/Texture2D.h>
+#include <memory>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -56,6 +57,11 @@ private:
         static FT_Library       s_ft;
 
 };
+
+
+/** @brief Умный указатель для Font
+ */
+typedef std::shared_ptr<Font> FontPtr;
 
 } //namespace imEngine
 

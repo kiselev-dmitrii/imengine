@@ -181,7 +181,6 @@ private:
         Texture2DPtr    m_texture;
         Program*        m_program;
         VertexBuffer*   m_vbo;
-        VertexArray*    m_vao;
 };
 
 void Application::initialize() {
@@ -207,13 +206,10 @@ void Application::initialize() {
         }
 
         m_vbo = new VertexBuffer();
+        m_vbo->connect(m_program->attributeLocation("in_position"), 3, GL_FLOAT, offsetof(AABBSprite, topLeftPos), sizeof(AABBSprite));
+        m_vbo->connect(m_program->attributeLocation("in_size"), 2, GL_FLOAT, offsetof(AABBSprite, size) , sizeof(AABBSprite));
+        m_vbo->connect(m_program->attributeLocation("in_texCoords"), 4, GL_FLOAT, offsetof(AABBSprite, texCoords), sizeof(AABBSprite));
         m_vbo->load(&sprites[0], sizeof(AABBSprite)*sprites.size(), BufferUsage::STREAM_DRAW);
-        m_vao = new VertexArray();
-        m_vao->bind();
-                m_vbo->connect(m_program->attributeLocation("in_position"), 3, GL_FLOAT, offsetof(AABBSprite, topLeftPos), sizeof(AABBSprite));
-                m_vbo->connect(m_program->attributeLocation("in_size"), 2, GL_FLOAT, offsetof(AABBSprite, size) , sizeof(AABBSprite));
-                m_vbo->connect(m_program->attributeLocation("in_texCoords"), 4, GL_FLOAT, offsetof(AABBSprite, texCoords), sizeof(AABBSprite));
-        m_vao->unbind();
 
         m_program->bind();
         m_texture->bind(0);
@@ -231,7 +227,7 @@ void Application::update() {
 
 void Application::render() {
         Renderer::clearBuffers();
-        m_vao->bind();
+        m_vbo->bind();
         Renderer::renderVertices(Primitive::POINT, 8);
 }
 

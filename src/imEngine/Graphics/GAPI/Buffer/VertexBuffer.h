@@ -1,6 +1,7 @@
 #ifndef VERTEXBUFFER_H
 #define VERTEXBUFFER_H
 
+#include <memory>
 #include "BufferObject.h"
 
 namespace imEngine {
@@ -29,6 +30,11 @@ private:
         static GLuint   s_boundHandle;
 
 };
+
+
+/** @brief Умный указатель с подсчетом ссылок для VertexBuffer
+ */
+typedef std::shared_ptr<VertexBuffer> VertexBufferPtr;
 
 
 } //namespace imEngine

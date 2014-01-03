@@ -81,6 +81,10 @@ Texture2DPtr Font::generateTextureAtlas(FT_Face face) {
                 currentX += g->bitmap.width;
         }
 
+        // Устанавилваем линейную фильтрацию
+        texture->setMagnificationFilter(TextureMagFilter::LINEAR);
+        texture->setMinimizationFilter(TextureMinFilter::LINEAR);
+
         return texture;
 }
 

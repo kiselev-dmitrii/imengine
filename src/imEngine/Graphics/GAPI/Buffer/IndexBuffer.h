@@ -1,6 +1,7 @@
 #ifndef INDEXBUFFER_H
 #define INDEXBUFFER_H
 
+#include <memory>
 #include "BufferObject.h"
 
 namespace imEngine {
@@ -25,6 +26,11 @@ private:
         static GLuint   s_boundHandle;
 
 };
+
+
+/** @brief Умный указатель с подсчетом ссылок для IndexBuffer
+ */
+typedef std::shared_ptr<IndexBuffer> IndexBufferPtr;
 
 
 } //namespace imEngine

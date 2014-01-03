@@ -2,6 +2,7 @@
 #define PROGRAM_H
 
 #include <map>
+#include <memory>
 #include "Shader.h"
 #include <imEngine/Utils/Types.h>
 #include <imEngine/Math/Common.h>
@@ -128,6 +129,11 @@ private:
         static GLuint   s_boundHandle;
 
 };
+
+
+/** @brief Умный указатель с подсчетом ссылок для VertexBuffer
+ */
+typedef std::shared_ptr<Program> ProgramPtr;
 
 
 } //namespace imEngine
