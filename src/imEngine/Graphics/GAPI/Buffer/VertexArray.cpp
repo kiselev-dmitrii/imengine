@@ -2,18 +2,16 @@
 #include <imEngine/Utils/Debug.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 GLuint VertexArray::s_boundHandle = 0;
 
-void VertexArray::create() {
+VertexArray::VertexArray() {
         IM_GLCALL(glGenVertexArrays(1, &m_handle));
         IM_LOG("VertexArray" << m_handle << ": created");
 }
 
-void VertexArray::destroy() {
-        IM_ASSERT(m_handle);
-
+VertexArray::~VertexArray() {
         IM_GLCALL(glDeleteVertexArrays(1, &m_handle));
         IM_LOG("VertexArray" << m_handle << ": destroyed");
 }
@@ -34,5 +32,5 @@ void VertexArray::unbind() {
         s_boundHandle = 0;
 }
 
-} //namespace GAPI
+
 } //namespace imEngine

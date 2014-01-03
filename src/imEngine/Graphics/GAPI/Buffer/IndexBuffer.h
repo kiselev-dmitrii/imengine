@@ -4,7 +4,7 @@
 #include "BufferObject.h"
 
 namespace imEngine {
-namespace GAPI {
+
 
 /** @brief Класс предназначен для хранения индексов.
  *
@@ -13,8 +13,8 @@ namespace GAPI {
  */
 class IndexBuffer : public BufferObject {
 public:
-        /// Создает индесный буфер
-        void            create();
+        /// Конструктор. Создает индексный буфер
+        IndexBuffer();
 
         /// Привязывает буфер
         void            bind();
@@ -26,7 +26,7 @@ private:
 
 };
 
-} //namespace GAPI
+
 } //namespace imEngine
 
 #endif // INDEXBUFFER_H

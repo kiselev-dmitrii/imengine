@@ -2,16 +2,17 @@
 #define TEXTURE3D_H
 
 namespace imEngine {
-namespace GAPI {
 
-/** @brief Класс трехмерной текстуры. НЕРЕАЛИЗОВАН
+
+/** @brief Класс трехмерной текстуры.
+ *  @todo Реализовать
  */
 class Texture3D {
 public:
         Texture3D();
 };
 
-} //namespace GAPI
+
 } //namespace imEngine
 
 #endif // TEXTURE3D_H

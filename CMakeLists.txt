@@ -95,6 +95,16 @@ else()
         list(APPEND imEngineLibs ${Boost_LIBRARIES})
 endif()
 
+# FreeType
+find_package(Freetype REQUIRED)
+if(NOT FREETYPE_FOUND)
+        message(ERROR " Freetype no found!")
+        return()
+else()
+        list(APPEND imEngineIncludeDirs ${FREETYPE_INCLUDE_DIRS})
+        list(APPEND imEngineLibs ${FREETYPE_LIBRARIES})
+endif()
+
 #################################################################
 
 

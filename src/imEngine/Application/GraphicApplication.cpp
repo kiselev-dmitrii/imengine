@@ -27,8 +27,10 @@ void GraphicApplication::keyPressEvent(int key) {
 
 }
 
+/*
 ResourceManager* GraphicApplication::resources() {
         return &m_resourceManager;
 }
+*/
 
 } //namespace imEngine

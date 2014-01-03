@@ -1,6 +1,7 @@
 #include <imEngine/Utils/TreeNode.h>
 #include <imEngine/Utils/Types.h>
 #include <imEngine/Utils/Debug.h>
+#include <memory>
 
 using namespace imEngine;
 
@@ -25,11 +26,11 @@ private:
 };
 
 int main() {
-        auto root = new Derived("root");
+        std::unique_ptr<Derived> root(new Derived("root"));
 
-        auto home = new Derived("home", root);
+        auto home = new Derived("home", root.get());
         auto sol = new Derived("sol", home);
-        auto usr = new Derived("usr", root);
+        auto usr = new Derived("usr", root.get());
         auto bin = new Derived("bin", usr);
         auto share = new Derived("share", usr);
 
@@ -38,8 +39,8 @@ int main() {
         IM_UNUSED(share);
 
         root->render();
-
-        delete root;
+        usr->setParent(sol);
+        root->render();
 
         return 0;
 }

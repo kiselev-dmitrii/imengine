@@ -2,16 +2,17 @@
 #define CUBETEXTURE_H
 
 namespace imEngine {
-namespace GAPI {
 
-/** @brief Класс кубической текстуры. НЕРЕАЛИЗОВАН
+
+/** @brief Класс кубической текстуры.
+ *  @todo Реализовать
  */
 class CubeTexture {
 public:
         CubeTexture();
 };
 
-} //namespace GAPI
+
 } //namespace imEngine
 
 #endif // CUBETEXTURE_H

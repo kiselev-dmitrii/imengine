@@ -4,7 +4,6 @@
 #include <GL/glew.h>
 
 namespace imEngine {
-namespace GAPI {
 
 /** @brief Точка привязки буффера
  */
@@ -65,13 +64,10 @@ enum Enum {
  */
 class BufferObject {
 public:
-        /// Конструктор
-        BufferObject();
-
-        /// Создает буферный OGL объект и привязывает его
-        void                    create(BufferTarget::Enum target);
-        /// Разрушает буферный OGL объект
-        void                    destroy();
+        /// Конструктор. Создает буфер и привязывает его
+        BufferObject(BufferTarget::Enum target);
+        /// Деструктор. Разрушает буфер
+        virtual ~BufferObject();
 
         /// Загружает данные data размера size в буфер, usage определяет цель использования данных
         void                    load(const void* data, GLsizeiptr size, BufferUsage::Enum usage);
@@ -86,6 +82,8 @@ public:
         void*                   mapRange(GLsizeiptr offset, GLintptr size, BufferAccess::Enum access);
         /// Завершает режим отображения данных буфера. Возвращает true, если операция успешна, false если данные повреждены.
         bool                    unmap();
+        /// Определяет, находится ли буфер в режиме отображения данных в память
+        bool                    isMapped();
 
         /// Привязывает буфер
         virtual void            bind() = 0;
@@ -111,7 +109,6 @@ protected:
 
 };
 
-} //namespace GAPI
 } //namespace imEngine
 
 #endif // BUFFEROBJECT_H

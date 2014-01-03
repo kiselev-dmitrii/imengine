@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 /** @brief Класс-обертка для OGL объекта Vertex Array Object.
  *
@@ -20,10 +20,11 @@ namespace GAPI {
  */
 class VertexArray {
 public:
-        /// Создает VAO
-        void            create();
-        /// Уничтожает VAO
-        void            destroy();
+        /// Конструктор. Создает VAO
+        VertexArray();
+        /// Деструктор. Уничтожает VAO
+        ~VertexArray();
+
         /// Возращает OGL дескриптор
         GLuint          handle();
 
@@ -38,7 +39,7 @@ private:
         static GLuint   s_boundHandle;
 };
 
-} //namespace GAPI
+
 } //namespace imEngine
 
 #endif // VERTEXARRAY_H

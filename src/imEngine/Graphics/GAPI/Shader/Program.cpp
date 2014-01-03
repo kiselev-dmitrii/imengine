@@ -4,18 +4,16 @@
 #include <imEngine/System/Filesystem.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 GLuint Program::s_boundHandle = 0;
 
-void Program::create() {
+Program::Program() {
         IM_GLCALL(m_handle = glCreateProgram());
         IM_LOG("Program" << m_handle << ": created");
 }
 
-void Program::destroy() {
-        IM_ASSERT(m_handle);
-
+Program::~Program() {
         IM_GLCALL(glDeleteProgram(m_handle));
         IM_LOG("Program" << m_handle << ": destroyed");
 }
@@ -102,12 +100,11 @@ Program::ShaderList Program::createShaders(const ShaderInfoList &sources, const 
         ShaderList result;
 
         for(const ShaderInfo& info: sources) {
-                Shader shader;
-                shader.create(info.type);
-                shader.loadSource(info.source, defines, path);
-                shader.compile();
-                shader.attach(this);
-                m_log += shader.log();
+                Shader* shader = new Shader(info.type);
+                shader->loadSource(info.source, defines, path);
+                shader->compile();
+                shader->attach(this);
+                m_log += shader->log();
 
                 result.push_back(shader);
         }
@@ -157,9 +154,9 @@ String Program::getLinkLog(GLuint handle) {
 void Program::destroyShaders(ShaderList &shaders) {
         IM_LOG("Program" << m_handle << ": destroying all shaders...");
 
-        for(Shader& shader: shaders) {
-                shader.detach();
-                shader.destroy();
+        for(Shader* shader: shaders) {
+                shader->detach();
+                delete shader;
         }
 }
 
@@ -296,5 +293,5 @@ void Program::loadAttributeInformation() {
         delete [] name;
 }
 
-} //namespace GAPI
+
 } //namespace imEngine

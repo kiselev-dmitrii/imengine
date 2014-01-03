@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 namespace Primitive {
 enum Enum {
@@ -39,7 +39,7 @@ public:
 
 };
 
-} //namespace GAPI
+
 } //namespace imEngine
 
 #endif // RENDERER_H

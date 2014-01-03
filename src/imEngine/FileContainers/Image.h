@@ -2,11 +2,11 @@
 #define IMAGE_H
 
 #include <imEngine/Utils/Types.h>
-#include "Texture.h"
+#include <imEngine/Graphics/GAPI/Texture/Texture.h>
 #include <IL/il.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 /** @brief Класс представляет собой обертку для изображения из библиотеки DevIL.
  *
@@ -48,7 +48,7 @@ private:
         ILuint          m_handle;
 };
 
-} //namespace GAPI
+
 } //namespace imEngine
 
 #endif // IMAGE_H

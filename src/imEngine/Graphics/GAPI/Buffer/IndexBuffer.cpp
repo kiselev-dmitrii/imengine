@@ -2,12 +2,11 @@
 #include <imEngine/Utils/Debug.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 GLuint IndexBuffer::s_boundHandle = 0;
 
-void IndexBuffer::create() {
-        BufferObject::create(BufferTarget::ELEMENT_ARRAY);
+IndexBuffer::IndexBuffer() : BufferObject(BufferTarget::ELEMENT_ARRAY) {
 }
 
 void IndexBuffer::bind() {
@@ -22,5 +21,5 @@ void IndexBuffer::unbind() {
         s_boundHandle = 0;
 }
 
-} //namespace GAPI
+
 } //namespace imEngine

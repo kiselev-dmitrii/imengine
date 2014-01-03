@@ -1,8 +1,5 @@
-#include "Font.h"
+#include "Label.h"
 
 namespace imEngine {
-
-Font::Font() {
-}
 
 } //namespace imEngine

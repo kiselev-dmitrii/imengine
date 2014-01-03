@@ -3,35 +3,34 @@
 #include <imEngine/Utils/GLUtils.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 GLuint Texture::s_boundHandle = 0;
 int    Texture::s_currentUnit = 0;
 
-Texture::Texture()  {
+Texture::Texture(TextureTarget::Enum target)  {
         m_handle = 0;
         m_width = m_height = m_depth = 0;
         m_numberOfImages = 0;
         m_wasMemoryAllocated = false;
-}
-
-void Texture::create(TextureTarget::Enum target) {
         m_target = target;
+
         IM_GLCALL(glGenTextures(1, &m_handle));
         IM_LOG("Texture" << m_handle << ": created " << GLUtils::convertEnumToString(m_target));
-
         bind();                                         //первый bind определяет тип текстуры
 }
 
-void Texture::destroy() {
-        IM_ASSERT(m_handle);
-
+Texture::~Texture() {
         IM_GLCALL(glDeleteTextures(1, &m_handle));
         IM_LOG("Texture" << m_handle << ": destroyed");
 }
 
 GLuint Texture::handle() {
         return m_handle;
+}
+
+TextureTarget::Enum Texture::target() {
+        return m_target;
 }
 
 
@@ -230,5 +229,5 @@ void Texture::updateTextureInformation(GLsizei width, GLsizei height, GLsizei de
 }
 
 
-} //namespace GAPI
+
 } //namespace imEngine

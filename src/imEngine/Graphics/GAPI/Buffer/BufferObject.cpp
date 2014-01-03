@@ -3,23 +3,19 @@
 #include <imEngine/Utils/GLUtils.h>
 
 namespace imEngine {
-namespace GAPI {
 
-BufferObject::BufferObject() :
-        m_handle(0),
-        m_size(0),
-        m_isMapped(false)
-{ }
 
-void BufferObject::create(BufferTarget::Enum target) {
+BufferObject::BufferObject(BufferTarget::Enum target) {
+        m_size = 0;
+        m_isMapped = false;
         m_target = target;
+
         IM_GLCALL(glGenBuffers(1, &m_handle));
         IM_LOG("BufferObject" << m_handle << ": created " << GLUtils::convertEnumToString(m_target));
 }
 
-void BufferObject::destroy() {
-        IM_ASSERT(m_handle);
-        IM_ASSERT(!m_isMapped);
+BufferObject::~BufferObject() {
+        if (isMapped()) unmap();
 
         IM_GLCALL(glDeleteBuffers(1, &m_handle));
         IM_LOG("BufferObject" << m_handle << ": destroyed");
@@ -89,6 +85,10 @@ bool BufferObject::unmap() {
         return result;
 }
 
+bool BufferObject::isMapped() {
+        return m_isMapped;
+}
+
 GLuint BufferObject::handle() {
         return m_handle;
 }
@@ -105,5 +105,5 @@ BufferUsage::Enum BufferObject::usage() {
         return m_usage;
 }
 
-} //namespace GAPI
+
 } //namespace imEngine

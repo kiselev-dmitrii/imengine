@@ -12,6 +12,7 @@ set(TESTS
         VertexBufferTest
         TextureManagerTest
         TreeNodeTest
+        FontTest
 )
 
 foreach(TEST ${TESTS})

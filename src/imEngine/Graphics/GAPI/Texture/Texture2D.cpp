@@ -1,19 +1,20 @@
 #include "Texture2D.h"
-#include "Image.h"
+#include <imEngine/FileContainers/Image.h>
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/Utils/GLUtils.h>
 
 namespace imEngine {
-namespace GAPI {
 
-void Texture2D::create() {
-        Texture::create(TextureTarget::TEXTURE_2D);
+Texture2D::Texture2D() : Texture(TextureTarget::TEXTURE_2D) {
 }
 
-void Texture2D::load(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid *src) {
+void Texture2D::load(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid *src, uint srcAlignment) {
         bind();
 
-        IM_GLCALL(glTexImage2D(m_target, 0, internal, width, height, 0, srcFormat, srcType, src));
+        if (srcAlignment !=4 ) IM_GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, srcAlignment));             //если выравнивание не стандартное, то изменяем
+        IM_GLCALL(glTexImage2D(m_target, 0, internal, width, height, 0, srcFormat, srcType, src));      //загружаем картинку
+        if (srcAlignment !=4)  IM_GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 4));                        //восстанавливаем выравнивание
+
         updateTextureInformation(width, height, 1, 1, internal, srcType, srcFormat, true);
 
         IM_LOG("Texture" << m_handle << ": memory was allocated");
@@ -28,6 +29,29 @@ void Texture2D::allocate(int width, int height, TextureInternalFormat::Enum inte
         load(width, height, internal, srcType, srcFormat, NULL);
 }
 
+void Texture2D::insert(int startX, int startY, int width, int height, GLvoid *src, uint srcAlignment, int level) {
+        IM_ASSERT(startX + width <= m_width);
+        IM_ASSERT(startY + height <= m_height);
+
+        bind();
+
+        if (srcAlignment !=4 ) IM_GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, srcAlignment));
+        IM_GLCALL(glTexSubImage2D(m_target, level, startX, startY, width, height, sourceFormat(), sourceType(), src));
+        if (srcAlignment !=4)  IM_GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 4));
+
+        IM_LOG("Texture" << m_handle << ": insert new subimage [" << startX << "-" <<  startX+width << ";" << startY << "-" << startY+height << "]");
+}
+
+void Texture2D::clear() {
+        IM_ASSERT(m_wasMemoryAllocated);
+
+        bind();
+        std::vector<ubyte> zero(m_width * m_height * numberOfChannels(), 0);
+        IM_GLCALL(glTexSubImage2D(m_target, 0, 0, 0, m_width, m_height, sourceFormat(), GL_UNSIGNED_BYTE, &zero[0]));
+
+        IM_LOG("Texture" << m_handle << ": was cleared");
+}
+
 void Texture2D::save(const String &filename, bool overwrite) {
         IM_ASSERT(m_wasMemoryAllocated);
 
@@ -36,5 +60,4 @@ void Texture2D::save(const String &filename, bool overwrite) {
         img.save(filename, overwrite);
 }
 
-} //namespace GAPI
 } //namespace imEngine

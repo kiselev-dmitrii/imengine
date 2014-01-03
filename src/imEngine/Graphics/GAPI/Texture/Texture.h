@@ -7,7 +7,7 @@
 #include <imEngine/Utils/Types.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 /** @brief Определяет тип компоненты пикселя текстуры. ХАРАКТЕРИСТИКА ЗАГРУЖАЕМЫХ ДАННЫХ
  *  Вообщем это тип массива изображения
@@ -58,6 +58,7 @@ enum Enum {
 namespace TextureInternalFormat {
 enum Enum {
         // Цветовые
+        COLOR_NORM_1_COMP_8_BIT                 = GL_RED,
         COLOR_NORM_3_COMP_8_BIT                 = GL_RGB8,
         COLOR_NORM_4_COMP_8_BIT                 = GL_RGBA8,
 
@@ -163,15 +164,18 @@ enum Enum {
  */
 class Texture {
 public:
-        /// Конструктор
-        Texture();
+        /// Конструктор. Создает текстуру и привязывает ее к таргету
+        Texture(TextureTarget::Enum target);
+        /// Деструктор. Уничтожает текстуру
+        virtual ~Texture();
 
-        /// Создает текстуру
-        void                            create(TextureTarget::Enum target);
-        /// Уничтожает текстуру
-        void                            destroy();
+        /// Загружает текстуру из файла
+        virtual void                    load(const String&)                     {}
+
         /// Возвращает OGL дескриптор текстуры
         GLuint                          handle();
+        /// Возвращает точку привязки текстуры
+        TextureTarget::Enum             target();
 
         /// Возвращает ширину текстуры
         int                             width();
@@ -262,7 +266,7 @@ protected:
         static int                      s_currentUnit;
 };
 
-} //namespace GAPI
+
 } //namespace imEngine
 
 #endif // TEXTURE_H

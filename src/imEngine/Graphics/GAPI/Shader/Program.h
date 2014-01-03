@@ -7,7 +7,7 @@
 #include <imEngine/Math/Common.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 /** @brief Стандартные индексы вершинных входных атрибутов
  *
@@ -34,10 +34,11 @@ enum Enum {
  */
 class Program {
 public:
-        /// Создает программу
-        void            create();
-        /// Уничтожает программу
-        void            destroy();
+        /// Конструктор. Создает программу
+        Program();
+        /// Деструктор. Уничтожает программу
+        ~Program();
+
         /// Возвращает OpenGL дескриптор программы
         GLuint          handle();
 
@@ -71,6 +72,7 @@ public:
         bool            setUniform(const String& name, const Vec4& value);
         bool            setUniform(const String& name, const Mat3& value);
         bool            setUniform(const String& name, const Mat4& value);
+
         /// Возвращает индекс uniform переменной или -1, если переменная отсутствует в программе
         GLuint          uniformLocation(const String& name);
         /// Вовзращает индекс вершинного входного атрибута или -1, если переменная отсутствует в программе
@@ -83,7 +85,7 @@ private:
                 String                  source;
         };
         typedef std::vector<ShaderInfo>         ShaderInfoList;
-        typedef std::vector<Shader>             ShaderList;
+        typedef std::vector<Shader*>            ShaderList;
         typedef std::map<String, GLuint>        MapStringUint;
 
 private:
@@ -127,7 +129,7 @@ private:
 
 };
 
-} //namespace GAPI
+
 } //namespace imEngine
 
 #endif // PROGRAM_H

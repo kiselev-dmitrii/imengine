@@ -5,7 +5,7 @@
 #include <imEngine/Utils/Types.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 class Program;
 
@@ -27,13 +27,10 @@ enum Enum {
  */
 class Shader {
 public:
-        /// Конструктор.
-        Shader();
-
-        /// Создает шейдерный OpenGL объект
-        void    create(ShaderType::Enum type);
-        /// Удаляет шейдерную программу
-        void    destroy();
+        /// Конструктор. Создает шейдерный OpenGL объект
+        explicit Shader(ShaderType::Enum type);
+        /// Деструктор. Удаляет шейдерный объект
+        ~Shader();
 
         /// Загружает исходники в видеопамять из str, предварительно совершив препроцессинг
         void    loadSource(const String& str, const StringList& defines, const String& path = "");
@@ -70,7 +67,7 @@ private:
 
 };
 
-} //namespace GAPI
+
 } //namespace imEngine
 
 #endif // SHADER_H

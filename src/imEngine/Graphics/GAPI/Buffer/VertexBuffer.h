@@ -4,7 +4,7 @@
 #include "BufferObject.h"
 
 namespace imEngine {
-namespace GAPI {
+
 
 /** @brief Класс используется для хранения массивов вершин в видеопамяти.
  *
@@ -14,8 +14,8 @@ namespace GAPI {
  */
 class VertexBuffer : public BufferObject {
 public:
-        /// Создает вершинный буфер
-        void            create();
+        /// Конструктор. Создает вершинный буфер
+        VertexBuffer();
 
         /// Привязывает буфер
         void            bind();
@@ -30,7 +30,7 @@ private:
 
 };
 
-} //namespace GAPI
+
 } //namespace imEngine
 
 #endif // VERTEXBUFFER_H

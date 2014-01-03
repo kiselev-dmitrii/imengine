@@ -2,12 +2,11 @@
 #include <imEngine/Utils/Debug.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 GLuint VertexBuffer::s_boundHandle = 0;
 
-void VertexBuffer::create() {
-        BufferObject::create(BufferTarget::ARRAY);
+VertexBuffer::VertexBuffer() : BufferObject(BufferTarget::ARRAY) {
 }
 
 void VertexBuffer::bind() {
@@ -29,5 +28,5 @@ void VertexBuffer::connect(GLuint attributeIndex, GLuint attributeSize, GLenum a
 }
 
 
-} //namespace GAPI
+
 } //namespace imEngine

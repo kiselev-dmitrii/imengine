@@ -2,7 +2,7 @@
 #include <imEngine/Utils/Debug.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 Image::Image() {
         ilGenImages(1, &m_handle);
@@ -78,5 +78,5 @@ void* Image::data() {
         return ilGetData();
 }
 
-} //namespace GAPI
+
 } //namespace imEngine

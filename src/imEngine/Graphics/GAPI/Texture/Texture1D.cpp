@@ -1,19 +1,21 @@
 #include "Texture1D.h"
-#include "Image.h"
+#include <imEngine/FileContainers/Image.h>
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/Utils/GLUtils.h>
 
 namespace imEngine {
-namespace GAPI {
 
-void Texture1D::create() {
-        Texture::create(TextureTarget::TEXTURE_1D);
+Texture1D::Texture1D() : Texture(TextureTarget::TEXTURE_1D) {
 }
 
-void Texture1D::load(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid *src) {
+void Texture1D::load(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType,
+                     TextureSrcFormat::Enum srcFormat, GLvoid *src, uint srcAlignment) {
         bind();
 
+        if (srcAlignment !=4 ) IM_GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, srcAlignment));             //если выравнивание не стандартное, то изменяем
         IM_GLCALL(glTexImage1D(m_target, 0, internal, width, 0, srcFormat, srcType, src));
+        if (srcAlignment !=4)  IM_GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 4));                        //восстанавливаем выравнивание
+
         updateTextureInformation(width, 1, 1, 1, internal, srcType, srcFormat, true);
 
         IM_LOG("Texture" << m_handle << ": memory was allocated");
@@ -36,5 +38,4 @@ void Texture1D::save(const String &filename, bool overwrite) {
         img.save(filename, overwrite);
 }
 
-} //namespace GAPI
 } //namespace imEngine

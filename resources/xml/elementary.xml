@@ -1,0 +1,4 @@
+<theme texture="elementary.png" font="sans.ttf">
+	<button style="regular" start="0,0" end="239,26" frames="12"/>
+	<linebox style="regular" start="0,28" end="119,54" frames="6"/>
+</theme>

@@ -3,9 +3,10 @@
 
 #include "Texture.h"
 #include <imEngine/Utils/Types.h>
+#include <memory>
 
 namespace imEngine {
-namespace GAPI {
+
 
 /** @brief Класс одномерной текстуры.
  *  Наследует основной класс Texture
@@ -13,11 +14,11 @@ namespace GAPI {
  */
 class Texture1D : public Texture {
 public:
-        /// Создает одномерную текстуру
-        void            create();
+        /// Конструктор. Создает одномерную текстуру
+        Texture1D();
 
         /// Загружает данные в текстуру из src
-        void            load(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid* src);
+        void            load(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid* src, uint srcAlignment = 4);
         /// Загружает данные в текстуру из изображения filename
         void            load(const String& filename);
         /// Выделяет область памяти размера width
@@ -27,7 +28,12 @@ public:
         void            save(const String& filename, bool overwrite = true);
 };
 
-} //namespace GAPI
+
+/** @brief Умный указатель с подсчетом ссылок для Texture1D
+ */
+typedef std::shared_ptr<Texture1D> Texture1DPtr;
+
+
 } //namespace imEngine
 
 #endif // TEXTURE1D_H

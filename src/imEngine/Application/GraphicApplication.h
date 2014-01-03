@@ -2,7 +2,6 @@
 #define GRAPHICAPPLICATION_H
 
 #include "BaseApplication.h"
-#include <imEngine/Resources/ResourceManager.h>
 
 namespace imEngine {
 
@@ -29,10 +28,10 @@ protected:
 
 protected:
         /// Менеджер ресурсов
-        ResourceManager*        resources();
+        //ResourceManager*        resources();
 
 private:
-        ResourceManager         m_resourceManager;
+        //ResourceManager         m_resourceManager;
 };
 
 } //namespace imEngine

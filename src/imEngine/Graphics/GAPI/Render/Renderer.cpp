@@ -2,7 +2,7 @@
 #include <imEngine/Utils/Debug.h>
 
 namespace imEngine {
-namespace GAPI {
+
 
 void Renderer::clearBuffers(GLbitfield flags) {
         IM_GLCALL(glClear(flags));
@@ -16,5 +16,5 @@ void Renderer::renderIndices(Primitive::Enum type, GLsizei countIndices) {
         IM_GLCALL(glDrawElements(type, countIndices, GL_UNSIGNED_INT, (GLvoid*) 0));
 }
 
-} //namespace GAPI
+
 } //namespace imEngine

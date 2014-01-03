@@ -6,22 +6,18 @@
 #include <imEngine/System/Filesystem.h>
 
 namespace imEngine {
-namespace GAPI {
 
-Shader::Shader() {
+
+Shader::Shader(ShaderType::Enum type) {
         m_handle = 0;
         m_program = nullptr;
-}
-
-void Shader::create(ShaderType::Enum type) {
         m_type = type;
+
         IM_GLCALL(m_handle = glCreateShader(m_type));
         IM_LOG("Shader" << m_handle << ": created, type: " << GLUtils::convertEnumToString(m_type));
 }
 
-void Shader::destroy() {
-        IM_ASSERT(m_handle);
-
+Shader::~Shader() {
         IM_GLCALL(glDeleteShader(m_handle));
         IM_LOG("Shader" << m_handle << ": destroyed, type: " << GLUtils::convertEnumToString(m_type));
 }
@@ -134,5 +130,5 @@ void Shader::detach() {
         }
 }
 
-} //namespace GAPI
+
 } //namespace imEngine
