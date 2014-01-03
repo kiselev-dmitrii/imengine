@@ -11,6 +11,8 @@ protected:
         void    render();
         void    destroy();
 
+        void    windowResizeEvent(int x, int y) { glViewport(0,0, x, y); }
+
 private:
         Text*   m_text1;
         Text*   m_text2;
@@ -24,12 +26,11 @@ void Application::initialize() {
         m_font1 = FontPtr(new Font("resources/font/Lobster.ttf", 48));
         m_font2 = FontPtr(new Font("resources/font/FreeSans.ttf", 15));
 
-        m_text1 = new Text("Hello, world!", m_font1);
-        m_text1->setWindow(mainWindow());
+        m_text1 = new Text("Yeah, bitch!", m_font1, mainWindow());
+        m_text1->setColor(Vec3(0.5,0.6, 1.0));
         m_text1->setPosition(Vec2(320,240));
 
-        m_text2 = new Text("This is imEngine", m_font2);
-        m_text2->setWindow(mainWindow());
+        m_text2 = new Text("This is imEngine", m_font2, mainWindow());
         m_text2->setPosition(Vec2(20,20));
 
 

@@ -10,46 +10,51 @@ struct SymbolGeometry {
         Vec4    texCoords;      // Текстурные координаты глифа в атласе
 };
 
-Text::Text(const String &text, const FontPtr font) :
-        m_depth(0.0f)
+Text::Text(const String &text, const FontPtr font, Window* window) :
+        m_depth(0.0f),
+        m_window(nullptr)
 {
         setText(text);
         setFont(font);
+        setWindow(window);
 
         setPosition(Vec2(0,0));
         setDepth(0.0f);
         setColor(Vec3(1,1,1));
 
-        initVBO();
-        m_needToUpdateVBO = true;
+        initBuffer();
+        m_needToUpdateBuffer = true;
 }
 
 void Text::setText(const String &text) {
-        if (text == m_text) return;
-        m_text = text;
-        m_needToUpdateVBO = true;
+        if (text != m_text) {
+                m_text = text;
+                m_needToUpdateBuffer = true;
+        }
 }
 
 void Text::setFont(const FontPtr &font) {
-        if (font == m_font) return;
-        m_font = font;
-        m_needToUpdateVBO = true;
+        if (font != m_font) {
+                m_font = font;
+                m_needToUpdateBuffer = true;
+        }
 }
 
 void Text::setPosition(const Vec2 &position) {
-        if (position == m_position) return;
-        m_position = position;
-        m_needToUpdateVBO = true;
+        if (position != m_position) {
+                m_position = position;
+                m_needToUpdateBuffer = true;
+        }
 }
 
 void Text::setDepth(float depth) {
-        if (depth == m_depth) return;
-        m_depth = depth;
-        m_needToUpdateVBO = true;
+        if (depth != m_depth) {
+                m_depth = depth;
+                m_needToUpdateBuffer = true;
+        }
 }
 
 void Text::setColor(const Vec3 &color) {
-        if (color == m_color) return;
         m_color = color;
 }
 
@@ -59,12 +64,13 @@ void Text::setWindow(Window *window) {
 
 void Text::render() {
         // Обновляем VBO если нужно
-        if (m_needToUpdateVBO) {
-                updateVBO();
-                m_needToUpdateVBO = false;
+        if (m_needToUpdateBuffer) {
+                updateBuffer();
+                m_needToUpdateBuffer = false;
         }
 
 
+        /// Устанавливаем текстуру и переменные и рендерим
         program().bind();
         m_font->texture()->bind(0);
         program().setUniform("u_texture", 0);
@@ -72,18 +78,22 @@ void Text::render() {
         program().setUniform("u_windowSize", Vec2(m_window->size()));
 
         // Биндим наш буфер и рисуем
-        m_vbo->bind();
+        m_vao->bind();
         Renderer::renderVertices(Primitive::POINT, m_text.size());
 }
 
-void Text::initVBO() {
+void Text::initBuffer() {
         m_vbo = VertexBufferPtr(new VertexBuffer());
-        m_vbo->connect(program().attributeLocation("in_position"), 3, GL_FLOAT,
+        m_vao = VertexArrayPtr(new VertexArray());
+
+        m_vao->bind();
+                m_vbo->connect(program().attributeLocation("in_position"), 3, GL_FLOAT,
                        offsetof(SymbolGeometry, position), sizeof(SymbolGeometry));
-        m_vbo->connect(program().attributeLocation("in_size"), 2, GL_FLOAT,
+                m_vbo->connect(program().attributeLocation("in_size"), 2, GL_FLOAT,
                        offsetof(SymbolGeometry, size) , sizeof(SymbolGeometry));
-        m_vbo->connect(program().attributeLocation("in_texCoords"), 4, GL_FLOAT,
+                m_vbo->connect(program().attributeLocation("in_texCoords"), 4, GL_FLOAT,
                        offsetof(SymbolGeometry, texCoords), sizeof(SymbolGeometry));
+        m_vao->unbind();
 }
 
 Program& Text::program() {
@@ -114,7 +124,7 @@ void fillSymbolGeometryArray(const String& text, const Vec2& textPos, float text
         }
 }
 
-void Text::updateVBO() {
+void Text::updateBuffer() {
         SymbolGeometry data[m_text.size()];
         fillSymbolGeometryArray(m_text, m_position, m_depth, m_font, data);
         m_vbo->load(data, sizeof(data), BufferUsage::STREAM_DRAW);
