@@ -13,22 +13,39 @@ public:
         Text(const String& text, const FontPtr font, Window* window);
 
         /// Устанавливает новый текст
-        void    setText(const String& text);
+        void            setText(const String& text);
+        /// Возвращает текущий текст
+        const String&   text() const                                                    { return m_text; }
+
         /// Устанавливает новый шрифт
-        void    setFont(const FontPtr& font);
-        /// Устанавливает новую позицию
-        void    setPosition(const Vec2& position);
+        void            setFont(const FontPtr& font);
+        /// Возвращает указатель на шрифт
+        FontPtr         font() const                                                    { return m_font; }
+
+        /// Устанавливает новую позицию в winSpace
+        void            setPosition(const Vec2& position);
+        /// Возвращает позицию текста
+        Vec2            position() const                                                { return m_position; }
+
         /// Устанавливает новую глубину
         /// Текст будет перекрываться другим, при включенном тесте буфера глубины
-        void    setDepth(float depth);
+        void            setDepth(float depth);
+        /// Возвращает глубину текста
+        float           depth() const                                                   { return m_depth; }
+
         /// Устанавливает цвет текста
-        void    setColor(const Vec3& color);
+        void            setColor(const Vec3& color);
+        /// Возвращает текущий цвет текста
+        Vec3            color() const                                                   { return m_color; }
+
         /// Устанавливает окно, в котором отображается текст
         /// Нужно для получения текущего разрешения
-        void    setWindow(Window* window);
+        void            setWindow(Window* window);
+        /// Возвращает окно
+        Window*         window() const                                                  { return m_window; }
 
         /// Рендерит текст с заданными настройками
-        void    render();
+        void            render();
 
 private:
         /// Создает буфер и VAO и настраивает его

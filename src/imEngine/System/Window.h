@@ -70,6 +70,9 @@ public:
         /// Возвращает ссылку на GLFW окно
         SDL_Window*     rawWindow();
 
+        /// Конвертирует вектора из WinSpace в ScreenSpace (которые в [-1;1]x[-1;1])
+        Vec2            convertWinToScreen(const IVec2& vec);
+
 private:
         /// Создает окно
         bool            createWindow();

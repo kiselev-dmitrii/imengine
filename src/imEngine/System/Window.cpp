@@ -123,6 +123,11 @@ SDL_Window* Window::rawWindow() {
         return m_window;
 }
 
+Vec2 Window::convertWinToScreen(const IVec2 &vec) {
+        IVec2 winSize = size();
+        return Vec2(-1.0 + 2.0*vec.x/winSize.x, 1.0 - 2.0*vec.y/winSize.y);
+}
+
 bool Window::createWindow() {
         Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
         if (m_isFullscreen) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;

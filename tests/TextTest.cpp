@@ -12,6 +12,7 @@ protected:
         void    destroy();
 
         void    windowResizeEvent(int x, int y) { glViewport(0,0, x, y); }
+        void    keyPressEvent(int key);
 
 private:
         Text*   m_text1;
@@ -39,6 +40,14 @@ void Application::initialize() {
 }
 
 void Application::update() {
+        Vec2 pos = m_text1->position();
+        Keyboard* kbd = mainWindow()->keyboard();
+
+        if (kbd->isKeyPressed(SDLK_UP)) m_text1->setPosition(pos + Vec2(0, -1));
+        if (kbd->isKeyPressed(SDLK_DOWN)) m_text1->setPosition(pos + Vec2(0, 1));
+        if (kbd->isKeyPressed(SDLK_LEFT)) m_text1->setPosition(pos + Vec2(-1, 0));
+        if (kbd->isKeyPressed(SDLK_RIGHT)) m_text1->setPosition(pos + Vec2(1, 0));
+
 }
 
 void Application::render() {
@@ -49,6 +58,16 @@ void Application::render() {
 
 void Application::destroy() {
         delete m_text1;
+        delete m_text2;
+}
+
+void Application::keyPressEvent(int key) {
+        if (key >= 32 && key < 128) {
+                char ch = key;
+                if (mainWindow()->keyboard()->modifiers() & KeyboardModifiers::LSHIFT) ch = toupper(ch);
+                m_text1->setText(m_text1->text() + ch);
+        }
+
 }
 
 int main() {

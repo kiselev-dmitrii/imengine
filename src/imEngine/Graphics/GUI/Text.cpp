@@ -5,7 +5,7 @@
 namespace imEngine {
 
 struct SymbolGeometry {
-        Vec3    position;       // Позиция верхнего левого угла глифа в коориданатах окна
+        Vec2    offset;         // Относительная позиция каждого символа от начала слова в пикселях
         Vec2    size;           // Размер глифа на экране в пикселях
         Vec4    texCoords;      // Текстурные координаты глифа в атласе
 };
@@ -41,17 +41,11 @@ void Text::setFont(const FontPtr &font) {
 }
 
 void Text::setPosition(const Vec2 &position) {
-        if (position != m_position) {
-                m_position = position;
-                m_needToUpdateBuffer = true;
-        }
+        m_position = position;
 }
 
 void Text::setDepth(float depth) {
-        if (depth != m_depth) {
-                m_depth = depth;
-                m_needToUpdateBuffer = true;
-        }
+        m_depth = depth;
 }
 
 void Text::setColor(const Vec3 &color) {
@@ -76,6 +70,8 @@ void Text::render() {
         program().setUniform("u_texture", 0);
         program().setUniform("u_color", m_color);
         program().setUniform("u_windowSize", Vec2(m_window->size()));
+        program().setUniform("u_position", m_position);
+        program().setUniform("u_depth", m_depth);
 
         // Биндим наш буфер и рисуем
         m_vao->bind();
@@ -87,8 +83,8 @@ void Text::initBuffer() {
         m_vao = VertexArrayPtr(new VertexArray());
 
         m_vao->bind();
-                m_vbo->connect(program().attributeLocation("in_position"), 3, GL_FLOAT,
-                       offsetof(SymbolGeometry, position), sizeof(SymbolGeometry));
+                m_vbo->connect(program().attributeLocation("in_offset"), 2, GL_FLOAT,
+                       offsetof(SymbolGeometry, offset), sizeof(SymbolGeometry));
                 m_vbo->connect(program().attributeLocation("in_size"), 2, GL_FLOAT,
                        offsetof(SymbolGeometry, size) , sizeof(SymbolGeometry));
                 m_vbo->connect(program().attributeLocation("in_texCoords"), 4, GL_FLOAT,
@@ -108,8 +104,8 @@ Program& Text::program() {
         return program;
 }
 
-void fillSymbolGeometryArray(const String& text, const Vec2& textPos, float textDepth, FontPtr font, SymbolGeometry* result) {
-        Vec2 prevPos = textPos;
+void fillSymbolGeometryArray(const String& text, FontPtr font, SymbolGeometry* result) {
+        Vec2 offset(0,0);
 
         uint i = 0;
         for (char ch: text) {
@@ -117,16 +113,16 @@ void fillSymbolGeometryArray(const String& text, const Vec2& textPos, float text
 
                 result[i].size = g.size;
                 result[i].texCoords = g.texCoords;
-                result[i].position = Vec3(prevPos + Vec2(g.bearing.x, -g.bearing.y), textDepth); //bearing задан в правосторонней системе коорд, а мы работаем с оконной
+                result[i].offset = offset + Vec2(g.bearing.x, -g.bearing.y);    //bearing задан в правосторонней системе коорд, а мы работаем с оконной
 
-                prevPos += Vec2(g.advance.x, -g.advance.y);     //advance также в левосторонней задан
+                offset += Vec2(g.advance.x, -g.advance.y);                      //advance также в левосторонней задан
                 ++i;
         }
 }
 
 void Text::updateBuffer() {
         SymbolGeometry data[m_text.size()];
-        fillSymbolGeometryArray(m_text, m_position, m_depth, m_font, data);
+        fillSymbolGeometryArray(m_text, m_font, data);
         m_vbo->load(data, sizeof(data), BufferUsage::STREAM_DRAW);
 }
 

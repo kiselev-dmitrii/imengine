@@ -1,7 +1,7 @@
 imEngine::String textProgramSource = R"(
 
 ///### VERTEX SHADER ###///
-in vec3 in_position;
+in vec2 in_offset;
 in vec2 in_size;
 in vec4 in_texCoords;
 
@@ -9,13 +9,15 @@ out vec4 texCoords;
 out vec2 size;
 
 uniform vec2 u_windowSize;
+uniform vec2 u_position;
+uniform float u_depth;
 
-vec2 convertWinSpaceToScreenSpace(vec2 winVec, vec2 winSize) {
+vec2 winToScreen(vec2 winVec, vec2 winSize) {
         return vec2(-1 + 2*winVec.x/winSize.x, 1 - 2*winVec.y/winSize.y);
 }
 
 void main() {
-        gl_Position = vec4(convertWinSpaceToScreenSpace(in_position.xy, u_windowSize), in_position.z, 1.0);
+        gl_Position = vec4(winToScreen(in_offset + u_position, u_windowSize), u_depth, 1.0);
         texCoords = in_texCoords;
         size = in_size * (2.0/u_windowSize);
 }
@@ -66,7 +68,7 @@ in vec2 TexCoord;
 
 void main() {
         float brightness = texture2D(u_texture, TexCoord).r;
-        im_outColor = vec4(brightness * u_color, 1.0);
+        im_outColor = vec4(brightness * u_color, brightness);
 }
 
 )";
