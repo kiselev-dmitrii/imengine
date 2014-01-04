@@ -72,7 +72,6 @@ private:
         FontPtr         m_font;
         VertexBufferPtr m_vbo;
         VertexArrayPtr  m_vao;
-
 };
 
 } //namespace imEngine

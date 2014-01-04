@@ -19,6 +19,8 @@ bool BaseApplication::init() {
         if (!initGLEW()) return false;
         if (!initDevIL()) return false;
 
+        initTimer();
+
         initialize();
 
         return true;
@@ -68,6 +70,10 @@ bool BaseApplication::initDevIL() {
         IM_LOG("DevIL and ILU initialized");
 
         return true;
+}
+
+void BaseApplication::initTimer() {
+        m_startTime = system_clock::now();
 }
 
 void BaseApplication::loop() {
@@ -127,6 +133,11 @@ void BaseApplication::quit() {
 
 Window* BaseApplication::mainWindow() {
         return &m_mainWindow;
+}
+
+double BaseApplication::currentTime() {
+        auto current = system_clock::now();
+        return std::chrono::duration<double>(current - m_startTime).count();
 }
 
 } //namespace imEngine

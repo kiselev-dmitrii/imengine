@@ -5,6 +5,7 @@ set(TESTS
         WindowTest
         DebugTest
         BaseApplicationTest
+        GraphicApplicationTest
         Texture1DTest
         Texture2DTest
         FilesystemTest

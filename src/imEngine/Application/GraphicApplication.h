@@ -2,6 +2,8 @@
 #define GRAPHICAPPLICATION_H
 
 #include "BaseApplication.h"
+#include <imEngine/Graphics/GUI/Text.h>
+#include <imEngine/Graphics/GAPI/GAPI.h>
 
 namespace imEngine {
 
@@ -9,16 +11,18 @@ namespace imEngine {
  *
  *  Подраземенвается, что классы приложений ниже в иерархии будут работать с графикой, GUI,
  *  добавлять объекты на сцену.
- *  @todo
- *      - Реализовать
  */
 class GraphicApplication : public BaseApplication {
+public:
+        /// Возвращает текущий FPS
+        uint            fps() const;
+
 protected:
         /// Инициализирует графическое приложение. Создание менеджеров, настройка OpenGL.
         void            initialize();
         /// Выполняется обновление состояния графического приложения
         void            update();
-        /// Действия выполняющиеся перед рендером
+        /// Рендер вспомогательной информации
         void            render();
         /// Действия по закрытию графического приложения.
         void            destroy();
@@ -26,12 +30,16 @@ protected:
         /// Обработка стандартных клавиш (развернуть, и т.д)
         void            keyPressEvent(int key);
 
-protected:
-        /// Менеджер ресурсов
-        //ResourceManager*        resources();
+private:
+        void            initFPS();
+        void            updateFPS();
 
 private:
-        //ResourceManager         m_resourceManager;
+        /// Данные про FPS
+        Text*           m_textFps;
+        uint            m_fps;
+        double          m_oldTime;
+
 };
 
 } //namespace imEngine

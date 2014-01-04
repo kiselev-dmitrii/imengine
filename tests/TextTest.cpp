@@ -64,7 +64,7 @@ void Application::update() {
 
         ++m_fps;
         auto newTime = std::chrono::system_clock::now();
-       int elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds> (newTime-m_oldTime).count();
+        float elapsed_seconds = std::chrono::duration<double> (newTime-m_oldTime).count();
         if (elapsed_seconds > 1.0) {
                 m_fpsText->setText(std::to_string(m_fps) + " fps");
                 m_oldTime = newTime;

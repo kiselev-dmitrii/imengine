@@ -2,6 +2,10 @@
 #define BASEAPPLICATION_H
 
 #include <imEngine/System/Window.h>
+#include <chrono>
+
+using std::chrono::time_point;
+using std::chrono::system_clock;
 
 namespace imEngine {
 
@@ -18,6 +22,9 @@ public:
 
         /// Возвращает указатель на главное окно приложения
         Window*         mainWindow();
+
+        /// Возвращает время работы программы
+        double          currentTime();
 
 protected:
         /// Выполняется при инициализации приложения
@@ -59,9 +66,12 @@ private:
         bool    createMainWindow();
         bool    initGLEW();
         bool    initDevIL();
+        void    initTimer();
 
 private:
-        Window  m_mainWindow;
+        Window                          m_mainWindow;
+        time_point<system_clock>        m_startTime;
+
 };
 
 } //namespace imEngine
