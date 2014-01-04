@@ -29,6 +29,8 @@ Text::Text(const String &text, const FontPtr font, Window* window) :
 void Text::setText(const String &text) {
         if (text != m_text) {
                 m_text = text;
+                m_numberOfVisibleChars = calcNumberOfVisibleChars(m_text);
+
                 m_needToUpdateBuffer = true;
         }
 }
@@ -75,7 +77,7 @@ void Text::render() {
 
         // Биндим наш буфер и рисуем
         m_vao->bind();
-        Renderer::renderVertices(Primitive::POINT, m_text.size());
+        Renderer::renderVertices(Primitive::POINT, m_numberOfVisibleChars);
 }
 
 void Text::initBuffer() {
@@ -105,25 +107,48 @@ Program& Text::program() {
 }
 
 void fillSymbolGeometryArray(const String& text, FontPtr font, SymbolGeometry* result) {
-        Vec2 offset(0,0);
+        Vec2 symbolOrigin(0,0);
 
         uint i = 0;
         for (char ch: text) {
-                Glyph g = font->glyph(ch);
+                // Если символ видимый, то высчитываем его
+                // координаты в буфер и переходим на следующий
+                if (Font::isGlyphVisible(ch)) {
+                        Glyph g = font->glyph(ch);
 
-                result[i].size = g.size;
-                result[i].texCoords = g.texCoords;
-                result[i].offset = offset + Vec2(g.bearing.x, -g.bearing.y);    //bearing задан в правосторонней системе коорд, а мы работаем с оконной
+                        result[i].size = g.size;
+                        result[i].texCoords = g.texCoords;
+                        result[i].offset = symbolOrigin + Vec2(g.bearing.x, -g.bearing.y);    //bearing задан в правосторонней системе коорд, а мы работаем с оконной
 
-                offset += Vec2(g.advance.x, -g.advance.y);                      //advance также в левосторонней задан
-                ++i;
+                        symbolOrigin += Vec2(g.advance.x, -g.advance.y);                      //advance также в левосторонней задан
+
+                        ++i;
+                }
+
+                // Если символ управляющий, то позиция следующего символа расчитывается по особому
+                // сам же символ пропускается
+                else {
+                        if (ch == '\n') {
+                                symbolOrigin.x = 0;
+                                symbolOrigin.y += font->verticalInterval();
+                        }
+                }
         }
 }
 
 void Text::updateBuffer() {
-        SymbolGeometry data[m_text.size()];
+        SymbolGeometry data[m_numberOfVisibleChars];
         fillSymbolGeometryArray(m_text, m_font, data);
         m_vbo->load(data, sizeof(data), BufferUsage::STREAM_DRAW);
+}
+
+uint Text::calcNumberOfVisibleChars(const String &str) const {
+        // Дело в том, что возможны например символы переноса '\n',
+        // и другие символы, которые не нужно рендерить и не нужно под них готовить буфер
+
+        uint result = 0;
+        for (char ch: str) if (Font::isGlyphVisible(ch)) ++result;
+        return result;
 }
 
 

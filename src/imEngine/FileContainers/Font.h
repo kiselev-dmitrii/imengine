@@ -32,6 +32,14 @@ public:
         Texture2DPtr            texture() const;
         /// Возвращает метаинформацию глифа
         const Glyph&            glyph(char ch) const;
+        /// Возвращает расстояние между двумя строками
+        uint                    verticalInterval() const;
+
+        /// Расчитывает размер прямоугольника необходимый для рендеринга строки str
+        IVec2                   calcSizeOfText(const String& text) const;
+
+        /// Проверяет, является ли глиф видимым, то есть есть будет для него происходить рендер
+        static bool             isGlyphVisible(char ch);
 
 private:
         /// Инициализирует библиотеку

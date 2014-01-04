@@ -1,6 +1,7 @@
 #include <imEngine/Application/BaseApplication.h>
 #include <imEngine/Graphics/GUI/Text.h>
 #include <imEngine/Utils/Debug.h>
+#include "showTriangle.glsl"
 
 using namespace imEngine;
 
@@ -35,11 +36,11 @@ void Application::initialize() {
         m_font2 = FontPtr(new Font("resources/font/FreeSans.ttf", 15));
         m_font3 = FontPtr(new Font("resources/font/FreeSans.ttf", 25));
 
-        m_text1 = new Text("Yeah, bitch!", m_font1, mainWindow());
+        m_text1 = new Text("Yeah,\n bitch!", m_font1, mainWindow());
         m_text1->setColor(Vec3(0.5,0.6, 1.0));
         m_text1->setPosition(Vec2(320,240));
 
-        m_text2 = new Text("qwertyuioplkjhgfdsazxcvbnmlkjhg;'[]poiuytgnhfvcdfghjkuyfcxdsfty7643fhjo098765435gbvcfghjkiuytredc5797", m_font2, mainWindow());
+        m_text2 = new Text(showTriangleSource, m_font2, mainWindow());
         m_text2->setPosition(Vec2(20,20));
 
         m_fpsText = new Text("0 fps", m_font3, mainWindow());
@@ -77,11 +78,13 @@ void Application::render() {
         Renderer::clearBuffers();
         m_text1->render();
         m_text2->render();
+        /*
         for (register int i = 0; i < 100; ++i) {
                 m_text2->setColor(Vec3(float(i)/100.0, 1 - float(i)/100.0, 0));
                 m_text2->render();
                 m_text2->setPosition(Vec2(20, 6*i));
         }
+        */
         m_fpsText->render();
 }
 

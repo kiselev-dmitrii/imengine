@@ -52,6 +52,9 @@ private:
         void            initBuffer();
         /// Обновляет буфера вершин
         void            updateBuffer();
+        /// Расчитывает количество символов, которые будут визуализированы
+        uint            calcNumberOfVisibleChars(const String& str) const;
+
         /// Возвращает собранную программу.
         /// Используется для существования одного эземпляра Program для всех экземпляров Text
         static Program& program();
@@ -60,6 +63,7 @@ private:
         bool            m_needToUpdateBuffer;
 
         String          m_text;
+        uint            m_numberOfVisibleChars;
         Vec2            m_position;
         float           m_depth;
         Vec3            m_color;

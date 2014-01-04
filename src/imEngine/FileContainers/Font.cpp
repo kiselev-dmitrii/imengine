@@ -19,9 +19,25 @@ Texture2DPtr Font::texture() const {
 }
 
 const Glyph& Font::glyph(char ch) const {
-        IM_ASSERT(ch >= 32 && ch <= 128);
+        IM_ASSERT(isGlyphVisible(ch));
 
         return m_glyphMetadata[ch-32];
+}
+
+uint Font::verticalInterval() const {
+        return m_face->max_advance_height >> 6;
+}
+
+IVec2 Font::calcSizeOfText(const String &text) const {
+        IM_TODO;
+        // Скорее всего считается не верно
+        int width = 0;
+        for (char ch: text) width += glyph(ch).advance.x;
+        return IVec2(width, verticalInterval());
+}
+
+bool Font::isGlyphVisible(char ch) {
+        return (ch >= 32 && ch < 128);
 }
 
 GlyphList Font::generateGlyphMetadata(FT_Face face, Texture2DPtr texture) {
