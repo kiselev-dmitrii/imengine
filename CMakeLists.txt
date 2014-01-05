@@ -98,12 +98,23 @@ endif()
 # FreeType
 find_package(Freetype REQUIRED)
 if(NOT FREETYPE_FOUND)
-        message(ERROR " Freetype no found!")
+        message(ERROR " Freetype not found!")
         return()
 else()
         list(APPEND imEngineIncludeDirs ${FREETYPE_INCLUDE_DIRS})
         list(APPEND imEngineLibs ${FREETYPE_LIBRARIES})
 endif()
+
+# Luabind
+find_package(Luabind REQUIRED)
+if(NOT LUABIND_FOUND)
+        message(ERROR " Luabind not found")
+        return()
+else()
+        list(APPEND imEngineIncludeDirs ${LUABIND_INCLUDE_DIRS})
+        list(APPEND imEngineLibs ${LUABIND_LIBRARIES})
+endif()
+
 
 #################################################################
 

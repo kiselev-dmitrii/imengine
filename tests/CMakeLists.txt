@@ -15,6 +15,7 @@ set(TESTS
         TreeNodeTest
         FontTest
         TextTest
+        LuabindTest
 )
 
 foreach(TEST ${TESTS})
