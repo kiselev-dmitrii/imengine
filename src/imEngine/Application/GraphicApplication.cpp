@@ -42,7 +42,10 @@ void GraphicApplication::keyPressEvent(int key) {
                         mainWindow()->setFullscreen(!mainWindow()->isFullscreen());
                         break;
         }
+}
 
+void GraphicApplication::windowResizeEvent(int x, int y) {
+        glViewport(0, 0, x, y);
 }
 
 uint GraphicApplication::fps() const {

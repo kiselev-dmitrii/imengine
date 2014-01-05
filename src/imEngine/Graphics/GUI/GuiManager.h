@@ -3,7 +3,6 @@
 
 #include <imEngine/Graphics/GAPI/GAPI.h>
 #include <imEngine/Utils/Types.h>
-#include "Widget.h"
 
 namespace imEngine {
 
@@ -13,18 +12,19 @@ struct WidgetGeometry {
         Vec2    size;
         Vec4    texCoords;
 };
-
 typedef std::map<String, WidgetGeometry> MapWidgetGeometry;
 
 class GuiManager {
 public:
         GuiManager(const String& themeDirectory);
 
-        void            addChild(Widget* wgt)                                  { m_root->addChild(wgt); }
+        void            addWidget(Widget* wgt);
         WidgetGeometry  widgetGeometry(const String& name);
+        void            render();
 private:
         Widget*                 m_root;
         Texture2DPtr            m_texture;      // текстура со всеми виджетами
+        ProgramPtr              m_program;      // программа, которой будут рендерится все виджеты
         MapWidgetGeometry       m_geometry;     // имя виджета -> соответствующие текст. координаты
 
 };

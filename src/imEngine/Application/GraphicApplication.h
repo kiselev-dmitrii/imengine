@@ -29,6 +29,8 @@ protected:
 
         /// Обработка стандартных клавиш (развернуть, и т.д)
         void            keyPressEvent(int key);
+        /// Действия, производимые при ресайзе окна
+        void            windowResizeEvent(int x, int y);
 
 private:
         void            initFPS();
