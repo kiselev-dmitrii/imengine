@@ -32,6 +32,12 @@ public:
         /// Определяет, является ли node дочерним элементом
         bool                    isChildNode(TreeNode* node) const;
 
+protected:
+        /// Выполняется при присоединении ноды
+        virtual void            onAttachChild(TreeNode* node)                   { }
+        /// Выполняется при отсоединении ноды
+        virtual void            onDetachChild(TreeNode* node)                   { }
+
 private:
         bool            addNodeToChildrenList(TreeNode* node);
         bool            removeNodeFromChildrenList(TreeNode* node);

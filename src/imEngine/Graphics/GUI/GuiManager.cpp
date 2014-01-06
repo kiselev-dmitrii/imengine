@@ -1,20 +1,25 @@
 #include "GuiManager.h"
 #include <imEngine/System/Filesystem.h>
 #include <imEngine/FileContainers/Image.h>
+#include <imEngine/Utils/Debug.h>
 #include "Widget.h"
 #include "WidgetProgram.glsl"
 
 namespace imEngine {
 
-GuiManager::GuiManager(const String &themePath) {
-        setTheme(themePath);
-        m_program = createProgram();
+class EmptyWidget : public Widget {
+public:
+        EmptyWidget(GuiManager* manager) : Widget() {
+                m_manager = manager;
+        }
+        void render() { renderAllChildren(); }
+};
 
-        class EmptyWidget : public Widget {
-        public:
-                void render() { renderChilds(); }
-        };
-        m_rootWidget = new EmptyWidget();
+GuiManager::GuiManager(const String &themePath, Window *window) {
+        setTheme(themePath);
+        setWindow(window);
+        m_program = createProgram();
+        m_rootWidget = new EmptyWidget(this);
 }
 
 GuiManager::~GuiManager() {
@@ -25,10 +30,15 @@ void GuiManager::setTheme(const String &themePath) {
         if (themePath == m_themePath) return;
         m_themePath = themePath;
 
+        // Получаем список путей и грузим по ним изображения
         StringList files = Filesystem::tree(m_themePath);
         ImageList images;
         for (String& file: files) images.push_back(ImagePtr(new Image(file)));
 
+        // Использовать полный путь - отстой, поэтому убираем из путей имя директории
+        for (String& file: files) file.replace(0, themePath.length(), "");
+
+        // Генерируем текстурку и вспомогательную информацию
         m_texture = generateTextureAtlas(images);
         fillImagesGeometry(images, files, m_texture, &m_imagesGeometry);
 }
@@ -37,8 +47,20 @@ String GuiManager::themePath() {
         return m_themePath;
 }
 
+void GuiManager::setWindow(Window* window) {
+        m_window = window;
+}
+
+Window* GuiManager::window() const {
+        return m_window;
+}
+
 Texture2DPtr GuiManager::textureAtlas() const {
         return m_texture;
+}
+
+ProgramPtr GuiManager::program() const {
+        return m_program;
 }
 
 void GuiManager::attachWidget(Widget *widget) {
@@ -53,6 +75,16 @@ ImageGeometry* GuiManager::imageGeometry(const String &name) {
         auto it = m_imagesGeometry.find(name);
         if (it != m_imagesGeometry.end()) return &((*it).second);
         return nullptr;
+}
+
+StringList GuiManager::imageList() const {
+        StringList result;
+        for (auto& pair: m_imagesGeometry) result.push_back(pair.first);
+        return result;
+}
+
+void GuiManager::render() {
+        m_rootWidget->render();
 }
 
 IVec2 GuiManager::calcSizeOfTextureAtlas(const ImageList &images) const {

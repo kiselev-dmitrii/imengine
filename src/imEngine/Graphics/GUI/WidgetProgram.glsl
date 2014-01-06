@@ -10,14 +10,13 @@ out vec2 size;
 
 uniform vec2 u_windowSize;
 uniform vec2 u_position;
-uniform float u_depth;
 
 vec2 winToScreen(vec2 winVec, vec2 winSize) {
         return vec2(-1 + 2*winVec.x/winSize.x, 1 - 2*winVec.y/winSize.y);
 }
 
 void main() {
-        gl_Position = vec4(winToScreen(in_offset + u_position, u_windowSize), u_depth, 1.0);
+        gl_Position = vec4(winToScreen(in_offset + u_position, u_windowSize), 0.0, 1.0);
         texCoords = in_texCoords;
         size = in_size * (2.0/u_windowSize);
 }
@@ -62,13 +61,11 @@ void main() {
 layout (location = 0) out vec4 im_outColor;
 
 uniform sampler2D       u_texture;
-uniform vec3            u_color;
 
 in vec2 TexCoord;
 
 void main() {
-        float brightness = texture2D(u_texture, TexCoord).r;
-        im_outColor = vec4(brightness * u_color, brightness);
+        im_outColor = texture2D(u_texture, TexCoord);
 }
 
 )";

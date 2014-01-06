@@ -4,6 +4,7 @@
 #include <imEngine/Graphics/GAPI/GAPI.h>
 #include <imEngine/Utils/Types.h>
 #include <imEngine/FileContainers/Image.h>
+#include <imEngine/System/Window.h>
 
 namespace imEngine {
 
@@ -23,7 +24,7 @@ typedef std::map<String, ImageGeometry> MapImageGeometry;
 class GuiManager {
 public:
         /// Конструктор, создает текстурный атлас из картинок в директории themePath
-        GuiManager(const String& themePath);
+        GuiManager(const String& themePath, Window* window);
         /// Деструктор. Уничтожает всю иерархию подключенных виджетов
         ~GuiManager();
 
@@ -32,16 +33,27 @@ public:
         /// Возвращает директорию с темой
         String                  themePath();
 
+        /// Устанавливает окно, в котором происходит рендер
+        void                    setWindow(Window* window);
+        /// Возвращает окно
+        Window*                 window() const;
+
         /// Возвращает сгенерированный текстурный атлас
         Texture2DPtr            textureAtlas() const;
+        /// Возвращает программу, с помощью которой рендерится весь GUI
+        ProgramPtr              program() const;
 
         /// Добавляет виджет к менеджеру
         void                    attachWidget(Widget* widget);
         /// Удаляет виджет из менеджера
         void                    detachWidget(Widget* widget);
+        /// Возвращает корневой виджет
+        Widget*                 rootWidget()                                    { return m_rootWidget; }
 
         /// Возвращает текстурные координаты по имени картинки в директории с темой
         ImageGeometry*          imageGeometry(const String& name);
+        /// Возвращает список доступных изображений
+        StringList              imageList() const;
 
         /// Рендерит все виджеты
         void                    render();
@@ -61,6 +73,7 @@ private:
 
 private:
         String                  m_themePath;
+        Window*                 m_window;
         Texture2DPtr            m_texture;              // текстура со всеми виджетами
         MapImageGeometry        m_imagesGeometry;       // имя виджета -> соответствующие текст. координаты
 
