@@ -1,15 +1,15 @@
 #include "TreeNode.h"
+#include "Debug.h"
 
 namespace imEngine {
 
-TreeNode::TreeNode(TreeNode *parent) :
-        m_parent(nullptr)
-{
+TreeNode::TreeNode(TreeNode* parent) : m_parent(nullptr) {
         setParent(parent);
 }
 
 TreeNode::~TreeNode() {
-        removeAllChildren();
+        if (m_parent) m_parent->removeNodeFromChildrenList(this);
+        deleteAllChildren();
 }
 
 TreeNode* TreeNode::parent() const {
@@ -17,20 +17,39 @@ TreeNode* TreeNode::parent() const {
 }
 
 void TreeNode::setParent(TreeNode *parent) {
-        if (m_parent) m_parent->removeChild(this);
-        if (parent) parent->addChild(this);
+        if (m_parent) m_parent->removeNodeFromChildrenList(this);
+        if (parent) parent->addNodeToChildrenList(this);
         m_parent = parent;
+}
+
+void TreeNode::attachChild(TreeNode *node) {
+        node->setParent(this);
+}
+
+void TreeNode::detachChild(TreeNode *node) {
+        node->setParent(nullptr);
 }
 
 const TreeNodeList& TreeNode::children() const {
         return m_children;
 }
 
-void TreeNode::addChild(TreeNode *node) {
-        m_children.push_back(node);
+bool TreeNode::isChildNode(TreeNode *node) const {
+        for (TreeNode* item: m_children) if (item == node) return true;
+        return false;
 }
 
-bool TreeNode::removeChild(TreeNode *node) {
+bool TreeNode::addNodeToChildrenList(TreeNode *node) {
+        if (isChildNode(node)) {
+                IM_ERROR("Node already added");
+                return false;
+        } else {
+                m_children.push_back(node);
+                return true;
+        }
+}
+
+bool TreeNode::removeNodeFromChildrenList(TreeNode *node) {
         for (auto it = m_children.begin(); it != m_children.end(); ++it) {
                 if (*it == node) {
                         m_children.erase(it);
@@ -40,9 +59,9 @@ bool TreeNode::removeChild(TreeNode *node) {
         return false;
 }
 
-void TreeNode::removeAllChildren() {
+void TreeNode::deleteAllChildren() {
         for (TreeNode* node: m_children) delete node;
-        m_children.erase(m_children.begin(), m_children.end());
+        m_children.clear();
 }
 
 } //namespace imEngine

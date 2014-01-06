@@ -13,15 +13,18 @@ namespace imEngine {
 class Widget : public TreeNode {
 public:
         /// Конструктор, parent - ссылка на родителя
-        explicit                Widget();
+        explicit                Widget()  {}
 
-        void                    setPosition(const Vec2& position);
-        Vec2                    position() const;
+        void                    setPosition(const Vec2& position) {}
+        Vec2                    position() const {return Vec2(0,0); }
         virtual void            render() = 0;
+
+protected:
+        void                    renderChilds() {}
 
 private:
         GuiManager*             m_manager;
-        WidgetGeometry          m_geometry;
+        ImageGeometry           m_geometry;
         Vec2                    m_position;
 };
 

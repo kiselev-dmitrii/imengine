@@ -1,23 +1,20 @@
 #ifndef TREENODE_H
 #define TREENODE_H
 
-#include <list>
+#include <vector>
 
 namespace imEngine {
 
 class TreeNode;
-typedef std::list<TreeNode*> TreeNodeList;
+typedef std::vector<TreeNode*> TreeNodeList;
 
 /** @brief Класс TreeNode представляет собой вершину дерева.
- *  Данный класс будет базовым для классов Widget, SceneNode и т.д
  */
 class TreeNode {
 public:
-        /// Конструктор.
-        /// Parent - указатель на родителя, к которому автоматически приписывается данный потомок
-        /// Если parent == 0, то элемент дерева считается корневым
+        /// Создает пустую вершину с родителем parent
         explicit                TreeNode(TreeNode* parent = nullptr);
-        /// Деструктор. Удаляет также все дочерние элементы.
+        /// Деструктор. Удаляет все дочерние вершины и отвязывается от родителя
         virtual                 ~TreeNode();
 
         /// Возвращает указатель на родителя
@@ -25,13 +22,20 @@ public:
         /// Устанавливает нового родителя. Автоматически добавляет/удаляет потомка новом/старом элементе
         void                    setParent(TreeNode* parent);
 
+        /// Добавляет делает узел node дочерним узлом. При этом node автоматически получает родителя this
+        void                    attachChild(TreeNode* node);
+        /// Удаляет узел node из списка дочерних узлов. При этом node перестает иметь родителя
+        void                    detachChild(TreeNode* node);
         /// Возвращает констунтную ссылку на список указателей на дочерние TreeNode
         const TreeNodeList&     children() const;
 
+        /// Определяет, является ли node дочерним элементом
+        bool                    isChildNode(TreeNode* node) const;
+
 private:
-        void            addChild(TreeNode* node);
-        bool            removeChild(TreeNode* node);
-        void            removeAllChildren();
+        bool            addNodeToChildrenList(TreeNode* node);
+        bool            removeNodeFromChildrenList(TreeNode* node);
+        void            deleteAllChildren();
 
 protected:
         TreeNode*       m_parent;

@@ -16,6 +16,7 @@ set(TESTS
         FontTest
         TextTest
         LuabindTest
+        GuiManagerTest
 )
 
 foreach(TEST ${TESTS})

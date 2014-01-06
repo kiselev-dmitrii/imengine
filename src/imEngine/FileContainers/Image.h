@@ -3,6 +3,7 @@
 
 #include <imEngine/Utils/Types.h>
 #include <imEngine/Graphics/GAPI/Texture/Texture.h>
+#include <memory>
 #include <IL/il.h>
 
 namespace imEngine {
@@ -48,6 +49,10 @@ private:
         ILuint          m_handle;
 };
 
+
+/** @brief Умный указатель для Image
+ */
+typedef std::shared_ptr<Image> ImagePtr;
 
 } //namespace imEngine
 
