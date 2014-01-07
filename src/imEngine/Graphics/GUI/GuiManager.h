@@ -47,14 +47,14 @@ public:
         void                    attachWidget(Widget* widget);
         /// Удаляет виджет из менеджера
         void                    detachWidget(Widget* widget);
-        /// Возвращает корневой виджет
-        Widget*                 rootWidget()                                    { return m_rootWidget; }
 
         /// Возвращает текстурные координаты по имени картинки в директории с темой
         ImageGeometry*          imageGeometry(const String& name);
         /// Возвращает список доступных изображений
         StringList              imageList() const;
 
+        /// Обновляет все виджеты
+        void                    update();
         /// Рендерит все виджеты
         void                    render();
 

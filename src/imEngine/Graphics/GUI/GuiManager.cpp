@@ -7,19 +7,21 @@
 
 namespace imEngine {
 
-class EmptyWidget : public Widget {
+/** @brief Пустой виджет, служащий в качестве контейнера для других
+ */
+class ContainerWidget : public Widget {
 public:
-        EmptyWidget(GuiManager* manager) : Widget() {
-                m_manager = manager;
-        }
-        void render() { renderAllChildren(); }
+        void render() { for (TreeNode* node: children()) ((Widget*)node)->render(); }
+        void update() { for (TreeNode* node: children()) ((Widget*)node)->update(); }
 };
 
 GuiManager::GuiManager(const String &themePath, Window *window) {
         setTheme(themePath);
         setWindow(window);
         m_program = createProgram();
-        m_rootWidget = new EmptyWidget(this);
+
+        m_rootWidget = new ContainerWidget();
+        m_rootWidget->initialize(this);
 }
 
 GuiManager::~GuiManager() {
@@ -83,7 +85,15 @@ StringList GuiManager::imageList() const {
         return result;
 }
 
+void GuiManager::update() {
+        m_rootWidget->update();
+}
+
 void GuiManager::render() {
+        m_program->bind();
+        m_texture->bind(0);
+        m_program->setUniform("u_texture", 0);
+        m_program->setUniform("u_windowSize", Vec2(m_window->size()));
         m_rootWidget->render();
 }
 

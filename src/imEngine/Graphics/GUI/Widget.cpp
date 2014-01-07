@@ -3,13 +3,6 @@
 
 namespace imEngine {
 
-/// Описывает элемент виджета. Данная структура передается в шейдер
-struct WidgetElementGeometry {
-        Vec2    offset;         // Относительная позция элемента
-        Vec2    size;           // Размер элемента
-        Vec4    texCoords;      // Текстурные коориданты в атласе
-};
-
 //################## Widget #######################//
 
 Widget::Widget(Widget *parent) :
@@ -20,12 +13,16 @@ Widget::Widget(Widget *parent) :
         m_isNeedToUpdateAbsolutePosition(false),
         m_size(0,0)
 {
-        notifyChildren();
+        notifyPositionUpdated();
+}
+
+void Widget::initialize(GuiManager *manager) {
+        m_manager = manager;
 }
 
 void Widget::setPosition(const Vec2 &position) {
         m_position = position;
-        notifyChildren();
+        notifyPositionUpdated();
 }
 
 Vec2 Widget::position() const {
@@ -37,6 +34,14 @@ Vec2 Widget::absolutePosition() {
         return m_absolutePosition;
 }
 
+void Widget::setAbsolutePosition(const Vec2 &position) {
+        if (m_parent) {
+                setPosition(position - ((Widget*)m_parent)->absolutePosition());
+        } else {
+                setPosition(position);
+        }
+}
+
 Vec2 Widget::size() const {
         return m_size;
 }
@@ -45,35 +50,19 @@ GuiManager* Widget::manager() const {
         return m_manager;
 }
 
-void Widget::setCurrentImage(const String &name) {
-        m_currentImage = name;
-        m_isNeedToUpdateBuffer = true;
-}
-
-String Widget::currentImage() const {
-        return m_currentImage;
-}
-
 void Widget::onAttachChild(TreeNode *node) {
-        ((Widget*)node)->m_manager = m_manager;
-        notifyChildren();
+        ((Widget*)node)->initialize(m_manager);
+        notifyPositionUpdated();
 }
 
 void Widget::onDetachChild(TreeNode *node) {
-        ((Widget*)node)->m_manager = nullptr;
-        notifyChildren();
+        notifyPositionUpdated();
 }
 
-void Widget::renderAllChildren() {
-        for (TreeNode* child: m_children) {
-                ((Widget*)child)->render();
-        }
-}
-
-void Widget::notifyChildren() {
+void Widget::notifyPositionUpdated() {
         m_isNeedToUpdateAbsolutePosition = true;
         for (TreeNode* node: children()) {
-                ((Widget*)node)->notifyChildren();
+                ((Widget*)node)->notifyPositionUpdated();
         }
 }
 
@@ -89,63 +78,5 @@ void Widget::updateAbsolutePosition() {
         }
 }
 
-void Widget::initBuffer() {
-        IM_ASSERT(m_manager);
-
-        m_vbo = VertexBufferPtr(new VertexBuffer());
-        m_vao = VertexArrayPtr(new VertexArray());
-
-        m_vao->bind();
-                m_vbo->connect(m_manager->program()->attributeLocation("in_offset"), 2, GL_FLOAT,
-                       offsetof(WidgetElementGeometry, offset), sizeof(WidgetElementGeometry));
-                m_vbo->connect(m_manager->program()->attributeLocation("in_size"), 2, GL_FLOAT,
-                       offsetof(WidgetElementGeometry, size) , sizeof(WidgetElementGeometry));
-                m_vbo->connect(m_manager->program()->attributeLocation("in_texCoords"), 4, GL_FLOAT,
-                       offsetof(WidgetElementGeometry, texCoords), sizeof(WidgetElementGeometry));
-        m_vao->unbind();
-}
-
-//######################### NonStrachableWidget ###################//
-
-NonStretchableWidget::NonStretchableWidget(const String &initImage, Widget *parent) : Widget(parent) {
-        IM_TRACE("Это хак, и не будет работать, если parent=nullptr");
-        m_manager = parent->manager();
-        initBuffer();
-        setCurrentImage(initImage);
-}
-
-void NonStretchableWidget::render() {
-        if (m_isNeedToUpdateBuffer) {
-                updateBuffer();
-                m_isNeedToUpdateBuffer = false;
-        }
-
-        manager()->program()->bind();
-
-        manager()->textureAtlas()->bind(0);
-        manager()->program()->setUniform("u_texture", 0);
-        manager()->program()->setUniform("u_windowSize", Vec2(manager()->window()->size()));
-        manager()->program()->setUniform("u_position", absolutePosition());
-
-        // Биндим буфер и рисуем
-        m_vao->bind();
-        Renderer::renderVertices(Primitive::POINT, 1);
-}
-
-void NonStretchableWidget::updateBuffer() {
-        /// Получаем информацию о изображении в текстурном атласе
-        ImageGeometry* g = manager()->imageGeometry(currentImage());
-        if (!g) return;
-
-        // Заполняем данные и грузим их в VBO
-        WidgetElementGeometry data;
-        data.offset = Vec2(0,0);
-        data.size = g->size;
-        data.texCoords = g->texCoords;
-        m_vbo->load(&data, sizeof(data), BufferUsage::STREAM_DRAW);
-
-        // Обновляем размер виджета
-        m_size = g->size;
-}
 
 } //namespace imEngine
