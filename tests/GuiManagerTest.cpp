@@ -1,4 +1,4 @@
-#include <imEngine/Application/BaseApplication.h>
+#include <imEngine/Application/GraphicApplication.h>
 #include <imEngine/Graphics/GUI/GuiManager.h>
 #include <imEngine/System/Filesystem.h>
 #include <imEngine/Utils/Debug.h>
@@ -58,7 +58,7 @@ private:
 };
 
 
-class Application : public BaseApplication {
+class Application : public GraphicApplication {
 protected:
         void    initialize();
         void    update();
@@ -73,6 +73,7 @@ private:
 };
 
 void Application::initialize() {
+        GraphicApplication::initialize();
         glClearColor(1,1,1,1);
         
         m_gui = new GuiManager("resources/gui/elementary/", mainWindow());
@@ -95,6 +96,7 @@ void Application::initialize() {
 }
 
 void Application::update() {
+        GraphicApplication::update();
         m_gui->update();
 
         if (mainWindow()->keyboard()->isKeyPressed(SDLK_1)) m_btn1->setSize(m_btn1->size() - Vec2(1));
@@ -105,11 +107,12 @@ void Application::update() {
 }
 
 void Application::render() {
-        Renderer::clearBuffers();
+        GraphicApplication::render();
         m_gui->render();
 }
 
 void Application::destroy() {
+        GraphicApplication::destroy();
 }
 
 int main() {

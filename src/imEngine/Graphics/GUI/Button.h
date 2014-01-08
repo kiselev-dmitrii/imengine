@@ -8,7 +8,7 @@ namespace imEngine {
 class Button : public Widget {
 public:
         Button(const String& normalState, const String& hoverState,
-               const String& pushedState, const String& disabledState);
+               const String& pushedState, const String& disabledState, const String& focusedState);
 };
 
 

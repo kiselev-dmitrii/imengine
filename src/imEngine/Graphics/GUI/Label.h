@@ -2,16 +2,26 @@
 #define LABEL_H
 
 #include "Widget.h"
+#include "Text.h"
 
 namespace imEngine {
 
+
+/** @brief Виджет представлющий собой прямоугольник с текстом
+ */
 class Label : public Widget {
 public:
-        explicit        Label(Widget* parent = 0);
+        /// Конструктор
+        explicit        Label(const String& text, Widget* parent = 0);
+
+        /// Устанавливает и возвращает текст
+        void            setText(const String& text);
+        const String&   text() const;
 
 private:
-        const String&   m_text;
+        Text            m_text;
 };
+
 
 } //namespace imEngine
 
