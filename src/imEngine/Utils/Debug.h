@@ -77,9 +77,12 @@ namespace Debug {
         #define IM_TRACE(text)
         #define IM_TODO
         #define IM_ERROR(text)
+        #define IM_LOG(text)
         #define IM_ASSERT(expression)
         #define IM_GLCALL(call) call
-        #define IM_PROFILER(name, code) code
+        #define IM_PROFILE(name, code) { code; }
+        #define IM_UNUSED(variable)
+
 #endif
 
 

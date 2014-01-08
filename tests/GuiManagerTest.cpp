@@ -89,7 +89,6 @@ void Application::initialize() {
         m_btn2 = new Button("regular_btn_disabled.png", "regular_btn_focused.png", "regular_btn_active.png");
         m_btn2->setPosition(m_btn1->size());
         m_btn1->attachChild(m_btn2);
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -100,6 +99,9 @@ void Application::update() {
 
         if (mainWindow()->keyboard()->isKeyPressed(SDLK_1)) m_btn1->setSize(m_btn1->size() - Vec2(1));
         if (mainWindow()->keyboard()->isKeyPressed(SDLK_2)) m_btn1->setSize(m_btn1->size() + Vec2(1));
+
+        if (mainWindow()->keyboard()->isKeyPressed(SDLK_3)) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        if (mainWindow()->keyboard()->isKeyPressed(SDLK_4)) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void Application::render() {
