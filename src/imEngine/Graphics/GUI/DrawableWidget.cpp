@@ -104,8 +104,8 @@ void NonStretchableWidget::updateBuffer() {
 //######################## HStretchableWidget #############################//
 
 
-HStretchableWidget::HStretchableWidget(const String &initalImage, Widget *parent) :
-        DrawableWidget(initalImage, parent)
+HStretchableWidget::HStretchableWidget(const String &initialImage, Widget *parent) :
+        DrawableWidget(initialImage, parent)
 { }
 
 void HStretchableWidget::initialize(GuiManager *manager) {
@@ -118,7 +118,6 @@ void HStretchableWidget::initialize(GuiManager *manager) {
 void HStretchableWidget::setWidth(float width) {
         if (width == m_size.x) return;
         if (width < m_minimalWidth) return;
-        IM_VAR(width);
 
         m_size.x = width;
         m_isNeedToUpdateBuffer = true;
@@ -173,6 +172,82 @@ void HStretchableWidget::updateBuffer() {
         data[2].texCoords.y = g->texCoords.y;
         data[2].texCoords.z = g->texCoords.z;
         data[2].texCoords.w = g->texCoords.w;
+
+        // Грузим данные в VBO
+        m_vbo->load(&data, sizeof(data), BufferUsage::STREAM_DRAW);
+}
+
+
+//######################## HStretchableWidget #############################//
+
+
+VStretchableWidget::VStretchableWidget(const String &initialImage, Widget *parent) :
+        DrawableWidget(initialImage, parent)
+{ }
+
+
+void VStretchableWidget::initialize(GuiManager *manager) {
+        DrawableWidget::initialize(manager);
+        m_size = manager->imageGeometry(currentImage())->size;
+        m_minimalHeight = 2 * m_size.y / 3;
+        setWidgetElementCount(3);
+}
+
+void VStretchableWidget::setHeight(float height) {
+        if (height == m_size.y) return;
+        if (height < m_minimalHeight) return;
+
+        m_size.y = height;
+        m_isNeedToUpdateBuffer = true;
+}
+
+void VStretchableWidget::setMinimalHeight(float height) {
+        m_minimalHeight = height;
+}
+
+float VStretchableWidget::minimalHeight() const {
+        return m_minimalHeight;
+}
+
+void VStretchableWidget::updateBuffer() {
+        ImageGeometry* g = manager()->imageGeometry(currentImage());
+        if (!g) {
+                IM_ERROR("Image " << currentImage() << " not found");
+                return;
+        }
+
+        float wgtHeight = size().y;
+        float imgWidth = g->size.x;
+        float imgHeight = g->size.y;
+        float sideHeight = imgHeight/3;
+        float tcDiff = g->texCoords.w - g->texCoords.y;
+
+        // Заполняем массив данными
+        WidgetElementGeometry data[3];
+
+        // Первый верхний элемент
+        data[0].offset = Vec2(0,0);
+        data[0].size = Vec2(imgWidth, sideHeight);
+        data[0].texCoords.x = g->texCoords.x;
+        data[0].texCoords.y = g->texCoords.y + 2*tcDiff/3;
+        data[0].texCoords.z = g->texCoords.z;
+        data[0].texCoords.w = g->texCoords.w;
+
+        // Середина - которая растягивается по высоте
+        data[1].offset = Vec2(0, sideHeight);
+        data[1].size = Vec2(imgWidth, wgtHeight - 2*sideHeight);
+        data[1].texCoords.x = g->texCoords.x;
+        data[1].texCoords.y = g->texCoords.y + tcDiff/3;
+        data[1].texCoords.z = g->texCoords.z;
+        data[1].texCoords.w = g->texCoords.y + 2*tcDiff/3;
+
+        // Последний элемент
+        data[2].offset = Vec2(0, data[0].size.y + data[1].size.y);
+        data[2].size = Vec2(imgWidth, sideHeight);
+        data[2].texCoords.x = g->texCoords.x;
+        data[2].texCoords.y = g->texCoords.y;
+        data[2].texCoords.z = g->texCoords.z;
+        data[2].texCoords.w = g->texCoords.y + tcDiff/3;
 
         // Грузим данные в VBO
         m_vbo->load(&data, sizeof(data), BufferUsage::STREAM_DRAW);

@@ -67,7 +67,8 @@ protected:
  */
 class HStretchableWidget : public DrawableWidget {
 public:
-        explicit HStretchableWidget(const String &initalImage, Widget *parent);
+        /// Конструктор
+        explicit HStretchableWidget(const String &initialImage, Widget *parent);
 
         /// Инициализация размера
         void    initialize(GuiManager* manager);
@@ -92,7 +93,26 @@ private:
 /** @brief Растягиваемый только по горизонтали виджет
  */
 class VStretchableWidget : public DrawableWidget {
+public:
+        /// Конструктор
+        explicit VStretchableWidget(const String &initialImage, Widget* parent);
 
+        /// Инициализация
+        void    initialize(GuiManager *manager);
+
+        /// Установка высоты
+        void    setHeight(float height);
+        /// Установка минимальной высоты
+        void    setMinimalHeight(float height);
+        /// Получения минимальной высоты
+        float   minimalHeight() const;
+
+protected:
+        /// Обновление буфера
+        void    updateBuffer();
+
+private:
+        float   m_minimalHeight;
 };
 
 
