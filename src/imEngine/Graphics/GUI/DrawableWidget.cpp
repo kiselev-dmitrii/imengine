@@ -178,7 +178,7 @@ void HStretchableWidget::updateBuffer() {
 }
 
 
-//######################## HStretchableWidget #############################//
+//######################## VStretchableWidget #############################//
 
 
 VStretchableWidget::VStretchableWidget(const String &initialImage, Widget *parent) :
@@ -248,6 +248,110 @@ void VStretchableWidget::updateBuffer() {
         data[2].texCoords.y = g->texCoords.y;
         data[2].texCoords.z = g->texCoords.z;
         data[2].texCoords.w = g->texCoords.y + tcDiff/3;
+
+        // Грузим данные в VBO
+        m_vbo->load(&data, sizeof(data), BufferUsage::STREAM_DRAW);
+}
+
+
+//######################## BothStretchableWidget #############################//
+
+
+BothStretchableWidget::BothStretchableWidget(const String &initialImage, Widget *parent) :
+        DrawableWidget(initialImage, parent)
+{ }
+
+void BothStretchableWidget::initialize(GuiManager *manager) {
+        DrawableWidget::initialize(manager);
+        m_size = manager->imageGeometry(currentImage())->size;
+        m_minimalSize = Vec2(2*m_size.x/3, 2*m_size.y/3);
+        setWidgetElementCount(9);
+}
+
+void BothStretchableWidget::setSize(const Vec2 &size) {
+        if (size == m_size) return;
+        if (size.x < m_minimalSize.x || size.y < m_minimalSize.y) {
+                return;
+        }
+
+        m_size = size;
+        m_isNeedToUpdateBuffer = true;
+}
+
+void BothStretchableWidget::setMinimalSize(const Vec2 &size) {
+        m_minimalSize = size;
+}
+
+Vec2 BothStretchableWidget::minimalSize() const {
+        return m_minimalSize;
+}
+
+void BothStretchableWidget::updateBuffer() {
+        ImageGeometry* g = manager()->imageGeometry(currentImage());
+        if (!g) {
+                IM_ERROR("Image " << currentImage() << " not found");
+                return;
+        }
+
+        float wgtWidth = size().x;
+        float wgtHeight = size().y;
+        float sideWidth = g->size.x/3;
+        float sideHeight = g->size.y/3;
+        float middleWidth = wgtWidth - 2 * sideWidth;
+        float middleHeight = wgtHeight - 2 * sideHeight;
+
+        float tcDX = (g->texCoords.z - g->texCoords.x)/3;
+        float tcDY = (g->texCoords.w - g->texCoords.y)/3;
+        float tcX = g->texCoords.x;
+        float tcY = g->texCoords.y;
+
+        // Заполняем массив данными построчно
+        WidgetElementGeometry data[9];
+
+        // Левый верхний угол
+        data[0].offset = Vec2(0,0);
+        data[0].size = Vec2(sideWidth, sideHeight);
+        data[0].texCoords = Vec4(tcX, tcY+2*tcDY, tcX+tcDX, tcY+3*tcDY);
+
+        // Верхняя середина
+        data[1].offset = Vec2(sideWidth, 0);
+        data[1].size = Vec2(middleWidth, sideHeight);
+        data[1].texCoords = Vec4(tcX+tcDX, tcY+2*tcDY, tcX+2*tcDX, tcY+3*tcDY);
+
+        // Правый верхний угол
+        data[2].offset = Vec2(sideWidth + middleWidth, 0);
+        data[2].size = Vec2(sideWidth, sideHeight);
+        data[2].texCoords = Vec4(tcX+2*tcDX, tcY+2*tcDY, tcX+3*tcDX, tcY+3*tcDY);
+
+        // Левая средняя сторона
+        data[3].offset = Vec2(0, sideHeight);
+        data[3].size = Vec2(sideWidth, middleHeight);
+        data[3].texCoords = Vec4(tcX, tcY+tcDY, tcX+tcDX, tcY+2*tcDY);
+
+        // Середина
+        data[4].offset = Vec2(sideWidth, sideHeight);
+        data[4].size = Vec2(middleWidth, middleHeight);
+        data[4].texCoords = Vec4(tcX+tcDX, tcY+tcDY, tcX+2*tcDX, tcY+2*tcDY);
+
+        // Правая средняя сторона
+        data[5].offset = Vec2(sideWidth + middleWidth, sideHeight);
+        data[5].size = Vec2(sideWidth, middleHeight);
+        data[5].texCoords = Vec4(tcX+2*tcDX, tcY+tcDY, tcX+3*tcDX, tcY+2*tcDY);
+
+        // Нижняя левая сторона
+        data[6].offset = Vec2(0, sideHeight + middleHeight);
+        data[6].size = Vec2(sideWidth, sideHeight);
+        data[6].texCoords = Vec4(tcX, tcY, tcX+tcDX, tcY+tcDY);
+
+        // Нижняя средняя сторона
+        data[7].offset = Vec2(sideWidth, sideHeight + middleHeight);
+        data[7].size = Vec2(middleWidth, sideHeight);
+        data[7].texCoords = Vec4(tcX+tcDX, tcY, tcX+2*tcDX, tcY+tcDY);
+
+        // Нижняя правая сторона
+        data[8].offset = Vec2(sideWidth + middleWidth, sideHeight +  middleHeight);
+        data[8].size = Vec2(sideWidth, sideHeight);
+        data[8].texCoords = Vec4(tcX+2*tcDX, tcY, tcX+3*tcDX, tcY+tcDY);
 
         // Грузим данные в VBO
         m_vbo->load(&data, sizeof(data), BufferUsage::STREAM_DRAW);

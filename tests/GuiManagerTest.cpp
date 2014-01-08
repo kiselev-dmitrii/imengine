@@ -6,10 +6,10 @@
 
 using namespace imEngine;
 
-class Button : public VStretchableWidget {
+class Button : public BothStretchableWidget {
 public:
         Button(String active, String hover, String pressed, Widget* parent = nullptr) :
-                VStretchableWidget(active, parent),
+                BothStretchableWidget(active, parent),
                 m_isHanded(false),
                 m_activeState(active),
                 m_hoverState(hover),
@@ -84,19 +84,22 @@ void Application::initialize() {
                 IM_VAR(m_gui->imageGeometry(str)->texCoords);
         }
 
-        m_btn1 = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png");
+        m_btn1 = new Button("tip_panel.png", "tip_panel.png", "tip_panel.png");
         m_gui->attachWidget(m_btn1);
         m_btn2 = new Button("regular_btn_disabled.png", "regular_btn_focused.png", "regular_btn_active.png");
         m_btn2->setPosition(m_btn1->size());
         m_btn1->attachChild(m_btn2);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Application::update() {
         m_gui->update();
 
-        if (mainWindow()->keyboard()->isKeyPressed(SDLK_1)) m_btn1->setHeight(m_btn1->size().y - 1);
-        if (mainWindow()->keyboard()->isKeyPressed(SDLK_2)) m_btn1->setHeight(m_btn1->size().y + 1);
+        if (mainWindow()->keyboard()->isKeyPressed(SDLK_1)) m_btn1->setSize(m_btn1->size() - Vec2(1));
+        if (mainWindow()->keyboard()->isKeyPressed(SDLK_2)) m_btn1->setSize(m_btn1->size() + Vec2(1));
 }
 
 void Application::render() {

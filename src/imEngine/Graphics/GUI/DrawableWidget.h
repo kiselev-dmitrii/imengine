@@ -119,7 +119,26 @@ private:
 /** @brief Растягиваемый в обе стороны виджет
  */
 class BothStretchableWidget : public DrawableWidget {
+public:
+        /// Конструктор
+        explicit BothStretchableWidget(const String &initialImage, Widget* parent);
 
+        /// Инициализация
+        void    initialize(GuiManager *manager);
+
+        /// Установка размеров
+        void    setSize(const Vec2& size);
+        /// Установка минимальных размеров
+        void    setMinimalSize(const Vec2& size);
+        /// Получение минимальных размеров
+        Vec2    minimalSize() const;
+
+protected:
+        /// Обновление буфера
+        void    updateBuffer();
+
+private:
+        Vec2    m_minimalSize;
 };
 
 
