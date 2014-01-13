@@ -33,6 +33,9 @@ public:
         /// Возвращает глубину текста
         float           depth() const                                                   { return m_depth; }
 
+        /// Возвращает размер текста, при рендере данным шрифтом
+        Vec2            size() const                                                    { return m_size; }
+
         /// Устанавливает цвет текста
         void            setColor(const Vec3& color);
         /// Возвращает текущий цвет текста
@@ -72,7 +75,14 @@ private:
         FontPtr         m_font;
         VertexBufferPtr m_vbo;
         VertexArrayPtr  m_vao;
+
+        Vec2            m_size;                         // размер текста при рендере данным шрифтом
 };
+
+
+/** @brief Умный указатель с подсчетом ссылок для Text
+ */
+typedef std::shared_ptr<Text> TextPtr;
 
 } //namespace imEngine
 

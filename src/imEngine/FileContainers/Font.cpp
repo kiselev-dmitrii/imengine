@@ -1,5 +1,6 @@
 #include "Font.h"
 #include <imEngine/Utils/Debug.h>
+#include <imEngine/Utils/StringUtils.h>
 
 namespace imEngine {
 
@@ -29,15 +30,28 @@ uint Font::verticalInterval() const {
 }
 
 IVec2 Font::calcSizeOfText(const String &text) const {
-        IM_TODO;
-        // Скорее всего считается не верно
-        int width = 0;
+        StringList lines = StringUtils::split(text, "\n");
+        uint textWidth = 0;
+        uint textHeight = 0;
+        for (auto &line: lines) {
+                textWidth = std::max(calcWidthOfText(line), textWidth);
+                textHeight += verticalInterval();
+        }
+        return IVec2(textWidth, textHeight);
+}
+
+uint Font::calcWidthOfText(const String &text) const {
+        uint width = 0;
         for (char ch: text) width += glyph(ch).advance.x;
-        return IVec2(width, verticalInterval());
+        return width;
 }
 
 bool Font::isGlyphVisible(char ch) {
         return (ch >= 32 && ch < 128);
+}
+
+FontPtr Font::defaultFont() {
+        return FontPtr(new Font("resources/font/FreeSans.ttf", 12));
 }
 
 GlyphList Font::generateGlyphMetadata(FT_Face face, Texture2DPtr texture) {
@@ -98,8 +112,8 @@ Texture2DPtr Font::generateTextureAtlas(FT_Face face) {
         }
 
         // Устанавилваем линейную фильтрацию
-        texture->setMagnificationFilter(TextureMagFilter::LINEAR);
-        texture->setMinimizationFilter(TextureMinFilter::LINEAR);
+        texture->setMagnificationFilter(TextureMagFilter::NEAREST);
+        texture->setMinimizationFilter(TextureMinFilter::NEAREST);
 
         return texture;
 }

@@ -12,7 +12,8 @@ struct SymbolGeometry {
 
 Text::Text(const String &text, const FontPtr font, Window* window) :
         m_depth(0.0f),
-        m_window(nullptr)
+        m_window(nullptr),
+        m_font(font)
 {
         setText(text);
         setFont(font);
@@ -20,26 +21,29 @@ Text::Text(const String &text, const FontPtr font, Window* window) :
 
         setPosition(Vec2(0,0));
         setDepth(0.0f);
-        setColor(Vec3(1,1,1));
+        setColor(Vec3(0.5,0.5,0.5));
 
         initBuffer();
         m_needToUpdateBuffer = true;
 }
 
 void Text::setText(const String &text) {
-        if (text != m_text) {
-                m_text = text;
-                m_numberOfVisibleChars = calcNumberOfVisibleChars(m_text);
+        if (text == m_text) return;
 
-                m_needToUpdateBuffer = true;
-        }
+        m_text = text;
+
+        m_numberOfVisibleChars = calcNumberOfVisibleChars(m_text);
+        if (m_font) m_size = m_font->calcSizeOfText(m_text);
+        m_needToUpdateBuffer = true;
 }
 
 void Text::setFont(const FontPtr &font) {
-        if (font != m_font) {
-                m_font = font;
-                m_needToUpdateBuffer = true;
-        }
+        if (font == m_font) return;
+
+        m_font = font;
+
+        if (m_font) m_size = m_font->calcSizeOfText(m_text);
+        m_needToUpdateBuffer = true;
 }
 
 void Text::setPosition(const Vec2 &position) {
@@ -55,6 +59,7 @@ void Text::setColor(const Vec3 &color) {
 }
 
 void Text::setWindow(Window *window) {
+        IM_ASSERT(window);
         m_window = window;
 }
 

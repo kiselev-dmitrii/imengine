@@ -18,8 +18,8 @@ struct Glyph {
         Vec2    advance;       //смещение от одного символа до другого в текселях
         Vec4    texCoords;     //текстурные координаты
 };
-
 typedef std::vector<Glyph> GlyphList;
+
 
 /** @brief Шрифт. Представляет собой обертку для библиотеки Freetype
  */
@@ -37,9 +37,15 @@ public:
 
         /// Расчитывает размер прямоугольника необходимый для рендеринга строки str
         IVec2                   calcSizeOfText(const String& text) const;
+        /// Расчитывает ширину текста в пикселях
+        uint                    calcWidthOfText(const String& text) const;
 
         /// Проверяет, является ли глиф видимым, то есть есть будет для него происходить рендер
         static bool             isGlyphVisible(char ch);
+
+public:
+        /// Статический метод. Возвращает указатель на стандартный шрифт
+        static std::shared_ptr<Font> defaultFont();
 
 private:
         /// Инициализирует библиотеку

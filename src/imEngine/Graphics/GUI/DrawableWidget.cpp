@@ -37,7 +37,7 @@ void DrawableWidget::render() {
         Renderer::renderVertices(Primitive::POINT, m_widgetElementCount);
 
         // Отрисовываем детишек
-        for (TreeNode* node: children()) ((Widget*)node)->render();
+        renderChildren();
 }
 
 void DrawableWidget::initBuffer() {
@@ -105,30 +105,22 @@ void NonStretchableWidget::updateBuffer() {
 
 
 HStretchableWidget::HStretchableWidget(const String &initialImage, Widget *parent) :
-        DrawableWidget(initialImage, parent)
+        DrawableWidget(initialImage, parent), HStretchableAbstract()
 { }
 
 void HStretchableWidget::initialize(GuiManager *manager) {
         DrawableWidget::initialize(manager);
         m_size = manager->imageGeometry(currentImage())->size;
-        m_minimalWidth = 2 * m_size.x / 3;
+        setMinimalWidth(2 * m_size.x / 3);
         setWidgetElementCount(3);
 }
 
 void HStretchableWidget::setWidth(float width) {
         if (width == m_size.x) return;
-        if (width < m_minimalWidth) return;
+        if (width < minimalWidth()) return;
 
         m_size.x = width;
         m_isNeedToUpdateBuffer = true;
-}
-
-void HStretchableWidget::setMinimalWidth(float width) {
-        m_minimalWidth = width;
-}
-
-float HStretchableWidget::minimalWidth() const {
-        return m_minimalWidth;
 }
 
 void HStretchableWidget::updateBuffer() {
@@ -182,31 +174,23 @@ void HStretchableWidget::updateBuffer() {
 
 
 VStretchableWidget::VStretchableWidget(const String &initialImage, Widget *parent) :
-        DrawableWidget(initialImage, parent)
+        DrawableWidget(initialImage, parent), VStretchableAbstract()
 { }
 
 
 void VStretchableWidget::initialize(GuiManager *manager) {
         DrawableWidget::initialize(manager);
         m_size = manager->imageGeometry(currentImage())->size;
-        m_minimalHeight = 2 * m_size.y / 3;
+        setMinimalHeight(2 * m_size.y / 3);
         setWidgetElementCount(3);
 }
 
 void VStretchableWidget::setHeight(float height) {
         if (height == m_size.y) return;
-        if (height < m_minimalHeight) return;
+        if (height < minimalHeight()) return;
 
         m_size.y = height;
         m_isNeedToUpdateBuffer = true;
-}
-
-void VStretchableWidget::setMinimalHeight(float height) {
-        m_minimalHeight = height;
-}
-
-float VStretchableWidget::minimalHeight() const {
-        return m_minimalHeight;
 }
 
 void VStretchableWidget::updateBuffer() {
@@ -258,32 +242,30 @@ void VStretchableWidget::updateBuffer() {
 
 
 BothStretchableWidget::BothStretchableWidget(const String &initialImage, Widget *parent) :
-        DrawableWidget(initialImage, parent)
+        DrawableWidget(initialImage, parent), BothStretchableAbstract()
 { }
 
 void BothStretchableWidget::initialize(GuiManager *manager) {
         DrawableWidget::initialize(manager);
         m_size = manager->imageGeometry(currentImage())->size;
-        m_minimalSize = Vec2(2*m_size.x/3, 2*m_size.y/3);
+        setMinimalSize(Vec2(2*m_size.x/3, 2*m_size.y/3));
         setWidgetElementCount(9);
 }
 
-void BothStretchableWidget::setSize(const Vec2 &size) {
-        if (size == m_size) return;
-        if (size.x < m_minimalSize.x || size.y < m_minimalSize.y) {
-                return;
-        }
+void BothStretchableWidget::setWidth(float width) {
+        if (width == m_size.x) return;
+        if (width < minimalSize().x) return;
 
-        m_size = size;
+        m_size.x = width;
         m_isNeedToUpdateBuffer = true;
 }
 
-void BothStretchableWidget::setMinimalSize(const Vec2 &size) {
-        m_minimalSize = size;
-}
+void BothStretchableWidget::setHeight(float height) {
+        if (height == m_size.y) return;
+        if (height < minimalSize().y) return;
 
-Vec2 BothStretchableWidget::minimalSize() const {
-        return m_minimalSize;
+        m_size.y = height;
+        m_isNeedToUpdateBuffer = true;
 }
 
 void BothStretchableWidget::updateBuffer() {

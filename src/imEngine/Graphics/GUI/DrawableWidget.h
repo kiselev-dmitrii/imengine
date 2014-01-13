@@ -65,7 +65,7 @@ protected:
 
 /** @brief Растягиваемый по горизонтали виджет
  */
-class HStretchableWidget : public DrawableWidget {
+class HStretchableWidget : public DrawableWidget, public HStretchableAbstract {
 public:
         /// Конструктор
         explicit HStretchableWidget(const String &initialImage, Widget *parent);
@@ -75,24 +75,16 @@ public:
 
         /// Установка ширины
         void    setWidth(float width);
-        /// Установка минимальной ширины
-        void    setMinimalWidth(float width);
-        /// Получение минимальной ширины
-        float   minimalWidth() const;
 
 protected:
         /// Обновление буфера с учетом растяжимости виджета
         void    updateBuffer();
-
-private:
-        float   m_minimalWidth;
-
 };
 
 
 /** @brief Растягиваемый только по горизонтали виджет
  */
-class VStretchableWidget : public DrawableWidget {
+class VStretchableWidget : public DrawableWidget, public VStretchableAbstract {
 public:
         /// Конструктор
         explicit VStretchableWidget(const String &initialImage, Widget* parent);
@@ -102,23 +94,16 @@ public:
 
         /// Установка высоты
         void    setHeight(float height);
-        /// Установка минимальной высоты
-        void    setMinimalHeight(float height);
-        /// Получения минимальной высоты
-        float   minimalHeight() const;
 
 protected:
         /// Обновление буфера
         void    updateBuffer();
-
-private:
-        float   m_minimalHeight;
 };
 
 
 /** @brief Растягиваемый в обе стороны виджет
  */
-class BothStretchableWidget : public DrawableWidget {
+class BothStretchableWidget : public DrawableWidget, public BothStretchableAbstract {
 public:
         /// Конструктор
         explicit BothStretchableWidget(const String &initialImage, Widget* parent);
@@ -126,19 +111,14 @@ public:
         /// Инициализация
         void    initialize(GuiManager *manager);
 
-        /// Установка размеров
-        void    setSize(const Vec2& size);
-        /// Установка минимальных размеров
-        void    setMinimalSize(const Vec2& size);
-        /// Получение минимальных размеров
-        Vec2    minimalSize() const;
+        /// Установка ширины
+        void    setWidth(float width);
+        /// Установка высоты
+        void    setHeight(float height);
 
 protected:
         /// Обновление буфера
         void    updateBuffer();
-
-private:
-        Vec2    m_minimalSize;
 };
 
 

@@ -3,6 +3,7 @@
 #include <imEngine/System/Filesystem.h>
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/Graphics/GUI/DrawableWidget.h>
+#include <imEngine/Graphics/GUI/Label.h>
 
 using namespace imEngine;
 
@@ -69,6 +70,7 @@ private:
         GuiManager*             m_gui;
         Button*                 m_btn1;
         Button*                 m_btn2;
+        Label*                  m_lbl;
 
 };
 
@@ -90,6 +92,13 @@ void Application::initialize() {
         m_btn2 = new Button("regular_btn_disabled.png", "regular_btn_focused.png", "regular_btn_active.png");
         m_btn2->setPosition(m_btn1->size());
         m_btn1->attachChild(m_btn2);
+
+        m_lbl = new Label("Push");
+        m_lbl->setAlignment(LabelAlignment::CENTER);
+        m_btn2->attachChild(m_lbl);
+        m_lbl->setWidth(m_btn2->size().x);
+        m_lbl->setPosition(m_lbl->position() + Vec2(0,6));
+        m_lbl->setColor(Vec3(0,0,0));
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -17,6 +17,7 @@ Widget::Widget(Widget *parent) :
 }
 
 void Widget::initialize(GuiManager *manager) {
+        IM_ASSERT(manager);
         m_manager = manager;
 }
 
@@ -48,6 +49,10 @@ Vec2 Widget::size() const {
 
 GuiManager* Widget::manager() const {
         return m_manager;
+}
+
+void Widget::renderChildren() {
+        for (TreeNode* node: children()) ((Widget*)node)->render();
 }
 
 void Widget::onAttachChild(TreeNode *node) {

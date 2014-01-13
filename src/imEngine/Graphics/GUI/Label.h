@@ -6,20 +6,56 @@
 
 namespace imEngine {
 
+namespace LabelAlignment {
+enum Enum {
+        LEFT,
+        RIGHT,
+        CENTER
+};
+}
 
-/** @brief Виджет представлющий собой прямоугольник с текстом
+
+/** @brief Виджет представлющий собой прямоугольник с однострочным текстом
+ *
+ * Высота виджета будет равна высоте текста, ширину виджета можно указать
+ * вручную. При этом, если ширина текста больше, чем ширина виджета, то
+ * будет рендерится только нужная часть (это осуществляется путем использования
+ * буфера трафарета).
  */
-class Label : public Widget {
+class Label : public Widget, public HStretchableAbstract {
 public:
         /// Конструктор
-        explicit        Label(const String& text, Widget* parent = 0);
+        explicit Label(const String& text, Widget* parent = 0);
+
+        /// Инициализация. Установка начальных размеров и т.д.
+        void            initialize(GuiManager* manager);
+        /// Обновляет состояние виджета
+        void            update();
+        /// Рендерит себя и детей
+        void            render();
+
+        /// Устанавливает ширину прямоугольника (может быть любой)
+        void            setWidth(float width)                                   { m_size.x = width; }
 
         /// Устанавливает и возвращает текст
-        void            setText(const String& text);
-        const String&   text() const;
+        void            setText(const String& text)                             { m_text->setText(text); }
+        const String&   text() const                                            { return m_text->text(); }
+
+        /// Устанавливает и возвращает шрифт
+        void            setFont(FontPtr font)                                   { m_text->setFont(font); }
+        FontPtr         font() const                                            { return m_text->font(); }
+
+        /// Устанавливает и возвращает цвет
+        void            setColor(const Vec3& color)                             { m_text->setColor(color); }
+        Vec3            color() const                                           { return m_text->color(); }
+
+        /// Устанавливает выравнивание
+        void            setAlignment(LabelAlignment::Enum alignment)            { m_alignment = alignment; }
 
 private:
-        Text            m_text;
+        LabelAlignment::Enum    m_alignment;
+        TextPtr                 m_text;
+        String                  m_tmpString;
 };
 
 
