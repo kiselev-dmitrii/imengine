@@ -67,6 +67,8 @@ protected:
         void    render();
         void    destroy();
 
+        void    keyPressEvent(int key);
+
 private:
         GuiManager*             m_gui;
         Button*                 m_btn1;
@@ -123,6 +125,14 @@ void Application::render() {
 
 void Application::destroy() {
         GraphicApplication::destroy();
+}
+
+void Application::keyPressEvent(int key) {
+        if (key >= 32 && key < 128) {
+                char ch = key;
+                if (mainWindow()->keyboard()->modifiers() & KeyboardModifiers::LSHIFT) ch = toupper(ch);
+                m_lbl->setText(m_lbl->text() + ch);
+        }
 }
 
 int main() {

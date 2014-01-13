@@ -32,11 +32,16 @@ public:
 
         /// Отрисовывает countVertices вершин из текущего VBO как примитывы type
         static void     renderVertices(Primitive::Enum type, GLsizei countVertices);
-
         /// Отрисовывает countIndices индексов из текущих VBO + IBO как примитивы типа type.
         /// Предполагается, что индексы имеют тип GL_UNSIGNED_INT
         static void     renderIndices(Primitive::Enum type, GLsizei countIndices);
 
+        /// Включает буфер трафарета - дальнейший рендер осуществляется в него
+        static void     beginStencilRendering();
+        /// Рисует во фреймбуфер с использованием буфера трафарета
+        static void     continueStencilRendering();
+        /// Прекращает использование буфера трафарета
+        static void     endStencilRendering();
 };
 
 

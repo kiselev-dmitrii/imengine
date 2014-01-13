@@ -26,6 +26,12 @@ void PrimitiveRenderer::drawRectangleInClipSpace(const Vec2 &min, const Vec2 &ma
         Renderer::renderVertices(Primitive::TRIANGLE_STRIP, 4);
 }
 
+void PrimitiveRenderer::drawRectangleInScreenSpace(const Vec2 &pos, const Vec2 &size, const Vec3 &color, Window *win) {
+        Vec2 min(pos.x, pos.y + size.y);
+        Vec2 max(pos.x + size.x, pos.y);
+        drawRectangleInClipSpace(win->convertSSToCS(min), win->convertSSToCS(max), color);
+}
+
 void PrimitiveRenderer::initProgram() {
         String src = R"(
                 ///### VERTEX SHADER ###///

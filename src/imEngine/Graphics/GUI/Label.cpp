@@ -1,5 +1,6 @@
 #include "Label.h"
 #include <imEngine/Utils/Debug.h>
+#include <imEngine/Graphics/PrimitiveRenderer.h>
 
 namespace imEngine {
 
@@ -39,7 +40,11 @@ void Label::render() {
         txtPos.y = wgtPos.y + wgtSize.y/2;
         m_text->setPosition(txtPos);
 
-        m_text->render();
+        Renderer::beginStencilRendering();
+                PrimitiveRenderer::instance().drawRectangleInScreenSpace(wgtPos, wgtSize, Vec3(1,0,0), manager()->window());
+        Renderer::continueStencilRendering();
+                m_text->render();
+        Renderer::endStencilRendering();
 
         renderChildren();
 }

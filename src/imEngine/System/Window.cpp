@@ -123,7 +123,7 @@ SDL_Window* Window::rawWindow() {
         return m_window;
 }
 
-Vec2 Window::convertWinToScreen(const IVec2 &vec) {
+Vec2 Window::convertSSToCS(const Vec2& vec) {
         IVec2 winSize = size();
         return Vec2(-1.0 + 2.0*vec.x/winSize.x, 1.0 - 2.0*vec.y/winSize.y);
 }
