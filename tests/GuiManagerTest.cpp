@@ -4,6 +4,7 @@
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/Graphics/GUI/DrawableWidget.h>
 #include <imEngine/Graphics/GUI/Label.h>
+#include <imEngine/Graphics/PrimitiveRenderer.h>
 
 using namespace imEngine;
 
