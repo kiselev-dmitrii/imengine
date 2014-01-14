@@ -69,6 +69,11 @@ protected:
 
         void    keyPressEvent(int key);
 
+        void    mousePressEvent(int x, int y, char button);
+        void    mouseReleaseEvent(int x, int y, char button);
+        void    mouseWheelEvent(int deltaVertical, int deltaHorizontal);
+        void    mouseMoveEvent(int x, int y);
+
 private:
         GuiManager*             m_gui;
         Button*                 m_btn1;
@@ -133,6 +138,10 @@ void Application::keyPressEvent(int key) {
                 if (mainWindow()->keyboard()->modifiers() & KeyboardModifiers::LSHIFT) ch = toupper(ch);
                 m_lbl->setText(m_lbl->text() + ch);
         }
+}
+
+void Application::mouseMoveEvent(int x, int y) {
+        IM_VAR(Vec2(x,y));
 }
 
 int main() {

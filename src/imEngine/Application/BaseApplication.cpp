@@ -99,6 +99,9 @@ void BaseApplication::loop() {
                                 case SDL_MOUSEWHEEL:
                                         mouseWheelEvent(event.wheel.y, event.wheel.x);
                                         break;
+                                case SDL_MOUSEMOTION:
+                                        mouseMoveEvent(event.motion.x, event.motion.y);
+                                        break;
 
                                 case SDL_WINDOWEVENT:
                                         switch (event.window.event) {

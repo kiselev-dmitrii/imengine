@@ -6,12 +6,20 @@
 namespace imEngine {
 
 
-/** @brief Класс, представляющий собой кнопку без текста
+/** @brief Класс, представляющий собой растягиваемую кнопку
  */
 class Button : public BothStretchableTexturedWidget {
 public:
-        Button(const String& normalState, const String& hoverState,
-               const String& pushedState, const String& disabledState, const String& focusedState);
+        /// Конструктор
+        /// Принимает на имена картинок, соответствующие состояниям кнопки
+        Button(const String& normal, const String& hover, const String& pushed, const String& disabled, const String& focused);
+
+private:
+        String  m_normalImage;
+        String  m_hoverImage;
+        String  m_pushedImage;
+        String  m_disabledImage;
+        String  m_focusedImage;
 };
 
 

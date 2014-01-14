@@ -48,6 +48,8 @@ protected:
         /// Вызывается при изменении позиции колесика мыши.
         /// Вертикальное и горизонтальное приращение записывается в deltaVertical и deltaHorizontal
         virtual void    mouseWheelEvent(int deltaVertical, int deltaHorizontal) {}
+        /// Вызывается при изменении позиции курсора мыши
+        virtual void    mouseMoveEvent(int x, int y)                            {}
 
         /// Вызывается при изменении размеров окна
         virtual void    windowResizeEvent(int x, int y)                         {}
