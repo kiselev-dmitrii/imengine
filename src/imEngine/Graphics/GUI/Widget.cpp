@@ -27,11 +27,11 @@ bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
         bool isMouseInside = isInsideWidget(newX, newY);
         if(!wasMouseInside && !isMouseInside) return false;
 
-        for(TreeNode* node: children()) {
-                /* Обрабатываем сначала детей
-                   Если дочерний виджет не среагировал - то обрабатываем данный
-                   Например, Label не должен реагировать на мышь, поэтому в перегруженных методах
-                   onMouseOver будет возвращаеться false, что даст false в processMouseMove. */
+        /* Обрабатываем сначала детей
+           Если дочерний виджет не среагировал - то обрабатываем данный
+           Например, Label не должен реагировать на мышь, поэтому в перегруженных методах
+           onMouseOver будет возвращаеться false, что даст false в processMouseMove. */
+        for (TreeNode* node: children()) {
                 bool done = ((WidgetAbstract*)node)->processMouseMove(oldX, oldY, newX, newY);
                 if (done) return true;
         }
@@ -43,6 +43,36 @@ bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
         if (wasMouseInside && !isMouseInside) result = result || onMouseLeave(newX, newY);
         if (!wasMouseInside && isMouseInside) result = result || onMouseEnter(newX, newY);
 
+        return result;
+}
+
+bool WidgetAbstract::processMousePress(int x, int y, char button) {
+        // Если мышь не внутри - не обрабатываем нажатие
+        if (!isInsideWidget(x, y)) return false;
+
+        // Обрабатываем сначала детей
+        for (TreeNode* node: children()) {
+                bool done = ((WidgetAbstract*)node)->processMousePress(x, y, button);
+                if (done) return true;
+        }
+
+        // Если ни в одном из дочерних виджетов не обработано - обрабатываем в данном
+        bool result = onMousePress(x, y, button);
+        return result;
+}
+
+bool WidgetAbstract::processMouseRelease(int x, int y, char button) {
+        // Если мышь не внутри - не обрабатываем отжатие
+        if (!isInsideWidget(x, y)) return false;
+
+        // Обрабатываем детей
+        for (TreeNode* node: children()) {
+                bool done = ((WidgetAbstract*)node)->processMouseRelease(x, y, button);
+                if (done) return true;
+        }
+
+        // Обрабатываем сам виджет
+        bool result = onMouseRelease(x, y, button);
         return result;
 }
 

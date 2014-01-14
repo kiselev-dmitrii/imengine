@@ -26,4 +26,16 @@ bool Button::onMouseLeave(int x, int y) {
         return true;
 }
 
+bool Button::onMousePress(int x, int y, char button) {
+        IM_TRACE("Processed");
+        setCurrentImage(m_pressedImage);
+        return true;
+}
+
+bool Button::onMouseRelease(int x, int y, char button) {
+        IM_TRACE("Processed");
+        setCurrentImage(m_activeImage);
+        return true;
+}
+
 } //namespace imEngine

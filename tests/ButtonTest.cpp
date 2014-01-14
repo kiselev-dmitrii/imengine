@@ -38,6 +38,7 @@ void Application::initialize() {
         m_btn->attachChild(m_lbl);
         m_lbl->setAlignment(LabelAlignment::CENTER);
         m_lbl->setWidth(m_btn->size().x);
+        m_lbl->setPosition(Vec2(0, 6));
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -61,11 +62,11 @@ void Application::mouseMoveEvent(int oldX, int oldY, int newX, int newY) {
 }
 
 void Application::mousePressEvent(int x, int y, char button) {
-
+        m_gui->processMousePress(x, y, button);
 }
 
 void Application::mouseReleaseEvent(int x, int y, char button) {
-
+        m_gui->processMouseRelease(x, y, button);
 }
 
 int main() {

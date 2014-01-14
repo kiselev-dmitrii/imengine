@@ -23,6 +23,10 @@ public:
 
         /// Обработка движений мыши
         bool            processMouseMove(int oldX, int oldY, int newX, int newY);
+        /// Обработка нажатий клавиш мыши
+        bool            processMousePress(int x, int y, char button);
+        /// Обработка отжатий клавиш мыши
+        bool            processMouseRelease(int x, int y, char button);
 
         /// Вызывается при нахождении мыши над виджетом.
         /// Если ситуация обрабатывается, возвращается true
@@ -31,6 +35,10 @@ public:
         virtual bool    onMouseEnter(int x, int y)                              { return false; }
         /// Возникает, когда виджет покидает пространство над виджетом
         virtual bool    onMouseLeave(int x, int y)                              { return false; }
+        /// Возникает, когда на виджете нажали
+        virtual bool    onMousePress(int x, int y, char button)                 { return false; }
+        /// Возникает, когда на виджете отпустили кнопку
+        virtual bool    onMouseRelease(int x, int y, char button)               { return false; }
 
         /// Рендерит себя и детей
         virtual void    render() = 0;

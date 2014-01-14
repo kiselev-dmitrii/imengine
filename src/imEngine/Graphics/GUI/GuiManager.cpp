@@ -90,6 +90,14 @@ void GuiManager::processMouseMove(int oldX, int oldY, int newX, int newY) {
         m_rootWidget->processMouseMove(oldX, oldY, newX, newY);
 }
 
+void GuiManager::processMousePress(int x, int y, char button) {
+        m_rootWidget->processMousePress(x, y, button);
+}
+
+void GuiManager::processMouseRelease(int x, int y, char button) {
+        m_rootWidget->processMouseRelease(x, y, button);
+}
+
 void GuiManager::render() {
         m_program->bind();
         m_texture->bind(0);
