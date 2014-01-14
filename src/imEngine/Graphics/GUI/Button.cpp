@@ -25,13 +25,16 @@ bool Button::onMouseLeave(int x, int y) {
 }
 
 bool Button::onMousePress(int x, int y, char button) {
-        m_wasPressed = true;
+        if (button != MouseButton::LEFT) return false;
 
+        m_wasPressed = true;
         setCurrentImage(m_pressedImage);
         return true;
 }
 
 bool Button::onMouseRelease(int x, int y, char button) {
+        if (button != MouseButton::LEFT) return false;
+
         if (m_wasPressed) {
                 if (onClick) onClick(this);
                 m_wasPressed = false;
