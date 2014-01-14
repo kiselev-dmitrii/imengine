@@ -53,14 +53,15 @@ public:
         /// Возвращает список доступных изображений
         StringList              imageList() const;
 
+        /// Рендерит все виджеты
+        void                    render();
+
         /// Метод должен вызываться при изменении позиции мыши
         void                    processMouseMove(int oldX, int oldY, int newX, int newY);
         /// Метод должен вызываться при клике мыши
         void                    processMousePress(int x, int y, char button);
         /// Метод должен вызываться при отжатии клавиши мыши
         void                    processMouseRelease(int x, int y, char button);
-        /// Рендерит все виджеты
-        void                    render();
 
 private:
         typedef std::vector<ImagePtr> ImageList;

@@ -21,6 +21,36 @@ void WidgetAbstract::initialize(GuiManager *manager) {
         m_manager = manager;
 }
 
+void WidgetAbstract::setPosition(const Vec2 &position) {
+        m_position = position;
+        notifyPositionUpdated();
+}
+
+Vec2 WidgetAbstract::position() const {
+        return m_position;
+}
+
+Vec2 WidgetAbstract::absolutePosition() {
+        updateAbsolutePosition();
+        return m_absolutePosition;
+}
+
+void WidgetAbstract::setAbsolutePosition(const Vec2 &position) {
+        if (m_parent) {
+                setPosition(position - ((WidgetAbstract*)m_parent)->absolutePosition());
+        } else {
+                setPosition(position);
+        }
+}
+
+Vec2 WidgetAbstract::size() const {
+        return m_size;
+}
+
+GuiManager* WidgetAbstract::manager() const {
+        return m_manager;
+}
+
 bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
         // Если мышь не была внутри и не внутри сейчас - не обрабатываем ее
         bool wasMouseInside = isInsideWidget(oldX, oldY);
@@ -74,36 +104,6 @@ bool WidgetAbstract::processMouseRelease(int x, int y, char button) {
         // Обрабатываем сам виджет
         bool result = onMouseRelease(x, y, button);
         return result;
-}
-
-void WidgetAbstract::setPosition(const Vec2 &position) {
-        m_position = position;
-        notifyPositionUpdated();
-}
-
-Vec2 WidgetAbstract::position() const {
-        return m_position;
-}
-
-Vec2 WidgetAbstract::absolutePosition() {
-        updateAbsolutePosition();
-        return m_absolutePosition;
-}
-
-void WidgetAbstract::setAbsolutePosition(const Vec2 &position) {
-        if (m_parent) {
-                setPosition(position - ((WidgetAbstract*)m_parent)->absolutePosition());
-        } else {
-                setPosition(position);
-        }
-}
-
-Vec2 WidgetAbstract::size() const {
-        return m_size;
-}
-
-GuiManager* WidgetAbstract::manager() const {
-        return m_manager;
 }
 
 void WidgetAbstract::renderChildren() {

@@ -8,11 +8,14 @@
 
 namespace imEngine {
 
-/** @brief Пустой виджет, служащий в качестве контейнера для других
+/** @brief Пустой виджет, служащий в качестве контейнера для других.
+ *  Имеет максимально возможный размер, чтобы вмещать в себе остальные виджеты
  */
-class ContainerWidget : public WidgetAbstract {
+class RootWidget : public WidgetAbstract {
 public:
-        ContainerWidget() { m_size = Vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()); }
+        /// Конструктор. Устанавливаем максимально возможный размер, чтобы обрабатывались нажатия для всех детей
+        RootWidget() { m_size = Vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()); }
+        /// Рендерит все вложенные виджеты
         void render() { for (TreeNode* node: children()) ((WidgetAbstract*)node)->render(); }
 };
 
@@ -21,7 +24,7 @@ GuiManager::GuiManager(const String &themePath, Window *window) {
         setWindow(window);
         m_program = createProgram();
 
-        m_rootWidget = new ContainerWidget();
+        m_rootWidget = new RootWidget();
         m_rootWidget->initialize(this);
 }
 
@@ -86,6 +89,14 @@ StringList GuiManager::imageList() const {
         return result;
 }
 
+void GuiManager::render() {
+        m_program->bind();
+        m_texture->bind(0);
+        m_program->setUniform("u_texture", 0);
+        m_program->setUniform("u_windowSize", Vec2(m_window->size()));
+        m_rootWidget->render();
+}
+
 void GuiManager::processMouseMove(int oldX, int oldY, int newX, int newY) {
         m_rootWidget->processMouseMove(oldX, oldY, newX, newY);
 }
@@ -96,14 +107,6 @@ void GuiManager::processMousePress(int x, int y, char button) {
 
 void GuiManager::processMouseRelease(int x, int y, char button) {
         m_rootWidget->processMouseRelease(x, y, button);
-}
-
-void GuiManager::render() {
-        m_program->bind();
-        m_texture->bind(0);
-        m_program->setUniform("u_texture", 0);
-        m_program->setUniform("u_windowSize", Vec2(m_window->size()));
-        m_rootWidget->render();
 }
 
 IVec2 GuiManager::calcSizeOfTextureAtlas(const ImageList &images) const {

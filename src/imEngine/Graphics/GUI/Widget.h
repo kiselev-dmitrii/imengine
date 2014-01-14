@@ -21,15 +21,10 @@ public:
         /// Например можно исполнять метод после присоединения виджета
         virtual void    initialize(GuiManager* manager);
 
-        /// Обработка движений мыши
-        bool            processMouseMove(int oldX, int oldY, int newX, int newY);
-        /// Обработка нажатий клавиш мыши
-        bool            processMousePress(int x, int y, char button);
-        /// Обработка отжатий клавиш мыши
-        bool            processMouseRelease(int x, int y, char button);
+        /// Рендерит себя и детей
+        virtual void    render() = 0;
 
-        /// Вызывается при нахождении мыши над виджетом.
-        /// Если ситуация обрабатывается, возвращается true
+       /// Вызывается при нахождении мыши над виджетом.
         virtual bool    onMouseMove(int x, int y)                               { return false; }
         /// Возникает, когда виджет входит в пространство над виджетом
         virtual bool    onMouseEnter(int x, int y)                              { return false; }
@@ -39,9 +34,6 @@ public:
         virtual bool    onMousePress(int x, int y, char button)                 { return false; }
         /// Возникает, когда на виджете отпустили кнопку
         virtual bool    onMouseRelease(int x, int y, char button)               { return false; }
-
-        /// Рендерит себя и детей
-        virtual void    render() = 0;
 
         /// Устанавливает/возвращает позицию виджета в родительских координатах
         void            setPosition(const Vec2& position);
@@ -56,6 +48,14 @@ public:
 
         /// Возвращает указатель на менеджера
         GuiManager*     manager() const;
+
+public:
+        /// Обработка движений мыши
+        bool            processMouseMove(int oldX, int oldY, int newX, int newY);
+        /// Обработка нажатий клавиш мыши
+        bool            processMousePress(int x, int y, char button);
+        /// Обработка отжатий клавиш мыши
+        bool            processMouseRelease(int x, int y, char button);
 
 protected:
         /// Рендерит детишек данного виджета
