@@ -34,11 +34,13 @@ void Application::initialize() {
         m_gui->attachWidget(m_btn);
 
         // Текст на кнопке
-        m_lbl = new Label("Push it");
+        m_lbl = new Label("0");
         m_btn->attachChild(m_lbl);
         m_lbl->setAlignment(LabelAlignment::CENTER);
         m_lbl->setWidth(m_btn->size().x);
         m_lbl->setPosition(Vec2(0, 6));
+
+        m_btn->onClick = [&] (Button* sender) { m_lbl->setText(std::to_string(std::stoi(m_lbl->text())+ 1)); };
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

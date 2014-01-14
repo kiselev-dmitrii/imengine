@@ -2,8 +2,12 @@
 #define BUTTON_H
 
 #include "TexturedWidget.h"
+#include <functional>
 
 namespace imEngine {
+
+class Button;
+typedef std::function<void(Button*)> ButtonCallback;
 
 
 /** @brief Класс, представляющий собой растягиваемую кнопку
@@ -21,12 +25,18 @@ public:
         bool    onMousePress(int x, int y, char button);
         bool    onMouseRelease(int x, int y, char button);
 
+public:
+        /// Вызывается при клике на кнопке
+        ButtonCallback  onClick;
+
 private:
         String  m_activeImage;
         String  m_hoverImage;
         String  m_pressedImage;
         String  m_disabledImage;
         String  m_focusedImage;
+
+        bool    m_wasPressed;
 };
 
 

@@ -15,25 +15,28 @@ Button::Button(const String &active, const String &hover, const String &pressed,
 { }
 
 bool Button::onMouseEnter(int x, int y) {
-        IM_TRACE("Processed");
         setCurrentImage(m_hoverImage);
         return true;
 }
 
 bool Button::onMouseLeave(int x, int y) {
-        IM_TRACE("Processed");
         setCurrentImage(m_activeImage);
         return true;
 }
 
 bool Button::onMousePress(int x, int y, char button) {
-        IM_TRACE("Processed");
+        m_wasPressed = true;
+
         setCurrentImage(m_pressedImage);
         return true;
 }
 
 bool Button::onMouseRelease(int x, int y, char button) {
-        IM_TRACE("Processed");
+        if (m_wasPressed) {
+                if (onClick) onClick(this);
+                m_wasPressed = false;
+        }
+
         setCurrentImage(m_activeImage);
         return true;
 }
