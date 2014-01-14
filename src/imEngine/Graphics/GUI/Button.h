@@ -11,22 +11,19 @@ namespace imEngine {
 class Button : public BothStretchableTexturedWidget {
 public:
         /// Конструктор
-        /// Принимает на имена картинок, соответствующие состояниям кнопки
-        Button(const String& normal, const String& hover, const String& pushed, const String& disabled, const String& focused);
+        /// Принимает имена картинок, соответствующие состояниям кнопки
+        Button(const String& active, const String& hover, const String& pressed,
+               const String& disabled, const String& focused, WidgetAbstract* parent = nullptr);
+
+        /// Обновляет состояние виджета
+        void    update()                                                        { }
 
 private:
-        String  m_normalImage;
+        String  m_activeImage;
         String  m_hoverImage;
-        String  m_pushedImage;
+        String  m_pressedImage;
         String  m_disabledImage;
         String  m_focusedImage;
-};
-
-
-/** @brief Класс, представляющий собой нерастягиваемую кнопку
- */
-class ImageButton : public NonStretchableTexturedWidget {
-public:
 };
 
 

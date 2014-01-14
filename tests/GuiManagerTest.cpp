@@ -69,9 +69,6 @@ protected:
 
         void    keyPressEvent(int key);
 
-        void    mousePressEvent(int x, int y, char button);
-        void    mouseReleaseEvent(int x, int y, char button);
-        void    mouseWheelEvent(int deltaVertical, int deltaHorizontal);
         void    mouseMoveEvent(int x, int y);
 
 private:
