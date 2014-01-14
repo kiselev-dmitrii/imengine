@@ -53,8 +53,8 @@ public:
         /// Возвращает список доступных изображений
         StringList              imageList() const;
 
-        /// Обновляет все виджеты
-        void                    update();
+        /// Метод должен вызываться при изменении позиции мыши
+        void                    processMouseMove(int oldX, int oldY, int newX, int newY);
         /// Рендерит все виджеты
         void                    render();
 

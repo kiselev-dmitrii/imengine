@@ -2,6 +2,7 @@
 #include <imEngine/System/Filesystem.h>
 #include <imEngine/FileContainers/Image.h>
 #include <imEngine/Utils/Debug.h>
+#include <limits>
 #include "Widget.h"
 #include "WidgetProgram.glsl"
 
@@ -11,8 +12,8 @@ namespace imEngine {
  */
 class ContainerWidget : public WidgetAbstract {
 public:
+        ContainerWidget() { m_size = Vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()); }
         void render() { for (TreeNode* node: children()) ((WidgetAbstract*)node)->render(); }
-        void update() { for (TreeNode* node: children()) ((WidgetAbstract*)node)->update(); }
 };
 
 GuiManager::GuiManager(const String &themePath, Window *window) {
@@ -85,8 +86,8 @@ StringList GuiManager::imageList() const {
         return result;
 }
 
-void GuiManager::update() {
-        m_rootWidget->update();
+void GuiManager::processMouseMove(int oldX, int oldY, int newX, int newY) {
+        m_rootWidget->processMouseMove(oldX, oldY, newX, newY);
 }
 
 void GuiManager::render() {

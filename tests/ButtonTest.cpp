@@ -2,6 +2,7 @@
 #include <imEngine/Graphics/GUI/GuiManager.h>
 #include <imEngine/Graphics/GUI/Button.h>
 #include <imEngine/Graphics/GUI/Label.h>
+#include <imEngine/Utils/Debug.h>
 
 using namespace imEngine;
 
@@ -12,7 +13,7 @@ protected:
         void    render();
         void    destroy();
 
-        void    mouseMoveEvent(int x, int y);
+        void    mouseMoveEvent(int oldX, int oldY, int newX, int newY);
         void    mousePressEvent(int x, int y, char button);
         void    mouseReleaseEvent(int x, int y, char button);
 
@@ -55,8 +56,8 @@ void Application::destroy() {
         delete m_gui;
 }
 
-void Application::mouseMoveEvent(int x, int y) {
-
+void Application::mouseMoveEvent(int oldX, int oldY, int newX, int newY) {
+        m_gui->processMouseMove(oldX, oldY, newX, newY);
 }
 
 void Application::mousePressEvent(int x, int y, char button) {

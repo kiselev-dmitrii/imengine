@@ -21,8 +21,16 @@ public:
         /// Например можно исполнять метод после присоединения виджета
         virtual void    initialize(GuiManager* manager);
 
-        /// Обновляет состояние виджета
-        virtual void    update() = 0;
+        /// Обработка движений мыши
+        bool            processMouseMove(int oldX, int oldY, int newX, int newY);
+
+        /// Вызывается при нахождении мыши над виджетом.
+        /// Если ситуация обрабатывается, возвращается true
+        virtual bool    onMouseMove(int x, int y)                               { return false; }
+        /// Возникает, когда виджет входит в пространство над виджетом
+        virtual bool    onMouseEnter(int x, int y)                              { return false; }
+        /// Возникает, когда виджет покидает пространство над виджетом
+        virtual bool    onMouseLeave(int x, int y)                              { return false; }
 
         /// Рендерит себя и детей
         virtual void    render() = 0;
@@ -44,6 +52,9 @@ public:
 protected:
         /// Рендерит детишек данного виджета
         void            renderChildren();
+
+        /// Определяет, находится ли точка x,y внутри виджета
+        bool            isInsideWidget(int x, int y);
 
 private:
         /// Действия при добавлении, удалении дочерних виджетов

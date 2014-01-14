@@ -1,4 +1,5 @@
 #include "Button.h"
+#include <imEngine/Utils/Debug.h>
 
 namespace imEngine {
 
@@ -13,5 +14,14 @@ Button::Button(const String &active, const String &hover, const String &pressed,
         m_focusedImage(focused)
 { }
 
+bool Button::onMouseEnter(int x, int y) {
+        setCurrentImage(m_hoverImage);
+        return true;
+}
+
+bool Button::onMouseLeave(int x, int y) {
+        setCurrentImage(m_activeImage);
+        return true;
+}
 
 } //namespace imEngine

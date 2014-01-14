@@ -47,7 +47,6 @@ public:
                 }
 
 
-                for (TreeNode* node: children()) ((WidgetAbstract*)node)->update();
         }
 
 private:
@@ -111,7 +110,6 @@ void Application::initialize() {
 
 void Application::update() {
         GraphicApplication::update();
-        m_gui->update();
 
         if (mainWindow()->keyboard()->isKeyPressed(SDLK_1)) m_btn1->setSize(m_btn1->size() - Vec2(1));
         if (mainWindow()->keyboard()->isKeyPressed(SDLK_2)) m_btn1->setSize(m_btn1->size() + Vec2(1));

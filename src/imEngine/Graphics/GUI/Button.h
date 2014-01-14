@@ -15,8 +15,10 @@ public:
         Button(const String& active, const String& hover, const String& pressed,
                const String& disabled, const String& focused, WidgetAbstract* parent = nullptr);
 
-        /// Обновляет состояние виджета
-        void    update()                                                        { }
+        /// При попадании мыши внутрь кнопку нужно изменить состояние
+        bool    onMouseEnter(int x, int y);
+        /// Если мышь вышла за пределы виджета, то изменяем состояние
+        bool    onMouseLeave(int x, int y);
 
 private:
         String  m_activeImage;
