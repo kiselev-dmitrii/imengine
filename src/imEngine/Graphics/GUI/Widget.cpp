@@ -5,7 +5,7 @@ namespace imEngine {
 
 //################## Widget #######################//
 
-Widget::Widget(Widget *parent) :
+WidgetAbstract::WidgetAbstract(WidgetAbstract *parent) :
         TreeNode(parent),
         m_manager(nullptr),
         m_position(0, 0),
@@ -16,65 +16,65 @@ Widget::Widget(Widget *parent) :
         notifyPositionUpdated();
 }
 
-void Widget::initialize(GuiManager *manager) {
+void WidgetAbstract::initialize(GuiManager *manager) {
         IM_ASSERT(manager);
         m_manager = manager;
 }
 
-void Widget::setPosition(const Vec2 &position) {
+void WidgetAbstract::setPosition(const Vec2 &position) {
         m_position = position;
         notifyPositionUpdated();
 }
 
-Vec2 Widget::position() const {
+Vec2 WidgetAbstract::position() const {
         return m_position;
 }
 
-Vec2 Widget::absolutePosition() {
+Vec2 WidgetAbstract::absolutePosition() {
         updateAbsolutePosition();
         return m_absolutePosition;
 }
 
-void Widget::setAbsolutePosition(const Vec2 &position) {
+void WidgetAbstract::setAbsolutePosition(const Vec2 &position) {
         if (m_parent) {
-                setPosition(position - ((Widget*)m_parent)->absolutePosition());
+                setPosition(position - ((WidgetAbstract*)m_parent)->absolutePosition());
         } else {
                 setPosition(position);
         }
 }
 
-Vec2 Widget::size() const {
+Vec2 WidgetAbstract::size() const {
         return m_size;
 }
 
-GuiManager* Widget::manager() const {
+GuiManager* WidgetAbstract::manager() const {
         return m_manager;
 }
 
-void Widget::renderChildren() {
-        for (TreeNode* node: children()) ((Widget*)node)->render();
+void WidgetAbstract::renderChildren() {
+        for (TreeNode* node: children()) ((WidgetAbstract*)node)->render();
 }
 
-void Widget::onAttachChild(TreeNode *node) {
-        ((Widget*)node)->initialize(m_manager);
+void WidgetAbstract::onAttachChild(TreeNode *node) {
+        ((WidgetAbstract*)node)->initialize(m_manager);
         notifyPositionUpdated();
 }
 
-void Widget::onDetachChild(TreeNode *node) {
+void WidgetAbstract::onDetachChild(TreeNode *node) {
         notifyPositionUpdated();
 }
 
-void Widget::notifyPositionUpdated() {
+void WidgetAbstract::notifyPositionUpdated() {
         m_isNeedToUpdateAbsolutePosition = true;
         for (TreeNode* node: children()) {
-                ((Widget*)node)->notifyPositionUpdated();
+                ((WidgetAbstract*)node)->notifyPositionUpdated();
         }
 }
 
-void Widget::updateAbsolutePosition() {
+void WidgetAbstract::updateAbsolutePosition() {
         if (m_isNeedToUpdateAbsolutePosition) {
                 if (m_parent) {
-                        m_absolutePosition = ((Widget*)m_parent)->absolutePosition() + m_position;
+                        m_absolutePosition = ((WidgetAbstract*)m_parent)->absolutePosition() + m_position;
                 } else {
                         m_absolutePosition = m_position;
                 }

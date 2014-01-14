@@ -22,10 +22,10 @@ enum Enum {
  * будет рендерится только нужная часть (это осуществляется путем использования
  * буфера трафарета).
  */
-class Label : public Widget, public HStretchableAbstract {
+class Label : public WidgetAbstract, public HStretchableAbstract {
 public:
         /// Конструктор
-        explicit Label(const String& text, Widget* parent = 0);
+        explicit Label(const String& text, WidgetAbstract* parent = 0);
 
         /// Инициализация. Установка начальных размеров и т.д.
         void            initialize(GuiManager* manager);

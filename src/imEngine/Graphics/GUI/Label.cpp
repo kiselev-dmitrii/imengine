@@ -4,14 +4,15 @@
 
 namespace imEngine {
 
-Label::Label(const String &text, Widget *parent) :
-        Widget(parent), HStretchableAbstract(),
+Label::Label(const String &text, WidgetAbstract *parent) :
+        WidgetAbstract(parent),
+        HStretchableAbstract(),
         m_alignment(LabelAlignment::LEFT),
         m_tmpString(text)
 { }
 
 void Label::initialize(GuiManager *manager) {
-        Widget::initialize(manager);
+        WidgetAbstract::initialize(manager);
         m_text = TextPtr(new Text(m_tmpString, Font::defaultFont(), manager->window()));
         m_size = Vec2(m_text->font()->calcSizeOfText(m_text->text()));
         setMinimalWidth(0);

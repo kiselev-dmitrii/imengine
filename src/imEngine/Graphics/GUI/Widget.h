@@ -12,10 +12,10 @@ namespace imEngine {
  *  Данный класс отвечает за основные свойства виджетов, такие как
  *  их позиция и размер
  */
-class Widget : public TreeNode {
+class WidgetAbstract : public TreeNode {
 public:
         /// Конструктор. paret - указатель на родителя
-        explicit Widget(Widget* parent = nullptr);
+        explicit WidgetAbstract(WidgetAbstract* parent = nullptr);
 
         /// Инициализация. Выполняется уже после конструктора.
         /// Например можно исполнять метод после присоединения виджета

@@ -1,5 +1,5 @@
-#ifndef DRAWABLEWIDGET_H
-#define DRAWABLEWIDGET_H
+#ifndef TEXTUREDWIDGET_H
+#define TEXTUREDWIDGET_H
 
 #include "Widget.h"
 
@@ -11,10 +11,10 @@ namespace imEngine {
  * для других виджетов. Данный же тип непосредственно отображаются при рендере.
  * Поэтому для них необходимо держать VBO, начальное изображение и т.д
  */
-class DrawableWidget : public Widget {
+class TexturedWidgetAbstract : public WidgetAbstract {
 public:
         /// Конструктор. Получает начальную картинку с которой будет рендерится
-        explicit DrawableWidget(const String& initalImage, Widget* parent = nullptr);
+        explicit TexturedWidgetAbstract(const String& initalImage, WidgetAbstract* parent = nullptr);
 
         /// Инициализация буфера
         void            initialize(GuiManager *manager);
@@ -48,10 +48,10 @@ protected:
 
 /** @brief Нерастягиваемый отрисовываемый виджет
  */
-class NonStretchableWidget : public DrawableWidget {
+class NonStretchableTexturedWidget : public TexturedWidgetAbstract {
 public:
         /// Конструктор
-        explicit NonStretchableWidget(const String &initialImage, Widget* parent = nullptr);
+        explicit NonStretchableTexturedWidget(const String &initialImage, WidgetAbstract* parent = nullptr);
 
         /// Инициализация размера
         void    initialize(GuiManager* manager);
@@ -65,10 +65,10 @@ protected:
 
 /** @brief Растягиваемый по горизонтали виджет
  */
-class HStretchableWidget : public DrawableWidget, public HStretchableAbstract {
+class HStretchableTexturedWidget : public TexturedWidgetAbstract, public HStretchableAbstract {
 public:
         /// Конструктор
-        explicit HStretchableWidget(const String &initialImage, Widget *parent);
+        explicit HStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent);
 
         /// Инициализация размера
         void    initialize(GuiManager* manager);
@@ -84,10 +84,10 @@ protected:
 
 /** @brief Растягиваемый только по горизонтали виджет
  */
-class VStretchableWidget : public DrawableWidget, public VStretchableAbstract {
+class VStretchableTexturedWidget : public TexturedWidgetAbstract, public VStretchableAbstract {
 public:
         /// Конструктор
-        explicit VStretchableWidget(const String &initialImage, Widget* parent);
+        explicit VStretchableTexturedWidget(const String &initialImage, WidgetAbstract* parent);
 
         /// Инициализация
         void    initialize(GuiManager *manager);
@@ -103,10 +103,10 @@ protected:
 
 /** @brief Растягиваемый в обе стороны виджет
  */
-class BothStretchableWidget : public DrawableWidget, public BothStretchableAbstract {
+class BothStretchableTexturedWidget : public TexturedWidgetAbstract, public BothStretchableAbstract {
 public:
         /// Конструктор
-        explicit BothStretchableWidget(const String &initialImage, Widget* parent);
+        explicit BothStretchableTexturedWidget(const String &initialImage, WidgetAbstract* parent);
 
         /// Инициализация
         void    initialize(GuiManager *manager);
@@ -124,4 +124,4 @@ protected:
 
 } //namespace imEngine
 
-#endif // DRAWABLEWIDGET_H
+#endif // TEXTUREDWIDGET_H

@@ -8,7 +8,7 @@
 
 namespace imEngine {
 
-class Widget;
+class WidgetAbstract;
 
 /** @brief Структура хранящая положение и размер изображения в текстурном атласе
  */
@@ -44,9 +44,9 @@ public:
         ProgramPtr              program() const;
 
         /// Добавляет виджет к менеджеру
-        void                    attachWidget(Widget* widget);
+        void                    attachWidget(WidgetAbstract* widget);
         /// Удаляет виджет из менеджера
-        void                    detachWidget(Widget* widget);
+        void                    detachWidget(WidgetAbstract* widget);
 
         /// Возвращает текстурные координаты по имени картинки в директории с темой
         ImageGeometry*          imageGeometry(const String& name);
@@ -77,7 +77,7 @@ private:
         Texture2DPtr            m_texture;              // текстура со всеми виджетами
         MapImageGeometry        m_imagesGeometry;       // имя виджета -> соответствующие текст. координаты
 
-        Widget*                 m_rootWidget;                 // единственный корневой виджет
+        WidgetAbstract*         m_rootWidget;                 // единственный корневой виджет
         ProgramPtr              m_program;              // программа, которой будут рендерится все виджеты
 };
 

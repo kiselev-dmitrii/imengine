@@ -9,10 +9,10 @@ namespace imEngine {
 
 /** @brief Пустой виджет, служащий в качестве контейнера для других
  */
-class ContainerWidget : public Widget {
+class ContainerWidget : public WidgetAbstract {
 public:
-        void render() { for (TreeNode* node: children()) ((Widget*)node)->render(); }
-        void update() { for (TreeNode* node: children()) ((Widget*)node)->update(); }
+        void render() { for (TreeNode* node: children()) ((WidgetAbstract*)node)->render(); }
+        void update() { for (TreeNode* node: children()) ((WidgetAbstract*)node)->update(); }
 };
 
 GuiManager::GuiManager(const String &themePath, Window *window) {
@@ -65,11 +65,11 @@ ProgramPtr GuiManager::program() const {
         return m_program;
 }
 
-void GuiManager::attachWidget(Widget *widget) {
+void GuiManager::attachWidget(WidgetAbstract *widget) {
         m_rootWidget->attachChild(widget);
 }
 
-void GuiManager::detachWidget(Widget *widget) {
+void GuiManager::detachWidget(WidgetAbstract *widget) {
         m_rootWidget->detachChild(widget);
 }
 

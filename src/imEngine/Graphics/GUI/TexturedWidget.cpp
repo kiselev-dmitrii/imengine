@@ -1,4 +1,4 @@
-#include "DrawableWidget.h"
+#include "TexturedWidget.h"
 #include <imEngine/Utils/Debug.h>
 
 namespace imEngine {
@@ -10,8 +10,8 @@ struct WidgetElementGeometry {
         Vec4    texCoords;      // Текстурные коориданты в атласе
 };
 
-DrawableWidget::DrawableWidget(const String &initalImage, Widget *parent) :
-        Widget(parent),
+TexturedWidgetAbstract::TexturedWidgetAbstract(const String &initalImage, WidgetAbstract *parent) :
+        WidgetAbstract(parent),
         m_isNeedToUpdateBuffer(true),
         m_widgetElementCount(0),
         m_currentImage(initalImage)
@@ -19,12 +19,12 @@ DrawableWidget::DrawableWidget(const String &initalImage, Widget *parent) :
         setCurrentImage(initalImage);
 }
 
-void DrawableWidget::initialize(GuiManager *manager) {
-        Widget::initialize(manager);
+void TexturedWidgetAbstract::initialize(GuiManager *manager) {
+        WidgetAbstract::initialize(manager);
         initBuffer();
 }
 
-void DrawableWidget::render() {
+void TexturedWidgetAbstract::render() {
         if (m_isNeedToUpdateBuffer) {
                 updateBuffer();
                 m_isNeedToUpdateBuffer = false;
@@ -40,7 +40,7 @@ void DrawableWidget::render() {
         renderChildren();
 }
 
-void DrawableWidget::initBuffer() {
+void TexturedWidgetAbstract::initBuffer() {
         IM_ASSERT(manager());
 
         m_vbo = VertexBufferPtr(new VertexBuffer());
@@ -56,17 +56,17 @@ void DrawableWidget::initBuffer() {
         m_vao->unbind();
 }
 
-void DrawableWidget::setCurrentImage(const String &imageName) {
+void TexturedWidgetAbstract::setCurrentImage(const String &imageName) {
         if (imageName == m_currentImage) return;
         m_currentImage = imageName;
         m_isNeedToUpdateBuffer = true;
 }
 
-String DrawableWidget::currentImage() const {
+String TexturedWidgetAbstract::currentImage() const {
         return m_currentImage;
 }
 
-void DrawableWidget::setWidgetElementCount(uint count) {
+void TexturedWidgetAbstract::setWidgetElementCount(uint count) {
         m_widgetElementCount = count;
 }
 
@@ -74,17 +74,17 @@ void DrawableWidget::setWidgetElementCount(uint count) {
 //######################## NonStretchableWidget #############################//
 
 
-NonStretchableWidget::NonStretchableWidget(const String &initialImage, Widget *parent) :
-        DrawableWidget(initialImage, parent)
+NonStretchableTexturedWidget::NonStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent) :
+        TexturedWidgetAbstract(initialImage, parent)
 { }
 
-void NonStretchableWidget::initialize(GuiManager *manager) {
-        DrawableWidget::initialize(manager);
+void NonStretchableTexturedWidget::initialize(GuiManager *manager) {
+        TexturedWidgetAbstract::initialize(manager);
         m_size = manager->imageGeometry(currentImage())->size;
         setWidgetElementCount(1);
 }
 
-void NonStretchableWidget::updateBuffer() {
+void NonStretchableTexturedWidget::updateBuffer() {
         /// Получаем информацию о изображении в текстурном атласе
         ImageGeometry* g = manager()->imageGeometry(currentImage());
         if (!g) {
@@ -104,18 +104,19 @@ void NonStretchableWidget::updateBuffer() {
 //######################## HStretchableWidget #############################//
 
 
-HStretchableWidget::HStretchableWidget(const String &initialImage, Widget *parent) :
-        DrawableWidget(initialImage, parent), HStretchableAbstract()
+HStretchableTexturedWidget::HStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent) :
+        TexturedWidgetAbstract(initialImage, parent),
+        HStretchableAbstract()
 { }
 
-void HStretchableWidget::initialize(GuiManager *manager) {
-        DrawableWidget::initialize(manager);
+void HStretchableTexturedWidget::initialize(GuiManager *manager) {
+        TexturedWidgetAbstract::initialize(manager);
         m_size = manager->imageGeometry(currentImage())->size;
         setMinimalWidth(2 * m_size.x / 3);
         setWidgetElementCount(3);
 }
 
-void HStretchableWidget::setWidth(float width) {
+void HStretchableTexturedWidget::setWidth(float width) {
         if (width == m_size.x) return;
         if (width < minimalWidth()) return;
 
@@ -123,7 +124,7 @@ void HStretchableWidget::setWidth(float width) {
         m_isNeedToUpdateBuffer = true;
 }
 
-void HStretchableWidget::updateBuffer() {
+void HStretchableTexturedWidget::updateBuffer() {
         /// Получаем информацию о изображении в текстурном атласе
         ImageGeometry* g = manager()->imageGeometry(currentImage());
         if (!g) {
@@ -173,19 +174,20 @@ void HStretchableWidget::updateBuffer() {
 //######################## VStretchableWidget #############################//
 
 
-VStretchableWidget::VStretchableWidget(const String &initialImage, Widget *parent) :
-        DrawableWidget(initialImage, parent), VStretchableAbstract()
+VStretchableTexturedWidget::VStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent) :
+        TexturedWidgetAbstract(initialImage, parent),
+        VStretchableAbstract()
 { }
 
 
-void VStretchableWidget::initialize(GuiManager *manager) {
-        DrawableWidget::initialize(manager);
+void VStretchableTexturedWidget::initialize(GuiManager *manager) {
+        TexturedWidgetAbstract::initialize(manager);
         m_size = manager->imageGeometry(currentImage())->size;
         setMinimalHeight(2 * m_size.y / 3);
         setWidgetElementCount(3);
 }
 
-void VStretchableWidget::setHeight(float height) {
+void VStretchableTexturedWidget::setHeight(float height) {
         if (height == m_size.y) return;
         if (height < minimalHeight()) return;
 
@@ -193,7 +195,7 @@ void VStretchableWidget::setHeight(float height) {
         m_isNeedToUpdateBuffer = true;
 }
 
-void VStretchableWidget::updateBuffer() {
+void VStretchableTexturedWidget::updateBuffer() {
         ImageGeometry* g = manager()->imageGeometry(currentImage());
         if (!g) {
                 IM_ERROR("Image " << currentImage() << " not found");
@@ -241,18 +243,19 @@ void VStretchableWidget::updateBuffer() {
 //######################## BothStretchableWidget #############################//
 
 
-BothStretchableWidget::BothStretchableWidget(const String &initialImage, Widget *parent) :
-        DrawableWidget(initialImage, parent), BothStretchableAbstract()
+BothStretchableTexturedWidget::BothStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent) :
+        TexturedWidgetAbstract(initialImage, parent),
+        BothStretchableAbstract()
 { }
 
-void BothStretchableWidget::initialize(GuiManager *manager) {
-        DrawableWidget::initialize(manager);
+void BothStretchableTexturedWidget::initialize(GuiManager *manager) {
+        TexturedWidgetAbstract::initialize(manager);
         m_size = manager->imageGeometry(currentImage())->size;
         setMinimalSize(Vec2(2*m_size.x/3, 2*m_size.y/3));
         setWidgetElementCount(9);
 }
 
-void BothStretchableWidget::setWidth(float width) {
+void BothStretchableTexturedWidget::setWidth(float width) {
         if (width == m_size.x) return;
         if (width < minimalSize().x) return;
 
@@ -260,7 +263,7 @@ void BothStretchableWidget::setWidth(float width) {
         m_isNeedToUpdateBuffer = true;
 }
 
-void BothStretchableWidget::setHeight(float height) {
+void BothStretchableTexturedWidget::setHeight(float height) {
         if (height == m_size.y) return;
         if (height < minimalSize().y) return;
 
@@ -268,7 +271,7 @@ void BothStretchableWidget::setHeight(float height) {
         m_isNeedToUpdateBuffer = true;
 }
 
-void BothStretchableWidget::updateBuffer() {
+void BothStretchableTexturedWidget::updateBuffer() {
         ImageGeometry* g = manager()->imageGeometry(currentImage());
         if (!g) {
                 IM_ERROR("Image " << currentImage() << " not found");

@@ -1,14 +1,24 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include "Widget.h"
+#include "TexturedWidget.h"
 
 namespace imEngine {
 
-class Button : public Widget {
+
+/** @brief Класс, представляющий собой кнопку без текста
+ */
+class Button : public BothStretchableTexturedWidget {
 public:
         Button(const String& normalState, const String& hoverState,
                const String& pushedState, const String& disabledState, const String& focusedState);
+};
+
+
+/** @brief Класс, представляющий собой нерастягиваемую кнопку
+ */
+class ImageButton : public NonStretchableTexturedWidget {
+public:
 };
 
 

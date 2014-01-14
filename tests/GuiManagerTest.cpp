@@ -2,16 +2,16 @@
 #include <imEngine/Graphics/GUI/GuiManager.h>
 #include <imEngine/System/Filesystem.h>
 #include <imEngine/Utils/Debug.h>
-#include <imEngine/Graphics/GUI/DrawableWidget.h>
+#include <imEngine/Graphics/GUI/TexturedWidget.h>
 #include <imEngine/Graphics/GUI/Label.h>
 #include <imEngine/Graphics/PrimitiveRenderer.h>
 
 using namespace imEngine;
 
-class Button : public BothStretchableWidget {
+class Button : public BothStretchableTexturedWidget {
 public:
-        Button(String active, String hover, String pressed, Widget* parent = nullptr) :
-                BothStretchableWidget(active, parent),
+        Button(String active, String hover, String pressed, WidgetAbstract* parent = nullptr) :
+                BothStretchableTexturedWidget(active, parent),
                 m_isHanded(false),
                 m_activeState(active),
                 m_hoverState(hover),
@@ -47,7 +47,7 @@ public:
                 }
 
 
-                for (TreeNode* node: children()) ((Widget*)node)->update();
+                for (TreeNode* node: children()) ((WidgetAbstract*)node)->update();
         }
 
 private:
