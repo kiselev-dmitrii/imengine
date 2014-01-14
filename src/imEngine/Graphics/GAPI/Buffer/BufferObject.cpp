@@ -30,7 +30,7 @@ void BufferObject::load(const void *data, GLsizeiptr size, BufferUsage::Enum usa
         m_size = size;
         m_usage = usage;
 
-        IM_LOG("BufferObject" << m_handle << ": allocated " << m_size << " bytes for " << GLUtils::convertEnumToString(m_usage));
+        //IM_LOG("BufferObject" << m_handle << ": allocated " << m_size << " bytes for " << GLUtils::convertEnumToString(m_usage));
 }
 
 void BufferObject::replace(GLsizeiptr offset, GLintptr size, const void *newData) {

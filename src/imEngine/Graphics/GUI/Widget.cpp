@@ -22,10 +22,10 @@ void WidgetAbstract::initialize(GuiManager *manager) {
 }
 
 bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
-        // Если мышь не была внутри или не внутри сейчас - не обрабатываем ее
+        // Если мышь не была внутри и не внутри сейчас - не обрабатываем ее
         bool wasMouseInside = isInsideWidget(oldX, oldY);
         bool isMouseInside = isInsideWidget(newX, newY);
-        if(!wasMouseInside || !isMouseInside) return false;
+        if(!wasMouseInside && !isMouseInside) return false;
 
         for(TreeNode* node: children()) {
                 /* Обрабатываем сначала детей

@@ -15,11 +15,13 @@ Button::Button(const String &active, const String &hover, const String &pressed,
 { }
 
 bool Button::onMouseEnter(int x, int y) {
+        IM_TRACE("Processed");
         setCurrentImage(m_hoverImage);
         return true;
 }
 
 bool Button::onMouseLeave(int x, int y) {
+        IM_TRACE("Processed");
         setCurrentImage(m_activeImage);
         return true;
 }

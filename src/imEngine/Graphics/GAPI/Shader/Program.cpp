@@ -169,7 +169,7 @@ void Program::bind() {
                 IM_GLCALL(glUseProgram(m_handle));
                 s_boundHandle = m_handle;
 
-                IM_LOG("Program" << m_handle << ": bound to context");
+                //IM_LOG("Program" << m_handle << ": bound to context");
         }
 }
 
