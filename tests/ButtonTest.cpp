@@ -48,7 +48,7 @@ void Application::initialize() {
         m_lbl->setPosition(Vec2(0, 6));
 
         m_lblPanelName = new Label("My own panel");
-        m_gui->attachWidget(m_lblPanelName);
+        m_pnl->attachChild(m_lblPanelName);
         m_lblPanelName->setAlignment(LabelAlignment::CENTER);
         m_lblPanelName->setColor(Vec3(1));
         m_lblPanelName->setWidth(m_pnl->size().x);

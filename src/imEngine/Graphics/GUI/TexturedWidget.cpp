@@ -32,6 +32,7 @@ void TexturedWidgetAbstract::render() {
 
         // Биндим программу и рисуем
         manager()->program()->bind();
+        manager()->textureAtlas()->bind(0);                                     // нужно ребиндить текстуру - так как текстурные блоки не меняются вместе с программами
         manager()->program()->setUniform("u_position", absolutePosition());
         m_vao->bind();
         Renderer::renderVertices(Primitive::POINT, m_widgetElementCount);
