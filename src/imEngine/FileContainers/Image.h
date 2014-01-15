@@ -31,6 +31,9 @@ public:
         /// Сохраняет изображение в файл
         void                    save(const String& filename, bool overwrite = true);
 
+        /// Отражает изображение вертикально
+        void                    flipVertically();
+
         /// Возвращает ширину изображеия
         int                     width();
         /// Возвращает высоту изображения

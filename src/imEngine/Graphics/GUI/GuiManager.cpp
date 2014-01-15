@@ -134,6 +134,7 @@ Texture2DPtr GuiManager::generateTextureAtlas(const ImageList &images) const {
         /// Вставляем наши изображения в текстуру
         uint startX = 0;
         for (ImagePtr image: images) {
+                image->flipVertically();      // OpenGL должен получать данные изображения в отраженном виде
                 texture->insert(startX, 0, image->width(), image->height(), image->data());
                 startX += image->width();
         }

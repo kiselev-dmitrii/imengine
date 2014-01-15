@@ -22,6 +22,7 @@ void Texture2D::load(int width, int height, TextureInternalFormat::Enum internal
 
 void Texture2D::load(const String &filename) {
         Image img(filename);
+        img.flipVertically();                                                                           //OpenGL должен получать данные изображения в отраженном виде
         load(img.width(), img.height(), (TextureInternalFormat::Enum) img.format(), img.type(), img.format(), img.data());
 }
 

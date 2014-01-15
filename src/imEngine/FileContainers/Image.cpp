@@ -1,5 +1,6 @@
 #include "Image.h"
 #include <imEngine/Utils/Debug.h>
+#include <IL/ilu.h>
 
 namespace imEngine {
 
@@ -46,6 +47,11 @@ void Image::save(const String &filename, bool overwrite) {
                 return;
         }
         IM_LOG("Image was saved to file: " << filename);
+}
+
+void Image::flipVertically() {
+        ilBindImage(m_handle);
+        iluFlipImage();
 }
 
 int Image::width() {
