@@ -32,13 +32,13 @@ void Application::initialize() {
 
         m_gui = new GuiManager("resources/gui/elementary/", mainWindow());
 
-        m_pnl = new Panel("tip_panel.png");
+        m_pnl = new Panel("regular_panel.png");
         m_gui->attachWidget(m_pnl);
         m_pnl->setSize(Vec2(400, 500));
 
         // Создание кнопки
         m_btn = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png");
-        m_gui->attachWidget(m_btn);
+        m_pnl->attachChild(m_btn);
 
         // Текст на кнопке
         m_lbl = new Label("0");
@@ -50,9 +50,8 @@ void Application::initialize() {
         m_lblPanelName = new Label("My own panel");
         m_pnl->attachChild(m_lblPanelName);
         m_lblPanelName->setAlignment(LabelAlignment::CENTER);
-        m_lblPanelName->setColor(Vec3(1));
         m_lblPanelName->setWidth(m_pnl->size().x);
-        m_lblPanelName->setPosition(Vec2(0, 10));
+        m_lblPanelName->setPosition(Vec2(0, 20));
 
 
         m_btn->onClick += [&] (Button* sender) { m_lbl->setText(std::to_string(std::stoi(m_lbl->text())+ 1)); };
