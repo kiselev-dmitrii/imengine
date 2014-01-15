@@ -2,6 +2,7 @@
 #include <imEngine/Graphics/GUI/GuiManager.h>
 #include <imEngine/Graphics/GUI/Button.h>
 #include <imEngine/Graphics/GUI/Label.h>
+#include <imEngine/Graphics/GUI/Panel.h>
 #include <imEngine/Utils/Debug.h>
 
 using namespace imEngine;
@@ -21,6 +22,8 @@ private:
         GuiManager*     m_gui;
         Button*         m_btn;
         Label*          m_lbl;
+        Panel*          m_pnl;
+        Label*          m_lblPanelName;
 };
 
 void Application::initialize() {
@@ -28,6 +31,10 @@ void Application::initialize() {
         glClearColor(1,1,1,1);
 
         m_gui = new GuiManager("resources/gui/elementary/", mainWindow());
+
+        m_pnl = new Panel("tip_panel.png");
+        m_gui->attachWidget(m_pnl);
+        m_pnl->setSize(Vec2(400, 500));
 
         // Создание кнопки
         m_btn = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png");
@@ -39,6 +46,14 @@ void Application::initialize() {
         m_lbl->setAlignment(LabelAlignment::CENTER);
         m_lbl->setWidth(m_btn->size().x);
         m_lbl->setPosition(Vec2(0, 6));
+
+        m_lblPanelName = new Label("My own panel");
+        m_gui->attachWidget(m_lblPanelName);
+        m_lblPanelName->setAlignment(LabelAlignment::CENTER);
+        m_lblPanelName->setColor(Vec3(1));
+        m_lblPanelName->setWidth(m_pnl->size().x);
+        m_lblPanelName->setPosition(Vec2(0, 10));
+
 
         m_btn->onClick += [&] (Button* sender) { m_lbl->setText(std::to_string(std::stoi(m_lbl->text())+ 1)); };
         m_btn->onClick += [&] (Button* sender) { sender->setPosition(sender->position() + Vec2(4,4)); };

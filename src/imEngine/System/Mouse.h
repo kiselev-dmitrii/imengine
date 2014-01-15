@@ -11,9 +11,9 @@ class Window;
  */
 namespace MouseButton {
 enum Enum {
-        LEFT = SDL_BUTTON(1),
-        MIDDLE = SDL_BUTTON(2),
-        RIGHT = SDL_BUTTON(3)
+        LEFT = SDL_BUTTON_LEFT,
+        MIDDLE = SDL_BUTTON_MIDDLE,
+        RIGHT = SDL_BUTTON_RIGHT
 };
 }
 
