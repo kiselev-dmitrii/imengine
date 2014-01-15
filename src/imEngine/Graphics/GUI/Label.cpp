@@ -44,4 +44,9 @@ void Label::render() {
         renderChildren();
 }
 
+void Label::setFont(FontPtr font) {
+        m_text->setFont(font);
+        m_size.y = m_text->size().y;
+}
+
 } //namespace imEngine

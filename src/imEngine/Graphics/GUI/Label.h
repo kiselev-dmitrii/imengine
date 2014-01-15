@@ -38,7 +38,7 @@ public:
         const String&   text() const                                            { return m_text->text(); }
 
         /// Устанавливает и возвращает шрифт
-        void            setFont(FontPtr font)                                   { m_text->setFont(font); }
+        void            setFont(FontPtr font);
         FontPtr         font() const                                            { return m_text->font(); }
 
         /// Устанавливает и возвращает цвет

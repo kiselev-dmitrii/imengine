@@ -45,6 +45,7 @@ void Application::initialize() {
         m_lbl->setPosition(Vec2(0, 6));
 
         m_lblPanelName = new Label("My own panel", m_pnl);
+        m_lblPanelName->setFont(FontPtr(new Font("resources/font/Lobster.ttf", 23)));
         m_lblPanelName->setAlignment(LabelAlignment::CENTER);
         m_lblPanelName->setWidth(m_pnl->size().x);
         m_lblPanelName->setPosition(Vec2(0, 20));
