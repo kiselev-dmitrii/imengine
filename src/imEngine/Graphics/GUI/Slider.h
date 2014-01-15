@@ -1,10 +1,17 @@
 #ifndef SLIDER_H
 #define SLIDER_H
 
-class Slider
-{
+#include "TexturedWidget.h"
+
+namespace imEngine {
+
+/** @brief Горизонтальный слайдер
+ */
+class HSlider : public HStretchableTexturedWidget {
 public:
-        Slider();
+        HSlider();
 };
+
+} //namesapce imEngine
 
 #endif // SLIDER_H

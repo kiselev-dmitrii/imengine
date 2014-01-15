@@ -1,5 +1,5 @@
 #include "Slider.h"
 
-Slider::Slider()
-{
-}
+namespace imEngine {
+
+} //namespace imEngine
