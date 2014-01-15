@@ -18,6 +18,7 @@ set(TESTS
         LuabindTest
         GuiManagerTest
         ButtonTest
+        SignalTest
 )
 
 foreach(TEST ${TESTS})

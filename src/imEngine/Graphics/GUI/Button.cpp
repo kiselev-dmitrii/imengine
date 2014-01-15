@@ -36,7 +36,7 @@ bool Button::onMouseRelease(int x, int y, char button) {
         if (button != MouseButton::LEFT) return false;
 
         if (m_wasPressed) {
-                if (onClick) onClick(this);
+                onClick(this);
                 m_wasPressed = false;
         }
 

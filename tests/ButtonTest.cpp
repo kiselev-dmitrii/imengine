@@ -40,7 +40,8 @@ void Application::initialize() {
         m_lbl->setWidth(m_btn->size().x);
         m_lbl->setPosition(Vec2(0, 6));
 
-        m_btn->onClick = [&] (Button* sender) { m_lbl->setText(std::to_string(std::stoi(m_lbl->text())+ 1)); };
+        m_btn->onClick += [&] (Button* sender) { m_lbl->setText(std::to_string(std::stoi(m_lbl->text())+ 1)); };
+        m_btn->onClick += [&] (Button* sender) { sender->setPosition(sender->position() + Vec2(4,4)); };
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
