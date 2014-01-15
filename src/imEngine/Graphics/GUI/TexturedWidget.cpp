@@ -17,10 +17,6 @@ TexturedWidgetAbstract::TexturedWidgetAbstract(const String &initalImage, Widget
         m_currentImage(initalImage)
 {
         setCurrentImage(initalImage);
-}
-
-void TexturedWidgetAbstract::initialize(GuiManager *manager) {
-        WidgetAbstract::initialize(manager);
         initBuffer();
 }
 
@@ -77,11 +73,8 @@ void TexturedWidgetAbstract::setWidgetElementCount(uint count) {
 
 NonStretchableTexturedWidget::NonStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent) :
         TexturedWidgetAbstract(initialImage, parent)
-{ }
-
-void NonStretchableTexturedWidget::initialize(GuiManager *manager) {
-        TexturedWidgetAbstract::initialize(manager);
-        m_size = manager->imageGeometry(currentImage())->size;
+{
+        m_size = manager()->imageGeometry(currentImage())->size;
         setWidgetElementCount(1);
 }
 
@@ -108,11 +101,8 @@ void NonStretchableTexturedWidget::updateBuffer() {
 HStretchableTexturedWidget::HStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent) :
         TexturedWidgetAbstract(initialImage, parent),
         HStretchableAbstract()
-{ }
-
-void HStretchableTexturedWidget::initialize(GuiManager *manager) {
-        TexturedWidgetAbstract::initialize(manager);
-        m_size = manager->imageGeometry(currentImage())->size;
+{
+        m_size = manager()->imageGeometry(currentImage())->size;
         setMinimalWidth(2 * m_size.x / 3);
         setWidgetElementCount(3);
 }
@@ -178,12 +168,8 @@ void HStretchableTexturedWidget::updateBuffer() {
 VStretchableTexturedWidget::VStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent) :
         TexturedWidgetAbstract(initialImage, parent),
         VStretchableAbstract()
-{ }
-
-
-void VStretchableTexturedWidget::initialize(GuiManager *manager) {
-        TexturedWidgetAbstract::initialize(manager);
-        m_size = manager->imageGeometry(currentImage())->size;
+{
+        m_size = manager()->imageGeometry(currentImage())->size;
         setMinimalHeight(2 * m_size.y / 3);
         setWidgetElementCount(3);
 }
@@ -247,11 +233,8 @@ void VStretchableTexturedWidget::updateBuffer() {
 BothStretchableTexturedWidget::BothStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent) :
         TexturedWidgetAbstract(initialImage, parent),
         BothStretchableAbstract()
-{ }
-
-void BothStretchableTexturedWidget::initialize(GuiManager *manager) {
-        TexturedWidgetAbstract::initialize(manager);
-        m_size = manager->imageGeometry(currentImage())->size;
+{
+        m_size = manager()->imageGeometry(currentImage())->size;
         setMinimalSize(Vec2(2*m_size.x/3, 2*m_size.y/3));
         setWidgetElementCount(9);
 }

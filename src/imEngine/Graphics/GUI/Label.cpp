@@ -7,18 +7,12 @@ namespace imEngine {
 Label::Label(const String &text, WidgetAbstract *parent) :
         WidgetAbstract(parent),
         HStretchableAbstract(),
-        m_alignment(LabelAlignment::LEFT),
-        m_tmpString(text)
-{ }
-
-void Label::initialize(GuiManager *manager) {
-        WidgetAbstract::initialize(manager);
-        m_text = TextPtr(new Text(m_tmpString, Font::defaultFont(), manager->window()));
+        m_alignment(LabelAlignment::LEFT)
+{
+        m_text = TextPtr(new Text(text, Font::defaultFont(), manager()->window()));
         m_size = Vec2(m_text->font()->calcSizeOfText(m_text->text()));
         setMinimalWidth(0);
 }
-
-void Label::update() {  }
 
 void Label::render() {
         Vec2 wgtPos = absolutePosition();

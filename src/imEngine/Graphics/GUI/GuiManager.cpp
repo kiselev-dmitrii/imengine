@@ -14,22 +14,29 @@ namespace imEngine {
 class RootWidget : public WidgetAbstract {
 public:
         /// Конструктор. Устанавливаем максимально возможный размер, чтобы обрабатывались нажатия для всех детей
-        RootWidget() { m_size = Vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()); }
+        RootWidget(GuiManager* manager) : WidgetAbstract(nullptr) {
+                m_manager = manager;
+                m_size = Vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+        }
+
         /// Рендерит все вложенные виджеты
         void render() { for (TreeNode* node: children()) ((WidgetAbstract*)node)->render(); }
+
 };
+
+
+//############################# GuiManager ###################################//
+
 
 GuiManager::GuiManager(const String &themePath, Window *window) {
         setTheme(themePath);
         setWindow(window);
         m_program = createProgram();
-
-        m_rootWidget = new RootWidget();
-        m_rootWidget->initialize(this);
+        m_root = new RootWidget(this);
 }
 
 GuiManager::~GuiManager() {
-        delete m_rootWidget;
+        delete m_root;
 }
 
 void GuiManager::setTheme(const String &themePath) {
@@ -69,14 +76,6 @@ ProgramPtr GuiManager::program() const {
         return m_program;
 }
 
-void GuiManager::attachWidget(WidgetAbstract *widget) {
-        m_rootWidget->attachChild(widget);
-}
-
-void GuiManager::detachWidget(WidgetAbstract *widget) {
-        m_rootWidget->detachChild(widget);
-}
-
 ImageGeometry* GuiManager::imageGeometry(const String &name) {
         auto it = m_imagesGeometry.find(name);
         if (it != m_imagesGeometry.end()) return &((*it).second);
@@ -94,19 +93,23 @@ void GuiManager::render() {
         m_texture->bind(0);
         m_program->setUniform("u_texture", 0);
         m_program->setUniform("u_windowSize", Vec2(m_window->size()));
-        m_rootWidget->render();
+        m_root->render();
 }
 
 void GuiManager::processMouseMove(int oldX, int oldY, int newX, int newY) {
-        m_rootWidget->processMouseMove(oldX, oldY, newX, newY);
+        m_root->processMouseMove(oldX, oldY, newX, newY);
 }
 
 void GuiManager::processMousePress(int x, int y, char button) {
-        m_rootWidget->processMousePress(x, y, button);
+        m_root->processMousePress(x, y, button);
 }
 
 void GuiManager::processMouseRelease(int x, int y, char button) {
-        m_rootWidget->processMouseRelease(x, y, button);
+        m_root->processMouseRelease(x, y, button);
+}
+
+WidgetAbstract* GuiManager::root() const {
+        return m_root;
 }
 
 IVec2 GuiManager::calcSizeOfTextureAtlas(const ImageList &images) const {

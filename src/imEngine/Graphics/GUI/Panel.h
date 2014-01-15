@@ -12,7 +12,7 @@ namespace imEngine {
 class Panel : public BothStretchableTexturedWidget {
 public:
         /// Конструктор. На вход получает изображение с панелью
-        Panel(const String& image, WidgetAbstract* parent = nullptr);
+        Panel(const String& image, WidgetAbstract* parent);
 
         /// Обработка перетаскивания панели
         bool    onMousePress(int x, int y, char button);

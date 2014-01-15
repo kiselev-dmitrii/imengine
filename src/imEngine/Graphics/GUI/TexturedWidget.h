@@ -14,10 +14,8 @@ namespace imEngine {
 class TexturedWidgetAbstract : public WidgetAbstract {
 public:
         /// Конструктор. Получает начальную картинку с которой будет рендерится
-        explicit TexturedWidgetAbstract(const String& initalImage, WidgetAbstract* parent = nullptr);
+        explicit TexturedWidgetAbstract(const String& initalImage, WidgetAbstract* parent);
 
-        /// Инициализация буфера
-        void            initialize(GuiManager *manager);
         /// Отрисовка
         void            render();
 
@@ -51,10 +49,7 @@ protected:
 class NonStretchableTexturedWidget : public TexturedWidgetAbstract {
 public:
         /// Конструктор
-        explicit NonStretchableTexturedWidget(const String &initialImage, WidgetAbstract* parent = nullptr);
-
-        /// Инициализация размера
-        void    initialize(GuiManager* manager);
+        explicit NonStretchableTexturedWidget(const String &initialImage, WidgetAbstract* parent);
 
 protected:
         /// Обновление буфера
@@ -69,9 +64,6 @@ class HStretchableTexturedWidget : public TexturedWidgetAbstract, public HStretc
 public:
         /// Конструктор
         explicit HStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent);
-
-        /// Инициализация размера
-        void    initialize(GuiManager* manager);
 
         /// Установка ширины
         void    setWidth(float width);
@@ -89,9 +81,6 @@ public:
         /// Конструктор
         explicit VStretchableTexturedWidget(const String &initialImage, WidgetAbstract* parent);
 
-        /// Инициализация
-        void    initialize(GuiManager *manager);
-
         /// Установка высоты
         void    setHeight(float height);
 
@@ -107,9 +96,6 @@ class BothStretchableTexturedWidget : public TexturedWidgetAbstract, public Both
 public:
         /// Конструктор
         explicit BothStretchableTexturedWidget(const String &initialImage, WidgetAbstract* parent);
-
-        /// Инициализация
-        void    initialize(GuiManager *manager);
 
         /// Установка ширины
         void    setWidth(float width);

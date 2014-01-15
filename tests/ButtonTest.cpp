@@ -32,23 +32,19 @@ void Application::initialize() {
 
         m_gui = new GuiManager("resources/gui/elementary/", mainWindow());
 
-        m_pnl = new Panel("regular_panel.png");
-        m_gui->attachWidget(m_pnl);
+        m_pnl = new Panel("regular_panel.png", m_gui->root());
         m_pnl->setSize(Vec2(400, 500));
 
         // Создание кнопки
-        m_btn = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png");
-        m_pnl->attachChild(m_btn);
+        m_btn = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_pnl);
 
         // Текст на кнопке
-        m_lbl = new Label("0");
-        m_btn->attachChild(m_lbl);
+        m_lbl = new Label("0", m_btn);
         m_lbl->setAlignment(LabelAlignment::CENTER);
         m_lbl->setWidth(m_btn->size().x);
         m_lbl->setPosition(Vec2(0, 6));
 
-        m_lblPanelName = new Label("My own panel");
-        m_pnl->attachChild(m_lblPanelName);
+        m_lblPanelName = new Label("My own panel", m_pnl);
         m_lblPanelName->setAlignment(LabelAlignment::CENTER);
         m_lblPanelName->setWidth(m_pnl->size().x);
         m_lblPanelName->setPosition(Vec2(0, 20));

@@ -91,15 +91,12 @@ void Application::initialize() {
                 IM_VAR(m_gui->imageGeometry(str)->texCoords);
         }
 
-        m_btn1 = new Button("tip_panel.png", "tip_panel.png", "tip_panel.png");
-        m_gui->attachWidget(m_btn1);
-        m_btn2 = new Button("regular_btn_disabled.png", "regular_btn_focused.png", "regular_btn_active.png");
+        m_btn1 = new Button("tip_panel.png", "tip_panel.png", "tip_panel.png", m_gui->root());
+        m_btn2 = new Button("regular_btn_disabled.png", "regular_btn_focused.png", "regular_btn_active.png", m_btn1);
         m_btn2->setPosition(m_btn1->size());
-        m_btn1->attachChild(m_btn2);
 
-        m_lbl = new Label("Push");
+        m_lbl = new Label("Push", m_btn2);
         m_lbl->setAlignment(LabelAlignment::CENTER);
-        m_btn2->attachChild(m_lbl);
         m_lbl->setWidth(m_btn2->size().x);
         m_lbl->setPosition(m_lbl->position() + Vec2(0,6));
         m_lbl->setColor(Vec3(0,0,0));

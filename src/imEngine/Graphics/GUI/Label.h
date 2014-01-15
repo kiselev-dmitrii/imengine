@@ -25,12 +25,8 @@ enum Enum {
 class Label : public WidgetAbstract, public HStretchableAbstract {
 public:
         /// Конструктор
-        explicit Label(const String& text, WidgetAbstract* parent = 0);
+        explicit Label(const String& text, WidgetAbstract* parent);
 
-        /// Инициализация. Установка начальных размеров и т.д.
-        void            initialize(GuiManager* manager);
-        /// Обновляет состояние виджета
-        void            update();
         /// Рендерит себя и детей
         void            render();
 
@@ -55,7 +51,6 @@ public:
 private:
         LabelAlignment::Enum    m_alignment;
         TextPtr                 m_text;
-        String                  m_tmpString;
 };
 
 

@@ -33,20 +33,14 @@ public:
         /// Возвращает директорию с темой
         String                  themePath();
 
-        /// Устанавливает окно, в котором происходит рендер
+        /// Устанавливает/возвращает окно, в котором происходит рендер
         void                    setWindow(Window* window);
-        /// Возвращает окно
         Window*                 window() const;
 
         /// Возвращает сгенерированный текстурный атлас
         Texture2DPtr            textureAtlas() const;
         /// Возвращает программу, с помощью которой рендерится весь GUI
         ProgramPtr              program() const;
-
-        /// Добавляет виджет к менеджеру
-        void                    attachWidget(WidgetAbstract* widget);
-        /// Удаляет виджет из менеджера
-        void                    detachWidget(WidgetAbstract* widget);
 
         /// Возвращает текстурные координаты по имени картинки в директории с темой
         ImageGeometry*          imageGeometry(const String& name);
@@ -62,6 +56,9 @@ public:
         void                    processMousePress(int x, int y, char button);
         /// Метод должен вызываться при отжатии клавиши мыши
         void                    processMouseRelease(int x, int y, char button);
+
+        /// Возвращает корневой элемент менеджера
+        WidgetAbstract*         root() const;
 
 private:
         typedef std::vector<ImagePtr> ImageList;
@@ -82,7 +79,7 @@ private:
         Texture2DPtr            m_texture;              // текстура со всеми виджетами
         MapImageGeometry        m_imagesGeometry;       // имя виджета -> соответствующие текст. координаты
 
-        WidgetAbstract*         m_rootWidget;                 // единственный корневой виджет
+        WidgetAbstract*         m_root;                 // единственный корневой виджет
         ProgramPtr              m_program;              // программа, которой будут рендерится все виджеты
 };
 

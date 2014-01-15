@@ -14,11 +14,7 @@ WidgetAbstract::WidgetAbstract(WidgetAbstract *parent) :
         m_size(0,0)
 {
         notifyPositionUpdated();
-}
-
-void WidgetAbstract::initialize(GuiManager *manager) {
-        IM_ASSERT(manager);
-        m_manager = manager;
+        if (parent) m_manager = parent->manager();
 }
 
 void WidgetAbstract::setPosition(const Vec2 &position) {
@@ -117,7 +113,6 @@ bool WidgetAbstract::isInsideWidget(int x, int y) {
 }
 
 void WidgetAbstract::onAttachChild(TreeNode *node) {
-        ((WidgetAbstract*)node)->initialize(m_manager);
         notifyPositionUpdated();
 }
 

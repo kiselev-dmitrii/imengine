@@ -15,11 +15,7 @@ namespace imEngine {
 class WidgetAbstract : public TreeNode {
 public:
         /// Конструктор. paret - указатель на родителя
-        explicit WidgetAbstract(WidgetAbstract* parent = nullptr);
-
-        /// Инициализация. Выполняется уже после конструктора.
-        /// Например можно исполнять метод после присоединения виджета
-        virtual void    initialize(GuiManager* manager);
+        explicit WidgetAbstract(WidgetAbstract* parent);
 
         /// Рендерит себя и детей
         virtual void    render() = 0;
