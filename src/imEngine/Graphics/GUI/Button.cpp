@@ -21,6 +21,7 @@ bool Button::onMouseEnter(int x, int y) {
 }
 
 bool Button::onMouseLeave(int x, int y) {
+        if (m_wasPressed) return false;
         setCurrentImage(m_activeImage);
         return true;
 }
@@ -43,6 +44,11 @@ bool Button::onMouseRelease(int x, int y, char button) {
 
         setCurrentImage(m_activeImage);
         return true;
+}
+
+void Button::onGlobalMouseRelease(int x, int y, char button) {
+        m_wasPressed = false;
+        setCurrentImage(m_activeImage);
 }
 
 } //namespace imEngine

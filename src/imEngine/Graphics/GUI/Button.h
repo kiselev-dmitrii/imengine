@@ -22,6 +22,7 @@ public:
         bool    onMouseLeave(int x, int y);
         bool    onMousePress(int x, int y, char button);
         bool    onMouseRelease(int x, int y, char button);
+        void    onGlobalMouseRelease(int x, int y, char button);
 
 public:
         /// Сигналы
