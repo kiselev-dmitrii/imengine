@@ -98,14 +98,17 @@ void GuiManager::render() {
 
 void GuiManager::processMouseMove(int oldX, int oldY, int newX, int newY) {
         m_root->processMouseMove(oldX, oldY, newX, newY);
+        m_root->processGlobalMouseMove(newX, newY);
 }
 
 void GuiManager::processMousePress(int x, int y, char button) {
         m_root->processMousePress(x, y, button);
+        m_root->processGlobalMousePress(x, y, button);
 }
 
 void GuiManager::processMouseRelease(int x, int y, char button) {
         m_root->processMouseRelease(x, y, button);
+        m_root->processGlobalMouseRelease(x, y, button);
 }
 
 WidgetAbstract* GuiManager::root() const {

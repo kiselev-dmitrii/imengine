@@ -102,6 +102,27 @@ bool WidgetAbstract::processMouseRelease(int x, int y, char button) {
         return result;
 }
 
+void WidgetAbstract::processGlobalMouseMove(int x, int y) {
+        onGlobalMouseMove(x, y);
+        for (TreeNode* node: children()) {
+                ((WidgetAbstract*)node)->processGlobalMouseMove(x ,y);
+        }
+}
+
+void WidgetAbstract::processGlobalMousePress(int x, int y, char button) {
+        onGlobalMousePress(x, y, button);
+        for (TreeNode* node: children()) {
+                ((WidgetAbstract*)node)->processGlobalMousePress(x ,y, button);
+        }
+}
+
+void WidgetAbstract::processGlobalMouseRelease(int x, int y, char button) {
+        onGlobalMouseRelease(x, y, button);
+        for (TreeNode* node: children()) {
+                ((WidgetAbstract*)node)->processGlobalMouseRelease(x ,y, button);
+        }
+}
+
 void WidgetAbstract::renderChildren() {
         for (TreeNode* node: children()) ((WidgetAbstract*)node)->render();
 }

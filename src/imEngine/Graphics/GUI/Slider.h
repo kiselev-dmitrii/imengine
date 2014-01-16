@@ -19,8 +19,8 @@ public:
         bool    onMouseEnter(int x, int y);
         bool    onMouseLeave(int x, int y);
         bool    onMousePress(int x, int y, char button);
-        bool    onMouseRelease(int x, int y, char button);
-        bool    onMouseMove(int x, int y);
+        void    onGlobalMouseMove(int x, int y);
+        void    onGlobalMouseRelease(int x, int y, char button);
 
 private:
         String  m_activeImage;

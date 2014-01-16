@@ -31,6 +31,13 @@ public:
         /// Возникает, когда на виджете отпустили кнопку
         virtual bool    onMouseRelease(int x, int y, char button)               { return false; }
 
+        /// Возникает, когда мышь движется где угодно
+        virtual void    onGlobalMouseMove(int x, int y)                         { }
+        /// Возникает, когда клавиша мыши нажимаются где угодно
+        virtual void    onGlobalMousePress(int x, int y, char button)           { }
+        /// Возникает, когда клавиша мыши отжимается где угодно
+        virtual void    onGlobalMouseRelease(int x, int y, char button)         { }
+
         /// Устанавливает/возвращает позицию виджета в родительских координатах
         void            setPosition(const Vec2& position);
         Vec2            position() const;
@@ -52,6 +59,12 @@ public:
         bool            processMousePress(int x, int y, char button);
         /// Обработка отжатий клавиш мыши
         bool            processMouseRelease(int x, int y, char button);
+        /// Обработка движений мыши везде
+        void            processGlobalMouseMove(int x, int y);
+        /// Обработка нажатий мыши везде
+        void            processGlobalMousePress(int x, int y, char button);
+        /// Обработка отжатий мыши везде
+        void            processGlobalMouseRelease(int x, int y, char button);
 
 protected:
         /// Рендерит детишек данного виджета
