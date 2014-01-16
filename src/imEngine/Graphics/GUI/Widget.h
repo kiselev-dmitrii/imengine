@@ -39,7 +39,11 @@ public:
         virtual void    onGlobalMouseRelease(int x, int y, char button)         { }
 
         /// Устанавливает/возвращает позицию виджета в родительских координатах
+        void            setLeft(float x);
+        void            setTop(float y);
         void            setPosition(const Vec2& position);
+        float           left() const;
+        float           top() const;
         Vec2            position() const;
 
         /// Устанавливает/возвращает позицию виджета в экранных координатах

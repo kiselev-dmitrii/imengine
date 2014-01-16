@@ -17,9 +17,27 @@ WidgetAbstract::WidgetAbstract(WidgetAbstract *parent) :
         if (parent) m_manager = parent->manager();
 }
 
+void WidgetAbstract::setLeft(float x) {
+        m_position.x = x;
+        notifyPositionUpdated();
+}
+
+void WidgetAbstract::setTop(float y) {
+        m_position.y = y;
+        notifyPositionUpdated();
+}
+
 void WidgetAbstract::setPosition(const Vec2 &position) {
         m_position = position;
         notifyPositionUpdated();
+}
+
+float WidgetAbstract::left() const {
+        return m_position.x;
+}
+
+float WidgetAbstract::top() const {
+        return m_position.y;
 }
 
 Vec2 WidgetAbstract::position() const {

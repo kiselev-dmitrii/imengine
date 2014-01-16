@@ -44,8 +44,13 @@ void SliderButton::onGlobalMouseMove(int x, int y) {
 }
 
 void SliderButton::setOffset(float x) {
-        if (x >= start && x <= end) {
+        float width = size().x;
+        float parentWidth = ((WidgetAbstract*)parent())->size().x;
+        float start = m_bound;
+        float end = parentWidth - m_bound - width;
 
+        if (x >= start && x <= end) {
+                setLeft(x);
         }
 }
 
@@ -58,9 +63,9 @@ HSlider::HSlider(const String &sliderBackground, const String &sliderSelection,
         HStretchableTexturedWidget(sliderBackground, parent)
 {
         m_selection = new HStretchableTexturedWidget(sliderSelection, this);
-        m_selection->setPosition(Vec2(5, 0));
-        m_button = new SliderButton(btnActive, btnHover, 5, this);
-        m_button->setPosition(Vec2(5, -3));
+        m_selection->setPosition(Vec2(minimalWidth()/2, 0));
+        m_button = new SliderButton(btnActive, btnHover, minimalWidth()/2, this);
+        m_button->setPosition(Vec2(minimalWidth()/2, -3));
         m_button->onValueChanged += [&] (float) { resizeSelection(); };
         setWidth(50);
 }
@@ -72,7 +77,7 @@ void HSlider::resizeSelection() {
 
 bool HSlider::onMousePress(int x, int y, char button) {
         Vec2 m = Vec2(x,y) - absolutePosition();
-        m_button->setPosition(Vec2(m.x,m_button->position().y));
+        m_button->setOffset(m.x);
         m_button->onValueChanged(m_button->percent());
         return true;
 }
