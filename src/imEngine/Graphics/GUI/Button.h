@@ -17,6 +17,9 @@ public:
         Button(const String& active, const String& hover, const String& pressed,
                const String& disabled, const String& focused, WidgetAbstract* parent = nullptr);
 
+        /// Определяет состояние кнопки
+        bool    isPressed();
+
         /// Изменяем состояние в соответствии с действиями мыши
         bool    onMouseEnter(int x, int y);
         bool    onMouseLeave(int x, int y);
@@ -35,7 +38,7 @@ private:
         String  m_disabledImage;
         String  m_focusedImage;
 
-        bool    m_wasPressed;
+        bool    m_isPressed;
 };
 
 

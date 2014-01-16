@@ -2,6 +2,8 @@
 #define SLIDER_H
 
 #include "TexturedWidget.h"
+#include "Button.h"
+#include "Signal.h"
 
 namespace imEngine {
 
@@ -10,23 +12,30 @@ class HSlider;
 /** @brief Кнопка для слайдера.
  *  Имеет только два состояния - active и hover
  */
-class SliderButton : public NonStretchableTexturedWidget {
+class SliderButton : public Button {
 public:
-        /// Конструктор
-        SliderButton(const String& active, const String& hover, WidgetAbstract* parent);
+        /// Конструктор.
+        /// active, hover - состяния бегунка.
+        /// bound - расстояние от краев родительского виджета
+        SliderButton(const String& active, const String& hover, float bound, WidgetAbstract* parent);
+
+        /// Возвращает положение слайдера в процентах
+        float   percent() const                                                 { return m_percent; }
 
         /// Обработка действий
-        bool    onMouseEnter(int x, int y);
-        bool    onMouseLeave(int x, int y);
         bool    onMousePress(int x, int y, char button);
         void    onGlobalMouseMove(int x, int y);
-        void    onGlobalMouseRelease(int x, int y, char button);
+
+        /// Устанавливает позицию бегунка если она является допустимой
+        void    setOffset(float x);
+
+public:
+        Signal<float>   onValueChanged;
 
 private:
-        String  m_activeImage;
-        String  m_hoverImage;
-        bool    m_wasPressed;
-        Vec2    m_mouseOffset;
+        Vec2    m_mousePosPrev;
+        float   m_bound;
+        float   m_percent;
 };
 
 
@@ -37,6 +46,16 @@ public:
         /// Конструктор
         HSlider(const String& sliderBackground, const String& sliderSelection,
                 const String& btnActive, const String& btnHover, WidgetAbstract* parent);
+
+        /// При клике мыши - переставляем туда курсор
+        bool    onMousePress(int x, int y, char button);
+
+private:
+        void    resizeSelection();
+
+private:
+        HStretchableTexturedWidget*     m_selection;
+        SliderButton*                   m_button;
 };
 
 
