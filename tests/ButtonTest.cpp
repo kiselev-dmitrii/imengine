@@ -4,6 +4,7 @@
 #include <imEngine/Graphics/GUI/Label.h>
 #include <imEngine/Graphics/GUI/Panel.h>
 #include <imEngine/Utils/Debug.h>
+#include <imEngine/Graphics/GUI/Slider.h>
 
 using namespace imEngine;
 
@@ -24,6 +25,7 @@ private:
         Label*          m_lbl;
         Panel*          m_pnl;
         Label*          m_lblPanelName;
+        SliderButton*   m_sldBtn;
 };
 
 void Application::initialize() {
@@ -53,6 +55,8 @@ void Application::initialize() {
 
         m_btn->onClick += [&] (Button* sender) { m_lbl->setText(std::to_string(std::stoi(m_lbl->text())+ 1)); };
         m_btn->onClick += [&] (Button* sender) { sender->setPosition(sender->position() + Vec2(4,4)); };
+
+        m_sldBtn = new SliderButton("slider_btn_active.png", "slider_btn_hover.png", m_pnl);
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

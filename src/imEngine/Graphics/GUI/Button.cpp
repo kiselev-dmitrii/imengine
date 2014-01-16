@@ -11,7 +11,8 @@ Button::Button(const String &active, const String &hover, const String &pressed,
         m_hoverImage(hover),
         m_pressedImage(pressed),
         m_disabledImage(disabled),
-        m_focusedImage(focused)
+        m_focusedImage(focused),
+        m_wasPressed(false)
 { }
 
 bool Button::onMouseEnter(int x, int y) {
