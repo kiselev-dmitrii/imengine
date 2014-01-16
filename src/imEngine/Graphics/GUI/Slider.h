@@ -2,60 +2,58 @@
 #define SLIDER_H
 
 #include "TexturedWidget.h"
-#include "Button.h"
-#include "Signal.h"
 
 namespace imEngine {
 
-class HSlider;
-
-/** @brief Кнопка для слайдера.
- *  Имеет только два состояния - active и hover
- */
-class SliderButton : public Button {
-public:
-        /// Конструктор.
-        /// active, hover - состяния бегунка.
-        /// bound - расстояние от краев родительского виджета
-        SliderButton(const String& active, const String& hover, float bound, WidgetAbstract* parent);
-
-        /// Возвращает положение слайдера в процентах
-        float   percent() const                                                 { return m_percent; }
-
-        /// Обработка действий
-        bool    onMousePress(int x, int y, char button);
-        void    onGlobalMouseMove(int x, int y);
-
-        /// Устанавливает позицию бегунка если она является допустимой
-        void    setOffset(float x);
-
-public:
-        Signal<float>   onValueChanged;
-
-private:
-        Vec2    m_mousePosPrev;
-        float   m_bound;
-        float   m_percent;
-};
+class HSliderButton;
+class VSliderButton;
 
 
 /** @brief Горизонтальный слайдер
  */
 class HSlider : public HStretchableTexturedWidget {
+friend class HSliderButton;
 public:
-        /// Конструктор
+        /// Конструктор.
+        /// sliderBackground, sliderSelection - задний фон слайдера и текстура выделенной области
+        /// btnActive, btnHover - текстурки для кнопки
         HSlider(const String& sliderBackground, const String& sliderSelection,
                 const String& btnActive, const String& btnHover, WidgetAbstract* parent);
 
-        /// При клике мыши - переставляем туда курсор
+        /// Вызывается при клике мыши на слайдер
         bool    onMousePress(int x, int y, char button);
 
 private:
-        void    resizeSelection();
+        /// Вызывается при клике изменения положения кнопки для обновления выделенной области
+        void    updateSelection();
 
 private:
         HStretchableTexturedWidget*     m_selection;
-        SliderButton*                   m_button;
+        HSliderButton*                  m_button;
+};
+
+
+/** @brief Вертикальный слайдер
+ */
+class VSlider : public VStretchableTexturedWidget {
+friend class VSliderButton;
+public:
+        /// Конструктор.
+        /// sliderBackground, sliderSelection - задний фон слайдера и текстура выделенной области
+        /// btnActive, btnHover - текстурки для кнопки
+        VSlider(const String& sliderBackground, const String& sliderSelection,
+                const String& btnActive, const String& btnHover, WidgetAbstract* parent);
+
+        /// Вызывается при клике мыши на слайдер
+        bool    onMousePress(int x, int y, char button);
+
+private:
+        /// Вызывается при клике изменения положения кнопки для обновления выделенной области
+        void    updateSelection();
+
+private:
+        VStretchableTexturedWidget*     m_selection;
+        VSliderButton*                  m_button;
 };
 
 

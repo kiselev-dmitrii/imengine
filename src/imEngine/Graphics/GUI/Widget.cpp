@@ -61,6 +61,14 @@ Vec2 WidgetAbstract::size() const {
         return m_size;
 }
 
+float WidgetAbstract::width() const {
+        return m_size.x;
+}
+
+float WidgetAbstract::height() const {
+        return m_size.y;
+}
+
 GuiManager* WidgetAbstract::manager() const {
         return m_manager;
 }

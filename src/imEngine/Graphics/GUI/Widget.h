@@ -52,6 +52,8 @@ public:
 
         /// Возвращает размер виджета
         Vec2            size() const;
+        float           width() const;
+        float           height() const;
 
         /// Возвращает указатель на менеджера
         GuiManager*     manager() const;
