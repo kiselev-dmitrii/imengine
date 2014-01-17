@@ -50,6 +50,11 @@ public:
         void            setAbsolutePosition(const Vec2& position);
         Vec2            absolutePosition();
 
+        /// Конвертирует вектор из абсолютной СК в локальную СК
+        Vec2            absoluteToLocal(const Vec2& pos);
+        /// Конвертирует из локальной СК в абсолютную СК
+        Vec2            localToAbsolute(const Vec2& pos);
+
         /// Возвращает размер виджета
         Vec2            size() const;
         float           width() const;

@@ -57,6 +57,14 @@ void WidgetAbstract::setAbsolutePosition(const Vec2 &position) {
         }
 }
 
+Vec2 WidgetAbstract::absoluteToLocal(const Vec2 &pos) {
+        return pos - absolutePosition();
+}
+
+Vec2 WidgetAbstract::localToAbsolute(const Vec2 &pos) {
+        return absolutePosition() + pos;
+}
+
 Vec2 WidgetAbstract::size() const {
         return m_size;
 }

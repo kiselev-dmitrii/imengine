@@ -15,7 +15,7 @@ public:
         /// Конструктор
         /// Принимает имена картинок, соответствующие состояниям кнопки
         Button(const String& active, const String& hover, const String& pressed,
-               const String& disabled, const String& focused, WidgetAbstract* parent = nullptr);
+               const String& disabled, const String& focused, WidgetAbstract* parent);
 
         /// Определяет состояние кнопки
         bool    isPressed();
