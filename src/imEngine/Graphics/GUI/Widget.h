@@ -120,6 +120,9 @@ public:
         /// Получение минимальной ширины
         float           minimalWidth() const                                    { return m_minimalWidth; }
 
+        /// Вызывается при изменении ширины
+        virtual void    onWidthChange()                                         { }
+
 private:
         float           m_minimalWidth;
 };
@@ -140,6 +143,9 @@ public:
         void            setMinimalHeight(float height)                          { m_minimalHeight = height; }
         /// Получения минимальной высоты
         float           minimalHeight() const                                   { return m_minimalHeight; }
+
+        /// Вызывается при изменении высоты
+        virtual void    onHeightChange()                                        { }
 
 private:
         float           m_minimalHeight;
@@ -165,6 +171,11 @@ public:
         void            setMinimalSize(const Vec2& size)                        { m_minimalSize = size; }
         /// Получение минимальных размеров
         Vec2            minimalSize() const                                     { return m_minimalSize; }
+
+        /// Вызывается при изменении ширины
+        virtual void    onWidthChange()                                         { }
+        /// Вызывается при изменении высоты
+        virtual void    onHeightChange()                                        { }
 
 private:
         Vec2            m_minimalSize;

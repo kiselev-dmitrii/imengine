@@ -112,6 +112,8 @@ void HStretchableTexturedWidget::setWidth(float width) {
         if (width < minimalWidth()) return;
 
         m_size.x = width;
+        onWidthChange();
+
         m_isNeedToUpdateBuffer = true;
 }
 
@@ -179,6 +181,8 @@ void VStretchableTexturedWidget::setHeight(float height) {
         if (height < minimalHeight()) return;
 
         m_size.y = height;
+        onHeightChange();
+
         m_isNeedToUpdateBuffer = true;
 }
 
@@ -244,6 +248,8 @@ void BothStretchableTexturedWidget::setWidth(float width) {
         if (width < minimalSize().x) return;
 
         m_size.x = width;
+        onWidthChange();
+
         m_isNeedToUpdateBuffer = true;
 }
 
@@ -252,6 +258,8 @@ void BothStretchableTexturedWidget::setHeight(float height) {
         if (height < minimalSize().y) return;
 
         m_size.y = height;
+        onHeightChange();
+
         m_isNeedToUpdateBuffer = true;
 }
 
