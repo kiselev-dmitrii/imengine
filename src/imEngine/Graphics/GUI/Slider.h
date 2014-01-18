@@ -2,58 +2,29 @@
 #define SLIDER_H
 
 #include "TexturedWidget.h"
+#include "SliderButton.h"
 
 namespace imEngine {
-
-class HSliderButton;
-class VSliderButton;
 
 
 /** @brief Горизонтальный слайдер
  */
 class HSlider : public HStretchableTexturedWidget {
-friend class HSliderButton;
 public:
         /// Конструктор.
-        /// sliderBackground, sliderSelection - задний фон слайдера и текстура выделенной области
-        /// btnActive, btnHover - текстурки для кнопки
-        HSlider(const String& sliderBackground, const String& sliderSelection,
+        /// background, selection - текстуры для заднего фона слайдера и фона выделенной части
+        /// btnActive, btnHover - текстуры для соответствующих состояний кнопки
+        HSlider(const String& sldBackground, const String& sldSelection,
                 const String& btnActive, const String& btnHover, WidgetAbstract* parent);
 
-        /// Вызывается при клике мыши на слайдер
+        /// Обработка событий
         bool    onMousePress(int x, int y, char button);
-
-private:
-        /// Вызывается при клике изменения положения кнопки для обновления выделенной области
-        void    updateSelection();
+        void    onSliderButtonMove();
 
 private:
         HStretchableTexturedWidget*     m_selection;
         HSliderButton*                  m_button;
-};
-
-
-/** @brief Вертикальный слайдер
- */
-class VSlider : public VStretchableTexturedWidget {
-friend class VSliderButton;
-public:
-        /// Конструктор.
-        /// sliderBackground, sliderSelection - задний фон слайдера и текстура выделенной области
-        /// btnActive, btnHover - текстурки для кнопки
-        VSlider(const String& sliderBackground, const String& sliderSelection,
-                const String& btnActive, const String& btnHover, WidgetAbstract* parent);
-
-        /// Вызывается при клике мыши на слайдер
-        bool    onMousePress(int x, int y, char button);
-
-private:
-        /// Вызывается при клике изменения положения кнопки для обновления выделенной области
-        void    updateSelection();
-
-private:
-        VStretchableTexturedWidget*     m_selection;
-        VSliderButton*                  m_button;
+        float                           m_offset;                               // отступ от начала слайдера до активной области
 };
 
 

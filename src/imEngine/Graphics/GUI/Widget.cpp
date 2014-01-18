@@ -44,6 +44,38 @@ Vec2 WidgetAbstract::position() const {
         return m_position;
 }
 
+void WidgetAbstract::alignHorizontal(WidgetHAlignment::Enum align) {
+        IM_ASSERT(m_parent);
+
+        switch(align) {
+                case WidgetHAlignment::RIGHT:
+                        setLeft(0.0f);
+                        break;
+                case WidgetHAlignment::CENTER:
+                        setLeft(((WidgetAbstract*)parent())->width()/2 - width()/2);
+                        break;
+                case WidgetHAlignment::LEFT:
+                        setLeft(((WidgetAbstract*)parent())->width() - width());
+                        break;
+        }
+}
+
+void WidgetAbstract::alignVertical(WidgetVAlignment::Enum align) {
+        IM_ASSERT(m_parent);
+
+        switch(align) {
+                case WidgetVAlignment::TOP:
+                        setTop(0.0f);
+                        break;
+                case WidgetVAlignment::CENTER:
+                        setTop(((WidgetAbstract*)parent())->height()/2 - height()/2);
+                        break;
+                case WidgetVAlignment::BOTTOM:
+                        setTop(((WidgetAbstract*)parent())->height() - height());
+                        break;
+        }
+}
+
 Vec2 WidgetAbstract::absolutePosition() {
         updateAbsolutePosition();
         return m_absolutePosition;

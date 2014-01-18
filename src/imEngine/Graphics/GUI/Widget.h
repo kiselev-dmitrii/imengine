@@ -5,7 +5,28 @@
 #include <imEngine/Utils/TreeNode.h>
 #include "GuiManager.h"
 
+
 namespace imEngine {
+
+/** @brief Выравнивание виджета по горизонтали
+ */
+namespace WidgetHAlignment {
+enum Enum {
+        LEFT,
+        CENTER,
+        RIGHT
+};
+}
+
+/** @brief Выравнивание виджета по вертикали
+ */
+namespace WidgetVAlignment {
+enum Enum {
+        TOP,
+        CENTER,
+        BOTTOM
+};
+}
 
 
 /** @brief Базовый класс для виджетов.
@@ -45,6 +66,10 @@ public:
         float           left() const;
         float           top() const;
         Vec2            position() const;
+
+        /// Выравнивает виджет относительно родителя
+        void            alignHorizontal(WidgetHAlignment::Enum align);
+        void            alignVertical(WidgetVAlignment::Enum align);
 
         /// Устанавливает/возвращает позицию виджета в экранных координатах
         void            setAbsolutePosition(const Vec2& position);
