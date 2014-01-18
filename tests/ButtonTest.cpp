@@ -26,6 +26,7 @@ private:
         Panel*          m_pnl;
         Label*          m_lblPanelName;
         HSlider*        m_slider;
+        VSlider*        m_vslider;
 };
 
 void Application::initialize() {
@@ -58,7 +59,11 @@ void Application::initialize() {
 
         m_slider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnl);
         m_slider->setWidth(200);
-        m_slider->setPosition(Vec2(40,70));
+        m_slider->setPosition(Vec2(50,280));
+
+        m_vslider = new VSlider("vslider_background.png", "vslider_selection.png", "vslider_btn_active.png", "vslider_btn_hover.png", m_pnl);
+        m_vslider->setHeight(200);
+        m_vslider->setPosition(Vec2(30,70));
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

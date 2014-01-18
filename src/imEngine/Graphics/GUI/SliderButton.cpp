@@ -83,4 +83,51 @@ void HSliderButton::setValidPosition(const Vec2 &position) {
 }
 
 
+//############################# VSliderButton ################################//
+
+VSliderButton::VSliderButton(const String &active, const String &hover, float startOffset, float endOffset, WidgetAbstract *parent) :
+        SliderButtonAbstract(active, hover, startOffset, endOffset, parent)
+{ }
+
+void VSliderButton::onGlobalMouseMove(int x, int y) {
+        if (!isPressed()) return;
+
+        float posy = top();
+        float start = m_startOffset;
+        float end = ((WidgetAbstract*)parent())->height() - m_endOffset - height();
+        if (posy >= start && posy <= end) {
+                // Обновляем позицию
+                float delta = (absoluteToLocal(Vec2(x,y)) - m_mousePosition).y;
+                posy = glm::clamp(posy + delta, start, end);
+                setTop(posy);
+
+                // Обновляем позицию в процентах
+                m_percent = 1.0 - (posy - start)/(end - start);
+
+                // Сообщаем родителю, что позиция слайдера изменилась
+                ((VSlider*)parent())->onSliderButtonMove();
+        }
+}
+
+void VSliderButton::setPercent(float percent) {
+        m_percent = glm::clamp(percent, 0.0f, 1.0f);
+
+        // Обновляем позицию
+        float start = m_startOffset;
+        float end = ((WidgetAbstract*)parent())->height() - m_endOffset - height();
+        setTop(start + (1 - m_percent)*(end - start));
+
+        // Сообщаем родителю, что позиция слайдера изменилась
+        ((VSlider*)parent())->onSliderButtonMove();
+}
+
+void VSliderButton::setValidPosition(const Vec2 &position) {
+        float start = m_startOffset;
+        float end = ((WidgetAbstract*)parent())->height() - m_endOffset - height();
+        setTop(glm::clamp(position.y - height()/2, start, end));
+
+        // Сообщаем родителю, что позиция слайдера изменилась
+        ((VSlider*)parent())->onSliderButtonMove();
+}
+
 } //namespace imEngine

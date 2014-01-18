@@ -33,5 +33,32 @@ void HSlider::onSliderButtonMove() {
 
 //################################ VSlider ###################################//
 
+VSlider::VSlider(const String &sldBackground, const String &sldSelection, const String &btnActive, const String &btnHover, WidgetAbstract *parent) :
+        VStretchableTexturedWidget(sldBackground, parent),
+        m_offset(minimalHeight()/2)
+{
+        // Создаем выделенную область
+        m_selection = new VStretchableTexturedWidget(sldSelection, this);
+
+        // Создаем кнопку
+        m_button = new VSliderButton(btnActive, btnHover, m_offset, m_offset, this);
+        m_button->setPercent(0);
+        m_button->alignHorizontal(WidgetHAlignment::CENTER);
+}
+
+bool VSlider::onMousePress(int x, int y, char button) {
+        m_button->setValidPosition(absoluteToLocal(Vec2(x,y)));
+        m_button->onMousePress(x, y, MouseButton::LEFT);
+        return true;
+}
+
+void VSlider::onSliderButtonMove() {
+        m_selection->setTop(m_button->top() + m_button->height());
+        m_selection->setHeight(height() - (m_button->top() + m_button->height() + m_offset));
+}
+
+void VSlider::onHeightChange() {
+        onSliderButtonMove();
+}
 
 } //namespace imEngine
