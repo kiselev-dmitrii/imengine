@@ -16,31 +16,39 @@ public:
         /// Конструктор
         HBoxLayout(WidgetAbstract* parent);
 
-        /// Устанавливает выравнивание по умолчанию
-        void    setDefaultAlignment(WidgetHAlignment::Enum hAlignment, WidgetVAlignment::Enum vAlignment);
+        /// Устанавливает ширину виджета
+        void    setWidth(float width);
 
-        /// Добавляет виджет
-        void    addWidget(WidgetAbstract* widget, WidgetHAlignment::Enum horizontalAlignment, WidgetVAlignment::Enum verticalAlignment);
-        void    addWidget(WidgetAbstract* widget);
+        /// Добавляет/вставляет виджет
+        void    addWidget(WidgetAbstract* widget, WidgetVAlignment::Enum vAlignment = WidgetVAlignment::TOP);
+        void    insertWidget(WidgetAbstract *widget, uint position, WidgetVAlignment::Enum vAlignment = WidgetVAlignment::TOP);
 
-        /// Сворачивает виджет виджет
-        void    foldWidget();
-
-        /// Добавляет пустое пространство
+        /// Добавляет/вставляет пространство размера space
         void    addSpacing(float space);
-
-
-        /// Вставляет виджет в позицию position
-        void    insertWidget(WidgetAbstract* widget, uint position);
-        /// Вставляет пустое пространство в позицию position
         void    insertSpacing(float space, uint position);
 
+        /// Добавляет пустое растяжимое пространство
+        void    addSpring(float factor);
+
+        /// Меняет местами два элемента
+        void    swapElements(uint i, uint j);
+
+public:
+        /// Рендерит элементы
+        void    onRender();
+
 private:
+        enum ElementType {
+                WIDGET,
+                SPACING,
+                SPRING
+        };
         struct Element {
+                ElementType             type;
                 WidgetAbstract*         widget;
-                WidgetHAlignment::Enum  hAlignment;
                 WidgetVAlignment::Enum  vAlignment;
                 float                   width;
+                float                   factor;
         };
 
         std::vector<Element>            m_elements;
