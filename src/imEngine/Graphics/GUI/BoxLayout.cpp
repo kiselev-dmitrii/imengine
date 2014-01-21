@@ -2,8 +2,4 @@
 
 namespace imEngine {
 
-BoxLayout::BoxLayout()
-{
-}
-
 } //namespace imEngine
