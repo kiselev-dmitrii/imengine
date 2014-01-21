@@ -18,6 +18,7 @@ protected:
         void    mouseMoveEvent(int oldX, int oldY, int newX, int newY);
         void    mousePressEvent(int x, int y, char button);
         void    mouseReleaseEvent(int x, int y, char button);
+        void    keyPressEvent(int key);
 
 private:
         GuiManager*     m_gui;
@@ -92,6 +93,13 @@ void Application::mousePressEvent(int x, int y, char button) {
 
 void Application::mouseReleaseEvent(int x, int y, char button) {
         m_gui->processMouseRelease(x, y, button);
+}
+
+void Application::keyPressEvent(int key) {
+        if (key == '1') m_pnl->enable();
+        if (key == '2') m_pnl->disable();
+        if (key == '3') m_pnl->hide();
+        if (key == '4') m_pnl->show();
 }
 
 int main() {

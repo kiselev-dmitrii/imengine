@@ -38,26 +38,19 @@ public:
         /// Конструктор. paret - указатель на родителя
         explicit WidgetAbstract(WidgetAbstract* parent);
 
-        /// Вызывается при визуализации виджета.
-        virtual void    onRender()                                              { }
+        /// Устанавливает/возвращает видимость виджета
+        void            setVisible(bool isVisible);
+        bool            isVisible() const;
+        /// Скрывает/показывает виджет
+        void            hide();
+        void            show();
 
-       /// Вызывается при нахождении мыши над виджетом.
-        virtual bool    onMouseMove(int x, int y)                               { return false; }
-        /// Возникает, когда виджет входит в пространство над виджетом
-        virtual bool    onMouseEnter(int x, int y)                              { return false; }
-        /// Возникает, когда виджет покидает пространство над виджетом
-        virtual bool    onMouseLeave(int x, int y)                              { return false; }
-        /// Возникает, когда на виджете нажали
-        virtual bool    onMousePress(int x, int y, char button)                 { return false; }
-        /// Возникает, когда на виджете отпустили кнопку
-        virtual bool    onMouseRelease(int x, int y, char button)               { return false; }
-
-        /// Возникает, когда мышь движется где угодно
-        virtual void    onGlobalMouseMove(int x, int y)                         { }
-        /// Возникает, когда клавиша мыши нажимаются где угодно
-        virtual void    onGlobalMousePress(int x, int y, char button)           { }
-        /// Возникает, когда клавиша мыши отжимается где угодно
-        virtual void    onGlobalMouseRelease(int x, int y, char button)         { }
+        /// Устанавливает/возвращает включенность виджета
+        void            setEnabled(bool isEnabled);
+        bool            isEnabled() const;
+        /// Отключает/включает виджет от пользовательского ввода
+        void            disable();
+        void            enable();
 
         /// Устанавливает/возвращает позицию виджета в родительских координатах
         void            setLeft(float x);
@@ -87,6 +80,33 @@ public:
 
         /// Возвращает указатель на менеджера
         GuiManager*     manager() const;
+
+public:
+        /// Вызывается при визуализации виджета.
+        virtual void    onRender()                                              { }
+
+       /// Вызывается при нахождении мыши над виджетом.
+        virtual bool    onMouseMove(int x, int y)                               { return false; }
+        /// Возникает, когда виджет входит в пространство над виджетом
+        virtual bool    onMouseEnter(int x, int y)                              { return false; }
+        /// Возникает, когда виджет покидает пространство над виджетом
+        virtual bool    onMouseLeave(int x, int y)                              { return false; }
+        /// Возникает, когда на виджете нажали
+        virtual bool    onMousePress(int x, int y, char button)                 { return false; }
+        /// Возникает, когда на виджете отпустили кнопку
+        virtual bool    onMouseRelease(int x, int y, char button)               { return false; }
+
+        /// Возникает, когда мышь движется где угодно
+        virtual void    onGlobalMouseMove(int x, int y)                         { }
+        /// Возникает, когда клавиша мыши нажимаются где угодно
+        virtual void    onGlobalMousePress(int x, int y, char button)           { }
+        /// Возникает, когда клавиша мыши отжимается где угодно
+        virtual void    onGlobalMouseRelease(int x, int y, char button)         { }
+
+        /// Вызывается, при отключении виджета от ввода
+        virtual void    onWidgetDisable()                                       { }
+        /// Вызывается, при включении виджета
+        virtual void    onWidgetEnable()                                        { }
 
 public:
         /// Рендер виджета и его детей
@@ -125,6 +145,8 @@ protected:
         Vec2            m_absolutePosition;
         bool            m_isNeedToUpdateAbsolutePosition;
         Vec2            m_size;                                         // размер устанавливается в наслудуемых виджетах
+        bool            m_isVisible;
+        bool            m_isEnabled;
 };
 
 

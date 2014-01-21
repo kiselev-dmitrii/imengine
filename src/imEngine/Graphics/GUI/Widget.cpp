@@ -11,10 +11,47 @@ WidgetAbstract::WidgetAbstract(WidgetAbstract *parent) :
         m_position(0, 0),
         m_absolutePosition(0,0),
         m_isNeedToUpdateAbsolutePosition(false),
-        m_size(0,0)
+        m_size(0,0),
+        m_isVisible(true),
+        m_isEnabled(true)
 {
         notifyPositionUpdated();
         if (parent) m_manager = parent->manager();
+}
+
+void WidgetAbstract::setVisible(bool isVisible) {
+        m_isVisible = isVisible;
+}
+
+bool WidgetAbstract::isVisible() const {
+        return m_isVisible;
+}
+
+void WidgetAbstract::hide() {
+        setVisible(false);
+}
+
+void WidgetAbstract::show() {
+        setVisible(true);
+}
+
+void WidgetAbstract::setEnabled(bool isEnabled) {
+        m_isEnabled = isEnabled;
+
+        if (m_isEnabled) onWidgetEnable();
+        else onWidgetDisable();
+}
+
+bool WidgetAbstract::isEnabled() const {
+        return m_isEnabled;
+}
+
+void WidgetAbstract::disable() {
+        setEnabled(false);
+}
+
+void WidgetAbstract::enable() {
+        setEnabled(true);
 }
 
 void WidgetAbstract::setLeft(float x) {
@@ -114,11 +151,15 @@ GuiManager* WidgetAbstract::manager() const {
 }
 
 void WidgetAbstract::processRender() {
+        if (!m_isVisible) return;
+
         onRender();
         for (TreeNode* node: children()) ((WidgetAbstract*)node)->processRender();
 }
 
 bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
+        if (!m_isEnabled || !m_isVisible) return false;
+
         // Если мышь не была внутри и не внутри сейчас - не обрабатываем ее
         bool wasMouseInside = isInsideWidget(oldX, oldY);
         bool isMouseInside = isInsideWidget(newX, newY);
@@ -144,6 +185,8 @@ bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
 }
 
 bool WidgetAbstract::processMousePress(int x, int y, char button) {
+        if (!m_isEnabled || !m_isVisible) return false;
+
         // Если мышь не внутри - не обрабатываем нажатие
         if (!isInsideWidget(x, y)) return false;
 
@@ -159,6 +202,8 @@ bool WidgetAbstract::processMousePress(int x, int y, char button) {
 }
 
 bool WidgetAbstract::processMouseRelease(int x, int y, char button) {
+        if (!m_isEnabled || !m_isVisible) return false;
+
         // Если мышь не внутри - не обрабатываем отжатие
         if (!isInsideWidget(x, y)) return false;
 
@@ -174,6 +219,8 @@ bool WidgetAbstract::processMouseRelease(int x, int y, char button) {
 }
 
 void WidgetAbstract::processGlobalMouseMove(int x, int y) {
+        if (!m_isEnabled || !m_isVisible) return;
+
         onGlobalMouseMove(x, y);
         for (TreeNode* node: children()) {
                 ((WidgetAbstract*)node)->processGlobalMouseMove(x ,y);
@@ -181,6 +228,8 @@ void WidgetAbstract::processGlobalMouseMove(int x, int y) {
 }
 
 void WidgetAbstract::processGlobalMousePress(int x, int y, char button) {
+        if (!m_isEnabled || !m_isVisible) return;
+
         onGlobalMousePress(x, y, button);
         for (TreeNode* node: children()) {
                 ((WidgetAbstract*)node)->processGlobalMousePress(x ,y, button);
@@ -188,6 +237,8 @@ void WidgetAbstract::processGlobalMousePress(int x, int y, char button) {
 }
 
 void WidgetAbstract::processGlobalMouseRelease(int x, int y, char button) {
+        if (!m_isEnabled || !m_isVisible) return;
+
         onGlobalMouseRelease(x, y, button);
         for (TreeNode* node: children()) {
                 ((WidgetAbstract*)node)->processGlobalMouseRelease(x ,y, button);
