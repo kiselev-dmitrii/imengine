@@ -164,7 +164,6 @@ void WidgetAbstract::processRender() {
         if (!m_isVisible) return;
 
         onRender();
-        for (TreeNode* node: children()) ((WidgetAbstract*)node)->processRender();
 }
 
 bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
@@ -259,6 +258,10 @@ bool WidgetAbstract::isInsideWidget(int x, int y) {
         Vec2 min = absolutePosition();
         Vec2 max = min + size();
         return (x >= min.x && y >= min.y) && (x <= max.x && y <= max.y);
+}
+
+void WidgetAbstract::renderChildren() {
+        for (TreeNode* node: children()) ((WidgetAbstract*)node)->processRender();
 }
 
 void WidgetAbstract::onAttachChild(TreeNode *node) {

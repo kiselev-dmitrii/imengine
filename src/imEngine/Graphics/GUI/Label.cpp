@@ -41,6 +41,9 @@ void Label::onRender() {
                 m_text->setOpacity(opacity());
                 m_text->render();
         Renderer::endStencilRendering();
+
+        // Рендерим детей виджета
+        renderChildren();
 }
 
 void Label::setFont(FontPtr font) {

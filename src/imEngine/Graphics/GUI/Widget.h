@@ -88,7 +88,7 @@ public:
 
 public:
         /// Вызывается при визуализации виджета.
-        virtual void    onRender()                                              { }
+        virtual void    onRender()                                              { renderChildren(); }
 
        /// Вызывается при нахождении мыши над виджетом.
         virtual bool    onMouseMove(int x, int y)                               { return false; }
@@ -132,6 +132,8 @@ public:
 protected:
         /// Определяет, находится ли точка x,y внутри виджета
         bool            isInsideWidget(int x, int y);
+        /// Рендерит детей виджета
+        void            renderChildren();
 
 private:
         /// Действия при добавлении, удалении дочерних виджетов

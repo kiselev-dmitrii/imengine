@@ -33,6 +33,9 @@ void TexturedWidgetAbstract::onRender() {
         manager()->program()->setUniform("u_opacity", opacity());
         m_vao->bind();
         Renderer::renderVertices(Primitive::POINT, m_widgetElementCount);
+
+        // Рендерим детей виджета
+        renderChildren();
 }
 
 void TexturedWidgetAbstract::initBuffer() {
