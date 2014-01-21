@@ -61,11 +61,13 @@ void main() {
 layout (location = 0) out vec4 im_outColor;
 
 uniform sampler2D       u_texture;
+uniform float           u_opacity;
 
 in vec2 TexCoord;
 
 void main() {
-        im_outColor = texture2D(u_texture, TexCoord);
+        vec4 color = texture2D(u_texture, TexCoord);
+        im_outColor = vec4(color.rgb, color.a * u_opacity);
 }
 
 )";

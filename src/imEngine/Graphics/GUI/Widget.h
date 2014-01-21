@@ -52,6 +52,11 @@ public:
         void            disable();
         void            enable();
 
+        /// Устанавливает/возвращает уровень непрозрачности для виджета и детей
+        /// 0 - прозрачный, 1 - непрозрачный
+        void            setOpacity(float opacity);
+        float           opacity() const;
+
         /// Устанавливает/возвращает позицию виджета в родительских координатах
         void            setLeft(float x);
         void            setTop(float y);
@@ -147,6 +152,7 @@ protected:
         Vec2            m_size;                                         // размер устанавливается в наслудуемых виджетах
         bool            m_isVisible;
         bool            m_isEnabled;
+        float           m_opacity;                                      //уровень непрозрачности (от 0 - прозрачный до 1 - непрозрачный)
 };
 
 

@@ -100,6 +100,9 @@ void Application::keyPressEvent(int key) {
         if (key == '2') m_pnl->disable();
         if (key == '3') m_pnl->hide();
         if (key == '4') m_pnl->show();
+
+        if (key == '-') m_pnl->setOpacity(m_pnl->opacity() - 0.1);
+        if (key == '=') m_pnl->setOpacity(m_pnl->opacity() + 0.1);
 }
 
 int main() {

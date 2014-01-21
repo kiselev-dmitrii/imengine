@@ -13,7 +13,8 @@ WidgetAbstract::WidgetAbstract(WidgetAbstract *parent) :
         m_isNeedToUpdateAbsolutePosition(false),
         m_size(0,0),
         m_isVisible(true),
-        m_isEnabled(true)
+        m_isEnabled(true),
+        m_opacity(1.0f)
 {
         notifyPositionUpdated();
         if (parent) m_manager = parent->manager();
@@ -52,6 +53,15 @@ void WidgetAbstract::disable() {
 
 void WidgetAbstract::enable() {
         setEnabled(true);
+}
+
+void WidgetAbstract::setOpacity(float opacity) {
+        m_opacity = glm::clamp(opacity, 0.0f, 1.0f);
+        for (TreeNode* node: children()) ((WidgetAbstract*)node)->setOpacity(m_opacity);
+}
+
+float WidgetAbstract::opacity() const {
+        return m_opacity;
 }
 
 void WidgetAbstract::setLeft(float x) {
