@@ -75,7 +75,7 @@ void Application::update() {
 
 void Application::render() {
         GraphicApplication::render();
-        m_gui->render();
+        m_gui->processRender();
 }
 
 void Application::destroy() {

@@ -38,8 +38,8 @@ public:
         /// Конструктор. paret - указатель на родителя
         explicit WidgetAbstract(WidgetAbstract* parent);
 
-        /// Рендерит себя и детей
-        virtual void    render() = 0;
+        /// Вызывается при визуализации виджета.
+        virtual void    onRender()                                              { }
 
        /// Вызывается при нахождении мыши над виджетом.
         virtual bool    onMouseMove(int x, int y)                               { return false; }
@@ -89,6 +89,8 @@ public:
         GuiManager*     manager() const;
 
 public:
+        /// Рендер виджета и его детей
+        void            processRender();
         /// Обработка движений мыши
         bool            processMouseMove(int oldX, int oldY, int newX, int newY);
         /// Обработка нажатий клавиш мыши
@@ -103,9 +105,6 @@ public:
         void            processGlobalMouseRelease(int x, int y, char button);
 
 protected:
-        /// Рендерит детишек данного виджета
-        void            renderChildren();
-
         /// Определяет, находится ли точка x,y внутри виджета
         bool            isInsideWidget(int x, int y);
 

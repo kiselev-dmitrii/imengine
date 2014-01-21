@@ -27,8 +27,8 @@ public:
         /// Конструктор
         explicit Label(const String& text, WidgetAbstract* parent);
 
-        /// Рендерит себя и детей
-        void            render();
+        /// Рендерит виджет
+        void            onRender();
 
         /// Устанавливает ширину прямоугольника (может быть любой)
         void            setWidth(float width)                                   { m_size.x = width; }

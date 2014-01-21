@@ -14,7 +14,7 @@ Label::Label(const String &text, WidgetAbstract *parent) :
         setMinimalWidth(0);
 }
 
-void Label::render() {
+void Label::onRender() {
         Vec2 wgtPos = absolutePosition();
         Vec2 wgtSize = size();
         float txtWidth = m_text->size().x;
@@ -40,8 +40,6 @@ void Label::render() {
         Renderer::continueStencilRendering();
                 m_text->render();
         Renderer::endStencilRendering();
-
-        renderChildren();
 }
 
 void Label::setFont(FontPtr font) {

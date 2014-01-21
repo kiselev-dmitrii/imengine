@@ -113,6 +113,11 @@ GuiManager* WidgetAbstract::manager() const {
         return m_manager;
 }
 
+void WidgetAbstract::processRender() {
+        onRender();
+        for (TreeNode* node: children()) ((WidgetAbstract*)node)->processRender();
+}
+
 bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
         // Если мышь не была внутри и не внутри сейчас - не обрабатываем ее
         bool wasMouseInside = isInsideWidget(oldX, oldY);
@@ -187,10 +192,6 @@ void WidgetAbstract::processGlobalMouseRelease(int x, int y, char button) {
         for (TreeNode* node: children()) {
                 ((WidgetAbstract*)node)->processGlobalMouseRelease(x ,y, button);
         }
-}
-
-void WidgetAbstract::renderChildren() {
-        for (TreeNode* node: children()) ((WidgetAbstract*)node)->render();
 }
 
 bool WidgetAbstract::isInsideWidget(int x, int y) {

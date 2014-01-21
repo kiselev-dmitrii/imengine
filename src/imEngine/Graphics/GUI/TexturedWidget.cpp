@@ -20,7 +20,7 @@ TexturedWidgetAbstract::TexturedWidgetAbstract(const String &initalImage, Widget
         initBuffer();
 }
 
-void TexturedWidgetAbstract::render() {
+void TexturedWidgetAbstract::onRender() {
         if (m_isNeedToUpdateBuffer) {
                 updateBuffer();
                 m_isNeedToUpdateBuffer = false;
@@ -32,9 +32,6 @@ void TexturedWidgetAbstract::render() {
         manager()->program()->setUniform("u_position", absolutePosition());
         m_vao->bind();
         Renderer::renderVertices(Primitive::POINT, m_widgetElementCount);
-
-        // Отрисовываем детишек
-        renderChildren();
 }
 
 void TexturedWidgetAbstract::initBuffer() {

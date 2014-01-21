@@ -18,10 +18,6 @@ public:
                 m_manager = manager;
                 m_size = Vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         }
-
-        /// Рендерит все вложенные виджеты
-        void render() { for (TreeNode* node: children()) ((WidgetAbstract*)node)->render(); }
-
 };
 
 
@@ -88,12 +84,16 @@ StringList GuiManager::imageList() const {
         return result;
 }
 
-void GuiManager::render() {
+WidgetAbstract* GuiManager::root() const {
+        return m_root;
+}
+
+void GuiManager::processRender() {
         m_program->bind();
         m_texture->bind(0);
         m_program->setUniform("u_texture", 0);
         m_program->setUniform("u_windowSize", Vec2(m_window->size()));
-        m_root->render();
+        m_root->processRender();
 }
 
 void GuiManager::processMouseMove(int oldX, int oldY, int newX, int newY) {
@@ -109,10 +109,6 @@ void GuiManager::processMousePress(int x, int y, char button) {
 void GuiManager::processMouseRelease(int x, int y, char button) {
         m_root->processMouseRelease(x, y, button);
         m_root->processGlobalMouseRelease(x, y, button);
-}
-
-WidgetAbstract* GuiManager::root() const {
-        return m_root;
 }
 
 IVec2 GuiManager::calcSizeOfTextureAtlas(const ImageList &images) const {

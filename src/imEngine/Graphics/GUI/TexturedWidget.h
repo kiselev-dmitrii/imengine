@@ -16,8 +16,8 @@ public:
         /// Конструктор. Получает начальную картинку с которой будет рендерится
         explicit TexturedWidgetAbstract(const String& initalImage, WidgetAbstract* parent);
 
-        /// Отрисовка
-        void            render();
+        /// Отрисовка виджета
+        void            onRender();
 
 protected:
 
