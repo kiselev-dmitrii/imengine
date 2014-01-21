@@ -22,6 +22,7 @@ Text::Text(const String &text, const FontPtr font, Window* window) :
         setPosition(Vec2(0,0));
         setDepth(0.0f);
         setColor(Vec3(0.5,0.5,0.5));
+        setOpacity(1.0);
 
         initBuffer();
         m_needToUpdateBuffer = true;
@@ -76,6 +77,7 @@ void Text::render() {
         m_font->texture()->bind(0);
         program().setUniform("u_texture", 0);
         program().setUniform("u_color", m_color);
+        program().setUniform("u_opacity", m_opacity);
         program().setUniform("u_windowSize", Vec2(m_window->size()));
         program().setUniform("u_position", m_position);
         program().setUniform("u_depth", m_depth);

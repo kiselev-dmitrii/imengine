@@ -63,12 +63,13 @@ layout (location = 0) out vec4 im_outColor;
 
 uniform sampler2D       u_texture;
 uniform vec3            u_color;
+uniform float           u_opacity;
 
 in vec2 TexCoord;
 
 void main() {
         float brightness = texture2D(u_texture, TexCoord).r;
-        im_outColor = vec4(brightness * u_color, brightness);
+        im_outColor = vec4(brightness * u_color, brightness * u_opacity);
 }
 
 )";

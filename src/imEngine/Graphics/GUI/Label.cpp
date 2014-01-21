@@ -38,6 +38,7 @@ void Label::onRender() {
         Renderer::beginStencilRendering();
                 PrimitiveRenderer::instance().drawRectangleInScreenSpace(wgtPos, wgtSize, Vec3(1,0,0), manager()->window());
         Renderer::continueStencilRendering();
+                m_text->setOpacity(opacity());
                 m_text->render();
         Renderer::endStencilRendering();
 }

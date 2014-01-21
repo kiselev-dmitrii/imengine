@@ -40,6 +40,10 @@ public:
         void            setColor(const Vec3& color);
         /// Возвращает текущий цвет текста
         Vec3            color() const                                                   { return m_color; }
+        /// Устанавливает непрозрачность текста
+        void            setOpacity(float opacity)                                       { m_opacity = opacity; }
+        /// Возвращает непрозрачность текста
+        float           opacity() const                                                 { return m_opacity; }
 
         /// Устанавливает окно, в котором отображается текст
         /// Нужно для получения текущего разрешения
@@ -70,6 +74,7 @@ private:
         Vec2            m_position;
         float           m_depth;
         Vec3            m_color;
+        float           m_opacity;
         Window*         m_window;
 
         FontPtr         m_font;
