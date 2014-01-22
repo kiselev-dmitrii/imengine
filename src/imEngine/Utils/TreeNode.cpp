@@ -62,7 +62,10 @@ bool TreeNode::removeNodeFromChildrenList(TreeNode *node) {
 }
 
 void TreeNode::deleteAllChildren() {
-        for (TreeNode* node: m_children) delete node;
+        // Копируем указатели на детей, так как при удалении массив m_children может измениться из
+        // дочерних объектов, а нельзя удалять и добавлять элементы в контейнер во время итерации
+        auto children = m_children;
+        for (TreeNode* node: children) delete node;
         m_children.clear();
 }
 
