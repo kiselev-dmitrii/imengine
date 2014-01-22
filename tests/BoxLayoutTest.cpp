@@ -27,6 +27,11 @@ private:
         Button*         m_btnMinus;
         HSlider*        m_slider;
         HBoxLayout*     m_lt;
+
+        Button*         m_btn1;
+        Button*         m_btn2;
+        Button*         m_btn3;
+        VBoxLayout*     m_vlt;
 };
 
 void Application::initialize() {
@@ -54,6 +59,21 @@ void Application::initialize() {
         m_btnPlus = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_lt);
         m_lt->addWidget(m_btnPlus, WidgetVAlignment::CENTER);
 
+
+        // Создаем VBoxLayout и цепляем к нему 3 кнопки
+        m_vlt = new VBoxLayout(m_lt);
+        m_vlt->setPosition(Vec2(30,30));
+
+        m_btn1 = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_vlt);
+        m_vlt->addWidget(m_btn1);
+
+        m_btn2 = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_vlt);
+        m_vlt->addWidget(m_btn2);
+
+        m_btn3 = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_vlt);
+        m_vlt->addWidget(m_btn3);
+
+        m_lt->insertWidget(m_vlt, 0);
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -85,8 +105,8 @@ void Application::mouseReleaseEvent(int x, int y, char button) {
 }
 
 void Application::keyPressEvent(int key) {
-        if (key == '-') m_lt->setWidth(m_lt->width()-1);
-        if (key == '=') m_lt->setWidth(m_lt->width()+1);
+        if (key == '-') m_slider->setWidth(m_slider->width()-1);
+        if (key == '=') m_slider->setWidth(m_slider->width()+1);
         if (key == '1') m_slider->setVisible(!m_slider->isVisible());
 }
 
