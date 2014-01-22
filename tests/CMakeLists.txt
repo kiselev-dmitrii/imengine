@@ -19,6 +19,7 @@ set(TESTS
         GuiManagerTest
         ButtonTest
         SignalTest
+        BoxLayoutTest
 )
 
 foreach(TEST ${TESTS})
