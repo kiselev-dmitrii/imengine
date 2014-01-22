@@ -1,6 +1,7 @@
 #include <imEngine/Application/GraphicApplication.h>
 #include <imEngine/Graphics/GUI/GuiManager.h>
 #include <imEngine/Graphics/GUI/Button.h>
+#include <imEngine/Graphics/GUI/ToggleButton.h>
 #include <imEngine/Graphics/GUI/Panel.h>
 #include <imEngine/Graphics/GUI/BoxLayout.h>
 #include <imEngine/Graphics/GUI/Slider.h>
@@ -31,6 +32,7 @@ private:
         Button*         m_btn1;
         Button*         m_btn2;
         Button*         m_btn3;
+        ToggleButton*   m_toggle;
         VBoxLayout*     m_vlt;
 };
 
@@ -72,6 +74,9 @@ void Application::initialize() {
 
         m_btn3 = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_vlt);
         m_vlt->addWidget(m_btn3);
+
+        m_toggle = new ToggleButton("big_checkbox_active.png", "big_checkbox_checked.png", "big_checkbox_active.png", "big_checkbox_checked.png", m_vlt);
+        m_vlt->addWidget(m_toggle, WidgetHAlignment::RIGHT);
 
         m_lt->insertWidget(m_vlt, 0);
 
