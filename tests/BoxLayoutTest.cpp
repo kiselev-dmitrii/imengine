@@ -5,6 +5,7 @@
 #include <imEngine/Graphics/GUI/Panel.h>
 #include <imEngine/Graphics/GUI/BoxLayout.h>
 #include <imEngine/Graphics/GUI/Slider.h>
+#include <imEngine/Graphics/GUI/Picture.h>
 #include <imEngine/Utils/Debug.h>
 
 using namespace imEngine;
@@ -34,6 +35,8 @@ private:
         Button*         m_btn3;
         ToggleButton*   m_toggle;
         VBoxLayout*     m_vlt;
+
+        Picture*        m_pic;
 };
 
 void Application::initialize() {
