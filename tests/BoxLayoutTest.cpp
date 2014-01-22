@@ -79,7 +79,7 @@ void Application::initialize() {
         m_vlt->addWidget(m_btn3);
 
         m_toggle = new ToggleButton("big_checkbox_active.png", "big_checkbox_checked.png", "big_checkbox_active.png", "big_checkbox_checked.png", m_vlt);
-        m_vlt->addWidget(m_toggle, WidgetHAlignment::RIGHT);
+        m_vlt->addWidget(m_toggle, WidgetHAlignment::CENTER);
 
         m_lt->insertWidget(m_vlt, 0);
 
