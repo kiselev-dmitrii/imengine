@@ -95,13 +95,13 @@ void WidgetAbstract::alignHorizontal(WidgetHAlignment::Enum align) {
         IM_ASSERT(m_parent);
 
         switch(align) {
-                case WidgetHAlignment::RIGHT:
+                case WidgetHAlignment::LEFT:
                         setLeft(0.0f);
                         break;
                 case WidgetHAlignment::CENTER:
                         setLeft(((WidgetAbstract*)parent())->width()/2 - width()/2);
                         break;
-                case WidgetHAlignment::LEFT:
+                case WidgetHAlignment::RIGHT:
                         setLeft(((WidgetAbstract*)parent())->width() - width());
                         break;
         }
