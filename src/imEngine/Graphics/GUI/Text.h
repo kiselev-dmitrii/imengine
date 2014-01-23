@@ -1,93 +1,69 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include <imEngine/Graphics/GAPI/GAPI.h>
+#include "Widget.h"
 #include <imEngine/FileContainers/Font.h>
-#include <imEngine/System/Window.h>
 
 namespace imEngine {
 
-class Text {
+/** @brief Виджет-текст.
+ *
+ * Отображает текст в заданной позиции. При изменении текста, изменяется размер
+ */
+class Text : public WidgetAbstract {
 public:
         /// Конструктор
-        Text(const String& text, const FontPtr font, Window* window);
+        Text(const String& text, WidgetAbstract* parent);
 
-        /// Устанавливает новый текст
+        /// Устанавливает/возвращает текст
         void            setText(const String& text);
-        /// Возвращает текущий текст
-        const String&   text() const                                                    { return m_text; }
+        const String&   text() const;
 
-        /// Устанавливает новый шрифт
+        /// Устанавливает/возврашает шрифт
         void            setFont(const FontPtr& font);
-        /// Возвращает указатель на шрифт
-        FontPtr         font() const                                                    { return m_font; }
+        FontPtr         font() const;
 
-        /// Устанавливает новую позицию в winSpace
-        void            setPosition(const Vec2& position);
-        /// Возвращает позицию текста
-        Vec2            position() const                                                { return m_position; }
-
-        /// Устанавливает новую глубину
-        /// Текст будет перекрываться другим, при включенном тесте буфера глубины
-        void            setDepth(float depth);
-        /// Возвращает глубину текста
-        float           depth() const                                                   { return m_depth; }
-
-        /// Возвращает размер текста, при рендере данным шрифтом
-        Vec2            size() const                                                    { return m_size; }
-
-        /// Устанавливает цвет текста
+        /// Устанавливает/возвращате цвет шрифта
         void            setColor(const Vec3& color);
-        /// Возвращает текущий цвет текста
-        Vec3            color() const                                                   { return m_color; }
-        /// Устанавливает непрозрачность текста
-        void            setOpacity(float opacity)                                       { m_opacity = opacity; }
-        /// Возвращает непрозрачность текста
-        float           opacity() const                                                 { return m_opacity; }
+        Vec3            color() const;
 
-        /// Устанавливает окно, в котором отображается текст
-        /// Нужно для получения текущего разрешения
-        void            setWindow(Window* window);
-        /// Возвращает окно
-        Window*         window() const                                                  { return m_window; }
+        /// Устанавливает//возвращает вертикальный интервал
+        void            setLineSpacingFactor(float factor);
+        float           lineSpacingFactor() const;
 
-        /// Рендерит текст с заданными настройками
-        void            render();
+        /// Возвращает расстояние между строками (от середин двух строк)
+        uint            lineSpacing();
+
+        /// Рендерит текст
+        void            onRender();
 
 private:
-        /// Создает буфер и VAO и настраивает его
-        void            initBuffer();
-        /// Обновляет буфера вершин
-        void            updateBuffer();
+        /// Инициализирует программу
+        void    initProgram();
+        /// Инициализирует VBO и VAO.
+        void    initBuffer();
+        /// Обновление VBO
+        void    updateBuffer();
         /// Расчитывает количество символов, которые будут визуализированы
-        uint            calcNumberOfVisibleChars(const String& str) const;
-
-        /// Возвращает собранную программу.
-        /// Используется для существования одного эземпляра Program для всех экземпляров Text
-        static Program& program();
+        uint    calculateNumberOfVisibleChars(const String& str) const;
+        /// Расчитывает размер текста
+        Vec2    calculateSizeOfText(const String& str, FontPtr font, float lineSpacing) const;
 
 private:
-        bool            m_needToUpdateBuffer;
+        String                  m_text;
+        FontPtr                 m_font;
+        Vec3                    m_color;
+        float                   m_lineSpacingFactor;
 
-        String          m_text;
-        uint            m_numberOfVisibleChars;
-        Vec2            m_position;
-        float           m_depth;
-        Vec3            m_color;
-        float           m_opacity;
-        Window*         m_window;
+        VertexArrayPtr          m_vao;
+        VertexBufferPtr         m_vbo;
+        bool                    m_isNeedToUpdateBuffer;
 
-        FontPtr         m_font;
-        VertexBufferPtr m_vbo;
-        VertexArrayPtr  m_vao;
+        uint                    m_numberOfVisibleChars;
 
-        Vec2            m_size;                         // размер текста при рендере данным шрифтом
+        static ProgramPtr       s_program;
 };
 
-
-/** @brief Умный указатель с подсчетом ссылок для Text
- */
-typedef std::shared_ptr<Text> TextPtr;
 
 } //namespace imEngine
 

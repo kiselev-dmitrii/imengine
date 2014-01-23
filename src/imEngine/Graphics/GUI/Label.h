@@ -50,7 +50,7 @@ public:
 
 private:
         LabelAlignment::Enum    m_alignment;
-        TextPtr                 m_text;
+        Text*                   m_text;
 };
 
 

@@ -6,9 +6,9 @@ TextButton::TextButton(const String &text, const String &active, const String &h
                        const String &pressed, const String &disabled, const String &focused, WidgetAbstract *parent) :
         Button(active, hover, pressed, disabled, focused, parent)
 {
-        m_label = new Label(text, this);
-        m_label->alignHorizontal(WidgetHAlignment::CENTER);
-        m_label->alignVertical(WidgetVAlignment::CENTER);
+        m_text = new Text(text, this);
+        m_text->alignHorizontal(WidgetHAlignment::CENTER);
+        m_text->alignVertical(WidgetVAlignment::CENTER);
 }
 
 } //namespace imEngine

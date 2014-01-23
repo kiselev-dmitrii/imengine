@@ -56,6 +56,8 @@ void Picture::initProgram() {
         s_program = ProgramPtr(new Program());
         s_program->loadSource(pictureProgramSource);
         s_program->build();
+
+        wasInited = true;
 }
 
 void Picture::initBuffers() {
@@ -70,6 +72,8 @@ void Picture::initBuffers() {
 
         Vec2 data(0,0);                 //всего одна точка. положение будет регулироваться юниформами
         s_vbo->load(&data, sizeof(data), BufferUsage::STATIC_DRAW);
+
+        wasInited = true;
 }
 
 } //namespace imEngine

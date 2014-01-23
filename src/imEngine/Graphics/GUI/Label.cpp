@@ -9,8 +9,8 @@ Label::Label(const String &text, WidgetAbstract *parent) :
         HStretchableAbstract(),
         m_alignment(LabelAlignment::LEFT)
 {
-        m_text = TextPtr(new Text(text, Font::defaultFont(), manager()->window()));
-        m_size = Vec2(m_text->font()->calcSizeOfText(m_text->text()));
+        m_text = new Text(text, this);
+        m_size = m_text->size();
         setMinimalWidth(0);
 }
 
@@ -32,15 +32,16 @@ void Label::onRender() {
                         txtPos.x = wgtPos.x + wgtSize.x - txtWidth;
                         break;
         }
-        txtPos.y = wgtPos.y + wgtSize.y/2;
+        txtPos.y = wgtPos.y + (m_text->lineSpacing() - m_text->font()->maxHeight())/2;
         m_text->setPosition(txtPos);
 
-        Renderer::beginStencilRendering();
+
+        //Renderer::beginStencilRendering();
                 PrimitiveRenderer::instance().drawRectangleInScreenSpace(wgtPos, wgtSize, Vec3(1,0,0), manager()->window());
-        Renderer::continueStencilRendering();
+        //Renderer::continueStencilRendering();
                 m_text->setOpacity(opacity());
-                m_text->render();
-        Renderer::endStencilRendering();
+                m_text->onRender();
+        //Renderer::endStencilRendering();
 
         // Рендерим детей виджета
         renderChildren();

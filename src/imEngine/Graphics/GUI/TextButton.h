@@ -2,7 +2,7 @@
 #define TEXTBUTTON_H
 
 #include "Button.h"
-#include "Label.h"
+#include "Text.h"
 
 namespace imEngine {
 
@@ -16,11 +16,11 @@ public:
                    const String& disabled, const String& focused, WidgetAbstract* parent);
 
         /// Устанавливает/возвращает текст на кнопке
-        void            setText(const String& text)                                     { m_label->setText(text); }
-        const String&   text() const                                                    { return m_label->text(); }
+        void            setText(const String& text)                                     { m_text->setText(text); }
+        const String&   text() const                                                    { return m_text->text(); }
 
 private:
-        Label*          m_label;
+        Text*   m_text;
 };
 
 } //namespace imEngine
