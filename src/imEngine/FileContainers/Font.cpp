@@ -11,18 +11,16 @@ Font::Font(const String &filename, uint size) {
         initFace(filename, size);
         initTexture();
         initFontInfo();
+        m_maxHeight = calculateMaxHeight(m_glyphs);
+        m_descenderHeight = calculateDescenderHeight(m_glyphs);
 }
 
 uint Font::maxHeight() const {
-        return m_face->height >> 6;
-}
-
-uint Font::ascenderHeight() const {
-        return m_face->ascender >> 6;
+        return m_maxHeight;
 }
 
 uint Font::descenderHeight() const {
-        return - (m_face->descender >> 6);
+        return m_descenderHeight;
 }
 
 const Glyph& Font::glyph(char ch) const {
@@ -126,6 +124,22 @@ void Font::initFontInfo() {
 
                 currentX += g->bitmap.width;
         }
+
+}
+
+uint Font::calculateMaxHeight(const GlyphList &glyphs) const {
+        int maxHeight = 0;
+        for (const Glyph& g: glyphs) maxHeight = std::max(maxHeight, g.size.y);
+        return maxHeight;
+}
+
+uint Font::calculateDescenderHeight(const GlyphList &glyphs) const {
+        int descenderHeight = 0;
+        for (const Glyph& g: glyphs) {
+                int curDescender = g.size.y - g.bearing.y;
+                descenderHeight = std::max(descenderHeight, curDescender);
+        }
+        return descenderHeight;
 }
 
 void Font::swapRows(ubyte *input, uint width, uint height, ubyte* output) const {

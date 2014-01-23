@@ -38,8 +38,6 @@ public:
 
         /// Возвращает максимальную высоту из всех глифов
         uint            maxHeight() const;
-        /// Возвращает максимальное возвышение глифов над базовой линией
-        uint            ascenderHeight() const;
         /// Возвращает максимальное провисание глифов под базовой линией
         uint            descenderHeight() const;
         /// Возвращает информацию о глифе ch
@@ -66,6 +64,10 @@ private:
         void            initTexture();
         /// Заполняет информацию о шрифте
         void            initFontInfo();
+        /// Вычисляет максимальную высоту глифа
+        uint            calculateMaxHeight(const GlyphList& glyphs) const;
+        /// Вычисляет максимальное провисание глифа
+        uint            calculateDescenderHeight(const GlyphList& glyphs) const;
 
         /// Меняет порядок строк в матрице
         void            swapRows(ubyte* input, uint width, uint height, ubyte* output) const;
@@ -81,6 +83,8 @@ private:
         FT_Face                 m_face;
         Texture2DPtr            m_texture;
         GlyphList               m_glyphs;
+        uint                    m_maxHeight;
+        uint                    m_descenderHeight;
 };
 
 /*
