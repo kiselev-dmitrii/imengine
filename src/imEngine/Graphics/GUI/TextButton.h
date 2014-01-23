@@ -16,11 +16,12 @@ public:
                    const String& disabled, const String& focused, WidgetAbstract* parent);
 
         /// Устанавливает/возвращает текст на кнопке
-        void            setText(const String& text)                                     { m_text->setText(text); }
-        const String&   text() const                                                    { return m_text->text(); }
+        void            setText(const String& text);
+        const String&   text() const;
 
 private:
         Text*   m_text;
+        Vec2    m_padding;
 };
 
 } //namespace imEngine

@@ -31,9 +31,9 @@ private:
         HSlider*        m_slider;
         HBoxLayout*     m_lt;
 
-        Button*         m_btn1;
-        Button*         m_btn2;
-        Button*         m_btn3;
+        TextButton*     m_btn1;
+        TextButton*     m_btn2;
+        TextButton*     m_btn3;
         ToggleButton*   m_toggle;
         VBoxLayout*     m_vlt;
 
@@ -70,13 +70,13 @@ void Application::initialize() {
         m_vlt = new VBoxLayout(m_lt);
         m_vlt->setPosition(Vec2(30,30));
 
-        m_btn1 = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_vlt);
+        m_btn1 = new TextButton("First", "regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_vlt);
         m_vlt->addWidget(m_btn1);
 
-        m_btn2 = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_vlt);
+        m_btn2 = new TextButton("Second", "regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_vlt);
         m_vlt->addWidget(m_btn2);
 
-        m_btn3 = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_vlt);
+        m_btn3 = new TextButton("Third", "regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_vlt);
         m_vlt->addWidget(m_btn3);
 
         m_toggle = new ToggleButton("big_checkbox_active.png", "big_checkbox_checked.png", "big_checkbox_active.png", "big_checkbox_checked.png", m_vlt);
