@@ -18,7 +18,7 @@ Text::Text(const String &text, WidgetAbstract *parent) :
         m_text(text),
         m_font(Font::defaultFont()),
         m_color(0.5),
-        m_lineSpacingFactor(1.5),
+        m_lineSpacingFactor(1.3),
         m_isNeedToUpdateBuffer(true)
 {
         m_size = calculateSizeOfText(m_text, m_font, lineSpacing());

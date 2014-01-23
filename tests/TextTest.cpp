@@ -32,9 +32,11 @@ void Application::initialize() {
 
         m_font = FontPtr(new Font("resources/font/Lobster.ttf", 48));
 
-        m_text1 = new Text("Text||", m_gui->root());
-        m_text1->setFont(m_font);
+        m_text1 = new Text("Text||\nhabrahabr.ru", m_gui->root());
 
+        m_text2 = new Text("Hello, world", m_gui->root());
+        m_text2->setPosition(m_text1->size());
+        m_text2->setFont(m_font);
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -68,6 +70,8 @@ void Application::mouseReleaseEvent(int x, int y, char button) {
 void Application::keyPressEvent(int key) {
         if (key == '=') m_text1->setTop(m_text1->top() + 1);
         if (key == '-') m_text1->setTop(m_text1->top() - 1);
+        if (key == '1')  m_text1->setLineSpacingFactor(m_text1->lineSpacingFactor() + 0.1);
+        if (key == '2')  m_text1->setLineSpacingFactor(m_text1->lineSpacingFactor() - 0.1);
 }
 
 int main() {
