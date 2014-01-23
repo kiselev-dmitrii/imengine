@@ -6,6 +6,7 @@
 #include <imEngine/Graphics/GUI/BoxLayout.h>
 #include <imEngine/Graphics/GUI/Slider.h>
 #include <imEngine/Graphics/GUI/Picture.h>
+#include <imEngine/Graphics/GUI/TextButton.h>
 #include <imEngine/Utils/Debug.h>
 
 using namespace imEngine;
@@ -25,8 +26,8 @@ protected:
 private:
         GuiManager*     m_gui;
         Panel*          m_pnl;
-        Button*         m_btnPlus;
-        Button*         m_btnMinus;
+        TextButton*     m_btnPlus;
+        TextButton*     m_btnMinus;
         HSlider*        m_slider;
         HBoxLayout*     m_lt;
 
@@ -54,14 +55,14 @@ void Application::initialize() {
         m_lt->setPosition(Vec2(100, 200));
 
         // Создание кнопок и слайдера
-        m_btnMinus = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_lt);
+        m_btnMinus = new TextButton("Decrease", "regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_lt);
         m_lt->addWidget(m_btnMinus, WidgetVAlignment::CENTER);
 
         m_slider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_lt);
         m_slider->setWidth(300);
         m_lt->addWidget(m_slider, WidgetVAlignment::CENTER);
 
-        m_btnPlus = new Button("regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_lt);
+        m_btnPlus = new TextButton("Increase", "regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", m_lt);
         m_lt->addWidget(m_btnPlus, WidgetVAlignment::CENTER);
 
 

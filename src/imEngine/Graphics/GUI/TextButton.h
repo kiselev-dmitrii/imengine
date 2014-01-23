@@ -16,7 +16,7 @@ public:
                    const String& disabled, const String& focused, WidgetAbstract* parent);
 
         /// Устанавливает/возвращает текст на кнопке
-        void            setText(const String& text)                                     { m_label->setText(text()); }
+        void            setText(const String& text)                                     { m_label->setText(text); }
         const String&   text() const                                                    { return m_label->text(); }
 
 private:
