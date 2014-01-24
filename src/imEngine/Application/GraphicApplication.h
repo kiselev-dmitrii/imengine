@@ -17,19 +17,22 @@ public:
         /// Возвращает текущий FPS
         uint            fps() const;
 
+        /// Возвращает указатель на GUI-менеджер
+        GuiManager*     gui() const;
+
 protected:
-        /// Инициализирует графическое приложение. Создание менеджеров, настройка OpenGL.
+        /// Стандартный цикл приложения
         void            initialize();
-        /// Выполняется обновление состояния графического приложения
         void            update();
-        /// Рендер вспомогательной информации
         void            render();
-        /// Действия по закрытию графического приложения.
         void            destroy();
 
-        /// Обработка стандартных клавиш (развернуть, и т.д)
+        /// Обработка событий
+        void            mouseMoveEvent(int oldX, int oldY, int newX, int newY);
+        void            mousePressEvent(int x, int y, char button);
+        void            mouseReleaseEvent(int x, int y, char button);
         void            keyPressEvent(int key);
-        /// Действия, производимые при ресайзе окна
+        void            keyReleaseEvent(int key);
         void            windowResizeEvent(int x, int y);
 
 private:
@@ -37,6 +40,8 @@ private:
         void            updateFPS();
 
 private:
+        GuiManager*     m_gui;
+
         /// Данные про FPS
         Text*           m_textFps;
         uint            m_fps;

@@ -2,43 +2,49 @@
 
 namespace imEngine {
 
-void GraphicApplication::initialize() {
-        initFPS();
+uint GraphicApplication::fps() const {
+        return m_fps;
 }
 
-void GraphicApplication::initFPS() {
-        m_fps = 0;
-        m_oldTime = currentTime();
-        /*
-        m_textFps = new Text("FPS: 0", FontPtr(new Font("resources/font/FreeSans.ttf", 23)), mainWindow());
-        m_textFps->setPosition(Vec2(30,30));
-        m_textFps->setColor(Vec3(.5));
-        */
+GuiManager* GraphicApplication::gui() const {
+        return m_gui;
+}
+
+
+void GraphicApplication::initialize() {
+        glClearColor(1,1,1,1);
+        m_gui = new GuiManager("resources/gui/elementary/", mainWindow());
+        initFPS();
 }
 
 void GraphicApplication::update() {
         updateFPS();
 }
 
-void GraphicApplication::updateFPS() {
-        ++m_fps;
-        if ((currentTime() - m_oldTime) >= 1.0) {
-                //m_textFps->setText("FPS: " + std::to_string(m_fps));
-                m_fps = 0;
-                m_oldTime = currentTime();
-        }
-}
-
 void GraphicApplication::render() {
         Renderer::clearBuffers();
-        //m_textFps->render();
+        m_gui->processRender();
 }
 
 void GraphicApplication::destroy() {
-        delete m_textFps;
+        delete m_gui;
+}
+
+void GraphicApplication::mouseMoveEvent(int oldX, int oldY, int newX, int newY) {
+        m_gui->processMouseMove(oldX, oldY, newX, newY);
+}
+
+void GraphicApplication::mousePressEvent(int x, int y, char button) {
+        m_gui->processMousePress(x, y, button);
+}
+
+void GraphicApplication::mouseReleaseEvent(int x, int y, char button) {
+        m_gui->processMouseRelease(x, y, button);
 }
 
 void GraphicApplication::keyPressEvent(int key) {
+        m_gui->processKeyPress(key);
+
         switch (key) {
                 case SDLK_F11:
                         mainWindow()->setFullscreen(!mainWindow()->isFullscreen());
@@ -46,12 +52,28 @@ void GraphicApplication::keyPressEvent(int key) {
         }
 }
 
+void GraphicApplication::keyReleaseEvent(int key) {
+        m_gui->processKeyRelease(key);
+}
+
 void GraphicApplication::windowResizeEvent(int x, int y) {
         glViewport(0, 0, x, y);
 }
 
-uint GraphicApplication::fps() const {
-        return m_fps;
+void GraphicApplication::initFPS() {
+        m_fps = 0;
+        m_oldTime = currentTime();
+        m_textFps = new Text("FPS: 0", gui()->root());
 }
+
+void GraphicApplication::updateFPS() {
+        ++m_fps;
+        if ((currentTime() - m_oldTime) >= 1.0) {
+                m_textFps->setText("FPS: " + std::to_string(m_fps));
+                m_fps = 0;
+                m_oldTime = currentTime();
+        }
+}
+
 
 } //namespace imEngine

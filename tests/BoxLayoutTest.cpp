@@ -15,18 +15,9 @@ using namespace imEngine;
 class Application : public GraphicApplication {
 protected:
         void    initialize();
-        void    update();
-        void    render();
-        void    destroy();
-
-        void    mouseMoveEvent(int oldX, int oldY, int newX, int newY);
-        void    mousePressEvent(int x, int y, char button);
-        void    mouseReleaseEvent(int x, int y, char button);
         void    keyPressEvent(int key);
-        void    keyReleaseEvent(int key);
 
 private:
-        GuiManager*     m_gui;
         Panel*          m_pnl;
         TextButton*     m_btnPlus;
         TextButton*     m_btnMinus;
@@ -49,12 +40,9 @@ private:
 
 void Application::initialize() {
         GraphicApplication::initialize();
-        glClearColor(1,1,1,1);
-
-        m_gui = new GuiManager("resources/gui/elementary/", mainWindow());
 
         // Создаем панельку
-        m_pnl = new Panel("regular_panel.png", m_gui->root());
+        m_pnl = new Panel("regular_panel.png", gui()->root());
         m_pnl->setSize(Vec2(700, 500));
 
         // Создаем HBoxLayout
@@ -108,41 +96,12 @@ void Application::initialize() {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void Application::update() {
-        GraphicApplication::update();
-}
-
-void Application::render() {
-        GraphicApplication::render();
-        m_gui->processRender();
-}
-
-void Application::destroy() {
-        delete m_gui;
-}
-
-void Application::mouseMoveEvent(int oldX, int oldY, int newX, int newY) {
-        m_gui->processMouseMove(oldX, oldY, newX, newY);
-}
-
-void Application::mousePressEvent(int x, int y, char button) {
-        m_gui->processMousePress(x, y, button);
-}
-
-void Application::mouseReleaseEvent(int x, int y, char button) {
-        m_gui->processMouseRelease(x, y, button);
-}
-
 void Application::keyPressEvent(int key) {
-        m_gui->processKeyPress(key);
+        GraphicApplication::keyPressEvent(key);
 
         if (key == '-') m_slider->setWidth(m_slider->width()-1);
         if (key == '=') m_slider->setWidth(m_slider->width()+1);
         if (key == '1') m_slider->setVisible(!m_slider->isVisible());
-}
-
-void Application::keyReleaseEvent(int key) {
-        m_gui->processKeyRelease(key);
 }
 
 int main() {
