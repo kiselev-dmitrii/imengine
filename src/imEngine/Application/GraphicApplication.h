@@ -2,7 +2,7 @@
 #define GRAPHICAPPLICATION_H
 
 #include "BaseApplication.h"
-#include <imEngine/Graphics/GUI/Text.h>
+#include <imEngine/Graphics/GUI/FpsViewer.h>
 #include <imEngine/Graphics/GAPI/GAPI.h>
 
 namespace imEngine {
@@ -14,9 +14,6 @@ namespace imEngine {
  */
 class GraphicApplication : public BaseApplication {
 public:
-        /// Возвращает текущий FPS
-        uint            fps() const;
-
         /// Возвращает указатель на GUI-менеджер
         GuiManager*     gui() const;
 
@@ -36,16 +33,8 @@ protected:
         void            windowResizeEvent(int x, int y);
 
 private:
-        void            initFPS();
-        void            updateFPS();
-
-private:
         GuiManager*     m_gui;
-
-        /// Данные про FPS
-        Text*           m_textFps;
-        uint            m_fps;
-        double          m_oldTime;
+        FpsViewer*      m_fps;
 
 };
 

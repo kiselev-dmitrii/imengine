@@ -8,6 +8,7 @@
 
 namespace imEngine {
 
+class GraphicApplication;
 class WidgetAbstract;
 
 /** @brief Структура хранящая положение и размер изображения в текстурном атласе
@@ -24,7 +25,7 @@ typedef std::map<String, ImageGeometry> MapImageGeometry;
 class GuiManager {
 public:
         /// Конструктор, создает текстурный атлас из картинок в директории themePath
-        GuiManager(const String& themePath, Window* window);
+        GuiManager(const String& themePath, GraphicApplication* application);
         /// Деструктор. Уничтожает всю иерархию подключенных виджетов
         ~GuiManager();
 
@@ -33,8 +34,9 @@ public:
         /// Возвращает директорию с темой
         String                  themePath();
 
-        /// Устанавливает/возвращает окно, в котором происходит рендер
-        void                    setWindow(Window* window);
+        /// Возвращает приложение, связанное с менеджером
+        GraphicApplication*     application() const;
+        /// Возвращает окно в котором происходит рендер
         Window*                 window() const;
 
         /// Возвращает сгенерированный текстурный атлас
@@ -52,6 +54,8 @@ public:
 
         /// Метод должен вызываться при рендере
         void                    processRender();
+        /// Метод должен вызываться при обновлении
+        void                    processUpdate();
         /// Метод должен вызываться при изменении позиции мыши
         void                    processMouseMove(int oldX, int oldY, int newX, int newY);
         /// Метод должен вызываться при клике мыши
@@ -78,7 +82,7 @@ private:
 
 private:
         String                  m_themePath;
-        Window*                 m_window;
+        GraphicApplication*     m_application;
         Texture2DPtr            m_texture;              // текстура со всеми виджетами
         MapImageGeometry        m_imagesGeometry;       // имя виджета -> соответствующие текст. координаты
 

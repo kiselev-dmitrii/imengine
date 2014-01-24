@@ -2,6 +2,7 @@
 #include <imEngine/System/Filesystem.h>
 #include <imEngine/FileContainers/Image.h>
 #include <imEngine/Utils/Debug.h>
+#include <imEngine/Application/GraphicApplication.h>
 #include <limits>
 #include "Widget.h"
 #include "WidgetProgram.glsl"
@@ -24,9 +25,10 @@ public:
 //############################# GuiManager ###################################//
 
 
-GuiManager::GuiManager(const String &themePath, Window *window) {
+GuiManager::GuiManager(const String &themePath, GraphicApplication *application) :
+        m_application(application)
+{
         setTheme(themePath);
-        setWindow(window);
         m_program = createProgram();
         m_root = new RootWidget(this);
 }
@@ -56,12 +58,12 @@ String GuiManager::themePath() {
         return m_themePath;
 }
 
-void GuiManager::setWindow(Window* window) {
-        m_window = window;
+GraphicApplication* GuiManager::application() const {
+        return m_application;
 }
 
 Window* GuiManager::window() const {
-        return m_window;
+        return m_application->mainWindow();
 }
 
 Texture2DPtr GuiManager::textureAtlas() const {
@@ -92,8 +94,12 @@ void GuiManager::processRender() {
         m_program->bind();
         m_texture->bind(0);
         m_program->setUniform("u_texture", 0);
-        m_program->setUniform("u_windowSize", Vec2(m_window->size()));
+        m_program->setUniform("u_windowSize", Vec2(window()->size()));
         m_root->processRender();
+}
+
+void GuiManager::processUpdate() {
+        m_root->processUpdate();
 }
 
 void GuiManager::processMouseMove(int oldX, int oldY, int newX, int newY) {

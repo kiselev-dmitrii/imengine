@@ -28,7 +28,7 @@ void Application::initialize() {
         GraphicApplication::initialize();
         glClearColor(1,1,1,1);
 
-        m_gui = new GuiManager("resources/gui/elementary/", mainWindow());
+        m_gui = new GuiManager("resources/gui/elementary/", this);
 
         m_font = FontPtr(new Font("resources/font/Lobster.ttf", 48));
 

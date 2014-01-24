@@ -11,17 +11,9 @@ using namespace imEngine;
 class Application : public GraphicApplication {
 protected:
         void    initialize();
-        void    update();
-        void    render();
-        void    destroy();
-
-        void    mouseMoveEvent(int oldX, int oldY, int newX, int newY);
-        void    mousePressEvent(int x, int y, char button);
-        void    mouseReleaseEvent(int x, int y, char button);
         void    keyPressEvent(int key);
 
 private:
-        GuiManager*     m_gui;
         Button*         m_btn;
         Label*          m_lbl;
         Panel*          m_pnl;
@@ -34,9 +26,7 @@ void Application::initialize() {
         GraphicApplication::initialize();
         glClearColor(1,1,1,1);
 
-        m_gui = new GuiManager("resources/gui/elementary/", mainWindow());
-
-        m_pnl = new Panel("regular_panel.png", m_gui->root());
+        m_pnl = new Panel("regular_panel.png", gui()->root());
         m_pnl->setSize(Vec2(400, 500));
 
         // Создание кнопки
@@ -70,32 +60,10 @@ void Application::initialize() {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void Application::update() {
-        GraphicApplication::update();
-}
-
-void Application::render() {
-        GraphicApplication::render();
-        m_gui->processRender();
-}
-
-void Application::destroy() {
-        delete m_gui;
-}
-
-void Application::mouseMoveEvent(int oldX, int oldY, int newX, int newY) {
-        m_gui->processMouseMove(oldX, oldY, newX, newY);
-}
-
-void Application::mousePressEvent(int x, int y, char button) {
-        m_gui->processMousePress(x, y, button);
-}
-
-void Application::mouseReleaseEvent(int x, int y, char button) {
-        m_gui->processMouseRelease(x, y, button);
-}
 
 void Application::keyPressEvent(int key) {
+        GraphicApplication::keyPressEvent(key);
+
         if (key == '1') m_pnl->enable();
         if (key == '2') m_pnl->disable();
         if (key == '3') m_pnl->hide();

@@ -221,6 +221,11 @@ void WidgetAbstract::processRender() {
         onRender();
 }
 
+void WidgetAbstract::processUpdate() {
+        onUpdate();
+        for (TreeNode* node: children()) ((WidgetAbstract*)node)->processUpdate();
+}
+
 bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
         if (!m_isEnabled || !m_isVisible) return false;
 

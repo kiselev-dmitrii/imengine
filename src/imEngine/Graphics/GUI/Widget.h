@@ -117,6 +117,8 @@ public:
 public:
         /// Вызывается при визуализации виджета.
         virtual void    onRender()                                              { renderChildren(); }
+        /// Вызывается каждый кадр перед рендером.
+        virtual void    onUpdate()                                              { }
 
        /// Вызывается при нахождении мыши над виджетом.
         virtual bool    onMouseMove(int x, int y)                               { return false; }
@@ -154,6 +156,8 @@ public:
 public:
         /// Рендер виджета и его детей
         void            processRender();
+        /// Обновление виджета и его детей
+        void            processUpdate();
         /// Обработка движений мыши
         bool            processMouseMove(int oldX, int oldY, int newX, int newY);
         /// Обработка нажатий клавиш мыши

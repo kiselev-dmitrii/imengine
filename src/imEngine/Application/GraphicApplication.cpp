@@ -2,10 +2,6 @@
 
 namespace imEngine {
 
-uint GraphicApplication::fps() const {
-        return m_fps;
-}
-
 GuiManager* GraphicApplication::gui() const {
         return m_gui;
 }
@@ -13,12 +9,12 @@ GuiManager* GraphicApplication::gui() const {
 
 void GraphicApplication::initialize() {
         glClearColor(1,1,1,1);
-        m_gui = new GuiManager("resources/gui/elementary/", mainWindow());
-        initFPS();
+        m_gui = new GuiManager("resources/gui/elementary/", this);
+        m_fps = new FpsViewer(m_gui->root());
 }
 
 void GraphicApplication::update() {
-        updateFPS();
+        m_gui->processUpdate();
 }
 
 void GraphicApplication::render() {
@@ -59,21 +55,5 @@ void GraphicApplication::keyReleaseEvent(int key) {
 void GraphicApplication::windowResizeEvent(int x, int y) {
         glViewport(0, 0, x, y);
 }
-
-void GraphicApplication::initFPS() {
-        m_fps = 0;
-        m_oldTime = currentTime();
-        m_textFps = new Text("FPS: 0", gui()->root());
-}
-
-void GraphicApplication::updateFPS() {
-        ++m_fps;
-        if ((currentTime() - m_oldTime) >= 1.0) {
-                m_textFps->setText("FPS: " + std::to_string(m_fps));
-                m_fps = 0;
-                m_oldTime = currentTime();
-        }
-}
-
 
 } //namespace imEngine
