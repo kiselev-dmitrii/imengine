@@ -58,6 +58,10 @@ public:
         void                    processMousePress(int x, int y, char button);
         /// Метод должен вызываться при отжатии клавиши мыши
         void                    processMouseRelease(int x, int y, char button);
+        /// Метод должен вызываться при нажатии клавиши клавиатуры
+        void                    processKeyPress(int key);
+        /// Метод должен вызываться при отжатии клавиши клавиатуры
+        void                    processKeyRelease(int key);
 
 private:
         typedef std::vector<ImagePtr> ImageList;

@@ -22,6 +22,7 @@ protected:
         void    mousePressEvent(int x, int y, char button);
         void    mouseReleaseEvent(int x, int y, char button);
         void    keyPressEvent(int key);
+        void    keyReleaseEvent(int key);
 
 private:
         GuiManager*     m_gui;
@@ -114,9 +115,15 @@ void Application::mouseReleaseEvent(int x, int y, char button) {
 }
 
 void Application::keyPressEvent(int key) {
+        m_gui->processKeyPress(key);
+
         if (key == '-') m_slider->setWidth(m_slider->width()-1);
         if (key == '=') m_slider->setWidth(m_slider->width()+1);
         if (key == '1') m_slider->setVisible(!m_slider->isVisible());
+}
+
+void Application::keyReleaseEvent(int key) {
+        m_gui->processKeyRelease(key);
 }
 
 int main() {

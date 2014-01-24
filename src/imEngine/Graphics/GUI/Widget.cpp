@@ -5,6 +5,8 @@ namespace imEngine {
 
 //################## Widget #######################//
 
+WidgetAbstract* WidgetAbstract::s_focusedWidget = nullptr;
+
 WidgetAbstract::WidgetAbstract(WidgetAbstract *parent) :
         TreeNode(parent),
         m_manager(nullptr),
@@ -53,6 +55,16 @@ void WidgetAbstract::disable() {
 
 void WidgetAbstract::enable() {
         setEnabled(true);
+}
+
+void WidgetAbstract::setFocus() {
+        s_focusedWidget = this;
+        onWidgetSetFocus();
+}
+
+void WidgetAbstract::clearFocus() {
+        s_focusedWidget = nullptr;
+        onWidgetClearFocus();
 }
 
 void WidgetAbstract::setOpacity(float opacity) {
@@ -158,6 +170,10 @@ float WidgetAbstract::height() const {
 
 GuiManager* WidgetAbstract::manager() const {
         return m_manager;
+}
+
+WidgetAbstract* WidgetAbstract::focusedWidget() {
+        return s_focusedWidget;
 }
 
 void WidgetAbstract::processRender() {

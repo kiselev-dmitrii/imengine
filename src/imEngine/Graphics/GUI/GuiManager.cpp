@@ -111,6 +111,16 @@ void GuiManager::processMouseRelease(int x, int y, char button) {
         m_root->processGlobalMouseRelease(x, y, button);
 }
 
+void GuiManager::processKeyPress(int key) {
+        WidgetAbstract* wgt = WidgetAbstract::focusedWidget();
+        if (wgt) wgt->onKeyPress(key);
+}
+
+void GuiManager::processKeyRelease(int key) {
+        WidgetAbstract* wgt = WidgetAbstract::focusedWidget();
+        if (wgt) wgt->onKeyRelease(key);
+}
+
 IVec2 GuiManager::calcSizeOfTextureAtlas(const ImageList &images) const {
         IVec2 size(0,0);
 

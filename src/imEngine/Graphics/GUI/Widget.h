@@ -52,6 +52,10 @@ public:
         void            disable();
         void            enable();
 
+        /// Устанавливает/убирает фокус
+        void            setFocus();
+        void            clearFocus();
+
         /// Устанавливает/возвращает уровень непрозрачности для виджета и детей
         /// 0 - прозрачный, 1 - непрозрачный
         void            setOpacity(float opacity);
@@ -87,6 +91,10 @@ public:
         GuiManager*     manager() const;
 
 public:
+        /// Возвращает текущий виджет в фокусе
+        static WidgetAbstract*  focusedWidget();
+
+public:
         /// Вызывается при визуализации виджета.
         virtual void    onRender()                                              { renderChildren(); }
 
@@ -108,10 +116,20 @@ public:
         /// Возникает, когда клавиша мыши отжимается где угодно
         virtual void    onGlobalMouseRelease(int x, int y, char button)         { }
 
+        /// Возникает, когда клавиша клавиатуры нажата (при установленном фокусе)
+        virtual void    onKeyPress(int key)                                     { }
+        /// Возникает, когда клавиша клавиатуры отжата (при установленном фокусе)
+        virtual void    onKeyRelease(int key)                                   { }
+
         /// Вызывается, при отключении виджета от ввода
         virtual void    onWidgetDisable()                                       { }
         /// Вызывается, при включении виджета
         virtual void    onWidgetEnable()                                        { }
+
+        /// Вызывается, когда виджет получает фокус
+        virtual void    onWidgetSetFocus()                                      { }
+        /// Вызывается, когда виджет теряет фокус
+        virtual void    onWidgetClearFocus()                                    { }
 
 public:
         /// Рендер виджета и его детей
@@ -155,6 +173,10 @@ protected:
         bool            m_isVisible;
         bool            m_isEnabled;
         float           m_opacity;                                      //уровень непрозрачности (от 0 - прозрачный до 1 - непрозрачный)
+
+private:
+        static WidgetAbstract*  s_focusedWidget;
+
 };
 
 
