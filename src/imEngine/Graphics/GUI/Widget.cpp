@@ -58,11 +58,17 @@ void WidgetAbstract::enable() {
 }
 
 void WidgetAbstract::setFocus() {
-        s_focusedWidget = this;
+        if (s_focusedWidget == this) return;
+
+        if (s_focusedWidget) s_focusedWidget->onWidgetClearFocus();             // тот кто был в фокусе, тот его потерял
+
+        s_focusedWidget = this;                                                 // устанавливаем новый фокус
         onWidgetSetFocus();
 }
 
 void WidgetAbstract::clearFocus() {
+        if (s_focusedWidget != this) return;
+
         s_focusedWidget = nullptr;
         onWidgetClearFocus();
 }

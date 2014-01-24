@@ -7,6 +7,7 @@
 #include <imEngine/Graphics/GUI/Slider.h>
 #include <imEngine/Graphics/GUI/Picture.h>
 #include <imEngine/Graphics/GUI/TextButton.h>
+#include <imEngine/Graphics/GUI/LineEdit.h>
 #include <imEngine/Utils/Debug.h>
 
 using namespace imEngine;
@@ -36,7 +37,12 @@ private:
         TextButton*     m_btn2;
         TextButton*     m_btn3;
         ToggleButton*   m_toggle;
+
         VBoxLayout*     m_vlt;
+
+        LineEdit*       m_edt1;
+        LineEdit*       m_edt2;
+        VBoxLayout*     m_edits;
 
         Picture*        m_pic;
 };
@@ -84,6 +90,17 @@ void Application::initialize() {
         m_vlt->addWidget(m_toggle, WidgetHAlignment::CENTER);
 
         m_lt->insertWidget(m_vlt, 0);
+
+        m_edits = new VBoxLayout(m_pnl);
+        m_edits->setPosition(Vec2(40,40));
+
+        m_edt1 = new LineEdit("regular_lineedit_active.png", "regular_lineedit_disabled.png", "regular_lineedit_focused.png", m_edits);
+        m_edt1->setWidth(300);
+        m_edits->addWidget(m_edt1);
+
+        m_edt2 = new LineEdit("regular_lineedit_active.png", "regular_lineedit_disabled.png", "regular_lineedit_focused.png", m_edits);
+        m_edt2->setWidth(300);
+        m_edits->addWidget(m_edt2);
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
