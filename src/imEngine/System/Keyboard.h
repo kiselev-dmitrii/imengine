@@ -14,7 +14,7 @@ enum Enum {
 
         LSHIFT = KMOD_LSHIFT,
         RSHIFT = KMOD_RSHIFT,
-        SHIFT = KMOD_CTRL,
+        SHIFT = KMOD_SHIFT,
 
         LCTRL = KMOD_LCTRL,
         RCTRL = KMOD_RCTRL,
