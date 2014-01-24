@@ -11,7 +11,6 @@ LineEdit::LineEdit(const String &active, const String &disabled, const String &f
         m_focusedImage(focused)
 {
         m_text = new Text("", this);
-        m_text->alignVertical(WidgetVAlignment::CENTER);
 }
 
 bool LineEdit::onMousePress(int x, int y, char button) {

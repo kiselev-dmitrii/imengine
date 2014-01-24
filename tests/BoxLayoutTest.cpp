@@ -95,10 +95,12 @@ void Application::initialize() {
         m_edits->setPosition(Vec2(40,40));
 
         m_edt1 = new LineEdit("regular_lineedit_active.png", "regular_lineedit_disabled.png", "regular_lineedit_focused.png", m_edits);
+        m_edt1->setPadding(9);
         m_edt1->setWidth(300);
         m_edits->addWidget(m_edt1);
 
         m_edt2 = new LineEdit("regular_lineedit_active.png", "regular_lineedit_disabled.png", "regular_lineedit_focused.png", m_edits);
+        m_edt2->setPadding(9);
         m_edt2->setWidth(300);
         m_edits->addWidget(m_edt2);
 

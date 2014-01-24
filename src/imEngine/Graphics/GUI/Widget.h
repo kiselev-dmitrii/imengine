@@ -28,6 +28,15 @@ enum Enum {
 };
 }
 
+/** @brief Структура, задающая внутренние отступы для виджета
+ */
+struct WidgetPadding {
+        float   left;
+        float   top;
+        float   right;
+        float   bottom;
+};
+
 
 /** @brief Базовый класс для виджетов.
  *  Данный класс отвечает за основные свойства виджетов, такие как
@@ -69,6 +78,12 @@ public:
         float           top() const;
         Vec2            position() const;
 
+        /// Устанавливает/возвращает внутрений отступ
+        void            setPadding(const WidgetPadding& padding);
+        void            setPadding(float left, float top, float right, float bottom);
+        void            setPadding(float offset);
+        WidgetPadding   padding() const;
+
         /// Выравнивает виджет относительно родителя
         void            alignHorizontal(WidgetHAlignment::Enum align);
         void            alignVertical(WidgetVAlignment::Enum align);
@@ -86,6 +101,11 @@ public:
         Vec2            size() const;
         float           width() const;
         float           height() const;
+
+        /// Возвращает внутренние размеры виджета
+        Vec2            contentSize() const;
+        float           contentWidth() const;
+        float           contentHeight() const;
 
         /// Возвращает указатель на менеджера
         GuiManager*     manager() const;
@@ -172,7 +192,9 @@ protected:
         Vec2            m_size;                                         // размер устанавливается в наслудуемых виджетах
         bool            m_isVisible;
         bool            m_isEnabled;
-        float           m_opacity;                                      //уровень непрозрачности (от 0 - прозрачный до 1 - непрозрачный)
+        float           m_opacity;                                      // уровень непрозрачности (от 0 - прозрачный до 1 - непрозрачный)
+
+        WidgetPadding   m_padding;                                      // внутренние отступы
 
 private:
         static WidgetAbstract*  s_focusedWidget;

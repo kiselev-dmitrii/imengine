@@ -16,7 +16,8 @@ WidgetAbstract::WidgetAbstract(WidgetAbstract *parent) :
         m_size(0,0),
         m_isVisible(true),
         m_isEnabled(true),
-        m_opacity(1.0f)
+        m_opacity(1.0f),
+        m_padding{0,0,0,0}
 {
         notifyPositionUpdated();
         if (parent) m_manager = parent->manager();
@@ -109,6 +110,23 @@ Vec2 WidgetAbstract::position() const {
         return m_position;
 }
 
+void WidgetAbstract::setPadding(const WidgetPadding &padding) {
+        m_padding = padding;
+        notifyPositionUpdated();
+}
+
+void WidgetAbstract::setPadding(float left, float top, float right, float bottom) {
+        setPadding({left, top, right, bottom});
+}
+
+void WidgetAbstract::setPadding(float offset) {
+        setPadding({offset, offset, offset, offset});
+}
+
+WidgetPadding WidgetAbstract::padding() const {
+        return m_padding;
+}
+
 void WidgetAbstract::alignHorizontal(WidgetHAlignment::Enum align) {
         IM_ASSERT(m_parent);
 
@@ -117,10 +135,10 @@ void WidgetAbstract::alignHorizontal(WidgetHAlignment::Enum align) {
                         setLeft(0.0f);
                         break;
                 case WidgetHAlignment::CENTER:
-                        setLeft(((WidgetAbstract*)parent())->width()/2 - width()/2);
+                        setLeft(((WidgetAbstract*)parent())->contentWidth()/2 - width()/2);
                         break;
                 case WidgetHAlignment::RIGHT:
-                        setLeft(((WidgetAbstract*)parent())->width() - width());
+                        setLeft(((WidgetAbstract*)parent())->contentWidth() - width());
                         break;
         }
 }
@@ -133,10 +151,10 @@ void WidgetAbstract::alignVertical(WidgetVAlignment::Enum align) {
                         setTop(0.0f);
                         break;
                 case WidgetVAlignment::CENTER:
-                        setTop(((WidgetAbstract*)parent())->height()/2 - height()/2);
+                        setTop(((WidgetAbstract*)parent())->contentHeight()/2 - height()/2);
                         break;
                 case WidgetVAlignment::BOTTOM:
-                        setTop(((WidgetAbstract*)parent())->height() - height());
+                        setTop(((WidgetAbstract*)parent())->contentHeight() - height());
                         break;
         }
 }
@@ -172,6 +190,21 @@ float WidgetAbstract::width() const {
 
 float WidgetAbstract::height() const {
         return m_size.y;
+}
+
+Vec2 WidgetAbstract::contentSize() const {
+        Vec2 result = size();
+        result.x -= (m_padding.left + m_padding.right);         //отнимаем от ширины боковые стороны
+        result.y -= (m_padding.top + m_padding.bottom);         //а от высоты - основания
+        return result;
+}
+
+float WidgetAbstract::contentWidth() const {
+        return width() - (m_padding.left + m_padding.right);
+}
+
+float WidgetAbstract::contentHeight() const {
+        return height() - (m_padding.top + m_padding.bottom);
 }
 
 GuiManager* WidgetAbstract::manager() const {
@@ -302,9 +335,11 @@ void WidgetAbstract::notifyPositionUpdated() {
 }
 
 void WidgetAbstract::updateAbsolutePosition() {
+        WidgetAbstract* pnt = ((WidgetAbstract*)m_parent);
+
         if (m_isNeedToUpdateAbsolutePosition) {
-                if (m_parent) {
-                        m_absolutePosition = ((WidgetAbstract*)m_parent)->absolutePosition() + m_position;
+                if (pnt) {
+                        m_absolutePosition = pnt->absolutePosition() + Vec2(pnt->m_padding.left, pnt->m_padding.top) + m_position;
                 } else {
                         m_absolutePosition = m_position;
                 }
