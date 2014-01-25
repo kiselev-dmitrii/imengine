@@ -5,27 +5,56 @@
 
 namespace imEngine {
 
+//######################### LineEditCursor ###################################//
+
+LineEditCursor::LineEditCursor(Text* text, GraphicApplication* application) :
+        m_isVisible(false),
+        m_isBlinking(false),
+        m_prevBlinkTime(application->currentTime()),
+        m_text(text),
+        m_application(application)
+{ }
+
+void LineEditCursor::setBlinking(bool isBlinking) {
+        if (isBlinking) setVisible(true);
+        else setVisible(false);
+        m_isBlinking = isBlinking;
+}
+
+void LineEditCursor::setVisible(bool isVisible) {
+        m_isVisible = isVisible;
+        m_prevBlinkTime = m_application->currentTime();
+}
+
+void LineEditCursor::blink() {
+        setVisible(!m_isVisible);
+}
+
+void LineEditCursor::update() {
+        if (m_isBlinking) {
+                if (m_application->currentTime() - m_prevBlinkTime > 1.0) blink();
+        }
+}
+
+void LineEditCursor::render() {
+        if (m_isVisible) {
+                Vec2 pos(m_text->absolutePosition() + Vec2(m_text->width(), 0));
+                Vec2 size(2, m_text->height());
+                PrimitiveRenderer::instance().drawRectangleInScreenSpace(pos, size, m_text->color(), m_application->mainWindow());
+        }
+}
+
+//############################ LineEdit ######################################//
+
 LineEdit::LineEdit(const String &active, const String &disabled, const String &focused, WidgetAbstract *parent) :
         HStretchableTexturedWidget(active, parent),
-        m_text(nullptr),
+        m_text(new Text("", this)),
         m_activeImage(active),
         m_disabledImage(disabled),
         m_focusedImage(focused),
-        m_isCursorVisible(false),
-        m_isCursorBlinking(false),
-        m_prevBlinkTime(manager()->application()->currentTime()),
-        m_isCursorEnabled(true)
-{
-        m_text = new Text("", this);
-}
-
-void LineEdit::setCursorEnabled(bool isEnabled) {
-        m_isCursorEnabled = isEnabled;
-}
-
-bool LineEdit::isCursorEnabled() const {
-        return m_isCursorEnabled;
-}
+        m_cursor(m_text, manager()->application()),
+        m_isCursorVisible(true)
+{ }
 
 void LineEdit::setText(const String &text) {
         if (m_text->font()->calculateWidthOfText(text) > contentWidth()) return;
@@ -48,34 +77,28 @@ void LineEdit::onGlobalMousePress(int x, int y, char button) {
 
 void LineEdit::onWidgetSetFocus() {
         setCurrentImage(m_focusedImage);
-        setCursorBlinking(true);
+        m_cursor.setBlinking(true);
 }
 
 void LineEdit::onWidgetClearFocus() {
         setCurrentImage(m_activeImage);
-        setCursorBlinking(false);
+        m_cursor.setBlinking(false);
 }
 
 void LineEdit::onKeyPress(int key) {
         processCharKeys(key);
         processControlKeys(key);
-        setCursorVisible(true);
+
+        m_cursor.setVisible(true);
 }
 
 void LineEdit::onUpdate() {
-        if (m_isCursorBlinking)  {
-                if (manager()->application()->currentTime() - m_prevBlinkTime > 1.0) blinkByCursor();
-        }
+        m_cursor.update();
 }
 
 void LineEdit::onRender() {
         HStretchableTexturedWidget::onRender();
-
-        if (m_isCursorVisible && m_isCursorEnabled) {
-                Vec2 pos = m_text->absolutePosition() + Vec2(m_text->width(), 0);
-                Vec2 sz = Vec2(2, m_text->height());
-                PrimitiveRenderer::instance().drawRectangleInScreenSpace(pos, sz, m_text->color(), manager()->window());
-        }
+        if (m_isCursorVisible) m_cursor.render();
 }
 
 void LineEdit::processCharKeys(char ch) {
@@ -101,21 +124,6 @@ void LineEdit::processControlKeys(int key) {
                         clearFocus();
                         break;
         }
-}
-
-void LineEdit::blinkByCursor() {
-        setCursorVisible(!m_isCursorVisible);
-}
-
-void LineEdit::setCursorVisible(bool isVisible) {
-        m_isCursorVisible = isVisible;
-        m_prevBlinkTime = manager()->application()->currentTime();
-}
-
-void LineEdit::setCursorBlinking(bool isBlinking) {
-        if (isBlinking) setCursorVisible(true);
-        else setCursorVisible(false);
-        m_isCursorBlinking = isBlinking;
 }
 
 } //namesapce imEngine

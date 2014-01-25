@@ -6,6 +6,38 @@
 
 namespace imEngine {
 
+/** @brief Курсор для LineEdit
+ */
+class LineEditCursor {
+public:
+        /// Конструктор
+        LineEditCursor(Text* text, GraphicApplication* application);
+
+        /// Управляет миганием курсора
+        void    setBlinking(bool isBlinking);
+        bool    isBlinking() const                                              { return m_isBlinking; }
+
+        /// Устанавливает/возвращает видимость курсора в данный момент
+        void    setVisible(bool isVisible);
+        bool    isVisible() const                                               { return m_isVisible; }
+
+        /// Скрывает курсор, если он показан и показывает, если скрыт
+        void    blink();
+
+        /// Обработка мигания курсора
+        void    update();
+        /// Рендерит курсор
+        void    render();
+
+private:
+        bool                    m_isVisible;
+        bool                    m_isBlinking;
+        float                   m_prevBlinkTime;
+        Text*                   m_text;
+        GraphicApplication*     m_application;
+};
+
+
 /** @brief Виджет для ввода текста
  */
 class LineEdit : public HStretchableTexturedWidget {
@@ -15,9 +47,9 @@ public:
         LineEdit(const String& active, const String& disabled, const String& focused,
                  WidgetAbstract* parent);
 
-        /// Устанавливает/возвращает, включен ли курсор
-        void    setCursorEnabled(bool isEnabled);
-        bool    isCursorEnabled() const;
+        /// Управляет видимостью курсора
+        void    setCursorVisible(bool isVisible)                                { m_isCursorVisible = isVisible; }
+        bool    isCursorEnabled() const                                         { return m_isCursorVisible; }
 
         /// Устанавливает/возвращает текст
         void    setText(const String& text);
@@ -39,22 +71,16 @@ public:
 private:
         void    processCharKeys(char ch);
         void    processControlKeys(int key);
-        void    blinkByCursor();
-        void    setCursorVisible(bool isVisible);
-        void    setCursorBlinking(bool isBlinking);
 
 private:
-        Text*   m_text;
+        Text*           m_text;
 
-        String  m_activeImage;
-        String  m_disabledImage;
-        String  m_focusedImage;
+        String          m_activeImage;
+        String          m_disabledImage;
+        String          m_focusedImage;
 
-        /// Все касаемо курсора
-        bool    m_isCursorVisible;
-        bool    m_isCursorBlinking;
-        float   m_prevBlinkTime;
-        bool    m_isCursorEnabled;
+        LineEditCursor  m_cursor;
+        bool            m_isCursorVisible;
 };
 
 } //namespace imEngine
