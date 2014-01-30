@@ -75,6 +75,12 @@ const Quat& SceneNode::orientationInWorld() const {
         return m_worldTransform.orientation;
 }
 
+void SceneNode::setScaleInWorld(const Vec3 &wsScale) {
+        if (m_parent) {
+                
+        }
+}
+
 void SceneNode::notifyTransformUpdated() {
         m_isNeedToUpdateWorldTransform = true;
         m_isNeedToUpdateLocalToWorldMatrix = true;
