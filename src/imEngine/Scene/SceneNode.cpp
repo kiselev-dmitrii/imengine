@@ -6,16 +6,16 @@ SceneNode::SceneNode(SceneNode *parent) :
         SceneNode(Vec3(0), Quat(1,0,0,0), Vec3(1), parent)
 { }
 
-SceneNode::SceneNode(const Vec3 &position, const Quat &orientation, const Vec3 &scale,
+SceneNode::SceneNode(const Vec3 &psPosition, const Quat &psOrientation, const Vec3 &spScale,
                      SceneNode *parent) :
         TreeNode(parent),
         m_isNeedToUpdateWorldTransform(true),
         m_isNeedToUpdateLocalToWorldMatrix(true),
         m_isNeedToUpdateWorldToLocalMatrix(true)
 {
-        setPosition(position);
-        setOrientation(orientation);
-        setScale(scale);
+        setPosition(psPosition);
+        setOrientation(psOrientation);
+        setScale(spScale);
 
         notifyTransformUpdated();
 }
@@ -73,6 +73,12 @@ void SceneNode::setOrientationInWorld(const Quat &wsOrientation) {
 const Quat& SceneNode::orientationInWorld() const {
         updateWorldTransform();
         return m_worldTransform.orientation;
+}
+
+void SceneNode::setScaleInWorld(const Vec3 &wsScale) {
+        if (m_parent) {
+
+        }
 }
 
 void SceneNode::notifyTransformUpdated() {
