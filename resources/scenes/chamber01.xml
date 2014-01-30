@@ -1,0 +1,10 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+
+<scene name="chamber01">
+	<object name="car" position="10,10,10">
+		<model mesh="porshe_body.obj" material="metal.xml"/>
+		<model mesh="porshe_glasses.obj" material="glass.xml"/>
+	</object>
+
+
+</scene>
