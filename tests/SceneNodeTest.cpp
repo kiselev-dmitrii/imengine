@@ -22,22 +22,22 @@ void Application::initialize() {
         m_world = new SceneNode();
 
         m_sun = new SceneNode(m_world);
-        m_sun->setPositionInParent(Vec3(0,0,0));
+        m_sun->setPosition(Vec3(0,0,0));
 
         m_earth = new SceneNode(m_sun);
-        m_earth->setPositionInParent(Vec3(10,10,10));
+        m_earth->setPosition(Vec3(10,10,10));
 
         m_moon = new SceneNode(m_earth);
-        m_moon->setPositionInParent(Vec3(5,5,5));
+        m_moon->setPosition(Vec3(5,5,5));
 
-        IM_VAR(m_sun->positionInWorld());
-        IM_VAR(m_earth->positionInWorld());
-        IM_VAR(m_moon->positionInWorld());
+        IM_VAR(m_sun->worldPosition());
+        IM_VAR(m_earth->worldPosition());
+        IM_VAR(m_moon->worldPosition());
 
-        m_sun->rotateInLocal(Vec3(0,0,1), 90);
-        IM_VAR(m_sun->positionInWorld());
-        IM_VAR(m_earth->positionInWorld());
-        IM_VAR(m_moon->positionInWorld());
+        m_sun->rotate(Vec3(0,0,1), 90, Space::LOCAL);
+        IM_VAR(m_sun->worldPosition());
+        IM_VAR(m_earth->worldPosition());
+        IM_VAR(m_moon->worldPosition());
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

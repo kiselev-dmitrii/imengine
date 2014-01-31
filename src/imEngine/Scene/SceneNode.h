@@ -7,6 +7,12 @@
 namespace imEngine {
 
 
+enum class Space {
+        LOCAL,
+        PARENT,
+        WORLD
+};
+
 /** @brief Структура для хранения позиции, поворота и масштаба
  */
 struct Transform {
@@ -28,35 +34,27 @@ public:
         explicit SceneNode(const Vec3& psPosition, const Quat& psOrientation, const Vec3& psScale, SceneNode* parent = nullptr);
 
         /// Устанавливает/возвращает позицию ноды в родительской/мировой СК
-        void            setPositionInParent(const Vec3& psPosition);
-        void            setPositionInWorld(const Vec3& wsPosition);
-        const Vec3&     positionInParent();
-        const Vec3&     positionInWorld();
+        void            setPosition(const Vec3& psPosition);
+        void            setWorldPosition(const Vec3& wsPosition);
+        const Vec3&     position();
+        const Vec3&     worldPosition();
         /// Устанавливает/возвращает ориентацию ноды в родительской/мировой СК
-        void            setOrientationInParent(const Quat& psOrientation);
-        void            setOrientationInWorld(const Quat& wsOrientation);
-        const Quat&     orientationInParent();
-        const Quat&     orientationInWorld();
+        void            setOrientation(const Quat& psOrientation);
+        void            setWorldOrientation(const Quat& wsOrientation);
+        const Quat&     orientation();
+        const Quat&     worldOrientation();
         /// Устанавливает/возвращает масштаб ноды по осям родительской/мировой СК.
-        void            setScaleInParent(const Vec3& psScale);
-        void            setScaleInWorld(const Vec3& wsScale);
-        const Vec3&     scaleInParent();
-        const Vec3&     scaleInWorld();
+        void            setScale(const Vec3& psScale);
+        void            setWorldScale(const Vec3& wsScale);
+        const Vec3&     scale();
+        const Vec3&     worldScale();
 
         /// Перемещает ноду на вектор
-        void            translateInLocal(const Vec3& lsDelta);
-        void            translateInParent(const Vec3& psDelta);
-        void            translateInWorld(const Vec3& wsDelta);
-
+        void            translate(const Vec3& delta, Space space);
         /// Вращает ноду по кватерниону
-        void            rotateInLocal(const Quat& lsQuat);
-        void            rotateInParent(const Quat& psQuat);
-        void            rotateInWorld(const Quat& wsQuat);
+        void            rotate(const Quat& quat, Space space);
         /// Вращает ноду относительно заданной оси на угол angle
-        void            rotateInLocal(const Vec3& lsAxis, float angle);
-        void            rotateInParent(const Vec3& psAxis, float angle);
-        void            rotateInWorld(const Vec3& wsAxis, float angle);
-
+        void            rotate(const Vec3& axis, float angle, Space space);
         // Устанавливает ориентацию таким образом, чтобы ось -Z была направлена в target, а Y в сторону up
         void            lookAt(const Vec3& wsTarget, const Vec3& psUp);
 
