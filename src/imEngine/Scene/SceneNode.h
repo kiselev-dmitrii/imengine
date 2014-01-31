@@ -30,18 +30,18 @@ public:
         /// Устанавливает/возвращает позицию ноды в родительской/мировой СК
         void            setPositionInParent(const Vec3& psPosition);
         void            setPositionInWorld(const Vec3& wsPosition);
-        const Vec3&     positionInParent() const;
-        const Vec3&     positionInWorld() const;
+        const Vec3&     positionInParent();
+        const Vec3&     positionInWorld();
         /// Устанавливает/возвращает ориентацию ноды в родительской/мировой СК
         void            setOrientationInParent(const Quat& psOrientation);
         void            setOrientationInWorld(const Quat& wsOrientation);
-        const Quat&     orientationInParent() const;
-        const Quat&     orientationInWorld() const;
+        const Quat&     orientationInParent();
+        const Quat&     orientationInWorld();
         /// Устанавливает/возвращает масштаб ноды по осям родительской/мировой СК.
         void            setScaleInParent(const Vec3& psScale);
         void            setScaleInWorld(const Vec3& wsScale);
-        const Vec3&     scaleInParent() const;
-        const Vec3&     scaleInWorld() const;
+        const Vec3&     scaleInParent();
+        const Vec3&     scaleInWorld();
 
         /// Перемещает ноду на вектор
         void            translateInLocal(const Vec3& lsDelta);
@@ -62,16 +62,19 @@ public:
 
 public:
         // Конвертирует вектор/кватернион из мировой СК в локальную
-        Vec3            convertWorldToLocal(const Vec3& wsVec) const;
-        Quat            convertWorldToLocal(const Quat& wsQuat) const;
+        Vec3            convertWorldToLocal(const Vec3& wsVec);
+        Quat            convertWorldToLocal(const Quat& wsQuat);
+        // Конвертирует вектор/кватернион из мировой СК в родительскую
+        Vec3            convertWorldToParent(const Vec3& wsVec);
+        Quat            convertWorldToParent(const Quat& wsQuat);
         // Конвертирует вектор/кватернион из локальной СК в мировую
-        Vec3            convertLocalToWorld(const Vec3& lsVec) const;
-        Quat            convertLocalToWorld(const Quat& lsQuat) const;
+        Vec3            convertLocalToWorld(const Vec3& lsVec);
+        Quat            convertLocalToWorld(const Quat& lsQuat);
 
         /// Возвращает матрицу перехода от локальной СК к мировой СК
-        const Mat4&     localToWorldMatrix() const;
+        const Mat4&     localToWorldMatrix();
         /// Возвращает матрицу перехода от мировой СК к локальной СК
-        const Mat4&     worldToLocalMatrix() const;
+        const Mat4&     worldToLocalMatrix();
 
 protected:
         virtual void    onAttachChild(TreeNode *node);

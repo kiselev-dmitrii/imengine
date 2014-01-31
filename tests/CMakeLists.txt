@@ -20,6 +20,7 @@ set(TESTS
         ButtonTest
         SignalTest
         BoxLayoutTest
+        SceneNodeTest
 )
 
 foreach(TEST ${TESTS})
