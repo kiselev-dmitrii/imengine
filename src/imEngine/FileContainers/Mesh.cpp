@@ -2,7 +2,7 @@
 
 namespace imEngine {
 
-Mesh::Mesh() {
+Mesh::Mesh(const String& filename) {
 }
 
 } //namespace imEngine

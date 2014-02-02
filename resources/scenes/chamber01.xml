@@ -1,10 +1,15 @@
 <?xml version="1.1" encoding="UTF-8" ?>
 
 <scene name="chamber01">
-	<object name="car" position="10,10,10">
-		<model mesh="porshe_body.obj" material="metal.xml"/>
-		<model mesh="porshe_glasses.obj" material="glass.xml"/>
-	</object>
+	<include>
+		<file name="car.xml"/>
+	</include>
 
+	<world>
+		<object name="car1" import="car.xml/car">
+			<camera type="free" position="0; 2; 2"/>
+		</object>
 
+		<spot_light position="0; 0; 10" target="0;0;0"/>
+	</world>
 </scene>
