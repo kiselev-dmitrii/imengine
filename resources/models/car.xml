@@ -5,6 +5,11 @@
 		<material name="car_metal" type="reflection" cubemap="" texture="" factor=""/>
 		<material name="rubber" type="phong" ambient="10,10,10" duffuse="10,10,10" specular="0"/>
 	</materials>
+
+	<geometry>
+		<vertices></vertices>
+		<i></i>
+	</geometry>
 	
 	<models>
 		<model name="car">

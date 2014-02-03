@@ -1,9 +1,9 @@
-#include "SceneNode.h"
+#include "Movable.h"
 #include <glm/gtx/quaternion.hpp>
 
 namespace imEngine {
 
-SceneNode::SceneNode(SceneNode *parent) :
+Movable::Movable(Movable *parent) :
         TreeNode(parent),
         m_isNeedToUpdateWorldTransform(true),
         m_isNeedToUpdateLocalToWorldMatrix(true),
@@ -12,8 +12,8 @@ SceneNode::SceneNode(SceneNode *parent) :
         notifyTransformUpdated();
 }
 
-SceneNode::SceneNode(const Vec3 &psPosition, const Quat &psOrientation, const Vec3 &psScale,
-                     SceneNode *parent) :
+Movable::Movable(const Vec3 &psPosition, const Quat &psOrientation, const Vec3 &psScale,
+                     Movable *parent) :
         TreeNode(parent),
         m_isNeedToUpdateWorldTransform(true),
         m_isNeedToUpdateLocalToWorldMatrix(true),
@@ -26,62 +26,62 @@ SceneNode::SceneNode(const Vec3 &psPosition, const Quat &psOrientation, const Ve
         notifyTransformUpdated();
 }
 
-void SceneNode::setPosition(const Vec3 &psPosition) {
+void Movable::setPosition(const Vec3 &psPosition) {
         m_psTransform.position = psPosition;
         notifyTransformUpdated();
 }
 
-void SceneNode::setWorldPosition(const Vec3 &wsPosition) {
+void Movable::setWorldPosition(const Vec3 &wsPosition) {
         setPosition(convertWorldToParent(wsPosition));
 }
 
-const Vec3& SceneNode::position() {
+const Vec3& Movable::position() {
         return m_psTransform.position;
 }
 
-const Vec3& SceneNode::worldPosition() {
+const Vec3& Movable::worldPosition() {
         updateWorldTransform();
         return m_wsTransform.position;
 }
 
-void SceneNode::setOrientation(const Quat &psOrientation) {
+void Movable::setOrientation(const Quat &psOrientation) {
         m_psTransform.orientation = psOrientation;
         notifyTransformUpdated();
 }
 
-void SceneNode::setWorldOrientation(const Quat &wsOrientation) {
+void Movable::setWorldOrientation(const Quat &wsOrientation) {
         setOrientation(convertWorldToParent(wsOrientation));
 }
 
-const Quat& SceneNode::orientation() {
+const Quat& Movable::orientation() {
         return m_psTransform.orientation;
 }
 
-const Quat& SceneNode::worldOrientation() {
+const Quat& Movable::worldOrientation() {
         updateWorldTransform();
         return m_wsTransform.orientation;
 }
 
-void SceneNode::setScale(const Vec3 &psScale) {
+void Movable::setScale(const Vec3 &psScale) {
         m_psTransform.scale = psScale;
         notifyTransformUpdated();
 }
 
-void SceneNode::setWorldScale(const Vec3 &wsScale) {
+void Movable::setWorldScale(const Vec3 &wsScale) {
         setScale(convertWorldToParent(wsScale));
 }
 
-const Vec3& SceneNode::scale() {
+const Vec3& Movable::scale() {
         return m_psTransform.scale;
 }
 
-const Vec3& SceneNode::worldScale() {
+const Vec3& Movable::worldScale() {
         updateWorldTransform();
         return m_wsTransform.scale;
 }
 
-void SceneNode::translate(const Vec3 &delta, Space space) {
-        SceneNode* p = (SceneNode*)m_parent;
+void Movable::translate(const Vec3 &delta, Space space) {
+        Movable* p = (Movable*)m_parent;
 
         switch (space) {
                 case Space::LOCAL:
@@ -103,7 +103,7 @@ void SceneNode::translate(const Vec3 &delta, Space space) {
         notifyTransformUpdated();
 }
 
-void SceneNode::rotate(const Quat &quat, Space space) {
+void Movable::rotate(const Quat &quat, Space space) {
         switch (space) {
                 case Space::LOCAL:
                         m_psTransform.orientation = m_psTransform.orientation * glm::normalize(quat);
@@ -123,12 +123,12 @@ void SceneNode::rotate(const Quat &quat, Space space) {
         notifyTransformUpdated();
 }
 
-void SceneNode::rotate(const Vec3 &axis, float angle, Space space) {
+void Movable::rotate(const Vec3 &axis, float angle, Space space) {
         rotate(glm::angleAxis(angle, axis), space);
 }
 
 
-void SceneNode::lookAt(const Vec3 &wsTarget, const Vec3 &psUp) {
+void Movable::lookAt(const Vec3 &wsTarget, const Vec3 &psUp) {
         Vec3 psTarget = convertWorldToParent(wsTarget);
 
         Vec3 psZAxis = -glm::normalize(psTarget - position());
@@ -141,62 +141,62 @@ void SceneNode::lookAt(const Vec3 &wsTarget, const Vec3 &psUp) {
         setOrientation(glm::toQuat(matrix));
 }
 
-Vec3 SceneNode::convertWorldToLocal(const Vec3 &wsVec) {
+Vec3 Movable::convertWorldToLocal(const Vec3 &wsVec) {
         return glm::inverse(worldOrientation())*(wsVec - worldPosition()) / worldScale();
 }
 
-Quat SceneNode::convertWorldToLocal(const Quat &wsQuat) {
+Quat Movable::convertWorldToLocal(const Quat &wsQuat) {
         return glm::inverse(worldOrientation()) * wsQuat;
 }
 
-Vec3 SceneNode::convertWorldToParent(const Vec3 &wsVec) {
-        if (m_parent) return ((SceneNode*)m_parent)->convertWorldToLocal(wsVec);
+Vec3 Movable::convertWorldToParent(const Vec3 &wsVec) {
+        if (m_parent) return ((Movable*)m_parent)->convertWorldToLocal(wsVec);
         else return wsVec;
 }
 
-Quat SceneNode::convertWorldToParent(const Quat &wsQuat) {
-        if (m_parent) return ((SceneNode*)m_parent)->convertWorldToLocal(wsQuat);
+Quat Movable::convertWorldToParent(const Quat &wsQuat) {
+        if (m_parent) return ((Movable*)m_parent)->convertWorldToLocal(wsQuat);
         else return wsQuat;
 }
 
-Vec3 SceneNode::convertLocalToWorld(const Vec3 &lsVec) {
+Vec3 Movable::convertLocalToWorld(const Vec3 &lsVec) {
         return (worldOrientation() *  (lsVec * worldScale())) + worldPosition();
 }
 
-Quat SceneNode::convertLocalToWorld(const Quat &lsQuat) {
+Quat Movable::convertLocalToWorld(const Quat &lsQuat) {
         return worldOrientation() * lsQuat;
 }
 
-const Mat4& SceneNode::localToWorldMatrix() {
+const Mat4& Movable::localToWorldMatrix() {
         updateLocalToWorldMatrix();
         return m_localToWorldMatrix;
 }
 
-const Mat4& SceneNode::worldToLocalMatrix() {
+const Mat4& Movable::worldToLocalMatrix() {
         updateWorldToLocalMatrix();
         return m_worldToLocalMatrix;
 }
 
-void SceneNode::onAttachChild(TreeNode *node) {
+void Movable::onAttachChild(TreeNode *node) {
         notifyTransformUpdated();
 }
 
-void SceneNode::onDetachChild(TreeNode *node) {
+void Movable::onDetachChild(TreeNode *node) {
         notifyTransformUpdated();
 }
 
-void SceneNode::notifyTransformUpdated() {
+void Movable::notifyTransformUpdated() {
         m_isNeedToUpdateWorldTransform = true;
         m_isNeedToUpdateLocalToWorldMatrix = true;
         m_isNeedToUpdateWorldToLocalMatrix = true;
 
-        for (TreeNode* node: children()) ((SceneNode*)node)->notifyTransformUpdated();
+        for (TreeNode* node: children()) ((Movable*)node)->notifyTransformUpdated();
 }
 
-void SceneNode::updateWorldTransform() {
+void Movable::updateWorldTransform() {
         if (!m_isNeedToUpdateWorldTransform) return;
 
-        SceneNode* p = (SceneNode*)m_parent;
+        Movable* p = (Movable*)m_parent;
         if (p) {
                 Vec3 wsParentPos = p->worldPosition();
                 Quat wsParentOrient = p->worldOrientation();
@@ -212,7 +212,7 @@ void SceneNode::updateWorldTransform() {
         m_isNeedToUpdateWorldTransform = false;
 }
 
-void SceneNode::updateLocalToWorldMatrix() {
+void Movable::updateLocalToWorldMatrix() {
         if (!m_isNeedToUpdateLocalToWorldMatrix) return;
 
         Vec3 wsPosition = worldPosition();
@@ -230,7 +230,7 @@ void SceneNode::updateLocalToWorldMatrix() {
         m_isNeedToUpdateLocalToWorldMatrix = false;
 }
 
-void SceneNode::updateWorldToLocalMatrix() {
+void Movable::updateWorldToLocalMatrix() {
         if (!m_isNeedToUpdateWorldToLocalMatrix) return;
 
         updateLocalToWorldMatrix();

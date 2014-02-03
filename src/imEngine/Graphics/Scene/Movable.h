@@ -1,5 +1,5 @@
-#ifndef SCENENODE_H
-#define SCENENODE_H
+#ifndef MOVABLE_H
+#define MOVABLE_H
 
 #include <imEngine/Math/Common.h>
 #include <imEngine/Utils/TreeNode.h>
@@ -7,11 +7,14 @@
 namespace imEngine {
 
 
+/** @brief Определяет относительной пространство
+ */
 enum class Space {
         LOCAL,
         PARENT,
         WORLD
 };
+
 
 /** @brief Структура для хранения позиции, поворота и масштаба
  */
@@ -24,16 +27,16 @@ struct Transform {
 };
 
 
-/** @brief Иерархическая система координат
+/** @brief Класс, содержащий трансформацию и удобные методы для работы с ней
  *
  *  Представляет собой удобный интерфейс для задания позиции, ориентации, масштаба.
  */
-class SceneNode : public TreeNode {
+class Movable : public TreeNode {
 public:
         /// Конструктор
-        explicit SceneNode(SceneNode* parent = nullptr);
+        explicit Movable(Movable* parent = nullptr);
         /// Конструктор. Принимает на вход начальную позицию
-        explicit SceneNode(const Vec3& psPosition, const Quat& psOrientation, const Vec3& psScale, SceneNode* parent = nullptr);
+        explicit Movable(const Vec3& psPosition, const Quat& psOrientation, const Vec3& psScale, Movable* parent = nullptr);
 
         /// Устанавливает/возвращает позицию ноды в родительской/мировой СК
         void            setPosition(const Vec3& psPosition);
@@ -102,6 +105,7 @@ private:
         bool            m_isNeedToUpdateWorldToLocalMatrix;
 };
 
+
 } //namespace imEngine
 
-#endif // SCENENODE_H
+#endif // MOVABLE_H
