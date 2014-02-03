@@ -4,29 +4,13 @@
 namespace imEngine {
 
 
-GLuint VertexBuffer::s_boundHandle = 0;
-
-VertexBuffer::VertexBuffer() : BufferObject(BufferTarget::ARRAY) {
-}
-
-void VertexBuffer::bind() {
-        if (m_handle != s_boundHandle) {
-                IM_GLCALL(glBindBuffer(m_target, m_handle));
-                s_boundHandle = m_handle;
-        }
-}
-
-void VertexBuffer::unbind() {
-        IM_GLCALL(glBindBuffer(m_target, 0));
-        s_boundHandle = 0;
-}
+VertexBuffer::VertexBuffer() : BufferObject(BufferTarget::ARRAY) { }
 
 void VertexBuffer::connect(GLuint attributeIndex, GLuint attributeSize, GLenum attributeType, GLsizei offset, GLsizei stride) {
         bind();
         IM_GLCALL(glEnableVertexAttribArray(attributeIndex));
         IM_GLCALL(glVertexAttribPointer(attributeIndex, attributeSize, attributeType, GL_FALSE, stride, reinterpret_cast<GLubyte*>(offset)));
 }
-
 
 
 } //namespace imEngine

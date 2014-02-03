@@ -86,9 +86,9 @@ public:
         bool                    isMapped();
 
         /// Привязывает буфер
-        virtual void            bind() = 0;
+        void                    bind();
         /// Отвязывыет буфер
-        virtual void            unbind() = 0;
+        void                    unbind();
 
         /// Возвращает OGL дескриптор буфера
         GLuint                  handle();
@@ -107,6 +107,7 @@ protected:
 
         bool                    m_isMapped;
 
+        static GLuint           s_boundHandle;
 };
 
 } //namespace imEngine

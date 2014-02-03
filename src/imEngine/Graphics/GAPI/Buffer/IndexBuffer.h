@@ -17,14 +17,6 @@ public:
         /// Конструктор. Создает индексный буфер
         IndexBuffer();
 
-        /// Привязывает буфер
-        void            bind();
-        /// Отвязывает буфер
-        void            unbind();
-
-private:
-        static GLuint   s_boundHandle;
-
 };
 
 

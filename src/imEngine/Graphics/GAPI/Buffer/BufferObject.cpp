@@ -5,6 +5,8 @@
 namespace imEngine {
 
 
+GLuint BufferObject::s_boundHandle = 0;
+
 BufferObject::BufferObject(BufferTarget::Enum target) {
         m_size = 0;
         m_isMapped = false;
@@ -87,6 +89,18 @@ bool BufferObject::unmap() {
 
 bool BufferObject::isMapped() {
         return m_isMapped;
+}
+
+void BufferObject::bind() {
+        if (m_handle != s_boundHandle) {
+                IM_GLCALL(glBindBuffer(m_target, m_handle));
+                s_boundHandle = m_handle;
+        }
+}
+
+void BufferObject::unbind() {
+        IM_GLCALL(glBindBuffer(m_target, 0));
+        s_boundHandle = 0;
 }
 
 GLuint BufferObject::handle() {

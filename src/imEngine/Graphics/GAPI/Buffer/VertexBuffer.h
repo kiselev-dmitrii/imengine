@@ -18,16 +18,8 @@ public:
         /// Конструктор. Создает вершинный буфер
         VertexBuffer();
 
-        /// Привязывает буфер
-        void            bind();
-        /// Отвязывает буфер
-        void            unbind();
-
         /// Привязвает буфер к вершинному атрибуту
         void            connect(GLuint attributeIndex, GLuint attributeSize, GLenum attributeType, GLsizei offset, GLsizei stride);
-
-private:
-        static GLuint   s_boundHandle;
 
 };
 
