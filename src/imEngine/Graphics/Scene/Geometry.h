@@ -26,9 +26,11 @@ public:
         const AABB&     aabb() const;
         /// Возвращает центральную точку фигуры
         const Vec3&     center() const;
+        /// Возвращает радиус (расстояние от (0,0,0) до максимальной точки)
+        float           radius() const;
 
         /// Применяет матрицу m для фигуры. Долгая операция
-        void            transform(const Mat4& m);
+        void            transform(const Mat4& matrix);
 
         /// Загружает меш в буферы
         void            load(const Mesh& mesh);
@@ -39,6 +41,8 @@ public:
 private:
         /// Инициализирует и настраивает буферы
         void            initBuffers();
+        /// Рассчитывает и кэширует различную информацию о геометрии
+        void            calculateGeometryInformation();
 
 private:
         VertexArrayPtr  m_vao;
@@ -48,8 +52,11 @@ private:
         uint            m_numVertices;
         uint            m_numIndices;
 
+        bool            m_areVerticesLoaded;
+
         AABB            m_aabb;
         Vec3            m_center;
+        float           m_radius;
 };
 
 

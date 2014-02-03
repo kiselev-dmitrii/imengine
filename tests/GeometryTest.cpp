@@ -2,6 +2,7 @@
 #include <imEngine/FileContainers/Mesh.h>
 #include <imEngine/Graphics/Scene/Geometry.h>
 #include <imEngine/Utils/Debug.h>
+#include "showGeometry.glsl"
 
 using namespace imEngine;
 
@@ -14,6 +15,7 @@ protected:
 
 private:
         Geometry*       m_geo;
+        ProgramPtr      m_program;
 };
 
 void Application::initialize() {
@@ -23,6 +25,15 @@ void Application::initialize() {
 
         Mesh mesh("resources/models/cube.obj");
         m_geo = new Geometry(mesh);
+
+        IM_VAR(m_geo->aabb().max);
+        IM_VAR(m_geo->aabb().min);
+        IM_VAR(m_geo->radius());
+        IM_VAR(m_geo->center());
+
+        m_program = ProgramPtr(new Program());
+        m_program->loadSource(showGeometrySource);
+        m_program->build();
 }
 
 void Application::update() {
@@ -31,6 +42,8 @@ void Application::update() {
 
 void Application::render() {
         GraphicApplication::render();
+        m_program->bind();
+        m_geo->render();
 }
 
 void Application::destroy() {
