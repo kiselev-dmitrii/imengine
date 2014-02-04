@@ -31,10 +31,8 @@ public:
 
         /// Применяет матрицу m для фигуры. Долгая операция
         void            transform(const Mat4& matrix);
-
         /// Загружает меш в буферы
         void            load(const Mesh& mesh);
-
         /// Отрисовывает фигуру. При этом какой-либо шейдер должен быть установлен
         void            render() const;
 
