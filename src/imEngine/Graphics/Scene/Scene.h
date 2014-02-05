@@ -20,7 +20,6 @@ public:
          * Model*       models(const String& name);
          * Material*    materials(consdt String& name);
 private:
-        /*
         typedef std::vector<ObjectPtr>  ObjectList;
         typedef std::vector<CameraPtr>  CameraList;
         typedef std::vector<LightPtr>   LightList;

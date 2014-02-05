@@ -45,6 +45,7 @@ public:
         const Vec3&     worldPosition();
         /// Устанавливает/возвращает ориентацию ноды в родительской/мировой СК
         void            setOrientation(const Quat& psOrientation);
+        void            setOrientation(const Vec3& psAxisX, const Vec3& psAxisY);
         void            setWorldOrientation(const Quat& wsOrientation);
         const Quat&     orientation();
         const Quat&     worldOrientation();

@@ -52,7 +52,7 @@ void Geometry::load(const Mesh &mesh) {
 
 void Geometry::render() const {
         m_vao->bind();
-        Renderer::renderIndices(Primitive::TRIANGLE_STRIP, m_numIndices);
+        Renderer::renderIndices(Primitive::TRIANGLE, m_numIndices);
 }
 
 void Geometry::initBuffers() {

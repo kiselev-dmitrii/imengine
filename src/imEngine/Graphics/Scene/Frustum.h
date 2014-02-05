@@ -2,20 +2,9 @@
 #define FRUSTUM_H
 
 #include <imEngine/Math/Common.h>
+#include <imEngine/Math/Plane.h>
 
 namespace imEngine {
-
-
-/** @brief Сторона пирамиды
- */
-enum class FrustumSide {
-        TOP,
-        BOTTOM,
-        NEAR,
-        FAR,
-        LEFT,
-        RIGHT
-};
 
 
 /** @brief Усеченная пирамида
@@ -41,17 +30,13 @@ public:
         void            setFieldOfView(float angle);
         float           fieldOfView() const;
 
-        /// Устанавливает матрицу. В результате чего изменяются параметры
-        void            setMatrix(const Mat4& matrix);
-        /// Возвращает плоскость пирамиды
-        const Plane&    plane(FrustumSide side) const;
-
-        /// Определяет, лежит ли точка/сфера внутри пирамиды
-        bool            isInside(Vec3& vsPoint);
-        bool            isInside(Vec3& vsOrigin, float radius);
-
         /// Конструирует и возвращает матрицу перехода от видовых координат к усеченным
-        const Mat4&     viewToClipMatrix() const;
+        /// Любой точка в внутри пирамиды будет преобразована в точку в промужетку [-1;1]
+        const Mat4&     viewToClipMatrix();
+
+private:
+        /// Обновляет матрицу m_viewToClipMatrix, если это необходимо
+        void            updateViewToClipMatrix();
 
 private:
         bool            m_isOrthographic;

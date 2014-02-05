@@ -49,6 +49,17 @@ void Movable::setOrientation(const Quat &psOrientation) {
         notifyTransformUpdated();
 }
 
+void Movable::setOrientation(const Vec3 &psAxisX, const Vec3 &psAxisY) {
+        Vec3 xAxis = glm::normalize(psAxisX);
+        Vec3 yAxis = glm::normalize(psAxisY);
+        Vec3 zAxis = glm::cross(xAxis, yAxis);
+
+        Mat3 matrix = Mat3(xAxis.x, xAxis.y, xAxis.z,
+                           yAxis.x, yAxis.y, yAxis.z,
+                           zAxis.x, zAxis.y, zAxis.z);
+        setOrientation(glm::toQuat(matrix));
+}
+
 void Movable::setWorldOrientation(const Quat &wsOrientation) {
         setOrientation(convertWorldToParent(wsOrientation));
 }
