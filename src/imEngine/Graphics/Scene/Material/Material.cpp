@@ -2,8 +2,5 @@
 
 namespace imEngine {
 
-Material::Material()
-{
-}
 
 } //namespace imEngine

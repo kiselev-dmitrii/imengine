@@ -1,7 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "Material.h"
+#include "Material/Material.h"
 #include "Geometry.h"
 
 namespace imEngine {
@@ -9,9 +9,7 @@ namespace imEngine {
 
 /** @brief Составная часть полигональной модели.
  *
- * Содержит геометрию в виде VBO, IBO, VAO, а также материал с которым будет
- * производиться визуализация.
- * Также модель имеет шейдер, посредством которого происходит визуализация
+ *  Содержит геометрию и матриал, с которым будет производится визуализация
  */
 class ModelDetail {
 public:

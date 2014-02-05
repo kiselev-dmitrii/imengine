@@ -32,8 +32,11 @@ private:
 
 void Application::initialize() {
         GraphicApplication::initialize();
+        /*
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        */
+        Renderer::setBlendMode(BlendMode::ALPHA);
 
         m_world = new Movable();
         m_object = new Movable(m_world);
@@ -77,11 +80,9 @@ void Application::render() {
         //modelViewProjectionMatrix = projectionMatrix;
         //m_program->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
 
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        Renderer::setPolygonMode(PolygonMode::LINE);
         m_box->render();
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-
+        Renderer::setPolygonMode(PolygonMode::FILL);
 }
 
 void Application::destroy() {

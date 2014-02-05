@@ -31,26 +31,25 @@ public:
         explicit Geometry(const Mesh& mesh);
 
         /// Возвращает описывающий прямоугольник
-        const AABB&             aabb() const;
+        const AABB&     aabb() const;
         /// Возвращает центральную точку фигуры
-        const Vec3&             center() const;
+        const Vec3&     center() const;
         /// Возвращает радиус (расстояние от (0,0,0) до максимальной точки)
-        float                   radius() const;
+        float           radius() const;
 
-        /// Возвращает список вершин/индексов
-        VertexList              vertices();
-        IndexList               indices();
-
+        /// Возвращает из видеопамяти список вершин/индексов
+        VertexList      vertices();
+        IndexList       indices();
 
         /// Применяет матрицу m для фигуры. Долгая операция
-        void                    transform(const Mat4& matrix);
+        void            transform(const Mat4& matrix);
 
         /// Загружает меш в буферы
-        void                    load(const VertexList& vertices, const IndexList& indices);
-        void                    load(const Mesh& mesh);
+        void            load(const VertexList& vertices, const IndexList& indices);
+        void            load(const Mesh& mesh);
 
         /// Отрисовывает фигуру. При этом какой-либо шейдер должен быть установлен
-        void                    render() const;
+        void            render() const;
 
 public:
         /// Создает геометрию куба [-1;1]x[-1;1]x[-1;1]

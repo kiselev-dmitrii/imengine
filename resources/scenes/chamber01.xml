@@ -1,9 +1,17 @@
 <?xml version="1.1" encoding="UTF-8" ?>
 
 <scene name="chamber01">
-	<include>
-		<file name="car.xml"/>
-	</include>
+	<models>
+		<model name="car">
+			<detail name="body" mesh="car_body.obj" material="car_metal" />
+			<detail name="glasses" mesh="car_glasses.obj" material="car_glass"/>
+		</model>
+	
+		<model name="wheel">
+			<detail name="tire" mesh="car_tire.obj" material="rubber"/>
+			<detail name="wheel" mesh="car_wheel.obj" material="metal.xml"/>
+		</model>
+	<models>>
 
 	<world>
 		<object name="car1" import="car.xml/car">

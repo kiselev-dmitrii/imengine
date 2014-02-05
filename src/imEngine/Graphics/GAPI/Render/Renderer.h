@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include <GL/glew.h>
+#include "RenderState.h"
 
 namespace imEngine {
 
@@ -42,6 +43,23 @@ public:
         static void     continueStencilRendering();
         /// Прекращает использование буфера трафарета
         static void     endStencilRendering();
+
+        /// Устанавливает режим смешивания
+        static void     setBlendMode(BlendMode::Enum blendMode);
+        /// Устанавливает функцию сравнения глубины
+        static void     setDepthMode(DepthMode::Enum depthMode);
+        /// Устанавливает режим отсечения плоскостей
+        static void     setCullMode(CullMode::Enum cullMode);
+        /// Устанавливает режим отрисовки примитивов
+        static void     setPolygonMode(PolygonMode::Enum polygonMode);
+
+        /// Устанавливает состояние рендера
+        static void     setRenderState(const RenderState& renderState);
+        /// Возвращает состояние рендера
+        static const RenderState& renderState();
+
+private:
+        static RenderState      s_renderState;
 };
 
 
