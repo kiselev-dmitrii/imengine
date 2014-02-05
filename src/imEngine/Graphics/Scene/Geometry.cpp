@@ -3,6 +3,15 @@
 
 namespace imEngine {
 
+Geometry::Geometry(const VertexList &vertices, const IndexList &indices) :
+        m_numVertices(0),
+        m_numIndices(0),
+        m_areVerticesLoaded(false)
+{
+        initBuffers();
+        load(vertices, indices);
+}
+
 Geometry::Geometry(const Mesh &mesh) :
         m_numVertices(0),
         m_numIndices(0),
@@ -24,6 +33,32 @@ float Geometry::radius() const {
         return m_radius;
 }
 
+VertexList Geometry::vertices() {
+        IM_ASSERT(m_areVerticesLoaded);
+
+        VertexList result;
+        result.reserve(m_numVertices);
+
+        Vertex* vertices = (Vertex*) m_vbo->map(BufferAccess::READ_ONLY);
+                for (uint i = 0; i < m_numVertices; ++i) result.push_back(vertices[i]);
+        m_vbo->unmap();
+
+        return result;
+}
+
+IndexList Geometry::indices() {
+        IM_ASSERT(m_areVerticesLoaded);
+
+        IndexList result;
+        result.reserve(m_numIndices);
+
+        uint* indices = (uint*) m_ibo->map(BufferAccess::READ_ONLY);
+                for (uint i = 0; i < m_numIndices; ++i)  result.push_back(indices[i]);
+        m_ibo->unmap();
+
+        return result;
+}
+
 void Geometry::transform(const Mat4 &matrix) {
         IM_ASSERT(m_areVerticesLoaded);
 
@@ -31,7 +66,9 @@ void Geometry::transform(const Mat4 &matrix) {
                 Mat3 normalMatrix = glm::transpose(Mat3(glm::inverse(matrix)));
 
                 for (uint i = 0; i < m_numVertices; ++i) {
-                        vertices[i].position = Vec3(matrix * Vec4(vertices[i].position, 1.0));
+                        Vec4 position = matrix * Vec4(vertices[i].position, 1.0);
+                        vertices[i].position = Vec3(position)/position.w;
+
                         vertices[i].normal = glm::normalize(normalMatrix * vertices[i].normal);
                 }
         m_vbo->unmap();
@@ -39,20 +76,59 @@ void Geometry::transform(const Mat4 &matrix) {
         calculateGeometryInformation();
 }
 
-void Geometry::load(const Mesh &mesh) {
-        m_numVertices = mesh.vertices().size();
-        m_numIndices = mesh.indices().size();
+void Geometry::load(const VertexList &vertices, const IndexList &indices) {
+        m_numVertices = vertices.size();
+        m_numIndices = indices.size();
 
-        m_vbo->load(&(mesh.vertices()[0]), m_numVertices*sizeof(Vertex), BufferUsage::STATIC_DRAW);
-        m_ibo->load(&(mesh.indices()[0]), m_numIndices*sizeof(uint), BufferUsage::STATIC_DRAW);
+        m_vbo->load(&(vertices[0]), m_numVertices*sizeof(Vertex), BufferUsage::STATIC_DRAW);
+        m_ibo->load(&(indices[0]), m_numIndices*sizeof(uint), BufferUsage::STATIC_DRAW);
         m_areVerticesLoaded = true;
 
         calculateGeometryInformation();
 }
 
+void Geometry::load(const Mesh &mesh) {
+        load(mesh.vertices(), mesh.indices());
+}
+
 void Geometry::render() const {
         m_vao->bind();
         Renderer::renderIndices(Primitive::TRIANGLE, m_numIndices);
+}
+
+GeometryPtr Geometry::cube() {
+        VertexList vertices = {
+                { Vec3(-1, -1, -1), Vec3(0, 0, -1), Vec2(0, 1) },
+                { Vec3(1, 1, -1), Vec3(0, 0, -1), Vec2(1, 0) },
+                { Vec3(1, -1, -1), Vec3(0, 0, -1), Vec2(1, 1) },
+                { Vec3(-1, 1, -1), Vec3(0, 0, -1), Vec2(0, 0) },
+                { Vec3(-1, -1, -1), Vec3(-1, 0, 0), Vec2(0, 1) },
+                { Vec3(-1, 1, 1), Vec3(-1, 0, 0), Vec2(1, 0) },
+                { Vec3(-1, 1, -1), Vec3(-1, 0, 0), Vec2(0, 0) },
+                { Vec3(-1, -1, 1), Vec3(-1, 0, 0), Vec2(1, 1) },
+                { Vec3(-1, 1, -1), Vec3(0, 1, 0), Vec2(0, 1) },
+                { Vec3(1, 1, 1), Vec3(0, 1, 0), Vec2(1, 0) },
+                { Vec3(1, 1, -1), Vec3(0, 1, 0), Vec2(0, 0) },
+                { Vec3(-1, 1, 1), Vec3(0, 1, 0), Vec2(1, 1) },
+                { Vec3(1, -1, -1), Vec3(1, 0, 0), Vec2(1, 1) },
+                { Vec3(1, 1, -1), Vec3(1, 0, 0), Vec2(1, 0) },
+                { Vec3(1, 1, 1), Vec3(1, 0, 0), Vec2(0, 0) },
+                { Vec3(1, -1, 1), Vec3(1, 0, 0), Vec2(0, 1) },
+                { Vec3(-1, -1, -1), Vec3(0, -1, 0), Vec2(0, 1) },
+                { Vec3(1, -1, -1), Vec3(0, -1, 0), Vec2(1, 1) },
+                { Vec3(1, -1, 1), Vec3(0, -1, 0), Vec2(1, 0) },
+                { Vec3(-1, -1, 1), Vec3(0, -1, 0), Vec2(0, 0) },
+                { Vec3(-1, -1, 1), Vec3(0, 0, 1), Vec2(0, 1) },
+                { Vec3(1, -1, 1), Vec3(0, 0, 1), Vec2(1, 1) },
+                { Vec3(1, 1, 1), Vec3(0, 0, 1), Vec2(1, 0) },
+                { Vec3(-1, 1, 1), Vec3(0, 0, 1), Vec2(0, 0) }
+        };
+
+        IndexList indices = {
+                0,1,2,0,3,1,4,5,6,4,7,5,8,9,10,8,11,9,12,13,14,12,14,15,16,17,18,16,18,19,20,21,22,20,22,23
+        };
+
+        return GeometryPtr(new Geometry(vertices, indices));
 }
 
 void Geometry::initBuffers() {

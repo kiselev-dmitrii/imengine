@@ -6,6 +6,7 @@
 #include <imEngine/Graphics/Scene/Camera.h>
 #include <glm/gtx/transform.hpp>
 #include "showGeometry.glsl"
+#include <sstream>
 
 using namespace imEngine;
 
@@ -20,7 +21,7 @@ protected:
 
 private:
         Geometry*               m_geo;
-        Geometry*               m_box;
+        GeometryPtr             m_box;
         ProgramPtr              m_program;
         Movable*                m_world;
         Movable*                m_object;
@@ -44,33 +45,16 @@ void Application::initialize() {
 
         Mesh mesh("resources/models/cube.obj");
         m_geo = new Geometry(mesh);
-        m_box = new Geometry(mesh);
-
-        m_box->transform(glm::translate(Mat4(1.0), Vec3(-m_box->center())));
-        m_box->transform(glm::scale(Mat4(1.0), Vec3(2,2,2)));
-        IM_VAR(m_box->center());
-        IM_VAR(m_box->aabb().min);
-        IM_VAR(m_box->aabb().max);
-
-        IM_VAR(m_geo->aabb().max);
-        IM_VAR(m_geo->aabb().min);
-        IM_VAR(m_geo->radius());
-        IM_VAR(m_geo->center());
 
         m_program = ProgramPtr(new Program());
         m_program->loadSource(showGeometrySource);
         m_program->build();
 
-
+        m_box = Geometry::cube();
+        /*
         Mat4 invProjectionMatrix = glm::inverse(m_camera->viewToClipMatrix());
-        IM_VAR(glm::normalize(invProjectionMatrix * Vec4(1,1,1,1)));
-        IM_VAR(glm::normalize(invProjectionMatrix * Vec4(1,1,-1,1)));
-        IM_VAR(glm::normalize(invProjectionMatrix * Vec4(1,-1,1,1)));
-        IM_VAR(glm::normalize(invProjectionMatrix * Vec4(1,-1,-1,1)));
-        IM_VAR(glm::normalize(invProjectionMatrix * Vec4(-1,1,1,1)));
-        IM_VAR(glm::normalize(invProjectionMatrix * Vec4(-1,1,-1,1)));
-        IM_VAR(glm::normalize(invProjectionMatrix * Vec4(-1,-1,1,1)));
-        IM_VAR(glm::normalize(invProjectionMatrix * Vec4(-1,-1,-1,1)));
+        m_box->transform(invProjectionMatrix);
+        */
 }
 
 void Application::update() {
