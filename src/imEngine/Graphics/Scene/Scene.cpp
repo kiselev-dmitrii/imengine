@@ -31,6 +31,9 @@ void Scene::processUpdate(float deltaTime) {
 }
 
 void Scene::processRender() {
+        for(CameraAbstract* camera: m_cameras) {
+                if (camera != m_currentCamera) camera->renderHelper();
+        }
         for(EntityAbstract* entity: m_enitities) {
                 entity->render();
         }

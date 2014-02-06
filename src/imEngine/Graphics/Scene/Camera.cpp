@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include <imEngine/Utils/Debug.h>
 #include "Scene.h"
+#include <glm/gtx/transform.hpp>
 
 namespace imEngine {
 
@@ -13,6 +14,14 @@ CameraAbstract::CameraAbstract(SceneObject* parent) :
         m_rotationSpeed(40)
 {
         m_scene->addCamera(this);
+
+        m_program = ProgramPtr(new Program());
+        m_program->loadSourceFromFile("resources/shaders/showGeometry.glsl");
+        m_program->build();
+
+        m_geometry = Geometry::cube();
+        Mat4 invProjectionMatrix = glm::inverse(viewToClipMatrix());
+        m_geometry->transform(invProjectionMatrix * glm::scale(Mat4(1), Vec3(0.9,0.9,0.9)));
 }
 
 void CameraAbstract::setMovementSpeed(float speed) {
@@ -24,7 +33,17 @@ void CameraAbstract::setRotationSpeed(float speed) {
 }
 
 void CameraAbstract::renderHelper() {
-        IM_TODO;
+        const Mat4& viewMatrix = scene()->currentCamera()->worldToLocalMatrix();
+        const Mat4& projectionMatrix = scene()->currentCamera()->viewToClipMatrix();
+        const Mat4& modelMatrix = localToWorldMatrix();
+
+        Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
+
+        m_program->bind();
+        m_program->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
+        m_program->setUniform("uBorderWidth", 0.02f);
+        m_program->setUniform("uScale", 1.0f);
+        m_geometry->render();
 }
 
 //############################# FirstPersonCamera ############################//

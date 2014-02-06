@@ -3,6 +3,7 @@
 
 #include "SceneObject.h"
 #include "Frustum.h"
+#include <imEngine/Graphics/Geometry.h>
 
 namespace imEngine {
 
@@ -27,6 +28,9 @@ public:
 protected:
         float           m_movementSpeed;
         float           m_rotationSpeed;
+
+        GeometryPtr     m_geometry;
+        ProgramPtr      m_program;
 };
 
 

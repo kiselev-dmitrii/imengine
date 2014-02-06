@@ -1,4 +1,5 @@
 #include "Frustum.h"
+#include <imEngine/Utils/Debug.h>
 #include <glm/gtx/transform.hpp>
 
 namespace imEngine {
@@ -67,9 +68,10 @@ void Frustum::updateViewToClipMatrix() {
         if (!m_isNeedToUpdateMatrix) return;
 
         if (m_isOrthographic) {
-                float h = 2 * m_nearDistance * glm::tan(glm::radians(m_fieldOfView)/2);
+                float base = (m_farDistance-m_nearDistance)/4;
+                float h = 2 * base * glm::tan(glm::radians(m_fieldOfView)/2);
                 float w = h * aspectRatio();
-                m_viewToClipMatrix =  glm::ortho(-w/2, w/2, -h/2, h/2);
+                m_viewToClipMatrix = glm::ortho(-w/2, w/2, -h/2, h/2, m_nearDistance, m_farDistance);
         } else {
                 m_viewToClipMatrix = glm::perspective(m_fieldOfView, m_aspectRatio, m_nearDistance, m_farDistance) ;
         }
