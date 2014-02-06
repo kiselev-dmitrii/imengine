@@ -33,9 +33,13 @@ public:
         bool                    isChildNode(TreeNode* node) const;
 
 protected:
-        /// Выполняется при присоединении ноды
+        /// Выполняется при присоединении данной ноды
+        virtual void            onAttach()                                      { }
+        /// Выполняется при отсоединении данной ноды
+        virtual void            onDetach()                                      { }
+        /// Выполняется при присоединении дочерней ноды
         virtual void            onAttachChild(TreeNode* node)                   { }
-        /// Выполняется при отсоединении ноды
+        /// Выполняется при отсоединении дочерней ноды
         virtual void            onDetachChild(TreeNode* node)                   { }
 
 private:

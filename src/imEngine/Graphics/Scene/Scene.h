@@ -9,9 +9,10 @@
 
 namespace imEngine {
 
-typedef std::vector<ILight>             LightList;
-typedef std::vector<EntityAbstract>     EntityList;
-typedef std::vector<CameraAbstract>     CameraList;
+typedef std::vector<LightAbstract*>     LightList;
+typedef std::vector<EntityAbstract*>    EntityList;
+typedef std::vector<CameraAbstract*>    CameraList;
+
 
 /** @brief Класс представляет собой контейнер объектов типа
  *  камера, модель, свет и т.д
@@ -21,27 +22,55 @@ typedef std::vector<CameraAbstract>     CameraList;
  *  При визуализации сцены могут быть включены специальные постэффекты.
  */
 class Scene {
+friend class CameraAbstract;
+friend class LightAbstract;
+friend class EntityAbstract;
 public:
         /// Конструктор
         explicit Scene(GraphicApplication* application);
         /// Деструктор
         ~Scene();
 
-        /// Инициализация сцены
-        void            initialize();
-        /// Обновление сцены
-        void            update(float deltaTime);
-        /// Рендер сцены
-        void            render();
-        /// Разрушение объектов сцены
-        void            destroy();
+        /// Корневой объект сцены
+        SceneObject*            world();
+        /// Возвращает ссылку на приложение
+        GraphicApplication*     application();
+
+        /// Возвращает текущую камеру
+        CameraAbstract*         currentCamera();
+        /// Устанавливает камеру текущей
+        void                    setCurrentCamera(CameraAbstract* camera);
+
+        /// Обновление объектов сцены
+        void                    processUpdate(float deltaTime);
+        /// Рендер объектов сцены
+        void                    processRender();
+        /// Обработка события на изменение размеров окна
+        void                    processWindowResize(int w, int h);
 
 private:
-        SceneObject*    m_root;
-        LightList       m_lights;
-        CameraList      m_cameras;
-        EntityList      m_enitities;
+        /// Добавляет/удаляет визуализируемый объект
+        void                    addEntity(EntityAbstract* entity);
+        void                    removeEntity(EntityAbstract* entity);
+        /// Добавляет/удаляет камеру на сцену
+        void                    addCamera(CameraAbstract* camera);
+        void                    removeCamera(CameraAbstract* camera);
+        /// Добавляет/удаляет источник света
+        void                    addLight(LightAbstract* light);
+        void                    removeLight(LightAbstract* light);
+
+private:
+        SceneObject*            m_world;
+        GraphicApplication*     m_application;
+
+        LightList               m_lights;
+        CameraList              m_cameras;
+        EntityList              m_enitities;
+
+        CameraAbstract*         m_currentCamera;
+
 };
+
 
 } //namespace imEngine
 

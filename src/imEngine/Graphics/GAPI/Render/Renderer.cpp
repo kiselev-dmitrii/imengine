@@ -3,6 +3,8 @@
 
 namespace imEngine {
 
+IVec2 Renderer::s_viewportSize;
+
 RenderState Renderer::s_renderState = {
         BlendMode::NONE,
         DepthMode::NONE,
@@ -51,6 +53,17 @@ void Renderer::continueStencilRendering() {
 
 void Renderer::endStencilRendering() {
         IM_GLCALL(glDisable(GL_STENCIL_TEST));
+}
+
+void Renderer::setViewportSize(const IVec2 &size) {
+        if (s_viewportSize == size) return;
+
+        IM_GLCALL(glViewport(0, 0, size.x, size.y));
+        s_viewportSize = size;
+}
+
+const IVec2& Renderer::viewportSize() const {
+        return s_viewportSize;
 }
 
 void Renderer::setBlendMode(BlendMode::Enum blendMode) {
@@ -102,6 +115,10 @@ void Renderer::setBlendMode(BlendMode::Enum blendMode) {
                         break;
         }
         s_renderState.blendMode = blendMode;
+}
+
+BlendMode::Enum Renderer::blendMode() {
+        return s_renderState.blendMode;
 }
 
 void Renderer::setDepthMode(DepthMode::Enum depthMode) {

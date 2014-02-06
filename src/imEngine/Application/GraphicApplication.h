@@ -7,6 +7,8 @@
 
 namespace imEngine {
 
+class Scene;
+
 /** @brief Графическое OpenGL приложение.
  *
  *  Подраземенвается, что классы приложений ниже в иерархии будут работать с графикой, GUI,
@@ -16,6 +18,8 @@ class GraphicApplication : public BaseApplication {
 public:
         /// Возвращает указатель на GUI-менеджер
         GuiManager*     gui() const;
+        /// Возвращает указатель на сцену
+        Scene*          scene() const;
 
 protected:
         /// Стандартный цикл приложения
@@ -34,9 +38,10 @@ protected:
 
 private:
         GuiManager*     m_gui;
+        Scene*          m_scene;
         FpsViewer*      m_fps;
-
 };
+
 
 } //namespace imEngine
 

@@ -46,6 +46,7 @@ bool TreeNode::addNodeToChildrenList(TreeNode *node) {
         } else {
                 m_children.push_back(node);
                 onAttachChild(node);
+                node->onAttach();
                 return true;
         }
 }
@@ -55,6 +56,7 @@ bool TreeNode::removeNodeFromChildrenList(TreeNode *node) {
                 if (*it == node) {
                         m_children.erase(it);
                         onDetachChild(node);
+                        node->onDetach();
                         return true;
                 }
         }

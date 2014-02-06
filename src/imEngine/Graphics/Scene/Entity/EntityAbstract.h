@@ -14,14 +14,12 @@ namespace imEngine {
 class EntityAbstract : public SceneObject {
 public:
         /// Конструктор
-        EntityAbstract();
+        explicit EntityAbstract(SceneObject* parent);
+        /// Деструктор
+        ~EntityAbstract();
 
         /// Рендерит сущность
         virtual void    render() = 0;
-
-protected:
-        ProgramPtr      m_program;
-
 };
 
 

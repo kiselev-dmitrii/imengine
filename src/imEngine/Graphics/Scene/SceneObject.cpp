@@ -5,16 +5,19 @@ namespace imEngine {
 
 SceneObject::SceneObject(SceneObject *parent) :
         TreeNode(parent),
+        m_scene(nullptr),
         m_isNeedToUpdateWorldTransform(true),
         m_isNeedToUpdateLocalToWorldMatrix(true),
         m_isNeedToUpdateWorldToLocalMatrix(true)
 {
+        if (parent) m_scene = parent->scene();
         notifyTransformUpdated();
 }
 
 SceneObject::SceneObject(const Vec3 &psPosition, const Quat &psOrientation, const Vec3 &psScale,
                          SceneObject *parent) :
         TreeNode(parent),
+        m_scene(nullptr),
         m_isNeedToUpdateWorldTransform(true),
         m_isNeedToUpdateLocalToWorldMatrix(true),
         m_isNeedToUpdateWorldToLocalMatrix(true)
@@ -22,6 +25,7 @@ SceneObject::SceneObject(const Vec3 &psPosition, const Quat &psOrientation, cons
         setPosition(psPosition);
         setOrientation(psOrientation);
         setScale(psScale);
+        if (parent) m_scene = parent->scene();
 
         notifyTransformUpdated();
 }
@@ -186,6 +190,10 @@ const Mat4& SceneObject::localToWorldMatrix() {
 const Mat4& SceneObject::worldToLocalMatrix() {
         updateWorldToLocalMatrix();
         return m_worldToLocalMatrix;
+}
+
+Scene* SceneObject::scene() {
+        return m_scene;
 }
 
 void SceneObject::onAttachChild(TreeNode *node) {

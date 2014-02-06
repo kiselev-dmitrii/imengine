@@ -6,6 +6,7 @@
 
 namespace imEngine {
 
+class Scene;
 
 /** @brief Определяет относительной пространство
  */
@@ -34,9 +35,9 @@ struct Transform {
 class SceneObject : public TreeNode {
 public:
         /// Конструктор
-        explicit SceneObject(SceneObject* parent = nullptr);
+        explicit SceneObject(SceneObject* parent);
         /// Конструктор. Принимает на вход начальную позицию
-        explicit SceneObject(const Vec3& psPosition, const Quat& psOrientation, const Vec3& psScale, SceneObject* parent = nullptr);
+        explicit SceneObject(const Vec3& psPosition, const Quat& psOrientation, const Vec3& psScale, SceneObject* parent);
 
         /// Устанавливает/возвращает позицию ноды в родительской/мировой СК
         void            setPosition(const Vec3& psPosition);
@@ -80,6 +81,10 @@ public:
         /// Возвращает матрицу перехода от мировой СК к локальной СК
         const Mat4&     worldToLocalMatrix();
 
+public:
+        /// Возвращает указатель на сцену
+        Scene*          scene();
+
 protected:
         virtual void    onAttachChild(TreeNode *node);
         virtual void    onDetachChild(TreeNode *node);
@@ -93,6 +98,9 @@ private:
         void            updateLocalToWorldMatrix();
         /// Обновляет матрицу перехода WS -> LS, если надо
         void            updateWorldToLocalMatrix();
+
+protected:
+        Scene*          m_scene;
 
 private:
         Transform       m_psTransform;                          // трансформация в род. системе

@@ -19,7 +19,7 @@ private:
 void Application::initialize() {
         GraphicApplication::initialize();
 
-        m_world = new SceneObject();
+        m_world = new SceneObject(nullptr);
 
         m_sun = new SceneObject(m_world);
         m_sun->setPosition(Vec3(0,0,0));

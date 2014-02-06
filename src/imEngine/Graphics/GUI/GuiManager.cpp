@@ -91,11 +91,17 @@ WidgetAbstract* GuiManager::root() const {
 }
 
 void GuiManager::processRender() {
+        BlendMode::Enum oldBlendMode = Renderer::blendMode();
+        Renderer::setBlendMode(BlendMode::ALPHA);
+
         m_program->bind();
         m_texture->bind(0);
         m_program->setUniform("u_texture", 0);
         m_program->setUniform("u_windowSize", Vec2(window()->size()));
         m_root->processRender();
+
+        Renderer::setBlendMode(oldBlendMode);
+
 }
 
 void GuiManager::processUpdate() {

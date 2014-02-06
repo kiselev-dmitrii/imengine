@@ -38,11 +38,11 @@ void Application::initialize() {
         */
         Renderer::setBlendMode(BlendMode::ALPHA);
 
-        m_world = new SceneObject();
+        m_world = new SceneObject(nullptr);
         m_object = new SceneObject(m_world);
 
         m_camera = new FirstPersonCamera(m_world);
-        m_obj2 = new FirstPersonCamera();
+        m_obj2 = new FirstPersonCamera(m_world);
         m_camera->attachChild(m_obj2);
         m_obj2->setPosition(Vec3(0,0,-4));
 
@@ -62,7 +62,7 @@ void Application::initialize() {
 
 void Application::update() {
         GraphicApplication::update();
-        m_camera->update(this, 0.001);
+        m_camera->update(0.001);
 }
 
 void Application::render() {

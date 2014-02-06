@@ -3,7 +3,6 @@
 
 #include "SceneObject.h"
 #include "Frustum.h"
-#include <imEngine/Application/GraphicApplication.h>
 
 namespace imEngine {
 
@@ -13,7 +12,7 @@ namespace imEngine {
 class CameraAbstract : public SceneObject, public Frustum {
 public:
         /// Конструктор
-        CameraAbstract(SceneObject* parent = nullptr);
+        CameraAbstract(SceneObject* parent);
 
         /// Устанавливает скорость перемещения камеры
         void            setMovementSpeed(float speed);
@@ -23,7 +22,7 @@ public:
         void            renderHelper();
 
         /// Обновление позиции и ориентации камеры
-        virtual void    update(GraphicApplication* application, float deltaTime) = 0;
+        virtual void    update(float deltaTime) = 0;
 
 protected:
         float           m_movementSpeed;
@@ -36,9 +35,9 @@ protected:
 class FirstPersonCamera : public CameraAbstract {
 public:
         /// Конструктор по умолчанию
-        FirstPersonCamera(SceneObject* parent = nullptr);
+        FirstPersonCamera(SceneObject* parent);
         /// Конструктор. Устанавливает начальную позицию
-        FirstPersonCamera(const Vec3& psPosition, const Vec3& psUp, const Vec3& psRight, SceneObject* parent = nullptr);
+        FirstPersonCamera(const Vec3& psPosition, const Vec3& psUp, const Vec3& psRight, SceneObject* parent);
 
         /// Перемещает камеру вперед/вправо/вверх
         void            moveForward(float delta);
@@ -50,11 +49,11 @@ public:
         void            rotateVerticaly(float angle);
 
         /// Обновление позиции и ориентации камеры
-        void            update(GraphicApplication* application, float deltaTime);
+        void            update(float deltaTime);
 
 private:
-        void            updatePosition(GraphicApplication* application, float deltaTime);
-        void            updateOrientation(GraphicApplication* application, float deltaTime);
+        void            updatePosition(float deltaTime);
+        void            updateOrientation(float deltaTime);
 };
 
 
@@ -63,7 +62,7 @@ private:
 class TargetCamera : public CameraAbstract {
 public:
         /// Конструктор
-        TargetCamera(const Vec3& psPosition, const Vec3& psUp, const SceneObject& target);
+        TargetCamera(const Vec3& psPosition, const Vec3& psUp, const SceneObject& target, SceneObject* parent);
 
         /// Перемещает вперед к цели
         void            zoomIn(float delta);
@@ -73,7 +72,7 @@ public:
         void            rotateUp(float deltaDegree);
 
         /// Обновление позиции и ориентации камеры
-        void            update(GraphicApplication* application, float deltaTime);
+        void            update(float deltaTime);
 };
 
 
