@@ -2,30 +2,45 @@
 #define SCENE_H
 
 #include <vector>
-#include "Object.h"
+#include <imEngine/Application/GraphicApplication.h>
+#include "Entity/EntityAbstract.h"
+#include "Light/ILight.h"
+#include "Camera.h"
 
 namespace imEngine {
+
+typedef std::vector<ILight>             LightList;
+typedef std::vector<EntityAbstract>     EntityList;
+typedef std::vector<CameraAbstract>     CameraList;
 
 /** @brief Класс представляет собой контейнер объектов типа
  *  камера, модель, свет и т.д
  *
  *  Сцена может быть сохранена или загружена из специального xml
  *  файла с описанием сцены.
+ *  При визуализации сцены могут быть включены специальные постэффекты.
  */
 class Scene {
 public:
-        Scene();
+        /// Конструктор
+        explicit Scene(GraphicApplication* application);
+        /// Деструктор
+        ~Scene();
 
-        /*
-         * Model*       models(const String& name);
-         * Material*    materials(consdt String& name);
+        /// Инициализация сцены
+        void            initialize();
+        /// Обновление сцены
+        void            update(float deltaTime);
+        /// Рендер сцены
+        void            render();
+        /// Разрушение объектов сцены
+        void            destroy();
+
 private:
-        typedef std::vector<ObjectPtr>  ObjectList;
-        typedef std::vector<CameraPtr>  CameraList;
-        typedef std::vector<LightPtr>   LightList;
-        typedef std::vector<ModelPtr>   ModelList
-        */
-
+        SceneObject*    m_root;
+        LightList       m_lights;
+        CameraList      m_cameras;
+        EntityList      m_enitities;
 };
 
 } //namespace imEngine

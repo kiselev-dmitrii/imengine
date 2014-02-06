@@ -6,8 +6,8 @@ namespace imEngine {
 
 //############################## CameraAbstract ##############################//
 
-CameraAbstract::CameraAbstract(Movable* parent) :
-        Movable(parent),
+CameraAbstract::CameraAbstract(SceneObject* parent) :
+        SceneObject(parent),
         m_movementSpeed(5),
         m_rotationSpeed(40)
 {}
@@ -26,11 +26,11 @@ void CameraAbstract::renderHelper() {
 
 //############################# FirstPersonCamera ############################//
 
-FirstPersonCamera::FirstPersonCamera(Movable *parent) :
+FirstPersonCamera::FirstPersonCamera(SceneObject *parent) :
         CameraAbstract(parent)
 {}
 
-FirstPersonCamera::FirstPersonCamera(const Vec3 &psPosition, const Vec3 &psUp, const Vec3 &psRight, Movable *parent) :
+FirstPersonCamera::FirstPersonCamera(const Vec3 &psPosition, const Vec3 &psUp, const Vec3 &psRight, SceneObject *parent) :
         CameraAbstract(parent)
 {
         setPosition(psPosition);

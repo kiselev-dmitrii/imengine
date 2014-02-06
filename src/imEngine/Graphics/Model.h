@@ -13,9 +13,15 @@ namespace imEngine {
  */
 class ModelDetail {
 public:
+        /// Конструктор.
+        ModelDetail(Geometry* geometry, IMaterial* material);
+
+        /// Рендерит деталь с выбранным материалом
+        void            render();
+
 private:
         Geometry*       m_geometry;
-        Material*       m_material;
+        IMaterial*      m_material;
 };
 
 

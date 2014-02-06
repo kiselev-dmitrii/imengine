@@ -2,7 +2,5 @@
 
 namespace imEngine {
 
-Scene::Scene() {
-}
 
 } //namespace imEngine

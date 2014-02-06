@@ -1,9 +1,5 @@
-#include "Object.h"
+#include "ILight.h"
 
 namespace imEngine {
-
-Object::Object()
-{
-}
 
 } //namespace imEngine

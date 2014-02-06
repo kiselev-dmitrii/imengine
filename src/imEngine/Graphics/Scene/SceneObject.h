@@ -31,12 +31,12 @@ struct Transform {
  *
  *  Представляет собой удобный интерфейс для задания позиции, ориентации, масштаба.
  */
-class Movable : public TreeNode {
+class SceneObject : public TreeNode {
 public:
         /// Конструктор
-        explicit Movable(Movable* parent = nullptr);
+        explicit SceneObject(SceneObject* parent = nullptr);
         /// Конструктор. Принимает на вход начальную позицию
-        explicit Movable(const Vec3& psPosition, const Quat& psOrientation, const Vec3& psScale, Movable* parent = nullptr);
+        explicit SceneObject(const Vec3& psPosition, const Quat& psOrientation, const Vec3& psScale, SceneObject* parent = nullptr);
 
         /// Устанавливает/возвращает позицию ноды в родительской/мировой СК
         void            setPosition(const Vec3& psPosition);
@@ -65,13 +65,13 @@ public:
         void            lookAt(const Vec3& wsTarget, const Vec3& psUp);
 
 public:
-        // Конвертирует вектор/кватернион из мировой СК в локальную
+        /// Конвертирует вектор/кватернион из мировой СК в локальную
         Vec3            convertWorldToLocal(const Vec3& wsVec);
         Quat            convertWorldToLocal(const Quat& wsQuat);
-        // Конвертирует вектор/кватернион из мировой СК в родительскую
+        /// Конвертирует вектор/кватернион из мировой СК в родительскую
         Vec3            convertWorldToParent(const Vec3& wsVec);
         Quat            convertWorldToParent(const Quat& wsQuat);
-        // Конвертирует вектор/кватернион из локальной СК в мировую
+        /// Конвертирует вектор/кватернион из локальной СК в мировую
         Vec3            convertLocalToWorld(const Vec3& lsVec);
         Quat            convertLocalToWorld(const Quat& lsQuat);
 

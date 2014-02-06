@@ -1,8 +1,8 @@
 #include <imEngine/Application/GraphicApplication.h>
 #include <imEngine/FileContainers/Mesh.h>
-#include <imEngine/Graphics/Scene/Geometry.h>
+#include <imEngine/Graphics/Geometry.h>
 #include <imEngine/Utils/Debug.h>
-#include <imEngine/Graphics/Scene/Movable.h>
+#include <imEngine/Graphics/Scene/SceneObject.h>
 #include <imEngine/Graphics/Scene/Camera.h>
 #include <glm/gtx/transform.hpp>
 #include "showGeometry.glsl"
@@ -23,10 +23,10 @@ private:
         Geometry*               m_geo;
         GeometryPtr             m_box;
         ProgramPtr              m_program;
-        Movable*                m_world;
-        Movable*                m_object;
+        SceneObject*                m_world;
+        SceneObject*                m_object;
         FirstPersonCamera*      m_camera;
-        Movable*                m_obj2;
+        SceneObject*                m_obj2;
 };
 
 
@@ -38,8 +38,8 @@ void Application::initialize() {
         */
         Renderer::setBlendMode(BlendMode::ALPHA);
 
-        m_world = new Movable();
-        m_object = new Movable(m_world);
+        m_world = new SceneObject();
+        m_object = new SceneObject(m_world);
 
         m_camera = new FirstPersonCamera(m_world);
         m_obj2 = new FirstPersonCamera();

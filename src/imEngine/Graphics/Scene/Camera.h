@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "Movable.h"
+#include "SceneObject.h"
 #include "Frustum.h"
 #include <imEngine/Application/GraphicApplication.h>
 
@@ -10,10 +10,10 @@ namespace imEngine {
 
 /** @brief Абстрактный класс для камеры
  */
-class CameraAbstract : public Movable, public Frustum {
+class CameraAbstract : public SceneObject, public Frustum {
 public:
         /// Конструктор
-        CameraAbstract(Movable* parent = nullptr);
+        CameraAbstract(SceneObject* parent = nullptr);
 
         /// Устанавливает скорость перемещения камеры
         void            setMovementSpeed(float speed);
@@ -36,9 +36,9 @@ protected:
 class FirstPersonCamera : public CameraAbstract {
 public:
         /// Конструктор по умолчанию
-        FirstPersonCamera(Movable* parent = nullptr);
+        FirstPersonCamera(SceneObject* parent = nullptr);
         /// Конструктор. Устанавливает начальную позицию
-        FirstPersonCamera(const Vec3& psPosition, const Vec3& psUp, const Vec3& psRight, Movable* parent = nullptr);
+        FirstPersonCamera(const Vec3& psPosition, const Vec3& psUp, const Vec3& psRight, SceneObject* parent = nullptr);
 
         /// Перемещает камеру вперед/вправо/вверх
         void            moveForward(float delta);
@@ -63,7 +63,7 @@ private:
 class TargetCamera : public CameraAbstract {
 public:
         /// Конструктор
-        TargetCamera(const Vec3& psPosition, const Vec3& psUp, const Movable& target);
+        TargetCamera(const Vec3& psPosition, const Vec3& psUp, const SceneObject& target);
 
         /// Перемещает вперед к цели
         void            zoomIn(float delta);
