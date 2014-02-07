@@ -1,33 +1,10 @@
-<document>
-
-	<materials>
-		<material name="disk_metal" type="phong" ambient="150,150,150" diffuse="255,255,255" specular="" texture=""/>
-		<material name="car_metal" type="reflection" cubemap="" texture="" factor=""/>
-		<material name="rubber" type="phong" ambient="10,10,10" duffuse="10,10,10" specular="0"/>
-	</materials>
-
-	<geometry>
-		<vertices></vertices>
-		<i></i>
-	</geometry>
-	
-	<models>
-		<model name="car">
-			<detail name="body" geometry="car_body.obj" material="car_metal" />
-			<detail name="glasses" geometry="car_glasses.obj" material="car_glass"/>
-		</model>
-	
-		<model name="wheel">
-			<detail name="tire" mesh="car_tire.obj" material="rubber"/>
-			<detail name="wheel" mesh="car_wheel.obj" material="metal.xml"/>
-		</model>
-	<models>
-	
-	<object name="car" model="car">
-		<object model="wheel" position="-1; 1.5"/>
-		<object model="wheel" position="1; 1.5" orientation="0; 0.5; 0; 1"/>
-		<object model="wheel" position="-1; -1.5"/>
-		<object model="wheel" position="1; -1.5" orientation="0; 0.5; 0; 1"/>
-	</object>
-
-</document>
+<model name="car">
+	<detail>
+		<geometry mesh="resources/models/cube.obj"/>
+		<material type="wired" border_color="255,0,0,255"/>
+	</detail>
+	<detail>
+		<geometry mesh="resources/models/model.obj"/>
+		<material type="wired" border_color="255,0,0,255"/>
+	</detail>
+</model>

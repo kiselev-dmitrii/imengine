@@ -1,5 +1,5 @@
 #include <imEngine/Application/BaseApplication.h>
-#include <imEngine/Application/ResourceManager.h>
+#include <imEngine/Graphics/Scene/ResourceManager.h>
 #include <imEngine/Utils/Debug.h>
 
 using namespace imEngine;

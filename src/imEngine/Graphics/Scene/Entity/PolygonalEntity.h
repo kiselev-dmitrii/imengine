@@ -2,8 +2,7 @@
 #define POLYGONALENTITY_H
 
 #include "EntityAbstract.h"
-#include "../Geometry.h"
-#include "../Material/Material.h"
+#include "../Model.h"
 
 namespace imEngine {
 
@@ -17,8 +16,7 @@ public:
         void            render();
 
 private:
-        GeometryPtr     m_geometry;
-        WiredMaterial*  m_material;
+        Model*          m_model;
 };
 
 } //namespace imEngine
