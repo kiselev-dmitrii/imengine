@@ -54,8 +54,8 @@ public:
 public:
         /// Создает геометрию куба [-1;1]x[-1;1]x[-1;1]
         static GeometryPtr      cube();
-        /// Создает геометрию плоскости размеров scale и состоящую из количества segments сегментов
-        static GeometryPtr      plane(const Vec2& scale, const IVec2& segments);
+        /// Создает геометрию плоскости на [-1;1]x[-1;1]x[0;0]
+        static GeometryPtr      plane();
 
 private:
         /// Инициализирует и настраивает буферы

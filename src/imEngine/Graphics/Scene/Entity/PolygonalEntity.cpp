@@ -6,10 +6,10 @@ namespace imEngine {
 PolygonalEntity::PolygonalEntity(SceneObject *parent) :
         EntityAbstract(parent)
 {
-        m_geometry = Geometry::cube();
-        m_program = ProgramPtr(new Program());
-        m_program->loadSourceFromFile("resources/shaders/showGeometry.glsl");
-        m_program->build();
+        m_geometry = Geometry::plane();
+        m_material = new WiredMaterial();
+        m_material->setScale(10);
+        m_material->setBorderWidth(0.005);
 }
 
 void PolygonalEntity::render() {
@@ -19,10 +19,8 @@ void PolygonalEntity::render() {
 
         Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
 
-        m_program->bind();
-        m_program->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
-        m_program->setUniform("uBorderWidth", 0.02f);
-        m_program->setUniform("uScale", 1.0f);
+        m_material->bind();
+        m_material->program()->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
         m_geometry->render();
 }
 

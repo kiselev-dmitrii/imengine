@@ -3,6 +3,7 @@
 
 #include "EntityAbstract.h"
 #include <imEngine/Graphics/Geometry.h>
+#include <imEngine/Graphics/Material/Material.h>
 
 namespace imEngine {
 
@@ -16,8 +17,8 @@ public:
         void            render();
 
 private:
-        ProgramPtr      m_program;
         GeometryPtr     m_geometry;
+        WiredMaterial*  m_material;
 };
 
 } //namespace imEngine

@@ -131,6 +131,21 @@ GeometryPtr Geometry::cube() {
         return GeometryPtr(new Geometry(vertices, indices));
 }
 
+GeometryPtr Geometry::plane() {
+        VertexList vertices = {
+                { Vec3(-1, -1, 0), Vec3(0, 0, 1), Vec2(0, 0) },
+                { Vec3(1, 1, 0), Vec3(0, 0, 1), Vec2(1, 1) },
+                { Vec3(-1, 1, 0), Vec3(0, 0, 1), Vec2(0, 1) },
+                { Vec3(1, -1, 0), Vec3(0, 0, 1), Vec2(1, 0) }
+        };
+
+        IndexList indices = {
+                0, 1, 2, 0, 3, 1
+        };
+
+        return GeometryPtr(new Geometry(vertices, indices));
+}
+
 void Geometry::initBuffers() {
         m_vbo = VertexBufferPtr(new VertexBuffer());
         m_ibo = IndexBufferPtr(new IndexBuffer());
