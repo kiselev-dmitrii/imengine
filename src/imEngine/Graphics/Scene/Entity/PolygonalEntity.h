@@ -2,8 +2,8 @@
 #define POLYGONALENTITY_H
 
 #include "EntityAbstract.h"
-#include <imEngine/Graphics/Geometry.h>
-#include <imEngine/Graphics/Material/Material.h>
+#include "../Geometry.h"
+#include "../Material/Material.h"
 
 namespace imEngine {
 

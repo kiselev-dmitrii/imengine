@@ -2,8 +2,5 @@
 
 namespace imEngine {
 
-Model::Model()
-{
-}
 
 } //namespace imEngine

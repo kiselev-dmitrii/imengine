@@ -13,8 +13,8 @@
 	
 	<models>
 		<model name="car">
-			<detail name="body" mesh="car_body.obj" material="car_metal" />
-			<detail name="glasses" mesh="car_glasses.obj" material="car_glass"/>
+			<detail name="body" geometry="car_body.obj" material="car_metal" />
+			<detail name="glasses" geometry="car_glasses.obj" material="car_glass"/>
 		</model>
 	
 		<model name="wheel">

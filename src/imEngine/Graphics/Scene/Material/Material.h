@@ -17,6 +17,10 @@ public:
         virtual Program*        program() = 0;
 };
 
+/** @brief Умный указатель для Material
+ */
+typedef std::shared_ptr<Material> MaterialPtr;
+
 
 /** @brief Вспомогательный шаблонный класс.
  *

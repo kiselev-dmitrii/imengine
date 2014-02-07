@@ -1,6 +1,6 @@
 #include <imEngine/Application/GraphicApplication.h>
 #include <imEngine/FileContainers/Mesh.h>
-#include <imEngine/Graphics/Geometry.h>
+#include <imEngine/Graphics/Scene/Geometry.h>
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/Graphics/Scene/SceneObject.h>
 #include <imEngine/Graphics/Scene/Camera.h>

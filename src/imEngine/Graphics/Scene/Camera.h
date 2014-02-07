@@ -3,7 +3,7 @@
 
 #include "SceneObject.h"
 #include "Frustum.h"
-#include <imEngine/Graphics/Geometry.h>
+#include "Geometry.h"
 
 namespace imEngine {
 
