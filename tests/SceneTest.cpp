@@ -11,8 +11,11 @@ protected:
 
         void    keyPressEvent(int key);
 private:
-        Polygonal*        m_box1;
-        Polygonal*        m_box2;
+        Polygonal*        m_car;
+        Polygonal*        m_wheel1;
+        Polygonal*        m_wheel2;
+        Polygonal*        m_wheel3;
+        Polygonal*        m_wheel4;
 
         CameraAbstract*         m_firstCamera;
         CameraAbstract*         m_secondCamera;
@@ -21,10 +24,19 @@ private:
 
 void Application::initialize() {
         GraphicApplication::initialize();
+        glClearColor(0.2,0.2,0.2,1.0);
 
         Renderer::setBlendMode(BlendMode::ALPHA);
         Renderer::setDepthMode(DepthMode::LESS);
-        m_box1 = new Polygonal(Model("resources/models/car.xml"), scene()->world());
+        m_car = new Polygonal(Model("resources/models/car.xml"), scene()->world());
+        m_wheel1 = new Polygonal(Model("resources/models/wheel.xml"), m_car);
+        m_wheel1->setPosition(Vec3(1.05,-0.7,0));
+
+        /*
+        m_wheel2 = new Polygonal(Model("resources/models/wheel.xml"), m_car);
+        m_wheel3 = new Polygonal(Model("resources/models/wheel.xml"), m_car);
+        m_wheel4 = new Polygonal(Model("resources/models/wheel.xml"), m_car);
+        */
 
         m_firstCamera = scene()->currentCamera();
         m_secondCamera = new FirstPersonCamera(scene()->world());

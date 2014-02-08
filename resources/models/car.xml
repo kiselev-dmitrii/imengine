@@ -1,7 +1,12 @@
 <model name="car">
 	<detail name="body">
 		<geometry filename="car_body.obj"/>
-		<material type="texture" texture="red.png"/>
+		<material type="phong" diffuse="255,0,0" shininess="30.0"/>
+	</detail>
+
+	<detail name="inner">
+		<geometry filename="car_inner.obj"/>
+		<material type="phong" diffuse="50,50,50" shininess="10.0"/>
 	</detail>
 
 	<detail name="glasses">
@@ -9,13 +14,8 @@
 		<material type="wired" scale="10" border_width="0.01" base_color="255,255,255,100"/>
 	</detail>
 
-	<detail name="inner">
-		<geometry filename="car_inner.obj"/>
-		<material type="wired" scale="10" border_width="0.01" base_color="255,255,0,255"/>
-	</detail>
-
 	<detail name="brakes">
 		<geometry filename="car_brakes.obj"/>
-		<material type="wired" scale="10" border_width="0.01" base_color="0,0,255,255"/>
+		<material type="phong" diffuse="0,0,255" shininess="10.0"/>
 	</detail>
 </model>

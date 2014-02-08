@@ -14,10 +14,14 @@ void Polygonal::render() {
         const Mat4& modelMatrix = localToWorldMatrix();
 
         Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
+        Mat4 modelViewMatrix = viewMatrix * modelMatrix;
+        Mat3 normalMatrix = glm::transpose(Mat3(glm::inverse(modelViewMatrix)));
 
         for (const ModelDetail& detail: m_model.details()) {
                 detail.material->bind();
                 detail.material->program()->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
+                detail.material->program()->setUniform("uModelViewMatrix", modelViewMatrix);
+                detail.material->program()->setUniform("uNormalMatrix", normalMatrix);
                 detail.geometry->render();
         }
 }

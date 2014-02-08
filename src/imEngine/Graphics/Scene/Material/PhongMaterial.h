@@ -10,7 +10,7 @@ namespace imEngine {
 class PhongMaterial : MaterialImplementation<PhongMaterial> {
 public:
         /// Конструктор
-        PhongMaterial(const Vec3& diffuseColor);
+        PhongMaterial();
 
         void            setAmbientColor(const Vec3& color)                      { m_ambientColor = color; }
         const Vec3&     ambientColor() const                                    { return m_ambientColor; }
@@ -28,8 +28,8 @@ public:
         void            unbind();
 
 private:
-        Vec3    m_diffuseColor;
         Vec3    m_ambientColor;
+        Vec3    m_diffuseColor;
         Vec3    m_specularColor;
         float   m_shininess;
 };

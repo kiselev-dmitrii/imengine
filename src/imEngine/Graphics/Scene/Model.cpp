@@ -1,9 +1,10 @@
 #include "Model.h"
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/Utils/StringUtils.h>
-#include "ResourceManager.h"
+#include "Resources.h"
 #include "Material/TextureMaterial.h"
 #include "Material/WiredMaterial.h"
+#include "Material/PhongMaterial.h"
 
 namespace imEngine {
 
@@ -77,6 +78,20 @@ MaterialPtr Model::createMaterial(const XmlNode &materialNode) {
 
                 return MaterialPtr(result);
 
+        } else if (type == "phong") {
+                PhongMaterial* result = new PhongMaterial();
+
+                String ambient = materialNode.attribute("ambient").value();
+                String diffuse = materialNode.attribute("diffuse").value();
+                String specular = materialNode.attribute("specular").value();
+                String shininess = materialNode.attribute("shininess").value();
+                if (ambient != "") result->setAmbientColor(Vec3(parseColor(ambient)));
+                if (diffuse != "") result->setDiffuseColor(Vec3(parseColor(diffuse)));
+                if (specular != "") result->setSpecularColor(Vec3(parseColor(specular)));
+                if (shininess != "") result->setShininess(std::stof(shininess));
+
+                return MaterialPtr((Material*)result);
+
         } else {
                 IM_ERROR("Material has unknown type");
                 return MaterialPtr();
@@ -90,7 +105,7 @@ Vec4 Model::parseColor(const String &color) {
         result.x = std::stof(list[0])/255.0f;
         result.y = std::stof(list[1])/255.0f;
         result.z = std::stof(list[2])/255.0f;
-        result.w = std::stof(list[3])/255.0f;
+        if (list.size() == 4) result.w = std::stof(list[3])/255.0f;
 
         return result;
 }
