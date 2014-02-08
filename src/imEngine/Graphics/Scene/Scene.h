@@ -31,6 +31,10 @@ public:
         /// Деструктор
         ~Scene();
 
+        /// Устанавливает/возаращет захвачена ли мышь активной камерой
+        void                    setMouseCaptured(bool enable)                   { m_isMouseCaptured = enable; }
+        bool                    isMouseCaptured()                               { return m_isMouseCaptured; }
+
         /// Корневой объект сцены
         SceneObject*            world();
         /// Возвращает ссылку на приложение
@@ -47,6 +51,8 @@ public:
         void                    processRender();
         /// Обработка события на изменение размеров окна
         void                    processWindowResize(int w, int h);
+        /// Обработка событий клавиш мыши
+        void                    processMousePress(int x, int y, char button);
 
 private:
         /// Добавляет/удаляет визуализируемый объект
@@ -69,6 +75,7 @@ private:
 
         CameraAbstract*         m_currentCamera;
 
+        bool                    m_isMouseCaptured;
 };
 
 

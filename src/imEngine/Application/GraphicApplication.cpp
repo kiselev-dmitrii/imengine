@@ -45,6 +45,7 @@ void GraphicApplication::mouseMoveEvent(int oldX, int oldY, int newX, int newY) 
 
 void GraphicApplication::mousePressEvent(int x, int y, char button) {
         m_gui->processMousePress(x, y, button);
+        m_scene->processMousePress(x, y, button);
 }
 
 void GraphicApplication::mouseReleaseEvent(int x, int y, char button) {

@@ -16,7 +16,8 @@ public:
 //############################## Scene #######################################//
 
 Scene::Scene(GraphicApplication *application) :
-        m_application(application)
+        m_application(application),
+        m_isMouseCaptured(false)
 {
         m_world = new SceneWorld(this);
         m_currentCamera = new FirstPersonCamera(m_world);
@@ -27,10 +28,11 @@ Scene::~Scene() {
 }
 
 void Scene::processUpdate(float deltaTime) {
-        m_currentCamera->update(deltaTime);
+        if (m_isMouseCaptured) m_currentCamera->update(deltaTime);
 }
 
 void Scene::processRender() {
+        Renderer::setDepthMode(DepthMode::LESS);
         for(CameraAbstract* camera: m_cameras) {
                 if (camera != m_currentCamera) camera->renderHelper();
         }
@@ -57,6 +59,22 @@ void Scene::setCurrentCamera(CameraAbstract *camera) {
 
 void Scene::processWindowResize(int w, int h) {
         m_currentCamera->setAspectRatio(float(w)/h);
+}
+
+void Scene::processMousePress(int x, int y, char button) {
+        if (button != MouseButton::MIDDLE) return;
+
+        static IVec2 oldMousePosition(0,0);
+        if (!isMouseCaptured()) {
+                application()->mainWindow()->mouse()->setVisible(false);
+                oldMousePosition = application()->mainWindow()->mouse()->position();
+                application()->mainWindow()->mouse()->setPosition(application()->mainWindow()->center());
+                setMouseCaptured(true);
+        } else {
+                application()->mainWindow()->mouse()->setPosition(oldMousePosition);
+                application()->mainWindow()->mouse()->setVisible(true);
+                setMouseCaptured(false);
+        }
 }
 
 void Scene::addEntity(Entity *entity) {
