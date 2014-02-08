@@ -14,7 +14,10 @@ public:
         Polygonal(const Model& model, SceneObject* parent);
 
         /// Рендерит объект
-        void    render();
+        void            render();
+
+        /// Возвращает модель
+        Model*          model()                                                 { return &m_model; }
 
 private:
         Model   m_model;

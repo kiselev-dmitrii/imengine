@@ -62,6 +62,7 @@ void Scene::processWindowResize(int w, int h) {
 }
 
 void Scene::processMousePress(int x, int y, char button) {
+        /// Этот метод нужно перенести в GraphicApplication
         if (button != MouseButton::MIDDLE) return;
 
         static IVec2 oldMousePosition(0,0);

@@ -5,6 +5,8 @@
 #include <imEngine/Graphics/GUI/TextButton.h>
 #include <imEngine/Graphics/GUI/Panel.h>
 #include <imEngine/Graphics/GUI/Slider.h>
+#include <imEngine/Graphics/GUI/BoxLayout.h>
+#include <imEngine/Graphics/Scene/Material/PhongMaterial.h>
 
 using namespace imEngine;
 
@@ -21,7 +23,12 @@ private:
         CameraAbstract*         m_secondCamera;
 
         Panel*                  m_pnl;
-        HSlider*                m_slider;
+        VBoxLayout*             m_diffuseLayout;
+        HSlider*                m_redSlider;
+        HSlider*                m_greenSlider;
+        HSlider*                m_blueSlider;
+
+        HSlider*                m_shininessSlider;
 };
 
 
@@ -41,10 +48,46 @@ void Application::initialize() {
         m_pnl = new Panel("regular_panel.png", gui()->root());
         m_pnl->setOpacity(0.9);
         m_pnl->setPadding(20);
-        m_pnl->setSize(Vec2(200, 100));
+        m_pnl->setSize(Vec2(200, 300));
 
-        m_slider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnl);
-        m_slider->setWidth(160);
+        m_diffuseLayout = new VBoxLayout(m_pnl);
+        m_redSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_diffuseLayout);
+        m_redSlider->setWidth(m_pnl->contentWidth());
+        m_greenSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_diffuseLayout);
+        m_greenSlider->setWidth(m_pnl->contentWidth());
+        m_blueSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_diffuseLayout);
+        m_blueSlider->setWidth(m_pnl->contentWidth());
+
+        m_shininessSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_diffuseLayout);
+        m_shininessSlider->setMinMaxValues(0, 120);
+        m_shininessSlider->setWidth(m_pnl->contentWidth());
+
+        m_diffuseLayout->addWidget(m_redSlider);
+        m_diffuseLayout->addWidget(m_greenSlider);
+        m_diffuseLayout->addWidget(m_blueSlider);
+        m_diffuseLayout->addSpacing(20);
+        m_diffuseLayout->addWidget(m_shininessSlider);
+
+        auto colorSetter = [&] (HSlider* slider) {
+                Vec3 color;
+                float shininess;
+                color.x = m_redSlider->value();
+                color.y = m_greenSlider->value();
+                color.z = m_blueSlider->value();
+                shininess = m_shininessSlider->value();
+
+                PhongMaterial* material = (PhongMaterial*)(m_car->model()->details()[0].material.get());
+                if (material != 0) {
+                        material->setDiffuseColor(color);
+                        material->setShininess(shininess);
+                }
+        };
+
+        m_redSlider->onValueChanged += colorSetter;
+        m_greenSlider->onValueChanged += colorSetter;
+        m_blueSlider->onValueChanged += colorSetter;
+        m_shininessSlider->onValueChanged += colorSetter;
+
 }
 
 void Application::keyPressEvent(int key) {
