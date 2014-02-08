@@ -12,6 +12,32 @@
 
 namespace imEngine {
 
+class TextureManager;
+class GeometryManager;
+
+/** @brief Менеджер разделяемых ресурсов
+ */
+class Resources {
+public:
+        /// Точка доступа к синглтону
+        static Resources*       instance();
+        /// Деструктор
+        ~Resources();
+
+        /// Возвращает указатели на менеджеры
+        TextureManager*         textures();
+        GeometryManager*        geometry();
+
+private:
+        Resources();
+        Resources(const Resources&);
+        Resources& operator=(const Resources&);
+
+private:
+        TextureManager*         m_textureMgr;
+        GeometryManager*        m_geometryMgr;
+};
+
 
 /** @brief Базовый шаблонный класс для менеджеров ресурсов
  */
@@ -95,11 +121,18 @@ public:
 };
 
 
-/** @brief Менеджер геометрии
+/** @brief Менеджер геометрии. Предоставляет общий доступ к одной и той же геометрии
  */
 class GeometryManager : public ResourceManagerImplementation<Geometry> {
 public:
-        ///
+        /// Конструктор
+        GeometryManager(const String& directory);
+
+        /// Загружает или ищет геометрию в памяти
+        Geometry*       geometry(const String& name);
+
+        /// Перезагружает всю геометрию
+        virtual void    reloadAll();
 };
 
 } //namespace imEngine

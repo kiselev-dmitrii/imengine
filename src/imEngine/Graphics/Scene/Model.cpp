@@ -1,6 +1,7 @@
 #include "Model.h"
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/Utils/StringUtils.h>
+#include "ResourceManager.h"
 
 namespace imEngine {
 
@@ -29,29 +30,19 @@ void Model::load(const XmlNode &modelNode) {
         }
 }
 
-void Model::render(CameraAbstract *camera, SceneObject *object) {
-        const Mat4& viewMatrix = camera->worldToLocalMatrix();
-        const Mat4& projectionMatrix = camera->viewToClipMatrix();
-        const Mat4& modelMatrix = object->localToWorldMatrix();
-
-        Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
-
-        for (const ModelDetail& detail: m_details) {
-                detail.material->bind();
-                detail.material->program()->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
-                detail.geometry->render();
-        }
+const ModelDetailList& Model::details() const {
+        return m_details;
 }
 
-GeometryPtr Model::createGeometry(const XmlNode &geometryNode) {
+Geometry* Model::createGeometry(const XmlNode &geometryNode) {
         IM_VAR(geometryNode.name());
-        String mesh = geometryNode.attribute("mesh").value();
-        if (mesh == "") {
-                IM_ERROR("Tag geometry must contain attribute mesh");
-                return GeometryPtr();
+        String filename = geometryNode.attribute("filename").value();
+        if (filename == "") {
+                IM_ERROR("Tag geometry must contain attribute filename");
+                return nullptr;
         }
 
-        return GeometryPtr(new Geometry(Mesh(mesh)));
+        return Resources::instance()->geometry()->geometry(filename);
 }
 
 MaterialPtr Model::createMaterial(const XmlNode &materialNode) {
@@ -67,8 +58,7 @@ MaterialPtr Model::createMaterial(const XmlNode &materialNode) {
                         IM_ERROR("TextureMaterial must contain attribute texture");
                         return MaterialPtr();
                 }
-                Texture2DPtr texture(new Texture2D());
-                texture->load(textureFilename);
+                Texture2D* texture = Resources::instance()->textures()->texture2D(textureFilename);
                 return MaterialPtr(new TextureMaterial(texture));
 
         } else if (type == "wired") {

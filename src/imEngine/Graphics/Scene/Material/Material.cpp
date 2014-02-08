@@ -5,18 +5,18 @@ namespace imEngine {
 
 //########################### TextureMaterial ################################//
 
-TextureMaterial::TextureMaterial(Texture2DPtr texture) {
+TextureMaterial::TextureMaterial(Texture2D* texture) {
         initProgram("resources/shaders/materials/TextureMaterial.glsl");
         setTexture(texture);
 }
 
-void TextureMaterial::setTexture(Texture2DPtr texture) {
+void TextureMaterial::setTexture(Texture2D* texture) {
         m_textureBase = texture;
         m_textureBase->setMagnificationFilter(TextureMagFilter::LINEAR);
         m_textureBase->setMinimizationFilter(TextureMinFilter::LINEAR);
 }
 
-Texture2DPtr TextureMaterial::texture() const {
+Texture2D* TextureMaterial::texture() const {
         return m_textureBase;
 }
 

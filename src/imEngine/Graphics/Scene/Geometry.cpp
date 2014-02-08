@@ -131,6 +131,41 @@ GeometryPtr Geometry::cube() {
         return GeometryPtr(new Geometry(vertices, indices));
 }
 
+GeometryPtr Geometry::box(const Vec3 &min, const Vec3 &max) {
+        VertexList vertices = {
+                { Vec3(min.x, min.y, min.z), Vec3(0, 0, -1), Vec2(0, 1) },
+                { Vec3(max.x, max.y, min.z), Vec3(0, 0, -1), Vec2(1, 0) },
+                { Vec3(max.x, min.y, min.z), Vec3(0, 0, -1), Vec2(1, 1) },
+                { Vec3(min.x, max.y, min.z), Vec3(0, 0, -1), Vec2(0, 0) },
+                { Vec3(min.x, min.y, min.z), Vec3(-1, 0, 0), Vec2(0, 1) },
+                { Vec3(min.x, max.y, max.z), Vec3(-1, 0, 0), Vec2(1, 0) },
+                { Vec3(min.x, max.y, min.z), Vec3(-1, 0, 0), Vec2(0, 0) },
+                { Vec3(min.x, min.y, max.z), Vec3(-1, 0, 0), Vec2(1, 1) },
+                { Vec3(min.x, max.y, min.z), Vec3(0, 1, 0), Vec2(0, 1) },
+                { Vec3(max.x, max.y, max.z), Vec3(0, 1, 0), Vec2(1, 0) },
+                { Vec3(max.x, max.y, min.z), Vec3(0, 1, 0), Vec2(0, 0) },
+                { Vec3(min.x, max.y, max.z), Vec3(0, 1, 0), Vec2(1, 1) },
+                { Vec3(max.x, min.y, min.z), Vec3(1, 0, 0), Vec2(1, 1) },
+                { Vec3(max.x, max.y, min.z), Vec3(1, 0, 0), Vec2(1, 0) },
+                { Vec3(max.x, max.y, max.z), Vec3(1, 0, 0), Vec2(0, 0) },
+                { Vec3(max.x, min.y, max.z), Vec3(1, 0, 0), Vec2(0, 1) },
+                { Vec3(min.x, min.y, min.z), Vec3(0, -1, 0), Vec2(0, 1) },
+                { Vec3(max.x, min.y, min.z), Vec3(0, -1, 0), Vec2(1, 1) },
+                { Vec3(max.x, min.y, max.z), Vec3(0, -1, 0), Vec2(1, 0) },
+                { Vec3(min.x, min.y, max.z), Vec3(0, -1, 0), Vec2(0, 0) },
+                { Vec3(min.x, min.y, max.z), Vec3(0, 0, 1), Vec2(0, 1) },
+                { Vec3(max.x, min.y, max.z), Vec3(0, 0, 1), Vec2(1, 1) },
+                { Vec3(max.x, max.y, max.z), Vec3(0, 0, 1), Vec2(1, 0) },
+                { Vec3(min.x, max.y, max.z), Vec3(0, 0, 1), Vec2(0, 0) }
+        };
+
+        IndexList indices = {
+                0,1,2,0,3,1,4,5,6,4,7,5,8,9,10,8,11,9,12,13,14,12,14,15,16,17,18,16,18,19,20,21,22,20,22,23
+        };
+
+        return GeometryPtr(new Geometry(vertices, indices));
+}
+
 GeometryPtr Geometry::plane() {
         VertexList vertices = {
                 { Vec3(-1, -1, 0), Vec3(0, 0, 1), Vec2(0, 0) },

@@ -1,10 +1,21 @@
 <model name="car">
-	<detail>
-		<geometry mesh="resources/models/cube.obj"/>
-		<material type="wired" border_color="255,0,0,255"/>
+	<detail name="body">
+		<geometry filename="car_body.obj"/>
+		<material type="texture" texture="red.png"/>
 	</detail>
-	<detail>
-		<geometry mesh="resources/models/model.obj"/>
-		<material type="wired" border_color="255,0,0,255"/>
+
+	<detail name="glasses">
+		<geometry filename="car_glasses.obj"/>
+		<material type="wired" scale="10" border_width="0.01" base_color="255,255,255,100"/>
+	</detail>
+
+	<detail name="inner">
+		<geometry filename="car_inner.obj"/>
+		<material type="wired" scale="10" border_width="0.01" base_color="255,255,0,255"/>
+	</detail>
+
+	<detail name="brakes">
+		<geometry filename="car_brakes.obj"/>
+		<material type="wired" scale="10" border_width="0.01" base_color="0,0,255,255"/>
 	</detail>
 </model>

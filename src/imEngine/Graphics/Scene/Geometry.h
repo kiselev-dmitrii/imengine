@@ -54,6 +54,8 @@ public:
 public:
         /// Создает геометрию куба [-1;1]x[-1;1]x[-1;1]
         static GeometryPtr      cube();
+        /// Создает параллелепипед с мин. координатой min и максимальной max
+        static GeometryPtr      box(const Vec3& min, const Vec3& max);
         /// Создает геометрию плоскости на [-1;1]x[-1;1]x[0;0]
         static GeometryPtr      plane();
 

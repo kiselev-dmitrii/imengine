@@ -23,9 +23,8 @@ void Application::initialize() {
         GraphicApplication::initialize();
 
         Renderer::setBlendMode(BlendMode::ALPHA);
-        m_box1 = new PolygonalEntity(scene()->world());
-        m_box2 = new PolygonalEntity(scene()->world());
-        m_box2->setPosition(Vec3(2,2,2));
+        Renderer::setDepthMode(DepthMode::LESS);
+        m_box1 = new PolygonalEntity(Model("resources/models/car.xml"), scene()->world());
 
         m_firstCamera = scene()->currentCamera();
         m_secondCamera = new FirstPersonCamera(scene()->world());

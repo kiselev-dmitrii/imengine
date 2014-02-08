@@ -57,18 +57,18 @@ template<typename Derived> bool MaterialImplementation<Derived>::s_wasProgramIni
 class TextureMaterial : public MaterialImplementation<TextureMaterial> {
 public:
         /// Конструктор.
-        TextureMaterial(Texture2DPtr texture);
+        TextureMaterial(Texture2D* texture);
 
         /// Устанавливает/возвращает текстуру
-        void            setTexture(Texture2DPtr texture);
-        Texture2DPtr    texture() const;
+        void            setTexture(Texture2D* texture);
+        Texture2D*      texture() const;
 
         /// Перегруженные методы
         void            bind();
         void            unbind();
 
 private:
-        Texture2DPtr            m_textureBase;
+        Texture2D*      m_textureBase;
 };
 
 

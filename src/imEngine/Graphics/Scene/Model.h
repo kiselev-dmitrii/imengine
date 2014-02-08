@@ -11,7 +11,7 @@ namespace imEngine {
 /** @brief Составная часть полигональной модели.
  */
 struct ModelDetail {
-        GeometryPtr     geometry;
+        Geometry*       geometry;               //разделяемый ресурс
         MaterialPtr     material;
 };
 typedef std::vector<ModelDetail> ModelDetailList;
@@ -29,14 +29,11 @@ public:
         /// Загружает модель из ноды
         void    load(const XmlNode& modelNode);
 
-        /// Рендерит модель из камеры camera на позиции объекта object
-        void    render(CameraAbstract* camera, SceneObject* object);
-
         /// Возвращает детали модели
         const ModelDetailList&  details() const;
 
 private:
-        GeometryPtr     createGeometry(const XmlNode& geometryNode);
+        Geometry*       createGeometry(const XmlNode& geometryNode);
         MaterialPtr     createMaterial(const XmlNode& materialNode);
         Vec4            parseColor(const String& color);
 

@@ -22,5 +22,5 @@ uniform sampler2D uTextureBase;
 
 
 void main() {
-	fResult = texture2D(vTexcoords, uTextureBase);
+	fResult = texture2D(uTextureBase, vTexcoords);
 }

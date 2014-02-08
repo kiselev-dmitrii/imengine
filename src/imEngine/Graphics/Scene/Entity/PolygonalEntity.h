@@ -10,13 +10,14 @@ namespace imEngine {
  */
 class PolygonalEntity : public EntityAbstract {
 public:
-        /// Конструктор
-        PolygonalEntity(SceneObject* parent);
+        /// Конструкторы
+        PolygonalEntity(const Model& model, SceneObject* parent);
 
-        void            render();
+        /// Рендерит объект
+        void    render();
 
 private:
-        Model*          m_model;
+        Model   m_model;
 };
 
 } //namespace imEngine

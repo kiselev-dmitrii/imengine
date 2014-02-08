@@ -1,7 +1,33 @@
 #include "ResourceManager.h"
 #include <imEngine/System/Filesystem.h>
+#include <imEngine/Utils/Debug.h>
 
 namespace imEngine {
+
+//############################## Resources ###################################//
+
+Resources::Resources() {
+        m_textureMgr = new TextureManager("resources/models/textures");
+        m_geometryMgr = new GeometryManager("resources/models/geometry");
+}
+
+Resources::~Resources() {
+        delete m_textureMgr;
+        delete m_geometryMgr;
+}
+
+Resources* Resources::instance() {
+        static Resources instance;
+        return &instance;
+}
+
+TextureManager* Resources::textures() {
+        return m_textureMgr;
+}
+
+GeometryManager* Resources::geometry() {
+        return m_geometryMgr;
+}
 
 //############################## FileResourceManagerAbstract ###################################//
 
@@ -55,7 +81,31 @@ void TextureManager::reloadAll() {
         }
 }
 
-//############################## ProgramManager ###################################//
+//########################### GeometryManager ################################//
+
+GeometryManager::GeometryManager(const String &directory) :
+        ResourceManagerImplementation(directory)
+{ }
+
+Geometry* GeometryManager::geometry(const String &name) {
+        Geometry* geometry = findResource(name) ;
+        if (geometry) {
+                return geometry;
+        } else {
+                Mesh mesh(Filesystem::joinPath(directory(), name));
+                geometry = new Geometry(mesh);
+                addResource(name, geometry);
+                return geometry;
+        }
+}
+
+void GeometryManager::reloadAll() {
+        for (auto& elem: m_resources) {
+                Geometry* geometry = elem.second;
+                Mesh mesh(Filesystem::joinPath(directory(), elem.first));
+                geometry->load(mesh);
+        }
+}
 
 
 } //namespace imEngine
