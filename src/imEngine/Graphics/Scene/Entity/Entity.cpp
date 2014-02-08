@@ -1,15 +1,15 @@
-#include "EntityAbstract.h"
+#include "Entity.h"
 #include "../Scene.h"
 
 namespace imEngine {
 
-EntityAbstract::EntityAbstract(SceneObject* parent) :
+Entity::Entity(SceneObject* parent) :
         SceneObject(parent)
 {
         m_scene->addEntity(this);
 }
 
-EntityAbstract::~EntityAbstract() {
+Entity::~Entity() {
         m_scene->removeEntity(this);
 }
 

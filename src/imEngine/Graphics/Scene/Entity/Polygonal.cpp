@@ -1,15 +1,14 @@
-#include "PolygonalEntity.h"
+#include "Polygonal.h"
 #include "../Scene.h"
-#include <glm/gtx/transform.hpp>
 
 namespace imEngine {
 
-PolygonalEntity::PolygonalEntity(const Model &model, SceneObject *parent) :
-        EntityAbstract(parent),
+Polygonal::Polygonal(const Model &model, SceneObject *parent) :
+        Entity(parent),
         m_model(model)
 { }
 
-void PolygonalEntity::render() {
+void Polygonal::render() {
         const Mat4& viewMatrix = scene()->currentCamera()->worldToLocalMatrix();
         const Mat4& projectionMatrix = scene()->currentCamera()->viewToClipMatrix();
         const Mat4& modelMatrix = localToWorldMatrix();

@@ -1,9 +1,8 @@
-#include "Material.h"
+#include "TextureMaterial.h"
 #include <imEngine/Utils/Debug.h>
+#include <imEngine/Graphics/Scene/ResourceManager.h>
 
 namespace imEngine {
-
-//########################### TextureMaterial ################################//
 
 TextureMaterial::TextureMaterial(Texture2D* texture) {
         initProgram("resources/shaders/materials/TextureMaterial.glsl");
@@ -30,29 +29,6 @@ void TextureMaterial::bind() {
 void TextureMaterial::unbind() {
         s_program->unbind();
         m_textureBase->unbind();
-}
-
-//############################ WiredMaterial #################################//
-
-WiredMaterial::WiredMaterial() {
-        initProgram("resources/shaders/materials/WiredMaterial.glsl");
-        setBaseColor(Vec4(0,0,0,0.1));
-        setBorderColor(Vec4(0,0,0,0.5));
-        setBorderWidth(0.05);
-        setScale(1.0);
-}
-
-void WiredMaterial::bind() {
-        s_program->bind();
-
-        s_program->setUniform("uBorderWidth", m_borderWidth);
-        s_program->setUniform("uBorderColor", m_borderColor);
-        s_program->setUniform("uBaseColor", m_baseColor);
-        s_program->setUniform("uScale", m_scale);
-}
-
-void WiredMaterial::unbind() {
-        s_program->unbind();
 }
 
 } //namespace imEngine

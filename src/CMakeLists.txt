@@ -7,4 +7,3 @@ file(GLOB_RECURSE imEngineSources *.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${imEngineSources} ${imEngineHeaders})
 target_link_libraries(imEngine ${imEngineLibs})
-

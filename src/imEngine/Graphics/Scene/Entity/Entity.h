@@ -11,12 +11,12 @@ namespace imEngine {
  *
  *  Каждая сущность рендерит себя по своему
  */
-class EntityAbstract : public SceneObject {
+class Entity : public SceneObject {
 public:
         /// Конструктор
-        explicit EntityAbstract(SceneObject* parent);
+        explicit Entity(SceneObject* parent);
         /// Деструктор
-        ~EntityAbstract();
+        ~Entity();
 
         /// Рендерит сущность
         virtual void    render() = 0;

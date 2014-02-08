@@ -1,4 +1,4 @@
-#include "ILight.h"
+#include "Light.h"
 
 namespace imEngine {
 

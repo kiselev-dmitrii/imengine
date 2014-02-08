@@ -9,16 +9,15 @@ namespace imEngine {
 
 /** @brief Абстрактный класс для света
  */
-class LightAbstract : public SceneObject {
+class Light : public SceneObject {
 public:
         /// Конструктор
-        LightAbstract();
+        Light();
 
         /// Устанавливает настройки источника света в программу program
         virtual void    bind(Program* program) = 0;
         /// Сбрасывает настройки
         virtual void    unbind(Program* program) = 0;
-
 };
 
 

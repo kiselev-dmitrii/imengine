@@ -3,14 +3,14 @@
 
 #include <vector>
 #include <imEngine/Application/GraphicApplication.h>
-#include "Entity/EntityAbstract.h"
-#include "Light/ILight.h"
+#include "Entity/Polygonal.h"
+#include "Light/Light.h"
 #include "Camera.h"
 
 namespace imEngine {
 
-typedef std::vector<LightAbstract*>     LightList;
-typedef std::vector<EntityAbstract*>    EntityList;
+typedef std::vector<Light*>             LightList;
+typedef std::vector<Entity*>            EntityList;
 typedef std::vector<CameraAbstract*>    CameraList;
 
 
@@ -24,7 +24,7 @@ typedef std::vector<CameraAbstract*>    CameraList;
 class Scene {
 friend class CameraAbstract;
 friend class LightAbstract;
-friend class EntityAbstract;
+friend class Entity;
 public:
         /// Конструктор
         explicit Scene(GraphicApplication* application);
@@ -50,14 +50,14 @@ public:
 
 private:
         /// Добавляет/удаляет визуализируемый объект
-        void                    addEntity(EntityAbstract* entity);
-        void                    removeEntity(EntityAbstract* entity);
+        void                    addEntity(Entity* entity);
+        void                    removeEntity(Entity* entity);
         /// Добавляет/удаляет камеру на сцену
         void                    addCamera(CameraAbstract* camera);
         void                    removeCamera(CameraAbstract* camera);
         /// Добавляет/удаляет источник света
-        void                    addLight(LightAbstract* light);
-        void                    removeLight(LightAbstract* light);
+        void                    addLight(Light* light);
+        void                    removeLight(Light* light);
 
 private:
         SceneObject*            m_world;

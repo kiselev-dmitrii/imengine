@@ -1,17 +1,17 @@
 #ifndef POLYGONALENTITY_H
 #define POLYGONALENTITY_H
 
-#include "EntityAbstract.h"
+#include "Entity.h"
 #include "../Model.h"
 
 namespace imEngine {
 
 /** @brief Полигональный объект на сцене
  */
-class PolygonalEntity : public EntityAbstract {
+class Polygonal : public Entity {
 public:
         /// Конструкторы
-        PolygonalEntity(const Model& model, SceneObject* parent);
+        Polygonal(const Model& model, SceneObject* parent);
 
         /// Рендерит объект
         void    render();

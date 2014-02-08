@@ -2,7 +2,6 @@
 #define MODEL_H
 
 #include "Material/Material.h"
-#include "Scene.h"
 #include "Geometry.h"
 #include <imEngine/FileContainers/Xml.h>
 

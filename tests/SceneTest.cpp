@@ -1,7 +1,7 @@
 #include <imEngine/Application/GraphicApplication.h>
 #include <imEngine/Graphics/Scene/Scene.h>
 #include <imEngine/Utils/Debug.h>
-#include <imEngine/Graphics/Scene/Entity/PolygonalEntity.h>
+#include <imEngine/Graphics/Scene/Entity/Polygonal.h>
 
 using namespace imEngine;
 
@@ -11,8 +11,8 @@ protected:
 
         void    keyPressEvent(int key);
 private:
-        PolygonalEntity*        m_box1;
-        PolygonalEntity*        m_box2;
+        Polygonal*        m_box1;
+        Polygonal*        m_box2;
 
         CameraAbstract*         m_firstCamera;
         CameraAbstract*         m_secondCamera;
@@ -24,7 +24,7 @@ void Application::initialize() {
 
         Renderer::setBlendMode(BlendMode::ALPHA);
         Renderer::setDepthMode(DepthMode::LESS);
-        m_box1 = new PolygonalEntity(Model("resources/models/car.xml"), scene()->world());
+        m_box1 = new Polygonal(Model("resources/models/car.xml"), scene()->world());
 
         m_firstCamera = scene()->currentCamera();
         m_secondCamera = new FirstPersonCamera(scene()->world());

@@ -2,6 +2,8 @@
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/Utils/StringUtils.h>
 #include "ResourceManager.h"
+#include "Material/TextureMaterial.h"
+#include "Material/WiredMaterial.h"
 
 namespace imEngine {
 

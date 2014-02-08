@@ -34,7 +34,7 @@ void Scene::processRender() {
         for(CameraAbstract* camera: m_cameras) {
                 if (camera != m_currentCamera) camera->renderHelper();
         }
-        for(EntityAbstract* entity: m_enitities) {
+        for(Entity* entity: m_enitities) {
                 entity->render();
         }
 }
@@ -59,11 +59,11 @@ void Scene::processWindowResize(int w, int h) {
         m_currentCamera->setAspectRatio(float(w)/h);
 }
 
-void Scene::addEntity(EntityAbstract *entity) {
+void Scene::addEntity(Entity *entity) {
         m_enitities.push_back(entity);
 }
 
-void Scene::removeEntity(EntityAbstract *entity) {
+void Scene::removeEntity(Entity *entity) {
         auto it = std::find(m_enitities.begin(), m_enitities.end(), entity);
         m_enitities.erase(it);
 }
@@ -77,11 +77,11 @@ void Scene::removeCamera(CameraAbstract *camera) {
         m_cameras.erase(it);
 }
 
-void Scene::addLight(LightAbstract *light) {
+void Scene::addLight(Light* light) {
         m_lights.push_back(light);
 }
 
-void Scene::removeLight(LightAbstract *light) {
+void Scene::removeLight(Light* light) {
         auto it = std::find(m_lights.begin(), m_lights.end(), light);
         m_lights.erase(it);
 }
