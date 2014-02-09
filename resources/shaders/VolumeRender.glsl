@@ -19,8 +19,48 @@ in vec3 vVolumeTexcoords;
 
 layout (location = 0) out vec4 fResult;
 
-uniform sampler3D uVolumeTexture;
+uniform sampler3D 	uVolumeTexture;
+uniform vec3 		uObjectSpaceCameraPosition;
+
+vec4 volumeRaycasting(vec3 vStartUV, vec3 vUVSpaceRayDirection, float stepSize, sampler3D volume) {
+	const int 	MAX_SAMPLES = 300;
+
+	vec3 currentUV = vStartUV;
+	vec3 step = stepSize * normalize(vUVSpaceRayDirection);
+
+	/*
+	float sum = 0.0;
+	for (int i = 0; i < MAX_SAMPLES; i++) {
+		float sample = texture3D(volume, currentUV).r;
+		sum += sample;
+
+		if (sum >= 1.0) break;																			//превышение суммы
+		if (any(greaterThan(currentUV, vec3(1.0))) || any(lessThan(currentUV, vec3(0.0)))) break;		//выход за границы
+
+		currentUV += step;
+	}
+	return sum;
+	*/
+	vec4 result = vec4(0.0);
+	for (int i = 0; i < MAX_SAMPLES; i++) {
+		float sample = texture3D(volume, currentUV).r;
+
+		float prevAlpha = sample - (sample * result.a);
+		result.rgb += prevAlpha * vec3(sample);
+		result.a += prevAlpha;
+
+		if (result.a > 0.99) break;																			//превышение суммы
+		if (any(greaterThan(currentUV, vec3(1.0))) || any(lessThan(currentUV, vec3(0.0)))) break;		//выход за границы
+
+		currentUV += step;
+	}
+	return result;
+
+}
 
 void main() {
-	fResult = texture3D(uVolumeTexture, vVolumeTexcoords);
+	vec3 vObjectSpacePosition = vVolumeTexcoords - vec3(0.5);		//позиция вершины в ObjectSpace
+	vec3 vObjectSpaceRayDirection = vObjectSpacePosition - uObjectSpaceCameraPosition;
+
+	fResult = volumeRaycasting(vVolumeTexcoords, vObjectSpaceRayDirection, 0.01, uVolumeTexture);
 }

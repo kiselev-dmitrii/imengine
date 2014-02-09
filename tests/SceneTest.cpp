@@ -9,6 +9,8 @@
 #include <imEngine/Graphics/GUI/Text.h>
 #include <imEngine/Graphics/GUI/BoxLayout.h>
 #include <imEngine/Graphics/Scene/Material/PhongMaterial.h>
+#include <sstream>
+#include <iomanip>
 
 using namespace imEngine;
 
@@ -21,8 +23,11 @@ private:
         Polygonal*        m_car;
         Polygonal*        m_wheel1;
 
-        Texture3D*              m_data;
-        Volume*                 m_volume;
+        Texture3D*              m_engine;
+        Texture3D*              m_head;
+
+        Volume*                 m_headVolume;
+        Volume*                 m_engineVolume;
 
         CameraAbstract*         m_firstCamera;
         CameraAbstract*         m_secondCamera;
@@ -46,10 +51,26 @@ void Application::initialize() {
         m_wheel1 = new Polygonal(Model("resources/models/wheel.xml"), m_car);
         m_wheel1->setPosition(Vec3(1.05,-0.7,0));
 
-        m_data = new Texture3D();
-        m_data->load(256,256,128, TextureInternalFormat::COLOR_NORM_1_COMP_8_BIT, TextureSrcType::UBYTE, TextureSrcFormat::R, "resources/texture/engine.raw");
-        m_volume = new Volume(m_data, scene()->world());
-        m_volume->setPosition(Vec3(3,3,0));
+        /// Грузим текстуру головы из dcm файлов
+        m_head = new Texture3D();
+        StringList filenames;
+        for (uint i = 1; i <= 245; ++i) {
+                std::stringstream ss;
+                ss << "vhm.1" << std::setw(3) << std::setfill('0') << i << ".dcm";
+                filenames.push_back("resources/texture/head/" + ss.str());
+        }
+        m_head->load(filenames);
+
+        /// Грузим текстуру двигателя из raw
+        m_engine = new Texture3D();
+        m_engine->load(256,256,128, TextureInternalFormat::COLOR_NORM_1_COMP_8_BIT, TextureSrcType::UBYTE, TextureSrcFormat::R, "resources/texture/engine.raw");
+
+        /// Создаем Volume объекты
+        m_headVolume = new Volume(m_head, scene()->world());
+        m_headVolume->setPosition(Vec3(3,3,0));
+
+        m_engineVolume = new Volume(m_engine, scene()->world());
+        m_engineVolume->setPosition(Vec3(4,5,0));
 
         m_firstCamera = scene()->currentCamera();
         m_secondCamera = new FirstPersonCamera(scene()->world());
@@ -111,8 +132,8 @@ void Application::keyPressEvent(int key) {
         if (key == '2') scene()->setCurrentCamera(m_secondCamera);
         if (key == 'p') scene()->currentCamera()->setOrthographic(!scene()->currentCamera()->isOrthographic());
         if (key == 'r') {
-                m_volume->program()->loadSourceFromFile("resources/shaders/VolumeRender.glsl");
-                m_volume->program()->build();
+                m_engineVolume->program()->loadSourceFromFile("resources/shaders/VolumeRender.glsl");
+                m_engineVolume->program()->build();
         }
 }
 
