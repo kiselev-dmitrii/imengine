@@ -17,7 +17,7 @@ void Texture2D::load(int width, int height, TextureInternalFormat::Enum internal
 
         updateTextureInformation(width, height, 1, 1, internal, srcType, srcFormat, true);
 
-        IM_LOG("Texture" << m_handle << ": memory was allocated");
+        IM_LOG("Texture2D" << m_handle << ": memory was allocated");
 }
 
 void Texture2D::load(const String &filename) {
@@ -40,7 +40,7 @@ void Texture2D::insert(int startX, int startY, int width, int height, GLvoid *sr
         IM_GLCALL(glTexSubImage2D(m_target, level, startX, startY, width, height, sourceFormat(), sourceType(), src));
         if (srcAlignment !=4)  IM_GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 4));
 
-        IM_LOG("Texture" << m_handle << ": insert new subimage [" << startX << "-" <<  startX+width << ";" << startY << "-" << startY+height << "]");
+        IM_LOG("Texture2D" << m_handle << ": insert new subimage [" << startX << "-" <<  startX+width << ";" << startY << "-" << startY+height << "]");
 }
 
 void Texture2D::clear() {
@@ -50,7 +50,7 @@ void Texture2D::clear() {
         std::vector<ubyte> zero(m_width * m_height * numberOfChannels(), 0);
         IM_GLCALL(glTexSubImage2D(m_target, 0, 0, 0, m_width, m_height, sourceFormat(), GL_UNSIGNED_BYTE, &zero[0]));
 
-        IM_LOG("Texture" << m_handle << ": was cleared");
+        IM_LOG("Texture2D" << m_handle << ": was cleared");
 }
 
 void Texture2D::save(const String &filename, bool overwrite) {

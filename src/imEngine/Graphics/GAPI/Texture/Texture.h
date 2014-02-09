@@ -5,6 +5,7 @@
 #include <memory>
 #include <imEngine/Math/Common.h>
 #include <imEngine/Utils/Types.h>
+#include <imEngine/Utils/GLUtils.h>
 
 namespace imEngine {
 
@@ -22,6 +23,8 @@ enum Enum {
         INT                     = GL_INT,
         FLOAT                   = GL_FLOAT
 };
+
+        int sizeOf(TextureSrcType::Enum srcType);
 }
 
 /** @brief Определяет как трактуются загружаемые в текстуру данные. ХАРАКТЕРИСТИКА ЗАГРУЖАЕМЫХ ДАННЫХ.
@@ -41,6 +44,8 @@ enum Enum {
         R                       = GL_RED,       ///< 1 компонента
         DEPTH                   = GL_DEPTH
 };
+
+        int numComponents(TextureSrcFormat::Enum srcFormat);
 }
 
 /** @brief Внутренний формат текстуры. Задает способ хранения и интерпретации данных.

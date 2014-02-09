@@ -1,6 +1,25 @@
 #include "GLUtils.h"
+#include "Debug.h"
 
 namespace imEngine {
+
+uint GLUtils::sizeOf(GLenum glType) {
+        switch (glType) {
+                case GL_UNSIGNED_BYTE:         return sizeof(GLubyte);
+                case GL_BYTE:                  return sizeof(GLbyte);
+                case GL_UNSIGNED_SHORT:        return sizeof(GLushort);
+                case GL_SHORT:                 return sizeof(GLshort);
+                case GL_FLOAT:                 return sizeof(GLfloat);
+                case GL_DOUBLE:	        return sizeof(GLdouble);
+                case GL_INT:		        return sizeof(GLint);
+                case GL_UNSIGNED_INT:          return sizeof(GLuint);
+                case GL_BOOL:		        return sizeof(GLboolean);
+
+                default:
+                        IM_ERROR(convertEnumToString(glType) << " is not type of opengl");
+                        return 0;
+        }
+}
 
 String GLUtils::convertEnumToString(GLenum enumeration) {
         switch (enumeration) {

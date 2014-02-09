@@ -8,6 +8,7 @@ set(TESTS
         GraphicApplicationTest
         Texture1DTest
         Texture2DTest
+        Texture3DTest
         FilesystemTest
         ProgramTest
         VertexBufferTest

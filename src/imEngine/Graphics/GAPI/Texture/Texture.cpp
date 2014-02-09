@@ -4,6 +4,33 @@
 
 namespace imEngine {
 
+int TextureSrcType::sizeOf(TextureSrcType::Enum srcType) {
+       return GLUtils::sizeOf(srcType);
+}
+
+int TextureSrcFormat::numComponents(TextureSrcFormat::Enum srcFormat) {
+        switch (srcFormat) {
+                case TextureSrcFormat::BGRA:
+                case TextureSrcFormat::RGBA:
+                        return 4;
+
+                case TextureSrcFormat::BGR:
+                case TextureSrcFormat::RGB:
+                        return 3;
+
+                case TextureSrcFormat::RG:
+                        return 2;
+
+                case TextureSrcFormat::R:
+                case TextureSrcFormat::DEPTH:
+                        return 1;
+
+                default:
+                        return 0;
+        }
+}
+
+//########################### Texture ########################################//
 
 GLuint Texture::s_boundHandle = 0;
 int    Texture::s_currentUnit = 0;
@@ -52,56 +79,12 @@ uint Texture::numberOfImages() {
 
 int Texture::numberOfChannels() {
         IM_ASSERT(m_wasMemoryAllocated);
-
-        switch (m_srcFormat) {
-                case TextureSrcFormat::BGRA:
-                case TextureSrcFormat::RGBA:
-                        return 4;
-                        break;
-
-                case TextureSrcFormat::BGR:
-                case TextureSrcFormat::RGB:
-                        return 3;
-                        break;
-
-                case TextureSrcFormat::RG:
-                        return 2;
-                        break;
-
-                case TextureSrcFormat::R:
-                case TextureSrcFormat::DEPTH:
-                        return 1;
-                        break;
-        }
-
-        return 0;
+        return TextureSrcFormat::numComponents(m_srcFormat);
 }
 
 int Texture::sizeOfComponent() {
         IM_ASSERT(m_wasMemoryAllocated);
-
-        switch (m_srcType) {
-                case TextureSrcType::BYTE:
-                case TextureSrcType::UBYTE:
-                        return sizeof(GLbyte);
-                        break;
-
-                case TextureSrcType::INT:
-                case TextureSrcType::UINT:
-                        return sizeof(GLint);
-                        break;
-
-                case TextureSrcType::SHORT:
-                case TextureSrcType::USHORT:
-                        return sizeof(GLshort);
-                        break;
-
-                case TextureSrcType::FLOAT:
-                        return sizeof(GLfloat);
-                        break;
-        }
-
-        return 0;
+        return TextureSrcType::sizeOf(m_srcType) ;
 }
 
 int Texture::sizeOfData() {

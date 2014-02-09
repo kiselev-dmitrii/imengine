@@ -9,6 +9,9 @@ namespace imEngine {
 /** @brief Различные утилиты для OpenGL
  */
 namespace GLUtils {
+
+        /// Возвращает размер типа в байтах для OGL типа
+        uint            sizeOf(GLenum glType);
         /// Конвертирует тип GLenum в соответствуюшую строку
         String          convertEnumToString(GLenum enumeration);
 

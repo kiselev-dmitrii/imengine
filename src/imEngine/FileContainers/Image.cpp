@@ -69,15 +69,26 @@ int Image::depth() {
         return ilGetInteger(IL_IMAGE_DEPTH);
 }
 
+int Image::size() {
+        ilBindImage(m_handle);
+        return ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
+}
+
 TextureSrcFormat::Enum Image::format() {
         ilBindImage(m_handle);
-        return (TextureSrcFormat::Enum) ilGetInteger(IL_IMAGE_FORMAT);
+
+        GLenum fmt = ilGetInteger(IL_IMAGE_FORMAT);
+        if (fmt == GL_LUMINANCE) fmt = GL_RED;          //OpenGL 3.3 не имеет формата LUMINANCE
+
+        return (TextureSrcFormat::Enum) fmt;
 }
 
 TextureSrcType::Enum Image::type() {
         ilBindImage(m_handle);
         return (TextureSrcType::Enum) ilGetInteger(IL_IMAGE_TYPE);
 }
+
+
 
 void* Image::data() {
         ilBindImage(m_handle);

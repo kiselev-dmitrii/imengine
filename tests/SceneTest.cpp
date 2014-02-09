@@ -5,6 +5,7 @@
 #include <imEngine/Graphics/GUI/TextButton.h>
 #include <imEngine/Graphics/GUI/Panel.h>
 #include <imEngine/Graphics/GUI/Slider.h>
+#include <imEngine/Graphics/GUI/Text.h>
 #include <imEngine/Graphics/GUI/BoxLayout.h>
 #include <imEngine/Graphics/Scene/Material/PhongMaterial.h>
 
@@ -62,10 +63,12 @@ void Application::initialize() {
         m_shininessSlider->setMinMaxValues(0, 120);
         m_shininessSlider->setWidth(m_pnl->contentWidth());
 
+        m_diffuseLayout->addWidget(new Text("Diffuse color", m_diffuseLayout));
         m_diffuseLayout->addWidget(m_redSlider);
         m_diffuseLayout->addWidget(m_greenSlider);
         m_diffuseLayout->addWidget(m_blueSlider);
         m_diffuseLayout->addSpacing(20);
+        m_diffuseLayout->addWidget(new Text("Shininess", m_diffuseLayout));
         m_diffuseLayout->addWidget(m_shininessSlider);
 
         auto colorSetter = [&] (HSlider* slider) {
