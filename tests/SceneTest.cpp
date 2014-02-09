@@ -2,6 +2,7 @@
 #include <imEngine/Graphics/Scene/Scene.h>
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/Graphics/Scene/Entity/Polygonal.h>
+#include <imEngine/Graphics/Scene/Entity/Volume.h>
 #include <imEngine/Graphics/GUI/TextButton.h>
 #include <imEngine/Graphics/GUI/Panel.h>
 #include <imEngine/Graphics/GUI/Slider.h>
@@ -19,6 +20,9 @@ protected:
 private:
         Polygonal*        m_car;
         Polygonal*        m_wheel1;
+
+        Texture3D*              m_data;
+        Volume*                 m_volume;
 
         CameraAbstract*         m_firstCamera;
         CameraAbstract*         m_secondCamera;
@@ -42,10 +46,17 @@ void Application::initialize() {
         m_wheel1 = new Polygonal(Model("resources/models/wheel.xml"), m_car);
         m_wheel1->setPosition(Vec3(1.05,-0.7,0));
 
+        m_data = new Texture3D();
+        m_data->load(256,256,128, TextureInternalFormat::COLOR_NORM_1_COMP_8_BIT, TextureSrcType::UBYTE, TextureSrcFormat::R, "resources/texture/engine.raw");
+        m_volume = new Volume(m_data, scene()->world());
+        m_volume->setPosition(Vec3(3,3,0));
+
         m_firstCamera = scene()->currentCamera();
         m_secondCamera = new FirstPersonCamera(scene()->world());
         scene()->setCurrentCamera(m_secondCamera);
 
+
+        /*
         m_pnl = new Panel("regular_panel.png", gui()->root());
         m_pnl->setOpacity(0.9);
         m_pnl->setPadding(20);
@@ -90,6 +101,7 @@ void Application::initialize() {
         m_greenSlider->onValueChanged += colorSetter;
         m_blueSlider->onValueChanged += colorSetter;
         m_shininessSlider->onValueChanged += colorSetter;
+        */
 
 }
 
@@ -98,6 +110,10 @@ void Application::keyPressEvent(int key) {
         if (key == '1') scene()->setCurrentCamera(m_firstCamera);
         if (key == '2') scene()->setCurrentCamera(m_secondCamera);
         if (key == 'p') scene()->currentCamera()->setOrthographic(!scene()->currentCamera()->isOrthographic());
+        if (key == 'r') {
+                m_volume->program()->loadSourceFromFile("resources/shaders/VolumeRender.glsl");
+                m_volume->program()->build();
+        }
 }
 
 int main() {

@@ -42,9 +42,7 @@ namespace Debug {
 
         /// Вывод ошибки в лог
         #define IM_ERROR(text)\
-                std::clog << imEngine::Debug::currentTimeStamp() << " ERROR: Function " <<  __FUNCTION__ << "(...) , Fine: " << __FILE__ << ", Line: " << __LINE__ << ", Cause: " << text << std::endl;\
-                exit(-1);
-
+                std::clog << imEngine::Debug::currentTimeStamp() << " ERROR: Function " <<  __FUNCTION__ << "(...) , Fine: " << __FILE__ << ", Line: " << __LINE__ << ", Cause: " << text << std::endl
 
         /// Просто сообщение в лог
         #define IM_LOG(text)\

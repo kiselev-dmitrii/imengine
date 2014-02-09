@@ -17,8 +17,16 @@ public:
         /// Конструктор.
         Volume(Texture3D* texture, SceneObject* parent);
 
+        /// Устанавливает/возвращает текстуру с данными
+        void            setTexture(Texture3D* texture);
+        Texture3D*      texture();
+
+        /// Возвращает программу с котрой происходит рендер
+        ProgramPtr      program()                                               { return s_program; }
+
         /// Рендерит объем
         void            render();
+
 
 private:
         /// Инициализирует GPU программу
