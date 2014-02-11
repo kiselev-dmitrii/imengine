@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <imEngine/Graphics/GAPI/Texture/Texture2D.h>
 #include <imEngine/Graphics/GAPI/Texture/CubeTexture.h>
+#include "Renderbuffer.h"
 
 namespace imEngine {
 
@@ -33,10 +34,12 @@ public:
         /// Приcоединяет/отсоединяет текстуру/рендер буфер в качестве i-того цветового буфера
         void                    attachColorBuffer(uint i, Texture2D* texture, uint mipmapLevel = 0);
         void                    attachColorBuffer(uint i, CubeTexture* texture, CubeTextureSide::Enum side, uint mipmapLevel = 0);
+        void                    attachColorBuffer(uint i, Renderbuffer* renderbuffer);
         void                    detachColorBuffer(uint i);
 
         /// Привязывает текстуру/ренедрбуфер в качестве буфера глубины
         void                    attachDepthBuffer(Texture2D* texture, uint mipmapLevel = 0);
+        void                    attachDepthBuffer(Renderbuffer* renderbuffer);
         void                    detachDepthBuffer();
 
         /// Проверяет буфер на валидность (подключены ли нужные буфера и т.д)

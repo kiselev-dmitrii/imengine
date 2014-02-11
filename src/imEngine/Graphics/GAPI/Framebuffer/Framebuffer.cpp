@@ -20,31 +20,48 @@ Framebuffer::~Framebuffer() {
 void Framebuffer::attachColorBuffer(uint i, Texture2D *texture, uint mipmapLevel) {
         bind();
         IM_GLCALL(glFramebufferTexture2D(m_target, GL_COLOR_ATTACHMENT0+i, GL_TEXTURE_2D, texture->handle(), mipmapLevel));
+        unbind();
 }
 
 void Framebuffer::attachColorBuffer(uint i, CubeTexture *texture, CubeTextureSide::Enum side, uint mipmapLevel) {
         IM_TODO;
 }
 
+void Framebuffer::attachColorBuffer(uint i, Renderbuffer *renderbuffer) {
+        bind();
+        IM_GLCALL(glFramebufferRenderbuffer(m_target, GL_COLOR_ATTACHMENT0+i, GL_RENDERBUFFER, renderbuffer->handle()));
+        unbind();
+}
+
 void Framebuffer::detachColorBuffer(uint i) {
         bind();
         IM_GLCALL(glFramebufferTexture2D(m_target, GL_COLOR_ATTACHMENT0+i, GL_TEXTURE_2D, 0, 0));
+        unbind();
 }
 
 void Framebuffer::attachDepthBuffer(Texture2D *texture, uint mipmapLevel) {
         bind();
         IM_GLCALL(glFramebufferTexture2D(m_target, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture->handle(), mipmapLevel));
+        unbind();
+}
+
+void Framebuffer::attachDepthBuffer(Renderbuffer *renderbuffer) {
+        bind();
+        IM_GLCALL(glFramebufferRenderbuffer(m_target, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer->handle()));
+        unbind();
 }
 
 void Framebuffer::detachDepthBuffer() {
         bind();
         IM_GLCALL(glFramebufferTexture2D(m_target, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, 0, 0));
+        unbind();
 }
 
 bool Framebuffer::isValid() {
         bind();
-
         GLenum status = IM_GLCALL(glCheckFramebufferStatus(m_target));
+        unbind();
+
         if (status != GL_FRAMEBUFFER_COMPLETE) {
                 IM_ERROR("Framebuffer" << m_handle << " is incomplete: " << GLUtils::convertEnumToString(status));
                 return false;

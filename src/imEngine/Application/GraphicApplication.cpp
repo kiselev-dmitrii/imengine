@@ -13,6 +13,8 @@ Scene* GraphicApplication::scene() const {
 
 void GraphicApplication::initialize() {
         glClearColor(1,1,1,1);
+        Renderer::setViewportSize(mainWindow()->size());
+
         m_scene = new Scene(this);
         m_gui = new GuiManager("resources/gui/elementary/", this);
         m_fps = new FpsViewer(m_gui->root());

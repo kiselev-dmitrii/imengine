@@ -29,16 +29,16 @@ namespace SourceType {
   */
 namespace SourceFormat {
         enum Enum {
-                RGBA                    = GL_RGBA,      ///< 4 компоненты
+                RGBA                    = GL_RGBA,              ///< 4 компоненты
                 BGRA                    = GL_BGRA,
 
-                RGB                     = GL_RGB,       ///< 3 компоненты
+                RGB                     = GL_RGB,               ///< 3 компоненты
                 BGR                     = GL_BGR,
 
-                RG                      = GL_RG,        ///< 2 компоненты
+                RG                      = GL_RG,                ///< 2 компоненты
 
-                R                       = GL_RED,       ///< 1 компонента
-                DEPTH                   = GL_DEPTH
+                R                       = GL_RED,               ///< 1 компонента
+                DEPTH                   = GL_DEPTH_COMPONENT
         };
 
         int numComponents(SourceFormat::Enum srcFormat);

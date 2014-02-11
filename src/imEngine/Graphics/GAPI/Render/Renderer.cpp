@@ -62,7 +62,7 @@ void Renderer::setViewportSize(const IVec2 &size) {
         s_viewportSize = size;
 }
 
-const IVec2& Renderer::viewportSize() const {
+const IVec2& Renderer::viewportSize() {
         return s_viewportSize;
 }
 

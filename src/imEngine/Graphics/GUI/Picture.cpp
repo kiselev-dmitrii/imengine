@@ -17,6 +17,14 @@ Picture::Picture(Texture2DPtr texture, WidgetAbstract *parent) :
         initBuffers();
 }
 
+void Picture::setTexture(Texture2DPtr texture) {
+        m_texture = texture;
+}
+
+Texture2DPtr Picture::texture() const {
+        return m_texture;
+}
+
 void Picture::setWidth(float width) {
         if (width < minimalSize().x) return;
 

@@ -47,7 +47,7 @@ public:
 
         /// Устанавливает/возвращает размеры вьюпорта
         static void             setViewportSize(const IVec2& size);
-        const IVec2&            viewportSize() const;
+        static const IVec2&     viewportSize();
 
         /// Устанавливает/возвращает режим смешивания
         static void             setBlendMode(BlendMode::Enum blendMode);

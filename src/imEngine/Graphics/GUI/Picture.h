@@ -13,16 +13,20 @@ public:
         /// Принимает на вход текстуру для отображения
         Picture(Texture2DPtr texture, WidgetAbstract* parent);
 
+        /// Устанавливает/возвращает текстуру
+        void            setTexture(Texture2DPtr texture);
+        Texture2DPtr    texture() const;
+
         /// Устанавливает размеры виджета
-        void    setWidth(float width);
-        void    setHeight(float height);
+        void            setWidth(float width);
+        void            setHeight(float height);
 
         /// Рендерит текстуру
-        void    onRender();
+        void            onRender();
 
 private:
-        void    initProgram();
-        void    initBuffers();
+        void            initProgram();
+        void            initBuffers();
 
 private:
         Texture2DPtr            m_texture;
