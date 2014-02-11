@@ -50,11 +50,6 @@ void Application::initialize() {
         m_colorAttachment->allocate(fboSize.x, fboSize.y, InternalFormat::COLOR_NORM_4_COMP_8_BIT, SourceType::UBYTE, SourceFormat::RGBA);
 
         m_depthAttachment = Texture2DPtr(new Texture2D());
-        m_depthAttachment->setWrap(TextureWrapMode::REPEAT);
-        m_depthAttachment->setMagnificationFilter(TextureMagFilter::NEAREST);
-        m_depthAttachment->setMinimizationFilter(TextureMinFilter::NEAREST);
-        m_depthAttachment->setCompareMode(TextureCompareMode::REF_TO_TEXTURE);
-        m_depthAttachment->setCompareFunction(TextureCompareFunction::LESS_OR_EQUAL);
         m_depthAttachment->allocate(fboSize.x, fboSize.y, InternalFormat::DEPTH_NORM_1_COMP_24_BIT, SourceType::UBYTE, SourceFormat::DEPTH);
 
         m_fbo = new Framebuffer();
@@ -92,11 +87,8 @@ void Application::keyPressEvent(int key) {
         GraphicApplication::keyPressEvent(key);
         if (key == '1') std::swap(m_firstCamera, m_secondCamera);
         if (key == '2') {
-                if (m_picture->texture() == m_colorAttachment) {
-                        m_picture->setTexture(m_depthAttachment);
-                } else {
-                        m_picture->setTexture(m_colorAttachment);
-                }
+                if (m_picture->texture() == m_colorAttachment) m_picture->setTexture(m_depthAttachment);
+                else m_picture->setTexture(m_colorAttachment);
         }
 }
 
