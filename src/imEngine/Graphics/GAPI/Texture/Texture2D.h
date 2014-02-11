@@ -17,11 +17,11 @@ public:
         Texture2D();
 
         /// Загружает данные в текстуру из src
-        void            load(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid* src,  uint srcAlignment = 4);
+        void            load(int width, int height, InternalFormat::Enum internal, SourceType::Enum srcType, SourceFormat::Enum srcFormat, GLvoid* src,  uint srcAlignment = 4);
         /// Загружает данные в текстуру из зображения filename
         void            load(const String& filename);
         /// Выделяет область пустую область видеопамяти. Предыдущее содержание уничтожается
-        void            allocate(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat);
+        void            allocate(int width, int height, InternalFormat::Enum internal, SourceType::Enum srcType, SourceFormat::Enum srcFormat);
         /// Вставляет внутрь текстуры изображение. Тип и формат данных должен быть тот же, что и у текстуры
         void            insert(int startX, int startY, int width, int height, GLvoid* src, uint srcAlignment = 4, int level = 0);
         /// Очищает текстуру

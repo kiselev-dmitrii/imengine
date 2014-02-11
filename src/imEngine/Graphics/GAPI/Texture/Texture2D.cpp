@@ -8,7 +8,7 @@ namespace imEngine {
 Texture2D::Texture2D() : Texture(TextureTarget::TEXTURE_2D) {
 }
 
-void Texture2D::load(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid *src, uint srcAlignment) {
+void Texture2D::load(int width, int height, InternalFormat::Enum internal, SourceType::Enum srcType, SourceFormat::Enum srcFormat, GLvoid *src, uint srcAlignment) {
         bind();
 
         if (srcAlignment !=4 ) IM_GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, srcAlignment));             //если выравнивание не стандартное, то изменяем
@@ -23,10 +23,10 @@ void Texture2D::load(int width, int height, TextureInternalFormat::Enum internal
 void Texture2D::load(const String &filename) {
         Image img(filename);
         img.flipVertically();                                                                           //OpenGL должен получать данные изображения в отраженном виде
-        load(img.width(), img.height(), (TextureInternalFormat::Enum) img.format(), img.type(), img.format(), img.data());
+        load(img.width(), img.height(), (InternalFormat::Enum) img.format(), img.type(), img.format(), img.data());
 }
 
-void Texture2D::allocate(int width, int height, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat) {
+void Texture2D::allocate(int width, int height, InternalFormat::Enum internal, SourceType::Enum srcType, SourceFormat::Enum srcFormat) {
         load(width, height, internal, srcType, srcFormat, NULL);
 }
 

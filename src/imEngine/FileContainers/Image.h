@@ -45,9 +45,9 @@ public:
         int                     size();
 
         /// Возвращает формат изображения
-        TextureSrcFormat::Enum  format();
+        SourceFormat::Enum      format();
         /// Возвращает тип изображения
-        TextureSrcType::Enum    type();
+        SourceType::Enum        type();
         /// Возвращает указатель на начало данных
         void*                   data();
 

@@ -74,18 +74,18 @@ int Image::size() {
         return ilGetInteger(IL_IMAGE_SIZE_OF_DATA);
 }
 
-TextureSrcFormat::Enum Image::format() {
+SourceFormat::Enum Image::format() {
         ilBindImage(m_handle);
 
         GLenum fmt = ilGetInteger(IL_IMAGE_FORMAT);
         if (fmt == GL_LUMINANCE) fmt = GL_RED;          //OpenGL 3.3 не имеет формата LUMINANCE
 
-        return (TextureSrcFormat::Enum) fmt;
+        return (SourceFormat::Enum) fmt;
 }
 
-TextureSrcType::Enum Image::type() {
+SourceType::Enum Image::type() {
         ilBindImage(m_handle);
-        return (TextureSrcType::Enum) ilGetInteger(IL_IMAGE_TYPE);
+        return (SourceType::Enum) ilGetInteger(IL_IMAGE_TYPE);
 }
 
 

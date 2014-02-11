@@ -49,7 +49,7 @@ void Application::initialize() {
         IM_VAR(GLUtils::convertEnumToString(m_texture1->internalFormat()));
 
         m_texture2 = new Texture2D();
-        m_texture2->allocate(512, 512, TextureInternalFormat::COLOR_FLOAT_3_COMP_32_BIT, TextureSrcType::FLOAT, TextureSrcFormat::RGB);
+        m_texture2->allocate(512, 512, InternalFormat::COLOR_FLOAT_3_COMP_32_BIT, SourceType::FLOAT, SourceFormat::RGB);
         m_texture2->save("resources/texture/texture_2d_empty_out.raw");
         IM_VAR(m_texture2->width());
         IM_VAR(m_texture2->height());

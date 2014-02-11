@@ -4,36 +4,10 @@
 
 namespace imEngine {
 
-int TextureSrcType::sizeOf(TextureSrcType::Enum srcType) {
-       return GLUtils::sizeOf(srcType);
-}
-
-int TextureSrcFormat::numComponents(TextureSrcFormat::Enum srcFormat) {
-        switch (srcFormat) {
-                case TextureSrcFormat::BGRA:
-                case TextureSrcFormat::RGBA:
-                        return 4;
-
-                case TextureSrcFormat::BGR:
-                case TextureSrcFormat::RGB:
-                        return 3;
-
-                case TextureSrcFormat::RG:
-                        return 2;
-
-                case TextureSrcFormat::R:
-                case TextureSrcFormat::DEPTH:
-                        return 1;
-
-                default:
-                        return 0;
-        }
-}
-
-//########################### Texture ########################################//
 
 GLuint Texture::s_boundHandle = 0;
 int    Texture::s_currentUnit = 0;
+
 
 Texture::Texture(TextureTarget::Enum target)  {
         m_handle = 0;
@@ -79,12 +53,12 @@ uint Texture::numberOfImages() {
 
 int Texture::numberOfChannels() {
         IM_ASSERT(m_wasMemoryAllocated);
-        return TextureSrcFormat::numComponents(m_srcFormat);
+        return SourceFormat::numComponents(m_srcFormat);
 }
 
 int Texture::sizeOfComponent() {
         IM_ASSERT(m_wasMemoryAllocated);
-        return TextureSrcType::sizeOf(m_srcType) ;
+        return SourceType::sizeOf(m_srcType) ;
 }
 
 int Texture::sizeOfData() {
@@ -95,17 +69,17 @@ bool Texture::wasMemoryAllocated() {
         return m_wasMemoryAllocated;
 }
 
-TextureInternalFormat::Enum Texture::internalFormat() {
+InternalFormat::Enum Texture::internalFormat() {
         IM_ASSERT(m_wasMemoryAllocated);
         return m_internalFormat;
 }
 
-TextureSrcFormat::Enum Texture::sourceFormat() {
+SourceFormat::Enum Texture::sourceFormat() {
         IM_ASSERT(m_wasMemoryAllocated);
         return m_srcFormat;
 }
 
-TextureSrcType::Enum Texture::sourceType() {
+SourceType::Enum Texture::sourceType() {
         IM_ASSERT(m_wasMemoryAllocated);
         return m_srcType;
 }
@@ -199,8 +173,8 @@ std::shared_ptr<ubyte> Texture::data() {
         return std::shared_ptr<ubyte>(data);
 }
 
-void Texture::updateTextureInformation(GLsizei width, GLsizei height, GLsizei depth, uint numberOfImages, TextureInternalFormat::Enum internalFormat,
-                                       TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, bool wasMemoryAllocated) {
+void Texture::updateTextureInformation(GLsizei width, GLsizei height, GLsizei depth, uint numberOfImages, InternalFormat::Enum internalFormat,
+                                       SourceType::Enum srcType, SourceFormat::Enum srcFormat, bool wasMemoryAllocated) {
         m_width = width;
         m_height = height;
         m_depth = depth;
@@ -210,7 +184,6 @@ void Texture::updateTextureInformation(GLsizei width, GLsizei height, GLsizei de
         m_srcFormat = srcFormat;
         m_wasMemoryAllocated = wasMemoryAllocated;
 }
-
 
 
 } //namespace imEngine

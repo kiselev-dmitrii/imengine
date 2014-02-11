@@ -20,7 +20,7 @@ private:
 
 void Application::initialize() {
         m_engine = new Texture3D();
-        m_engine->load(256,256,128, TextureInternalFormat::COLOR_NORM_1_COMP_8_BIT, TextureSrcType::UBYTE, TextureSrcFormat::R, "resources/texture/engine.raw");
+        m_engine->load(256,256,128, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/texture/engine.raw");
         IM_VAR(m_engine->width());
         IM_VAR(m_engine->height());
         IM_VAR(m_engine->depth());

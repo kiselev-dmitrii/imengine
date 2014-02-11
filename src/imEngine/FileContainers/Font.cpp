@@ -72,7 +72,7 @@ void Font::initTexture() {
 
         // Создаем текстуру нужного размера
         IVec2 size = calculateTextureSize(m_face);
-        m_texture->allocate(size.x, size.y, TextureInternalFormat::COLOR_NORM_1_COMP_8_BIT, TextureSrcType::UBYTE, TextureSrcFormat::R);
+        m_texture->allocate(size.x, size.y, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R);
         m_texture->clear();
 
         // Заполняем текстуру глифами

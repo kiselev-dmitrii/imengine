@@ -148,9 +148,9 @@ Texture2DPtr GuiManager::generateTextureAtlas(const ImageList &images) const {
         texture->setMinimizationFilter(TextureMinFilter::LINEAR);
 
         IVec2 size = calcSizeOfTextureAtlas(images);
-        TextureSrcType::Enum srcType = images[0]->type();                // формат и тип у всех изображений один и тот же
-        TextureSrcFormat::Enum srcFormat = images[0]->format();
-        texture->allocate(size.x, size.y, TextureInternalFormat::COLOR_FLOAT_4_COMP_32_BIT, srcType, srcFormat);
+        SourceType::Enum srcType = images[0]->type();                // формат и тип у всех изображений один и тот же
+        SourceFormat::Enum srcFormat = images[0]->format();
+        texture->allocate(size.x, size.y, InternalFormat::COLOR_FLOAT_4_COMP_32_BIT, srcType, srcFormat);
         texture->clear();
 
         /// Вставляем наши изображения в текстуру

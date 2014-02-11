@@ -8,8 +8,8 @@ namespace imEngine {
 Texture1D::Texture1D() : Texture(TextureTarget::TEXTURE_1D) {
 }
 
-void Texture1D::load(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType,
-                     TextureSrcFormat::Enum srcFormat, GLvoid *src, uint srcAlignment) {
+void Texture1D::load(int width, InternalFormat::Enum internal, SourceType::Enum srcType,
+                     SourceFormat::Enum srcFormat, GLvoid *src, uint srcAlignment) {
         bind();
 
         if (srcAlignment !=4 ) IM_GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, srcAlignment));             //если выравнивание не стандартное, то изменяем
@@ -23,10 +23,10 @@ void Texture1D::load(int width, TextureInternalFormat::Enum internal, TextureSrc
 
 void Texture1D::load(const String &filename) {
         Image img(filename);
-        load(img.width(), (TextureInternalFormat::Enum) img.format(), img.type(), img.format(), img.data());
+        load(img.width(), (InternalFormat::Enum) img.format(), img.type(), img.format(), img.data());
 }
 
-void Texture1D::allocate(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat) {
+void Texture1D::allocate(int width, InternalFormat::Enum internal, SourceType::Enum srcType, SourceFormat::Enum srcFormat) {
         load(width, internal, srcType, srcFormat, NULL);
 }
 

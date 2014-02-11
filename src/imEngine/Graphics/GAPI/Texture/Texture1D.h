@@ -18,11 +18,11 @@ public:
         Texture1D();
 
         /// Загружает данные в текстуру из src
-        void            load(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat, GLvoid* src, uint srcAlignment = 4);
+        void            load(int width, InternalFormat::Enum internal, SourceType::Enum srcType, SourceFormat::Enum srcFormat, GLvoid* src, uint srcAlignment = 4);
         /// Загружает данные в текстуру из изображения filename
         void            load(const String& filename);
         /// Выделяет область памяти размера width
-        void            allocate(int width, TextureInternalFormat::Enum internal, TextureSrcType::Enum srcType, TextureSrcFormat::Enum srcFormat);
+        void            allocate(int width, InternalFormat::Enum internal, SourceType::Enum srcType, SourceFormat::Enum srcFormat);
 
         /// Сохраняет данные в виде изображения 1xWidth()
         void            save(const String& filename, bool overwrite = true);
