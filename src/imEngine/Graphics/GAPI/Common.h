@@ -76,6 +76,9 @@ namespace InternalFormat {
                 // Depth ненормализованные
                 DEPTH_FLOAT_1_COMP_32_BIT               = GL_DEPTH_COMPONENT32F
         };
+
+        SourceFormat::Enum      assumeSourceFormat(InternalFormat::Enum internal);
+        SourceType::Enum        assumeSourceType(InternalFormat::Enum internal);
 }
 
 

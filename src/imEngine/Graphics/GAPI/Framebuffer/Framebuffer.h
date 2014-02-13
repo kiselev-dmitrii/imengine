@@ -54,12 +54,20 @@ public:
         /// Возвращает точку привязки буфера
         FramebufferTarget::Enum target();
 
+public:
+        static uint             maxColorAttachments();
+
 private:
         GLuint                  m_handle;
         FramebufferTarget::Enum m_target;
 
         static GLuint           s_boundHandle;
 };
+
+
+/** @brief Умный указатель на Renderbuffer
+ */
+typedef std::shared_ptr<Framebuffer> FramebufferPtr;
 
 
 } //namespace imEngine

@@ -90,5 +90,13 @@ FramebufferTarget::Enum Framebuffer::target() {
         return m_target;
 }
 
+uint Framebuffer::maxColorAttachments() {
+        static int maxColorAttachments = -1;
+        if (maxColorAttachments == -1) {
+                IM_GLCALL(glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxColorAttachments));
+        }
+        return maxColorAttachments;
+}
+
 }
 
