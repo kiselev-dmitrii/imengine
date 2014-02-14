@@ -5,6 +5,8 @@
 #include <imEngine/Graphics/GUI/Picture.h>
 #include <imEngine/Graphics/GAPI/Framebuffer/Framebuffer.h>
 #include <imEngine/Graphics/RenderTarget.h>
+#include <imEngine/Graphics/Scene/PostEffects/Blur.h>
+#include <imEngine/Graphics/PrimitiveRenderer.h>
 
 using namespace imEngine;
 
@@ -22,14 +24,17 @@ private:
         CameraAbstract*         m_firstCamera;
         CameraAbstract*         m_secondCamera;
 
-        RenderTarget*           m_renderTarget;
-        Framebuffer*            m_fbo;
-        Texture2DPtr            m_diffuseAttachment;
-        Texture2DPtr            m_specularAttachment;
-        Texture2DPtr            m_normalAttachment;
-        Texture2DPtr            m_depthAttachment;
+        RenderTarget*           m_rt1;
+        RenderTarget*           m_rt2;
+        GeometryPtr             m_quad;
+
+        HBlur*                  m_hblur;
+        VBlur*                  m_vblur;
 
         Picture*                m_picture;
+
+        VertexArrayPtr          m_vao;
+        VertexBufferPtr         m_vbo;
 };
 
 
@@ -46,24 +51,63 @@ void Application::initialize() {
         m_secondCamera = new FirstPersonCamera(scene()->world());
         scene()->setCurrentCamera(m_secondCamera);
 
-        /// FBO
-        m_renderTarget = new RenderTarget(mainWindow()->size()/4);
-        m_renderTarget->enableColorBuffer(0, InternalFormat::COLOR_NORM_3_COMP_8_BIT, true);
-        m_renderTarget->enableColorBuffer(1, InternalFormat::COLOR_NORM_3_COMP_8_BIT, true);
-        m_renderTarget->enableColorBuffer(2, InternalFormat::COLOR_NORM_3_COMP_8_BIT, true);
-        m_renderTarget->enableDepthBuffer(InternalFormat::DEPTH_NORM_1_COMP_24_BIT, true);
+        m_quad = Geometry::plane();
+        m_hblur = new HBlur();
+        m_hblur->setSigma(20.0);
+        m_vblur = new VBlur();
+        m_vblur->setSigma(20.0);
 
-        m_picture = new Picture(m_renderTarget->colorBufferTexture(0), gui()->root());
+        /// Buffers
+        m_vbo = VertexBufferPtr(new VertexBuffer());
+        m_vao = VertexArrayPtr(new VertexArray());
+        m_vao->bind();
+                m_vbo->connect(0, 2, GL_FLOAT, 0, 0);
+        m_vao->unbind();
+
+        Vec2 lb(-1, -1);
+        Vec2 rb(1, -1);
+        Vec2 lt(-1, 1);
+        Vec2 rt(1, 1);
+        Vec2 data[] = {lb, rb, lt, rt};
+        m_vbo->load(data, sizeof(data), BufferUsage::DYNAMIC_DRAW);
+
+        /// FBO
+        m_rt1 = new RenderTarget(mainWindow()->size()/4);
+        m_rt1->enableColorBuffer(0, InternalFormat::COLOR_NORM_3_COMP_8_BIT, true);
+        m_rt1->enableDepthBuffer(InternalFormat::DEPTH_NORM_1_COMP_16_BIT, false);
+
+        m_rt2 = new RenderTarget(m_rt1->size());
+        m_rt2->enableColorBuffer(0, InternalFormat::COLOR_NORM_3_COMP_8_BIT, true);
+
+        m_picture = new Picture(m_rt1->colorBufferTexture(0), gui()->root());
         m_picture->setPosition(Vec2(0, 30));
 
 }
 
 void Application::render() {
-        m_renderTarget->bind();
+        m_rt1->bind();
                 Renderer::clearBuffers();
                 scene()->setCurrentCamera(m_firstCamera);
                 scene()->processRender();
-        m_renderTarget->unbind();
+        m_rt1->unbind();
+
+        m_rt2->bind();
+                Renderer::clearBuffers();
+                m_hblur->setTexture(m_rt1->colorBufferTexture(0).get());
+                m_hblur->bind();
+                        m_vao->bind();
+                        Renderer::renderVertices(Primitive::TRIANGLE_STRIP, 4);
+                m_hblur->unbind();
+        m_rt2->unbind();
+
+        m_rt1->bind();
+                Renderer::clearBuffers();
+                m_vblur->setTexture(m_rt2->colorBufferTexture(0).get());
+                m_vblur->bind();
+                        m_vao->bind();
+                        Renderer::renderVertices(Primitive::TRIANGLE_STRIP, 4);
+                m_vblur->unbind();
+        m_rt1->unbind();
 
         Renderer::clearBuffers();
         scene()->setCurrentCamera(m_secondCamera);
@@ -75,15 +119,12 @@ void Application::render() {
 void Application::keyPressEvent(int key) {
         GraphicApplication::keyPressEvent(key);
         if (key == 'r') std::swap(m_firstCamera, m_secondCamera);
-        if (key == '1') m_picture->setTexture(m_renderTarget->colorBufferTexture(0));
-        if (key == '2') m_picture->setTexture(m_renderTarget->colorBufferTexture(1));
-        if (key == '3') m_picture->setTexture(m_renderTarget->colorBufferTexture(2));
 }
 
 void Application::destroy() {
         GraphicApplication::destroy();
 
-        delete m_renderTarget;
+        delete m_rt1;
 }
 
 int main() {
