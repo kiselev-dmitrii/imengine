@@ -96,7 +96,7 @@ const Vec3& SceneObject::worldScale() {
 }
 
 void SceneObject::translate(const Vec3 &delta, Space space) {
-        SceneObject* p = (SceneObject*)m_parent;
+        SceneObject* p = m_parent;
 
         switch (space) {
                 case Space::LOCAL:
@@ -165,12 +165,12 @@ Quat SceneObject::convertWorldToLocal(const Quat &wsQuat) {
 }
 
 Vec3 SceneObject::convertWorldToParent(const Vec3 &wsVec) {
-        if (m_parent) return ((SceneObject*)m_parent)->convertWorldToLocal(wsVec);
+        if (m_parent) return m_parent->convertWorldToLocal(wsVec);
         else return wsVec;
 }
 
 Quat SceneObject::convertWorldToParent(const Quat &wsQuat) {
-        if (m_parent) return ((SceneObject*)m_parent)->convertWorldToLocal(wsQuat);
+        if (m_parent) return m_parent->convertWorldToLocal(wsQuat);
         else return wsQuat;
 }
 
@@ -209,13 +209,13 @@ void SceneObject::notifyTransformUpdated() {
         m_isNeedToUpdateLocalToWorldMatrix = true;
         m_isNeedToUpdateWorldToLocalMatrix = true;
 
-        for (TreeNode* node: children()) ((SceneObject*)node)->notifyTransformUpdated();
+        for (SceneObject* node: children()) node->notifyTransformUpdated();
 }
 
 void SceneObject::updateWorldTransform() {
         if (!m_isNeedToUpdateWorldTransform) return;
 
-        SceneObject* p = (SceneObject*)m_parent;
+        SceneObject* p = m_parent;
         if (p) {
                 Vec3 wsParentPos = p->worldPosition();
                 Quat wsParentOrient = p->worldOrientation();

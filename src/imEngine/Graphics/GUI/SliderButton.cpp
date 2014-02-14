@@ -46,7 +46,7 @@ void HSliderButton::onGlobalMouseMove(int x, int y) {
 
         float posx = left();
         float start = m_startOffset;
-        float end = ((WidgetAbstract*)parent())->width() - m_endOffset - width();
+        float end = parent()->width() - m_endOffset - width();
         if (posx >= start && posx <= end) {
                 // Обновляем позицию
                 float delta = (absoluteToLocal(Vec2(x,y)) - m_mousePosition).x;
@@ -66,7 +66,7 @@ void HSliderButton::setPercent(float percent) {
 
         // Устанавливаем позицию исходя из процентов
         float start = m_startOffset;
-        float end = ((WidgetAbstract*)parent())->width() - m_endOffset - width();
+        float end = parent()->width() - m_endOffset - width();
         setLeft(start + m_percent*(end-start));
 
         // Сообщаем родителю, что позиция слайдера изменилась
@@ -75,7 +75,7 @@ void HSliderButton::setPercent(float percent) {
 
 void HSliderButton::setValidPosition(const Vec2 &position) {
         float start = m_startOffset;
-        float end = ((WidgetAbstract*)parent())->width() - m_endOffset - width();
+        float end = parent()->width() - m_endOffset - width();
         setLeft(glm::clamp(position.x - width()/2, start, end));
 
         // Сообщаем родителю, что позиция слайдера изменилась
@@ -94,7 +94,7 @@ void VSliderButton::onGlobalMouseMove(int x, int y) {
 
         float posy = top();
         float start = m_startOffset;
-        float end = ((WidgetAbstract*)parent())->height() - m_endOffset - height();
+        float end = parent()->height() - m_endOffset - height();
         if (posy >= start && posy <= end) {
                 // Обновляем позицию
                 float delta = (absoluteToLocal(Vec2(x,y)) - m_mousePosition).y;
@@ -114,7 +114,7 @@ void VSliderButton::setPercent(float percent) {
 
         // Обновляем позицию
         float start = m_startOffset;
-        float end = ((WidgetAbstract*)parent())->height() - m_endOffset - height();
+        float end = parent()->height() - m_endOffset - height();
         setTop(start + (1 - m_percent)*(end - start));
 
         // Сообщаем родителю, что позиция слайдера изменилась
@@ -123,7 +123,7 @@ void VSliderButton::setPercent(float percent) {
 
 void VSliderButton::setValidPosition(const Vec2 &position) {
         float start = m_startOffset;
-        float end = ((WidgetAbstract*)parent())->height() - m_endOffset - height();
+        float end = parent()->height() - m_endOffset - height();
         setTop(glm::clamp(position.y - height()/2, start, end));
 
         // Сообщаем родителю, что позиция слайдера изменилась

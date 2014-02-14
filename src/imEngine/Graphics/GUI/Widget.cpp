@@ -76,7 +76,7 @@ void WidgetAbstract::clearFocus() {
 
 void WidgetAbstract::setOpacity(float opacity) {
         m_opacity = glm::clamp(opacity, 0.0f, 1.0f);
-        for (TreeNode* node: children()) ((WidgetAbstract*)node)->setOpacity(m_opacity);
+        for (WidgetAbstract* node: children()) node->setOpacity(m_opacity);
 }
 
 float WidgetAbstract::opacity() const {
@@ -135,10 +135,10 @@ void WidgetAbstract::alignHorizontal(WidgetHAlignment::Enum align) {
                         setLeft(0.0f);
                         break;
                 case WidgetHAlignment::CENTER:
-                        setLeft(((WidgetAbstract*)parent())->contentWidth()/2 - width()/2);
+                        setLeft(parent()->contentWidth()/2 - width()/2);
                         break;
                 case WidgetHAlignment::RIGHT:
-                        setLeft(((WidgetAbstract*)parent())->contentWidth() - width());
+                        setLeft(parent()->contentWidth() - width());
                         break;
         }
 }
@@ -151,10 +151,10 @@ void WidgetAbstract::alignVertical(WidgetVAlignment::Enum align) {
                         setTop(0.0f);
                         break;
                 case WidgetVAlignment::CENTER:
-                        setTop(((WidgetAbstract*)parent())->contentHeight()/2 - height()/2);
+                        setTop(parent()->contentHeight()/2 - height()/2);
                         break;
                 case WidgetVAlignment::BOTTOM:
-                        setTop(((WidgetAbstract*)parent())->contentHeight() - height());
+                        setTop(parent()->contentHeight() - height());
                         break;
         }
 }
@@ -166,7 +166,7 @@ Vec2 WidgetAbstract::absolutePosition() {
 
 void WidgetAbstract::setAbsolutePosition(const Vec2 &position) {
         if (m_parent) {
-                setPosition(position - ((WidgetAbstract*)m_parent)->absolutePosition());
+                setPosition(position - m_parent->absolutePosition());
         } else {
                 setPosition(position);
         }
@@ -223,7 +223,7 @@ void WidgetAbstract::processRender() {
 
 void WidgetAbstract::processUpdate() {
         onUpdate();
-        for (TreeNode* node: children()) ((WidgetAbstract*)node)->processUpdate();
+        for (WidgetAbstract* node: children()) node->processUpdate();
 }
 
 bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
@@ -238,8 +238,8 @@ bool WidgetAbstract::processMouseMove(int oldX, int oldY, int newX, int newY) {
            Если дочерний виджет не среагировал - то обрабатываем данный
            Например, Label не должен реагировать на мышь, поэтому в перегруженных методах
            onMouseOver будет возвращаеться false, что даст false в processMouseMove. */
-        for (TreeNode* node: children()) {
-                bool done = ((WidgetAbstract*)node)->processMouseMove(oldX, oldY, newX, newY);
+        for (WidgetAbstract* node: children()) {
+                bool done = node->processMouseMove(oldX, oldY, newX, newY);
                 if (done) return true;
         }
 
@@ -260,8 +260,8 @@ bool WidgetAbstract::processMousePress(int x, int y, char button) {
         if (!isInsideWidget(x, y)) return false;
 
         // Обрабатываем сначала детей
-        for (TreeNode* node: children()) {
-                bool done = ((WidgetAbstract*)node)->processMousePress(x, y, button);
+        for (WidgetAbstract* node: children()) {
+                bool done = node->processMousePress(x, y, button);
                 if (done) return true;
         }
 
@@ -277,8 +277,8 @@ bool WidgetAbstract::processMouseRelease(int x, int y, char button) {
         if (!isInsideWidget(x, y)) return false;
 
         // Обрабатываем детей
-        for (TreeNode* node: children()) {
-                bool done = ((WidgetAbstract*)node)->processMouseRelease(x, y, button);
+        for (WidgetAbstract* node: children()) {
+                bool done = node->processMouseRelease(x, y, button);
                 if (done) return true;
         }
 
@@ -291,26 +291,22 @@ void WidgetAbstract::processGlobalMouseMove(int x, int y) {
         if (!m_isEnabled || !m_isVisible) return;
 
         onGlobalMouseMove(x, y);
-        for (TreeNode* node: children()) {
-                ((WidgetAbstract*)node)->processGlobalMouseMove(x ,y);
-        }
+        for (WidgetAbstract* node: children()) node->processGlobalMouseMove(x ,y);
 }
 
 void WidgetAbstract::processGlobalMousePress(int x, int y, char button) {
         if (!m_isEnabled || !m_isVisible) return;
 
         onGlobalMousePress(x, y, button);
-        for (TreeNode* node: children()) {
-                ((WidgetAbstract*)node)->processGlobalMousePress(x ,y, button);
-        }
+        for (WidgetAbstract* node: children()) node->processGlobalMousePress(x ,y, button);
 }
 
 void WidgetAbstract::processGlobalMouseRelease(int x, int y, char button) {
         if (!m_isEnabled || !m_isVisible) return;
 
         onGlobalMouseRelease(x, y, button);
-        for (TreeNode* node: children()) {
-                ((WidgetAbstract*)node)->processGlobalMouseRelease(x ,y, button);
+        for (WidgetAbstract* node: children()) {
+                node->processGlobalMouseRelease(x ,y, button);
         }
 }
 
@@ -321,7 +317,7 @@ bool WidgetAbstract::isInsideWidget(int x, int y) {
 }
 
 void WidgetAbstract::renderChildren() {
-        for (TreeNode* node: children()) ((WidgetAbstract*)node)->processRender();
+        for (WidgetAbstract* node: children()) node->processRender();
 }
 
 void WidgetAbstract::onAttachChild(TreeNode *node) {
@@ -334,13 +330,13 @@ void WidgetAbstract::onDetachChild(TreeNode *node) {
 
 void WidgetAbstract::notifyPositionUpdated() {
         m_isNeedToUpdateAbsolutePosition = true;
-        for (TreeNode* node: children()) {
-                ((WidgetAbstract*)node)->notifyPositionUpdated();
+        for (WidgetAbstract* node: children()) {
+                node->notifyPositionUpdated();
         }
 }
 
 void WidgetAbstract::updateAbsolutePosition() {
-        WidgetAbstract* pnt = ((WidgetAbstract*)m_parent);
+        WidgetAbstract* pnt = m_parent;
 
         if (m_isNeedToUpdateAbsolutePosition) {
                 if (pnt) {
