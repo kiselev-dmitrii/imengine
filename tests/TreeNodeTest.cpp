@@ -1,28 +1,21 @@
-#include <imEngine/Utils/TreeNode.h>
+#include <imEngine/Utils/TreeNamedNode.h>
 #include <imEngine/Utils/Types.h>
 #include <imEngine/Utils/Debug.h>
 #include <memory>
 
 using namespace imEngine;
 
-class Derived : public TreeNode<Derived> {
+class Derived : public TreeNamedNode<Derived> {
 public:
-        Derived(const String& name, Derived* parent = 0) : TreeNode(parent), m_name(name) {}
+        Derived(const String& name, Derived* parent = 0) : TreeNamedNode(name, parent) {}
         ~Derived() { IM_TRACE(m_name); }
-
-        const String& name() const { return m_name; }
 
         void render(int offset = 0) const {
                 for (int i = 0; i < offset; ++i) std::cout << "   ";
                 std::cout << name() << std::endl;
 
-                for (TreeNode* node: children()) {
-                        ((Derived*) node)->render(offset+1);
-                }
+                for (Derived* node: children()) node->render(offset+1);
         }
-
-private:
-        String          m_name;
 };
 
 int main() {
@@ -38,8 +31,14 @@ int main() {
         IM_UNUSED(bin);
         IM_UNUSED(share);
 
+
         root->render();
-        usr->setParent(sol);
+
+        Derived* ptr = root->find("share", true);
+        if (ptr) {
+                IM_TRACE("FOUND");
+                delete ptr;
+        }
         root->render();
 
         return 0;
