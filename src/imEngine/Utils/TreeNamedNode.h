@@ -52,6 +52,14 @@ public:
                 }
         }
 
+        /// Показывает иерархию (дебажный метод)
+        void dbgShowHierarchy(int offset = 0) {
+                for (int i = 0; i < offset; ++i) std::cout << "   ";
+                std::cout << m_name << std::endl;
+
+                for (Derived* node: TreeNode<Derived>::m_children) node->dbgShowHierarchy(offset+1);
+        }
+
 
 private:
         /// Генерирует имя

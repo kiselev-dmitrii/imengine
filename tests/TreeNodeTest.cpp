@@ -9,13 +9,6 @@ class Derived : public TreeNamedNode<Derived> {
 public:
         Derived(const String& name, Derived* parent = 0) : TreeNamedNode(name, parent) {}
         ~Derived() { IM_TRACE(m_name); }
-
-        void render(int offset = 0) const {
-                for (int i = 0; i < offset; ++i) std::cout << "   ";
-                std::cout << name() << std::endl;
-
-                for (Derived* node: children()) node->render(offset+1);
-        }
 };
 
 int main() {
@@ -32,14 +25,14 @@ int main() {
         IM_UNUSED(share);
 
 
-        root->render();
+        root->dbgShowHierarchy();
 
         Derived* ptr = root->find("share", true);
         if (ptr) {
                 IM_TRACE("FOUND");
                 delete ptr;
         }
-        root->render();
+        root->dbgShowHierarchy();
 
         return 0;
 }
