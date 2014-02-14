@@ -92,6 +92,8 @@ void Application::initialize() {
         m_edt2->setWidth(300);
         m_edits->addWidget(m_edt2);
 
+        gui()->root()->dbgShowHierarchy();
+
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }

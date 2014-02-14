@@ -7,7 +7,7 @@ using namespace imEngine;
 
 class Derived : public TreeNamedNode<Derived> {
 public:
-        Derived(const String& name, Derived* parent = 0) : TreeNamedNode(name, parent) {}
+        Derived(const String& name, Derived* parent = 0) : TreeNamedNode(parent, name) {}
         ~Derived() { IM_TRACE(m_name); }
 };
 

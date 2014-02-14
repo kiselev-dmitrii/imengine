@@ -8,7 +8,7 @@ namespace imEngine {
 WidgetAbstract* WidgetAbstract::s_focusedWidget = nullptr;
 
 WidgetAbstract::WidgetAbstract(WidgetAbstract *parent) :
-        TreeNode(parent),
+        TreeNamedNode(parent),
         m_manager(nullptr),
         m_position(0, 0),
         m_absolutePosition(0,0),

@@ -2,7 +2,7 @@
 #define WIDGET_H
 
 #include <imEngine/Graphics/GAPI/GAPI.h>
-#include <imEngine/Utils/TreeNode.h>
+#include <imEngine/Utils/TreeNamedNode.h>
 #include "GuiManager.h"
 
 
@@ -42,7 +42,7 @@ struct WidgetPadding {
  *  Данный класс отвечает за основные свойства виджетов, такие как
  *  их позиция и размер
  */
-class WidgetAbstract : public TreeNode<WidgetAbstract> {
+class WidgetAbstract : public TreeNamedNode<WidgetAbstract> {
 public:
         /// Конструктор. paret - указатель на родителя
         explicit WidgetAbstract(WidgetAbstract* parent);

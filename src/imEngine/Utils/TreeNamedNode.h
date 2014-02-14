@@ -14,7 +14,7 @@ template <typename Derived>
 class TreeNamedNode : public TreeNode<Derived> {
 public:
         /// Конструктор
-        TreeNamedNode(const String& name = "", Derived* parent = nullptr) :
+        TreeNamedNode(Derived* parent = nullptr, const String& name = "") :
                 TreeNode<Derived>(parent)
         {
                 if (name == "") m_name = generateName();
@@ -54,7 +54,8 @@ public:
 
         /// Показывает иерархию (дебажный метод)
         void dbgShowHierarchy(int offset = 0) {
-                for (int i = 0; i < offset; ++i) std::cout << "   ";
+                for (int i = 0; i < offset-1; ++i) std::cout << " | ";
+                if (offset >= 1) std::cout << " |_";
                 std::cout << m_name << std::endl;
 
                 for (Derived* node: TreeNode<Derived>::m_children) node->dbgShowHierarchy(offset+1);
