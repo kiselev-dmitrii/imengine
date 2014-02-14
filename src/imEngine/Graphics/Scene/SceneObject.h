@@ -32,7 +32,7 @@ struct Transform {
  *
  *  Представляет собой удобный интерфейс для задания позиции, ориентации, масштаба.
  */
-class SceneObject : public TreeNode {
+class SceneObject : public TreeNode<SceneObject> {
 public:
         /// Конструктор
         explicit SceneObject(SceneObject* parent);

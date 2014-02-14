@@ -5,9 +5,9 @@
 
 using namespace imEngine;
 
-class Derived : public TreeNode {
+class Derived : public TreeNode<Derived> {
 public:
-        Derived(const String& name, TreeNode* parent = 0) : TreeNode(parent), m_name(name) {}
+        Derived(const String& name, Derived* parent = 0) : TreeNode(parent), m_name(name) {}
         ~Derived() { IM_TRACE(m_name); }
 
         const String& name() const { return m_name; }

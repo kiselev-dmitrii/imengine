@@ -42,7 +42,7 @@ struct WidgetPadding {
  *  Данный класс отвечает за основные свойства виджетов, такие как
  *  их позиция и размер
  */
-class WidgetAbstract : public TreeNode {
+class WidgetAbstract : public TreeNode<WidgetAbstract> {
 public:
         /// Конструктор. paret - указатель на родителя
         explicit WidgetAbstract(WidgetAbstract* parent);
