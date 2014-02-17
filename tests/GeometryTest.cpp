@@ -23,10 +23,10 @@ private:
         Geometry*               m_geo;
         GeometryPtr             m_box;
         ProgramPtr              m_program;
-        SceneObject*                m_world;
-        SceneObject*                m_object;
+        Movable*                m_world;
+        Movable*                m_object;
         FirstPersonCamera*      m_camera;
-        SceneObject*                m_obj2;
+        Movable*                m_obj2;
 };
 
 
@@ -38,8 +38,8 @@ void Application::initialize() {
         */
         Renderer::setBlendMode(BlendMode::ALPHA);
 
-        m_world = new SceneObject(nullptr);
-        m_object = new SceneObject(m_world);
+        m_world = new Movable(nullptr);
+        m_object = new Movable(m_world);
 
         m_camera = new FirstPersonCamera(m_world);
         m_obj2 = new FirstPersonCamera(m_world);

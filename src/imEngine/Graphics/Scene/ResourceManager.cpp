@@ -1,4 +1,4 @@
-#include "Resources.h"
+#include "ResourceManager.h"
 #include <imEngine/System/Filesystem.h>
 #include <imEngine/Utils/Debug.h>
 
@@ -6,27 +6,32 @@ namespace imEngine {
 
 //############################## Resources ###################################//
 
-Resources::Resources() {
+ResourceManager::ResourceManager() {
+        m_programMgr = new ProgramManager("resources/shaders");
         m_textureMgr = new TextureManager("resources/models/textures");
         m_geometryMgr = new GeometryManager("resources/models/geometry");
 }
 
-Resources::~Resources() {
+ResourceManager::~ResourceManager() {
         delete m_textureMgr;
         delete m_geometryMgr;
 }
 
-Resources* Resources::instance() {
-        static Resources instance;
+ResourceManager* ResourceManager::instance() {
+        static ResourceManager instance;
         return &instance;
 }
 
-TextureManager* Resources::textures() {
+TextureManager* ResourceManager::textures() {
         return m_textureMgr;
 }
 
-GeometryManager* Resources::geometry() {
+GeometryManager* ResourceManager::geometry() {
         return m_geometryMgr;
+}
+
+ProgramManager* ResourceManager::programs() {
+        return m_programMgr;
 }
 
 //############################## FileResourceManagerAbstract ###################################//
@@ -77,7 +82,7 @@ Texture2D* TextureManager::texture2D(const String &name) {
 void TextureManager::reloadAll() {
         for (auto& elem: m_resources) {
                 Texture* texture = elem.second;
-                texture->load(Filesystem::joinPath(directory(),elem.first));
+                texture->load(Filesystem::joinPath(directory(), elem.first));
         }
 }
 
@@ -107,5 +112,63 @@ void GeometryManager::reloadAll() {
         }
 }
 
+
+//########################### GeometryManager ################################//
+
+ProgramManager::ProgramManager(const String &directory) :
+        ResourceManagerAbstract(directory)
+{ }
+
+ProgramManager::~ProgramManager() {
+        removeAll();
+}
+
+Program* ProgramManager::program(const String &name, const StringList &defines) {
+        Program* program = findResource(name, defines);
+        if (program) {
+                return program;
+        } else {
+                program = new Program();
+                program->loadSourceFromFile(Filesystem::joinPath(directory(), name));
+                program->setDefines(defines);
+                program->build();
+                addResource(name, program);
+                return program;
+        }
+}
+
+Program* ProgramManager::program(const String &name) {
+        return program(name, {});
+}
+
+void ProgramManager::reloadAll() {
+        for (auto& item: m_resources) {
+                Program* program = item.second;
+                program->loadSourceFromFile(Filesystem::joinPath(directory(), item.first));
+                program->build();
+        }
+}
+
+void ProgramManager::removeAll() {
+        for (auto& item: m_resources) delete item.second;
+        m_resources.clear();
+}
+
+Program* ProgramManager::findResource(const String &name, const StringList &defines) {
+        auto p = m_resources.equal_range(name);
+        auto begin = p.first;
+        auto end = p.second;
+
+        // Проходимся по всем программам у которых имена name
+        for (auto it = begin; it != end; ++it) {
+                Program* program = (*it).second;
+                if (program->defines() == defines) return program;
+        }
+        return nullptr;
+}
+
+void ProgramManager::addResource(const String &name, Program *resource) {
+        m_resources.insert(std::pair<String, Program*>(name, resource));
+}
 
 } //namespace imEngine

@@ -1,7 +1,7 @@
 #ifndef ILIGHT_H
 #define ILIGHT_H
 
-#include "../SceneObject.h"
+#include "../Movable.h"
 #include <imEngine/Graphics/GAPI/GAPI.h>
 
 namespace imEngine {
@@ -9,15 +9,15 @@ namespace imEngine {
 
 /** @brief Абстрактный класс для света
  */
-class Light : public SceneObject {
+class Light : public Movable {
 public:
         /// Конструктор
         Light();
 
         /// Устанавливает настройки источника света в программу program
-        virtual void    bind(Program* program) = 0;
+        virtual void    bind() = 0;
         /// Сбрасывает настройки
-        virtual void    unbind(Program* program) = 0;
+        virtual void    unbind() = 0;
 };
 
 

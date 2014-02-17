@@ -1,0 +1,42 @@
+#ifndef OBJECTMANAGER_H
+#define OBJECTMANAGER_H
+
+#include "../Scene.h"
+#include "Camera/Camera.h"
+#include "Renderable/Polygonal.h"
+#include "Renderable/Volume.h"
+#include "Light/Light.h"
+#include <list>
+
+namespace imEngine {
+
+
+#define OBJECTS ObjectManager::instance()
+
+/** @brief Менеджер объектов.
+ * При создании, любой объект регистрируется в списке
+ */
+class ObjectManager {
+public:
+        /// Точка доступа к синглтону
+        static ObjectManager* instance();
+
+        /// Устанавливает/возвращает указатель на текущую сцену
+        /// Должен вызываться при создании сцены
+        void    setScene(Scene* scene);
+        Scene*  scene();
+
+private:
+        ObjectManager();
+        ObjectManager(const ObjectManager&);
+        ObjectManager& operator=(const ObjectManager&);
+
+private:
+        Scene*          m_scene;
+
+};
+
+
+} //namespace imEngine
+
+#endif // OBJECTMANAGER_H

@@ -8,34 +8,40 @@
 #include <imEngine/Graphics/GAPI/Texture/Texture2D.h>
 #include <imEngine/Graphics/GAPI/Texture/Texture3D.h>
 #include <imEngine/Graphics/GAPI/Texture/CubeTexture.h>
-#include <imEngine/Graphics/Scene/Geometry.h>
+#include <imEngine/Graphics/GAPI/Shader/Program.h>
+#include <imEngine/Graphics/Geometry.h>
 
 namespace imEngine {
 
 class TextureManager;
 class GeometryManager;
+class ProgramManager;
+#define RESOURCES ResourceManager::instance()
+
 
 /** @brief Менеджер разделяемых ресурсов
  */
-class Resources {
+class ResourceManager {
 public:
         /// Точка доступа к синглтону
-        static Resources*       instance();
+        static ResourceManager* instance();
         /// Деструктор
-        ~Resources();
+        ~ResourceManager();
 
         /// Возвращает указатели на менеджеры
         TextureManager*         textures();
         GeometryManager*        geometry();
+        ProgramManager*         programs();
 
 private:
-        Resources();
-        Resources(const Resources&);
-        Resources& operator=(const Resources&);
+        ResourceManager();
+        ResourceManager(const ResourceManager&);
+        ResourceManager& operator=(const ResourceManager&);
 
 private:
         TextureManager*         m_textureMgr;
         GeometryManager*        m_geometryMgr;
+        ProgramManager*         m_programMgr;
 };
 
 
@@ -122,6 +128,9 @@ public:
 
 
 /** @brief Менеджер геометрии. Предоставляет общий доступ к одной и той же геометрии
+ *
+ * Данный менеджер реализован отдельно, поскольку несколько программ могут иметь
+ * одинаковые имена, но разные defines
  */
 class GeometryManager : public ResourceManagerImplementation<Geometry> {
 public:
@@ -133,6 +142,36 @@ public:
 
         /// Перезагружает всю геометрию
         virtual void    reloadAll();
+};
+
+
+/** @brief Менеджер GPU програм.
+ */
+class ProgramManager : public ResourceManagerAbstract {
+public:
+        /// Конструктор
+        ProgramManager(const String& directory);
+        /// Деструктор. Удаляет все шейдеры
+        ~ProgramManager();
+
+        /// Загружает или ищет шейдер
+        Program*        program(const String& name, const StringList& defines);
+        Program*        program(const String& name);
+
+        /// Перезагружает и перекомпилирует все шейдеры
+        void            reloadAll();
+        /// Удаляет все шейдеры
+        void            removeAll();
+
+private:
+        /// Ищет программу по имени и дефайнам
+        Program*        findResource(const String& name, const StringList& defines);
+        /// Добавляет ресурс
+        void            addResource(const String& name, Program* resource);
+
+private:
+        typedef std::multimap<String, Program*> MultiMapStringResource;
+        MultiMapStringResource  m_resources;
 };
 
 } //namespace imEngine
