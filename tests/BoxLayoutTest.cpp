@@ -35,7 +35,7 @@ private:
         LineEdit*       m_edt2;
         VBoxLayout*     m_edits;
 
-        Picture*        m_pic;
+        PictureColor*   m_pic;
 };
 
 void Application::initialize() {

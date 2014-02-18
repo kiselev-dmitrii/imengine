@@ -26,7 +26,6 @@ public:
 
 public:
         void            initGBuffer();
-
 private:
         RenderTarget    m_gbuffer;
 };

@@ -16,7 +16,7 @@ Model::Model(const ModelDetailList &details, Object *owner) :
         m_owner(owner)
 { }
 
-const ModelDetailList& Model::details() const {
+ModelDetailList& Model::details() {
         return m_details;
 }
 

@@ -34,7 +34,7 @@ void SceneDeferred::render() {
                 Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
                 Mat3 normalMatrix = glm::transpose(Mat3(glm::inverse(modelViewMatrix)));
 
-                for (const ModelDetail& detail: object->model().details()) {
+                for (ModelDetail& detail: object->model().details()) {
                         if (!detail.material->isTransparent()) {
                                 detail.material->bind();
                                 detail.material->program()->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
@@ -42,7 +42,7 @@ void SceneDeferred::render() {
                                 detail.material->program()->setUniform("uNormalMatrix", normalMatrix);
                                 detail.geometry->render();
                         } else {
-                                transparentDetails.push_back(& const_cast<ModelDetail&>(detail));
+                                transparentDetails.push_back(&detail);
                         }
                 }
         }
@@ -62,5 +62,6 @@ void SceneDeferred::initGBuffer() {
         m_gbuffer.enableColorBuffer(2, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);        //GBufferGeometry
         m_gbuffer.enableDepthBuffer(InternalFormat::DEPTH_NORM_1_COMP_24_BIT, true);          //GBufferDepth
 }
+
 
 } //namespace imEngine

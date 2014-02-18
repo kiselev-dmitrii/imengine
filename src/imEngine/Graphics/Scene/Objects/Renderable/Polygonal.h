@@ -14,7 +14,7 @@ public:
         Polygonal(const String& model, Object* parent);
 
         /// Возвращает модель
-        const Model&    model() const;
+        Model&          model();
 
 private:
         Model           m_model;

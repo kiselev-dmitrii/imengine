@@ -32,7 +32,7 @@ public:
         explicit Model(const ModelDetailList& details, Object* owner);
 
         /// Возвращает детали модели
-        const ModelDetailList&  details() const;
+        ModelDetailList&        details();
         /// Устанавливает/возвращает владельца модели
         Object*                 owner() const;
 

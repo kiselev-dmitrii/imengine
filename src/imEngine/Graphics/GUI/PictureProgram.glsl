@@ -57,13 +57,30 @@ void main() {
 layout (location = 0) out vec4 im_outColor;
 
 uniform sampler2D       u_texture;
+#ifdef DEPTH_TEXTURE
+        uniform float   u_nearDistance;
+        uniform float   u_farDistance;
+#endif //DEPTH_TEXTURE
 uniform float           u_opacity;
 
 in vec2 TexCoord;
 
+#ifdef DEPTH_TEXTURE
+float normalizeDepth(float near, float far, float depth) {
+        return (2.0*near) / (far+near - depth*(far-near));
+}
+#endif //DEPTH_TEXTURE
+
 void main() {
         vec4 color = texture2D(u_texture, TexCoord);
+
+#ifdef DEPTH_TEXTURE
+        float depth = normalizeDepth(u_nearDistance, u_farDistance, color.r);
+        im_outColor = vec4(vec3(depth), u_opacity);
+#else
         im_outColor = vec4(color.rgb, color.a * u_opacity);
+#endif //DEPTH_TEXTURE
+
 }
 
 )";

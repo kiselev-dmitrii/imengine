@@ -31,7 +31,7 @@ private:
         HBlur*                  m_hblur;
         VBlur*                  m_vblur;
 
-        Picture*                m_picture;
+        PictureColor*           m_picture;
 
         VertexArrayPtr          m_vao;
         VertexBufferPtr         m_vbo;
@@ -79,7 +79,7 @@ void Application::initialize() {
         m_rt2 = new RenderTarget(m_rt1->size());
         m_rt2->enableColorBuffer(0, InternalFormat::COLOR_NORM_3_COMP_8_BIT, true);
 
-        m_picture = new Picture(m_rt1->colorBufferTexture(0), gui()->root());
+        m_picture = new PictureColor(m_rt1->colorBufferTexture(0), gui()->root());
         m_picture->setPosition(Vec2(0, 30));
 
 }
