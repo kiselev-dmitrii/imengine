@@ -12,12 +12,18 @@ namespace imEngine {
 class Light : public Movable {
 public:
         /// Конструктор
-        Light(Object* parent);
+        Light(const String& filename, Object* parent);
 
-        /// Устанавливает настройки источника света в программу program
-        virtual void    bind() = 0;
+        /// Устанавливает настройки света перед рендером для сцены scene
+        virtual void    bind(Scene* scene) = 0;
         /// Сбрасывает настройки
         virtual void    unbind() = 0;
+
+        /// Возвращает программу
+        Program*        program() const;
+
+protected:
+        Program*        m_program;
 };
 
 

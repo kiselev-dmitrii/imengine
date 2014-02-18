@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include <imEngine/Graphics/RenderTarget.h>
+#include <imEngine/Graphics/ScreenAlignedQuad.h>
 
 namespace imEngine {
 
@@ -26,8 +27,13 @@ public:
 
 public:
         void            initGBuffer();
+        void            initLBuffer();
+
 private:
-        RenderTarget    m_gbuffer;
+        RenderTarget            m_gbuffer;
+        RenderTarget            m_lbuffer;
+        ScreenAlignedQuad       m_quad;
+
 };
 
 
