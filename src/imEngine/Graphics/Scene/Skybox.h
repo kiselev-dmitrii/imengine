@@ -1,12 +1,15 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
+#include <imEngine/Graphics/GAPI/GAPI.h>
+
 namespace imEngine {
 
-class Skybox
-{
+/** @brief Скайбокс
+ */
+class Skybox {
 public:
-        Skybox();
+        Skybox(const CubeTexture& texture);
 };
 
 } //namespace imEngine
