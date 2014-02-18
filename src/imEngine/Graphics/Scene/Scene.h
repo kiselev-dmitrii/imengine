@@ -24,7 +24,7 @@ public:
         /// Конструктор
         explicit Scene(GraphicApplication* application);
         /// Деструктор
-        ~Scene();
+        virtual ~Scene();
 
         /// Возвращает корневой объект сцены
         Object*         world();
@@ -58,7 +58,7 @@ public:
         void            registerLight(Light* light);
         void            unregisterLight(Light* light);
 
-private:
+protected:
         GraphicApplication* m_application;
 
         Object*         m_world;

@@ -1,21 +1,21 @@
 <model name="car">
 	<detail name="body">
 		<geometry filename="car_body.obj"/>
-		<material type="phong" diffuse="255,0,0" shininess="30.0"/>
+		<material type="basic_deferred" diffuse_color="255,0,0" specular_level="0.1" specular_power="20" metallic_level="0.6"/>
 	</detail>
 
 	<detail name="inner">
 		<geometry filename="car_inner.obj"/>
-		<material type="phong" diffuse="50,50,50" shininess="10.0"/>
+		<material type="basic_deferred" diffuse_color="0,255,0"/>
 	</detail>
 
 	<detail name="glasses">
 		<geometry filename="car_glasses.obj"/>
-		<material type="wired" scale="10" border_width="0.01" base_color="255,255,255,100"/>
+		<material type="basic_deferred" diffuse_color="0,0,255"/>
 	</detail>
 
 	<detail name="brakes">
 		<geometry filename="car_brakes.obj"/>
-		<material type="phong" diffuse="0,0,255" shininess="10.0"/>
+		<material type="basic_deferred" diffuse_color="255,255,0" specular_level="0.5" specular_power="80" metallic_level="0.1"/>
 	</detail>
 </model>

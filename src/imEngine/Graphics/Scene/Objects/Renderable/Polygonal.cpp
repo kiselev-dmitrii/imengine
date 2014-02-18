@@ -11,6 +11,8 @@ Polygonal::Polygonal(const String &model, Object *parent) :
         m_model.loadFromXML(model);
 }
 
-
+const Model& Polygonal::model() const {
+        return m_model;
+}
 
 } //namespace imEngine

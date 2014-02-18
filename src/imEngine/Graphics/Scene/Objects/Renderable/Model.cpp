@@ -69,7 +69,7 @@ MaterialPtr Model::createMaterial(const XmlNode &materialNode) {
                 result->loadFromXML(materialNode);
                 return MaterialPtr((Material*)result);
         } else {
-                IM_ERROR("Material has unknown type");
+                IM_ERROR("Material " << type << " is not found");
                 return MaterialPtr();
         }
 }

@@ -26,6 +26,7 @@ set(TESTS
         GeometryTest
         SceneTest
         FramebufferTest
+        SceneDeferredTest
 )
 
 foreach(TEST ${TESTS})
