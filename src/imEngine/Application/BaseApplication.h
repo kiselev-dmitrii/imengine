@@ -21,7 +21,7 @@ public:
         int             exec();
 
         /// Возвращает указатель на главное окно приложения
-        Window*         mainWindow();
+        Window*         window();
 
         /// Возвращает время работы программы
         double          currentTime();

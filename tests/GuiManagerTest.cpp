@@ -108,11 +108,11 @@ void Application::initialize() {
 void Application::update() {
         GraphicApplication::update();
 
-        if (mainWindow()->keyboard()->isKeyPressed(SDLK_1)) m_btn1->setSize(m_btn1->size() - Vec2(1));
-        if (mainWindow()->keyboard()->isKeyPressed(SDLK_2)) m_btn1->setSize(m_btn1->size() + Vec2(1));
+        if (window()->keyboard()->isKeyPressed(SDLK_1)) m_btn1->setSize(m_btn1->size() - Vec2(1));
+        if (window()->keyboard()->isKeyPressed(SDLK_2)) m_btn1->setSize(m_btn1->size() + Vec2(1));
 
-        if (mainWindow()->keyboard()->isKeyPressed(SDLK_3)) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        if (mainWindow()->keyboard()->isKeyPressed(SDLK_4)) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        if (window()->keyboard()->isKeyPressed(SDLK_3)) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        if (window()->keyboard()->isKeyPressed(SDLK_4)) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void Application::render() {
@@ -127,7 +127,7 @@ void Application::destroy() {
 void Application::keyPressEvent(int key) {
         if (key >= 32 && key < 128) {
                 char ch = key;
-                if (mainWindow()->keyboard()->modifiers() & KeyboardModifiers::LSHIFT) ch = toupper(ch);
+                if (window()->keyboard()->modifiers() & KeyboardModifiers::LSHIFT) ch = toupper(ch);
                 m_lbl->setText(m_lbl->text() + ch);
         }
 }

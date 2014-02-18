@@ -1,7 +1,8 @@
 #include "Camera.h"
+#include "../../Scene.h"
+#include "../../ResourceManager.h"
 #include <imEngine/Utils/Debug.h>
 #include <glm/gtx/transform.hpp>
-#include "../ObjectManager.h"
 
 namespace imEngine {
 
@@ -11,7 +12,7 @@ Camera::Camera(Object* parent) :
         m_movementSpeed(5),
         m_rotationSpeed(40)
 {
-        OBJECTS->registerCamera(this);
+        scene()->registerCamera(this);
         initHelper();
 }
 
@@ -24,8 +25,8 @@ void Camera::setRotationSpeed(float speed) {
 }
 
 void Camera::renderHelper() {
-        const Mat4& viewMatrix = OBJECTS->currentCamera()->worldToLocalMatrix();
-        const Mat4& projectionMatrix = OBJECTS->currentCamera()->viewToClipMatrix();
+        const Mat4& viewMatrix = scene()->activeCamera()->worldToLocalMatrix();
+        const Mat4& projectionMatrix = scene()->activeCamera()->viewToClipMatrix();
         const Mat4& modelMatrix = localToWorldMatrix();
         Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
 

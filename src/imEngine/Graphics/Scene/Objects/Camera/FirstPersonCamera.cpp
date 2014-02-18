@@ -1,5 +1,5 @@
 #include "FirstPersonCamera.h"
-#include "../ObjectManager.h"
+#include "../../Scene.h"
 
 namespace imEngine {
 
@@ -41,7 +41,7 @@ void FirstPersonCamera::update(float deltaTime) {
 }
 
 void FirstPersonCamera::updatePosition(float deltaTime) {
-        Keyboard* keyboard = OBJECTS->scene()->application()->mainWindow()->keyboard();
+        Keyboard* keyboard = scene()->application()->window()->keyboard();
 
         if(keyboard->isKeyPressed(SDLK_w)) moveForward(m_movementSpeed * deltaTime);
         if(keyboard->isKeyPressed(SDLK_s)) moveForward(-m_movementSpeed * deltaTime);
@@ -50,12 +50,12 @@ void FirstPersonCamera::updatePosition(float deltaTime) {
 }
 
 void FirstPersonCamera::updateOrientation(float deltaTime) {
-        GraphicApplication* app = OBJECTS->scene()->application();
-        Mouse* mouse = app->mainWindow()->mouse();
+        GraphicApplication* app = scene()->application();
+        Mouse* mouse = app->window()->mouse();
 
         IVec2 position = mouse->position();
-        mouse->setPosition(app->mainWindow()->center());
-        Vec2 delta = Vec2(app->mainWindow()->center() - position);
+        mouse->setPosition(app->window()->center());
+        Vec2 delta = Vec2(app->window()->center() - position);
 
         Vec2 angles = delta * m_rotationSpeed * deltaTime;
         rotateHorizontaly(angles.x);

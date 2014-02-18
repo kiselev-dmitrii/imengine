@@ -1,14 +1,12 @@
 #include <imEngine/Application/GraphicApplication.h>
 #include <imEngine/Graphics/Scene/Scene.h>
 #include <imEngine/Utils/Debug.h>
-#include <imEngine/Graphics/Scene/Entity/Polygonal.h>
-#include <imEngine/Graphics/Scene/Entity/Volume.h>
 #include <imEngine/Graphics/GUI/TextButton.h>
 #include <imEngine/Graphics/GUI/Panel.h>
 #include <imEngine/Graphics/GUI/Slider.h>
 #include <imEngine/Graphics/GUI/Text.h>
 #include <imEngine/Graphics/GUI/BoxLayout.h>
-#include <imEngine/Graphics/Scene/Material/PhongMaterial.h>
+#include <imEngine/Graphics/Scene/Objects/Camera/FirstPersonCamera.h>
 #include <sstream>
 #include <iomanip>
 
@@ -29,8 +27,8 @@ private:
         Volume*                 m_headVolume;
         Volume*                 m_engineVolume;
 
-        CameraAbstract*         m_firstCamera;
-        CameraAbstract*         m_secondCamera;
+        Camera*         m_firstCamera;
+        Camera*         m_secondCamera;
 
         Panel*                  m_pnl;
         VBoxLayout*             m_diffuseLayout;
@@ -47,8 +45,8 @@ void Application::initialize() {
 
         Renderer::setBlendMode(BlendMode::ALPHA);
         Renderer::setDepthMode(DepthMode::LESS);
-        m_car = new Polygonal(Model("resources/models/car.xml"), scene()->world());
-        m_wheel1 = new Polygonal(Model("resources/models/wheel.xml"), m_car);
+        m_car = new Polygonal("resources/models/car.xml", scene()->world());
+        m_wheel1 = new Polygonal("resources/models/wheel.xml", m_car);
         m_wheel1->setPosition(Vec3(1.05,-0.7,0));
 
         /// Грузим текстуру головы из dcm файлов
@@ -72,9 +70,9 @@ void Application::initialize() {
         m_engineVolume = new Volume(m_engine, scene()->world());
         m_engineVolume->setPosition(Vec3(4,5,0));
 
-        m_firstCamera = scene()->currentCamera();
+        m_firstCamera = scene()->activeCamera();
         m_secondCamera = new FirstPersonCamera(scene()->world());
-        scene()->setCurrentCamera(m_secondCamera);
+        scene()->setActiveCamera(m_secondCamera);
 
 
         /*
@@ -128,12 +126,12 @@ void Application::initialize() {
 
 void Application::keyPressEvent(int key) {
         GraphicApplication::keyPressEvent(key);
-        if (key == '1') scene()->setCurrentCamera(m_firstCamera);
-        if (key == '2') scene()->setCurrentCamera(m_secondCamera);
-        if (key == 'p') scene()->currentCamera()->setOrthographic(!scene()->currentCamera()->isOrthographic());
+        if (key == '1') scene()->setActiveCamera(m_firstCamera);
+        if (key == '2') scene()->setActiveCamera(m_secondCamera);
+        if (key == 'p') scene()->activeCamera()->setOrthographic(!scene()->activeCamera()->isOrthographic());
         if (key == 'r') {
-                m_engineVolume->program()->loadSourceFromFile("resources/shaders/VolumeRender.glsl");
-                m_engineVolume->program()->build();
+                //m_engineVolume->program()->loadSourceFromFile("resources/shaders/VolumeRender.glsl");
+                //m_engineVolume->program()->build();
         }
 }
 

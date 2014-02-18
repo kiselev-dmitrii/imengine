@@ -12,7 +12,7 @@ namespace imEngine {
 class Light : public Movable {
 public:
         /// Конструктор
-        Light();
+        Light(Object* parent);
 
         /// Устанавливает настройки источника света в программу program
         virtual void    bind() = 0;

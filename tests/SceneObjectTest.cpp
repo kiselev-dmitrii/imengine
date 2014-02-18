@@ -1,5 +1,5 @@
 #include <imEngine/Application/GraphicApplication.h>
-#include <imEngine/Graphics/Scene/SceneObject.h>
+#include <imEngine/Graphics/Scene/Objects/Movable.h>
 #include <imEngine/Utils/Debug.h>
 
 using namespace imEngine;

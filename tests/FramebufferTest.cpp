@@ -1,12 +1,12 @@
 #include <imEngine/Application/GraphicApplication.h>
 #include <imEngine/Graphics/Scene/Scene.h>
 #include <imEngine/Utils/Debug.h>
-#include <imEngine/Graphics/Scene/Entity/Polygonal.h>
 #include <imEngine/Graphics/GUI/Picture.h>
 #include <imEngine/Graphics/GAPI/Framebuffer/Framebuffer.h>
 #include <imEngine/Graphics/RenderTarget.h>
 #include <imEngine/Graphics/Scene/PostEffects/Blur.h>
 #include <imEngine/Graphics/PrimitiveRenderer.h>
+#include <imEngine/Graphics/Scene/Objects/Camera/FirstPersonCamera.h>
 
 using namespace imEngine;
 
@@ -21,8 +21,8 @@ private:
         Polygonal*        m_car;
         Polygonal*        m_wheel1;
 
-        CameraAbstract*         m_firstCamera;
-        CameraAbstract*         m_secondCamera;
+        Camera*         m_firstCamera;
+        Camera*         m_secondCamera;
 
         RenderTarget*           m_rt1;
         RenderTarget*           m_rt2;
@@ -43,13 +43,13 @@ void Application::initialize() {
 
         Renderer::setBlendMode(BlendMode::ALPHA);
         Renderer::setDepthMode(DepthMode::LESS);
-        m_car = new Polygonal(Model("resources/models/car.xml"), scene()->world());
-        m_wheel1 = new Polygonal(Model("resources/models/wheel.xml"), m_car);
+        m_car = new Polygonal("resources/models/car.xml", scene()->world());
+        m_wheel1 = new Polygonal("resources/models/wheel.xml", m_car);
         m_wheel1->setPosition(Vec3(1.05,-0.7,0));
 
-        m_firstCamera = scene()->currentCamera();
+        m_firstCamera = scene()->activeCamera();
         m_secondCamera = new FirstPersonCamera(scene()->world());
-        scene()->setCurrentCamera(m_secondCamera);
+        scene()->setActiveCamera(m_secondCamera);
 
         m_quad = Geometry::plane();
         m_hblur = new HBlur();
@@ -72,7 +72,7 @@ void Application::initialize() {
         m_vbo->load(data, sizeof(data), BufferUsage::DYNAMIC_DRAW);
 
         /// FBO
-        m_rt1 = new RenderTarget(mainWindow()->size()/4);
+        m_rt1 = new RenderTarget(window()->size()/4);
         m_rt1->enableColorBuffer(0, InternalFormat::COLOR_NORM_3_COMP_8_BIT, true);
         m_rt1->enableDepthBuffer(InternalFormat::DEPTH_NORM_1_COMP_16_BIT, false);
 
@@ -87,8 +87,8 @@ void Application::initialize() {
 void Application::render() {
         m_rt1->bind();
                 Renderer::clearBuffers();
-                scene()->setCurrentCamera(m_firstCamera);
-                scene()->processRender();
+                scene()->setActiveCamera(m_firstCamera);
+                scene()->render();
         m_rt1->unbind();
 
         m_rt2->bind();
@@ -110,8 +110,8 @@ void Application::render() {
         m_rt1->unbind();
 
         Renderer::clearBuffers();
-        scene()->setCurrentCamera(m_secondCamera);
-        scene()->processRender();
+        scene()->setActiveCamera(m_secondCamera);
+        scene()->render();
 
         gui()->processRender();
 }

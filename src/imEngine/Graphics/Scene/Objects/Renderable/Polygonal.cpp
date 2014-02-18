@@ -1,5 +1,5 @@
 #include "Polygonal.h"
-#include "../ObjectManager.h"
+#include "../../Scene.h"
 
 namespace imEngine {
 
@@ -7,7 +7,7 @@ Polygonal::Polygonal(const String &model, Object *parent) :
         Movable(parent),
         m_model(this)
 {
-        OBJECTS->registerPolygonal(this);
+        scene()->registerPolygonal(this);
         m_model.loadFromXML(model);
 }
 

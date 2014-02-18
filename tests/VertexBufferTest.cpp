@@ -88,8 +88,8 @@ void Application::windowResizeEvent(int x, int y) {
 }
 
 void Application::keyPressEvent(int key) {
-        IVec2 m = mainWindow()->mouse()->position();
-        IVec2 w = mainWindow()->size();
+        IVec2 m = window()->mouse()->position();
+        IVec2 w = window()->size();
         float x = -1.0 + 2.0*m.x/w.x;
         float y = 1.0 - 2.0*m.y/w.y;
 

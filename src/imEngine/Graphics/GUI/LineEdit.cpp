@@ -40,7 +40,7 @@ void LineEditCursor::render() {
         if (m_isVisible) {
                 Vec2 pos(m_text->absolutePosition() + Vec2(m_text->width(), 0));
                 Vec2 size(2, m_text->height());
-                PrimitiveRenderer::instance().drawRectangleInScreenSpace(pos, size, m_text->color(), m_application->mainWindow());
+                PrimitiveRenderer::instance().drawRectangleInScreenSpace(pos, size, m_text->color(), m_application->window());
         }
 }
 

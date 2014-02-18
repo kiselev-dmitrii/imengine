@@ -1,5 +1,6 @@
 #include "Volume.h"
-#include "../ObjectManager.h"
+#include "../../Scene.h"
+#include "../../ResourceManager.h"
 #include <imEngine/Utils/Debug.h>
 
 namespace imEngine {
@@ -8,7 +9,7 @@ namespace imEngine {
 Volume::Volume(Texture3D *texture, Object *parent) :
         Movable(parent)
 {
-        OBJECTS->registerVolume(this);
+        scene()->registerVolume(this);
         m_program = RESOURCES->programs()->program("VolumeRenderer.glsl");
         setTexture(texture);
         m_cube = Geometry::box(Vec3(-0.5,-0.5,-0.5), Vec3(0.5,0.5,0.5));
@@ -30,13 +31,13 @@ Texture3D* Volume::texture() {
 }
 
 void Volume::render() {
-        const Mat4& viewMatrix = OBJECTS->currentCamera()->worldToLocalMatrix();
-        const Mat4& projectionMatrix = OBJECTS->currentCamera()->viewToClipMatrix();
+        const Mat4& viewMatrix = scene()->activeCamera()->worldToLocalMatrix();
+        const Mat4& projectionMatrix = scene()->activeCamera()->viewToClipMatrix();
         const Mat4& modelMatrix = localToWorldMatrix();
 
         Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
 
-        Vec3 worldSpaceCameraPosition = OBJECTS->currentCamera()->worldPosition();
+        Vec3 worldSpaceCameraPosition = scene()->activeCamera()->worldPosition();
         Vec3 objectSpaceCameraPosition = Vec3(worldToLocalMatrix() * Vec4(worldSpaceCameraPosition, 1.0));
 
         m_program->bind();

@@ -64,19 +64,19 @@ protected:
         }
 
         void testKeyboard() {
-                Keyboard* keyboard = mainWindow()->keyboard();
-                if (keyboard->isKeyPressed(SDLK_UP)) mainWindow()->setPosition(mainWindow()->position() + IVec2(0, -1));
-                if (keyboard->isKeyPressed(SDLK_DOWN)) mainWindow()->setPosition(mainWindow()->position() + IVec2(0, 1));
-                if (keyboard->isKeyPressed(SDLK_LEFT)) mainWindow()->setPosition(mainWindow()->position() + IVec2(-1, 0));
-                if (keyboard->isKeyPressed(SDLK_RIGHT)) mainWindow()->setPosition(mainWindow()->position() + IVec2(1, 0));
+                Keyboard* keyboard = window()->keyboard();
+                if (keyboard->isKeyPressed(SDLK_UP)) window()->setPosition(window()->position() + IVec2(0, -1));
+                if (keyboard->isKeyPressed(SDLK_DOWN)) window()->setPosition(window()->position() + IVec2(0, 1));
+                if (keyboard->isKeyPressed(SDLK_LEFT)) window()->setPosition(window()->position() + IVec2(-1, 0));
+                if (keyboard->isKeyPressed(SDLK_RIGHT)) window()->setPosition(window()->position() + IVec2(1, 0));
 
                 if (keyboard->modifiers() & KeyboardModifiers::ALT) IM_PRINT("MODIFIER: ALT PRESSED");
         }
 
         void testMouse() {
-                Keyboard* keyboard = mainWindow()->keyboard();
-                Mouse* mouse = mainWindow()->mouse();
-                if (keyboard->isKeyPressed(SDLK_c)) mouse->setPosition(mainWindow()->center());
+                Keyboard* keyboard = window()->keyboard();
+                Mouse* mouse = window()->mouse();
+                if (keyboard->isKeyPressed(SDLK_c)) mouse->setPosition(window()->center());
                 if (keyboard->isKeyPressed(SDLK_h)) mouse->setVisible(false);
                 if (keyboard->isKeyPressed(SDLK_s)) mouse->setVisible(true);
                 if (mouse->isButtonPressed(MouseButton::MIDDLE)) {

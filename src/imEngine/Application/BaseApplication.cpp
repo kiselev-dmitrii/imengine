@@ -135,7 +135,7 @@ void BaseApplication::quit() {
         SDL_Quit();
 }
 
-Window* BaseApplication::mainWindow() {
+Window* BaseApplication::window() {
         return &m_mainWindow;
 }
 

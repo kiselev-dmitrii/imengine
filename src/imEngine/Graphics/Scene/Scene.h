@@ -27,38 +27,43 @@ public:
         ~Scene();
 
         /// Возвращает корневой объект сцены
-        Object* world();
+        Object*         world();
 
         /// Устанавливает/возвращает активную камеру
-        void    setActiveCamera(Camera* camera);
-        Camera* activeCamera() const;
+        void            setActiveCamera(Camera* camera);
+        Camera*         activeCamera() const;
+
+        /// Захватывает ввод сценой
+        void            setInputCaptured(bool enable);
+        bool            isInputCaptured() const;
 
         /// Возвращает указатель на приложение
         GraphicApplication* application();
 
 public:
         /// Методы вызываются из GraphicApplication
-        void    processRender();
-        void    processUpdate(float delta);
-        void    processMousePress(int x, int y, char button);
-        void    processWindowResize(int w, int h);
+        virtual void    render()                                                { }
+        virtual void    update(float delta);
+        virtual void    mousePressEvent(int x, int y, char button);
+        virtual void    windowResizeEvent(int w, int h);
 
 public:
         /// Регистрирует/убирает из списка зарегистрированных различных объекты
-        void    registerCamera(Camera* camera);
-        void    unregisterCamera(Camera* camera);
-        void    registerPolygonal(Polygonal* polygonal);
-        void    unregisterPolygonal(Polygonal* polygonal);
-        void    registerVolume(Volume* volume);
-        void    unregisterVolume(Volume* volume);
-        void    registerLight(Light* light);
-        void    unregisterLight(Light* light);
+        void            registerCamera(Camera* camera);
+        void            unregisterCamera(Camera* camera);
+        void            registerPolygonal(Polygonal* polygonal);
+        void            unregisterPolygonal(Polygonal* polygonal);
+        void            registerVolume(Volume* volume);
+        void            unregisterVolume(Volume* volume);
+        void            registerLight(Light* light);
+        void            unregisterLight(Light* light);
 
 private:
         GraphicApplication* m_application;
 
         Object*         m_world;
         Camera*         m_activeCamera;
+        bool            m_isInputCaptured;
 
         CameraList      m_cameras;
         PolygonalList   m_polygonals;

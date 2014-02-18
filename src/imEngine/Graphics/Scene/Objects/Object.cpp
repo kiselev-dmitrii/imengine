@@ -1,6 +1,6 @@
 #include "Object.h"
 #include <glm/gtx/quaternion.hpp>
-#include "ObjectManager.h"
+#include "../Scene.h"
 
 namespace imEngine {
 
@@ -16,6 +16,10 @@ Object::Object(Object *parent) :
 {
         if (parent != nullptr) m_scene = parent->scene();
         notifyTransformUpdated();
+}
+
+Scene* Object::scene() const {
+        return m_scene;
 }
 
 const Vec3& Object::position() const {

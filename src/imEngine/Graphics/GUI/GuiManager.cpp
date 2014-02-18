@@ -63,7 +63,7 @@ GraphicApplication* GuiManager::application() const {
 }
 
 Window* GuiManager::window() const {
-        return m_application->mainWindow();
+        return m_application->window();
 }
 
 Texture2DPtr GuiManager::textureAtlas() const {

@@ -13,7 +13,7 @@ Scene* GraphicApplication::scene() const {
 
 void GraphicApplication::initialize() {
         glClearColor(1,1,1,1);
-        Renderer::setViewportSize(mainWindow()->size());
+        Renderer::setViewportSize(window()->size());
 
         m_scene = new Scene(this);
         m_gui = new GuiManager("resources/gui/elementary/", this);
@@ -26,13 +26,13 @@ void GraphicApplication::update() {
         float delta = curTime - prevTime;
         prevTime = curTime;
 
-        m_scene->processUpdate(delta);
+        m_scene->update(delta);
         m_gui->processUpdate();
 }
 
 void GraphicApplication::render() {
         Renderer::clearBuffers();
-        m_scene->processRender();
+        m_scene->render();
         m_gui->processRender();
 }
 
@@ -47,7 +47,7 @@ void GraphicApplication::mouseMoveEvent(int oldX, int oldY, int newX, int newY) 
 
 void GraphicApplication::mousePressEvent(int x, int y, char button) {
         m_gui->processMousePress(x, y, button);
-        m_scene->processMousePress(x, y, button);
+        m_scene->mousePressEvent(x, y, button);
 }
 
 void GraphicApplication::mouseReleaseEvent(int x, int y, char button) {
@@ -59,7 +59,7 @@ void GraphicApplication::keyPressEvent(int key) {
 
         switch (key) {
                 case SDLK_F11:
-                        mainWindow()->setFullscreen(!mainWindow()->isFullscreen());
+                        window()->setFullscreen(!window()->isFullscreen());
                         break;
         }
 }
@@ -70,7 +70,7 @@ void GraphicApplication::keyReleaseEvent(int key) {
 
 void GraphicApplication::windowResizeEvent(int x, int y) {
         Renderer::setViewportSize(IVec2(x, y));
-        m_scene->processWindowResize(x, y);
+        m_scene->windowResizeEvent(x, y);
 }
 
 } //namespace imEngine
