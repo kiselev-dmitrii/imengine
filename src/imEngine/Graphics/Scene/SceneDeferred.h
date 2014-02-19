@@ -41,6 +41,8 @@ private:
         ScreenAlignedQuad       m_quad;
 
         CubeTexturePtr          m_skybox;
+        Program*                m_skyboxProgram;
+        GeometryPtr             m_box;
 
         Polygonal*              m_pickedObject;
 };

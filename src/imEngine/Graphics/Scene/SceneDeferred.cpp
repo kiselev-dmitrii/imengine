@@ -1,6 +1,7 @@
 #include "SceneDeferred.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "Objects/Light/PointLight.h"
+#include "ResourceManager.h"
 
 namespace imEngine {
 
@@ -12,6 +13,13 @@ SceneDeferred::SceneDeferred(GraphicApplication* application) :
 {
         initGBuffer();
         initLBuffer();
+
+        m_skybox = CubeTexturePtr(new CubeTexture());
+        m_skybox->load("resources/environments/grace.env.hdr");
+        m_skybox->setMagnificationFilter(TextureMagFilter::LINEAR);
+        m_skybox->setMinimizationFilter(TextureMinFilter::LINEAR);
+        m_skyboxProgram = RESOURCES->programs()->program("SkyboxRender.glsl");
+        m_box = Geometry::cube();
 }
 
 SceneDeferred::~SceneDeferred() {
@@ -83,12 +91,21 @@ void SceneDeferred::render() {
         // Рендер прозрачных деталей
         //...
 
-        // Light Pass
-        //m_lbuffer.bind();
         Renderer::setDepthMode(DepthMode::NONE);
         glClearColor(0.0,0.0,0.0,0.0);
         Renderer::clearBuffers();
         Renderer::setBlendMode(BlendMode::ADD);
+
+        // Рендер скайбокса
+        m_skyboxProgram->bind();
+        m_skyboxProgram->setUniform("uViewRotationMatrix", Mat3(viewMatrix));
+        m_skyboxProgram->setUniform("uProjectionMatrix", projectionMatrix);
+        m_skybox->bind(0);
+        m_skyboxProgram->setUniform("uEnvironment", 0);
+        m_box->render();
+
+        // Light Pass
+        //m_lbuffer.bind();
         for (Light* light: m_lights) {
                 light->bind(this);
                 m_gbuffer.colorBufferTexture(0)->bind(0);

@@ -11,7 +11,7 @@ CubeTexture::CubeTexture() :
 
 void CubeTexture::load(const String &filename) {
         Image img(filename);
-        img.flipVertically();
+        //img.flipVertically();         данные уже флипнуты
 
         /// Получаем данные
         int sideWidth = img.width();
