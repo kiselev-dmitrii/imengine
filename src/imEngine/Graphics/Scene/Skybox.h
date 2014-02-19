@@ -8,8 +8,6 @@ namespace imEngine {
 /** @brief Скайбокс
  */
 class Skybox {
-public:
-        Skybox(const CubeTexture& texture);
 };
 
 } //namespace imEngine

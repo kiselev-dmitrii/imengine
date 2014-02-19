@@ -32,7 +32,7 @@ public:
 };
 
 
-/** @brief Умный указатель с подсчетом ссылок для Texture1D
+/** @brief Умный указатель с подсчетом ссылок для Texture2D
  */
 typedef std::shared_ptr<Texture2D> Texture2DPtr;
 

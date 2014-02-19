@@ -40,6 +40,8 @@ private:
         RenderTarget            m_lbuffer;
         ScreenAlignedQuad       m_quad;
 
+        CubeTexturePtr          m_skybox;
+
         Polygonal*              m_pickedObject;
 };
 
