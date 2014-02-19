@@ -13,11 +13,18 @@ public:
         /// Конструкторы
         Polygonal(const String& model, Object* parent);
 
+        /// Возвращает AABB
+        const AABB&     aabb() const;
         /// Возвращает модель
         Model&          model();
 
 private:
+        /// Считает AABB исходя из делателей модели
+        void            calculateAABB();
+
+private:
         Model           m_model;
+        AABB            m_aabb;
 };
 
 

@@ -10,6 +10,12 @@ namespace imEngine {
 struct AABB {
         Vec3    min;
         Vec3    max;
+
+        /// Определяет, находится ли точка point внутри AABB
+        bool doesContain(const Vec3& point) const {
+                return glm::all(glm::greaterThan(point, min)) &&
+                       glm::all(glm::lessThan(point, max));
+        }
 };
 
 } //namespace imEngine

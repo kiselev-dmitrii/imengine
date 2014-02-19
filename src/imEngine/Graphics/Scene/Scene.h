@@ -42,9 +42,11 @@ public:
 
 public:
         /// Методы вызываются из GraphicApplication
-        virtual void    render()                                                { }
+        virtual void    render() = 0;
         virtual void    update(float delta);
         virtual void    mousePressEvent(int x, int y, char button);
+        virtual void    mouseReleaseEvent(int x, int y, char button)            { }
+        virtual void    mouseMoveEvent(int oldX, int oldY, int newX, int newY)  { }
         virtual void    windowResizeEvent(int w, int h);
 
 public:

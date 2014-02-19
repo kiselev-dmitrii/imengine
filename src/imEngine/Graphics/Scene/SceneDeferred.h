@@ -17,13 +17,19 @@ public:
         /// Деструктор
         ~SceneDeferred();
 
+        /// Возвращает объект, который находится в позиции x,y в координатах окна
+        Polygonal*      pickObject(int x, int y);
+
         /// Возвращает gbuffer
         RenderTarget*   gbuffer();
 
         /// Рендерит сцену
         void            render();
-        /// Возникает при изменении размеров окна
+        /// Обработка события
         void            windowResizeEvent(int w, int h);
+        void            mousePressEvent(int x, int y, char button);
+        void            mouseMoveEvent(int oldX, int oldY, int newX, int newY);
+        void            mouseReleaseEvent(int x, int y, char button);
 
 public:
         void            initGBuffer();
@@ -34,6 +40,7 @@ private:
         RenderTarget            m_lbuffer;
         ScreenAlignedQuad       m_quad;
 
+        Polygonal*              m_pickedObject;
 };
 
 

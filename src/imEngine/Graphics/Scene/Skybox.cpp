@@ -2,7 +2,7 @@
 
 namespace imEngine {
 
-Skybox::Skybox()
+Skybox::Skybox(const CubeTexture &texture)
 {
 }
 
