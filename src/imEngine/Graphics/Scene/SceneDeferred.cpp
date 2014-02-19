@@ -126,15 +126,11 @@ void SceneDeferred::mousePressEvent(int x, int y, char button) {
 
 void SceneDeferred::mouseMoveEvent(int oldX, int oldY, int newX, int newY) {
         if (m_pickedObject) {
-                IM_VAR("WORKS");
                 Vec2 delta = Vec2(newX, newY) - Vec2(oldX, oldY);
                 Vec2 angles = delta;
 
-                Mat4 invViewMatrix = activeCamera()->localToWorldMatrix();
-                Mat3 normalMatrix = glm::transpose(Mat3(glm::inverse(invViewMatrix)));
-                Vec3 worldSpaceCameraUp = normalMatrix * Vec3(0,1,0);
-                Vec3 worldSpaceCameraRight = normalMatrix * Vec3(1,0,0);
-                IM_VAR(worldSpaceCameraUp);
+                Vec3 worldSpaceCameraUp = activeCamera()->convertLocalToWorld(Vec3(0,1,0)) - activeCamera()->worldPosition();
+                Vec3 worldSpaceCameraRight = activeCamera()->convertLocalToWorld(Vec3(1,0,0)) - activeCamera()->worldPosition();
                 m_pickedObject->rotate(worldSpaceCameraUp, angles.x, Space::WORLD);
                 m_pickedObject->rotate(worldSpaceCameraRight, angles.y, Space::WORLD);
         }
