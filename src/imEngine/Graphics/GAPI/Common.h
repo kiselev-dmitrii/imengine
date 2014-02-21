@@ -16,7 +16,8 @@ namespace SourceType {
                 SHORT                   = GL_SHORT,
                 UINT                    = GL_UNSIGNED_INT,
                 INT                     = GL_INT,
-                FLOAT                   = GL_FLOAT
+                FLOAT                   = GL_FLOAT,
+                HALF_FLOAT              = GL_HALF_FLOAT
         };
 
         int sizeOf(SourceType::Enum type);
@@ -67,6 +68,8 @@ namespace InternalFormat {
                 // Цветовые float-point
                 COLOR_FLOAT_3_COMP_32_BIT               = GL_RGB32F,
                 COLOR_FLOAT_4_COMP_32_BIT               = GL_RGBA32F,
+                COLOR_FLOAT_3_COMP_16_BIT               = GL_RGB16F,
+                COLOR_FLOAT_4_COMP_16_BIT               = GL_RGBA16F,
 
                 // Depth нормализованные форматы
                 DEPTH_NORM_1_COMP_16_BIT                = GL_DEPTH_COMPONENT16,

@@ -46,6 +46,11 @@ SourceType::Enum InternalFormat::assumeSourceType(InternalFormat::Enum internal)
                 case DEPTH_FLOAT_1_COMP_32_BIT:
                         return SourceType::FLOAT;
 
+                case COLOR_FLOAT_3_COMP_16_BIT:
+                case COLOR_FLOAT_4_COMP_16_BIT:
+                        return SourceType::HALF_FLOAT;
+
+
                 default:
                         IM_ERROR("Bad InternalFormat");
                         return SourceType::UBYTE;
@@ -58,10 +63,12 @@ SourceFormat::Enum InternalFormat::assumeSourceFormat(InternalFormat::Enum inter
                         return SourceFormat::R;
 
                 case COLOR_NORM_3_COMP_8_BIT:
+                case COLOR_FLOAT_3_COMP_16_BIT:
                 case COLOR_FLOAT_3_COMP_32_BIT:
                         return SourceFormat::RGB;
 
                 case COLOR_NORM_4_COMP_8_BIT:
+                case COLOR_FLOAT_4_COMP_16_BIT:
                 case COLOR_FLOAT_4_COMP_32_BIT:
                         return SourceFormat::RGBA;
 

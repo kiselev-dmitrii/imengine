@@ -152,7 +152,7 @@ void SceneDeferred::mouseReleaseEvent(int x, int y, char button) {
 void SceneDeferred::initGBuffer() {
         m_gbuffer.enableColorBuffer(0, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);        //GBufferDiffuse
         m_gbuffer.enableColorBuffer(1, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);        //GBufferMaterial
-        m_gbuffer.enableColorBuffer(2, InternalFormat::COLOR_FLOAT_4_COMP_32_BIT, true);        //GBufferGeometry
+        m_gbuffer.enableColorBuffer(2, InternalFormat::COLOR_FLOAT_4_COMP_16_BIT, true);      //GBufferGeometry
         m_gbuffer.enableDepthBuffer(InternalFormat::DEPTH_NORM_1_COMP_24_BIT, true);          //GBufferDepth
 }
 

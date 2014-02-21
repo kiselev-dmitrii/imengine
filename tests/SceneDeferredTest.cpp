@@ -29,7 +29,7 @@ void Application::initialize() {
         GraphicApplication::initialize();
         SceneDeferred* dscene = (SceneDeferred*) scene();
 
-        m_car = new Polygonal("resources/models/logo.xml", scene()->world());
+        m_car = new Polygonal("resources/models/car.xml", scene()->world());
         m_light1 = new PointLight(scene()->world());
         m_light1->setPosition(Vec3(10,10,10));
         m_light2 = new PointLight(scene()->world());

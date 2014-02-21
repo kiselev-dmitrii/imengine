@@ -10,6 +10,7 @@ uint GLUtils::sizeOf(GLenum glType) {
                 case GL_UNSIGNED_SHORT:        return sizeof(GLushort);
                 case GL_SHORT:                 return sizeof(GLshort);
                 case GL_FLOAT:                 return sizeof(GLfloat);
+                case GL_HALF_FLOAT:            return sizeof(GLfloat)/2;
                 case GL_DOUBLE:	        return sizeof(GLdouble);
                 case GL_INT:		        return sizeof(GLint);
                 case GL_UNSIGNED_INT:          return sizeof(GLuint);
