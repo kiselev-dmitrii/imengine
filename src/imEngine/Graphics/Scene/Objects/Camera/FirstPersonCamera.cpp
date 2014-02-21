@@ -28,7 +28,7 @@ void FirstPersonCamera::moveUp(float delta) {
 }
 
 void FirstPersonCamera::rotateHorizontaly(float angle) {
-        rotate(Vec3(0,0,1), angle, Space::PARENT);
+        rotate(Vec3(0,1,0), angle, Space::PARENT);
 }
 
 void FirstPersonCamera::rotateVerticaly(float angle) {

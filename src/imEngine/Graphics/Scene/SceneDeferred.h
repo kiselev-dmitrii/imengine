@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include <imEngine/Graphics/RenderTarget.h>
 #include <imEngine/Graphics/ScreenAlignedQuad.h>
+#include "Skybox.h"
 
 namespace imEngine {
 
@@ -39,10 +40,8 @@ private:
         RenderTarget            m_gbuffer;
         RenderTarget            m_lbuffer;
         ScreenAlignedQuad       m_quad;
+        SkyboxPtr               m_skybox;
 
-        CubeTexturePtr          m_skybox;
-        Program*                m_skyboxProgram;
-        GeometryPtr             m_box;
 
         Polygonal*              m_pickedObject;
 };

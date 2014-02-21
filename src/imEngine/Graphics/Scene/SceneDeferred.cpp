@@ -13,13 +13,7 @@ SceneDeferred::SceneDeferred(GraphicApplication* application) :
 {
         initGBuffer();
         initLBuffer();
-
-        m_skybox = CubeTexturePtr(new CubeTexture());
-        m_skybox->load("resources/environments/grace.env.hdr");
-        m_skybox->setMagnificationFilter(TextureMagFilter::LINEAR);
-        m_skybox->setMinimizationFilter(TextureMinFilter::LINEAR);
-        m_skyboxProgram = RESOURCES->programs()->program("SkyboxRender.glsl");
-        m_box = Geometry::cube();
+        m_skybox = SkyboxPtr(new Skybox("resources/environments/grace.env.hdr"));
 }
 
 SceneDeferred::~SceneDeferred() {
@@ -97,12 +91,7 @@ void SceneDeferred::render() {
         Renderer::setBlendMode(BlendMode::ADD);
 
         // Рендер скайбокса
-        m_skyboxProgram->bind();
-        m_skyboxProgram->setUniform("uViewRotationMatrix", Mat3(viewMatrix));
-        m_skyboxProgram->setUniform("uProjectionMatrix", projectionMatrix);
-        m_skybox->bind(0);
-        m_skyboxProgram->setUniform("uEnvironment", 0);
-        m_box->render();
+        m_skybox->render(Mat3(viewMatrix), projectionMatrix);
 
         // Light Pass
         //m_lbuffer.bind();
