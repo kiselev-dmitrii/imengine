@@ -13,7 +13,7 @@ Mesh::Mesh(const String& filename) {
 
 void Mesh::load(const String &filename) {
         Assimp::Importer importer;
-        const aiScene *scene = importer.ReadFile(filename, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
+        const aiScene *scene = importer.ReadFile(filename, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_FlipUVs);
         if (!scene) {
                 IM_ERROR("Cannot load mesh from file " << filename);
                 IM_ERROR(importer.GetErrorString());
@@ -24,6 +24,7 @@ void Mesh::load(const String &filename) {
         const aiMesh* mesh = scene->mMeshes[0];
         IM_ASSERT(mesh->HasPositions());
         IM_ASSERT(mesh->HasNormals());
+        IM_ASSERT(mesh->HasTangentsAndBitangents());
         IM_ASSERT(mesh->HasTextureCoords(0));
 
         m_vertices = loadVertices(mesh);
@@ -62,6 +63,7 @@ VertexList Mesh::loadVertices(const aiMesh *mesh) {
                 Vertex v;
                 v.position = Vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
                 v.normal = Vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+                v.tangent = Vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
                 v.texcoords = Vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 
                 vertices.push_back(v);
