@@ -9,19 +9,8 @@ PointLight::PointLight(Object *parent) :
 { }
 
 void PointLight::bind(Scene* scene) {
-        float farDistance = scene->activeCamera()->farDistance();
-        float tanHalfFovy = glm::tan(glm::radians(scene->activeCamera()->fieldOfView() / 2.0));
-        float aspectRatio = scene->activeCamera()->aspectRatio();
-
-        Vec3 viewSpaceLightPosition = Vec3(scene->activeCamera()->worldToLocalMatrix() * Vec4(worldPosition(), 1.0));
-
         m_program->bind();
-        m_program->setUniform("uFarDistance", farDistance);
-        m_program->setUniform("uTanHalfFovy", tanHalfFovy);
-        m_program->setUniform("uAspectRatio", aspectRatio);
 
-        m_program->setUniform("uDiffuseColor", m_color);
-        m_program->setUniform("uViewSpaceLightPosition", viewSpaceLightPosition);
 }
 
 void PointLight::unbind() {
