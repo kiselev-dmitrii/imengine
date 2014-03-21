@@ -8,8 +8,8 @@ namespace imEngine {
 
 ResourceManager::ResourceManager() {
         m_programMgr = new ProgramManager("resources/shaders");
-        m_textureMgr = new TextureManager("resources/models/textures");
-        m_geometryMgr = new GeometryManager("resources/models/geometry");
+        m_textureMgr = new TextureManager("resources/textures");
+        m_geometryMgr = new GeometryManager("resources/geometry");
 }
 
 ResourceManager::~ResourceManager() {
