@@ -1,21 +1,21 @@
 <model name="car">
 	<detail name="body">
 		<geometry filename="car_body.obj"/>
-		<material type="basic_deferred" diffuse_color="255,0,0" specular_level="0.1" specular_power="20" metallic_level="0.6"/>
+		<material type="textured_deferred" diffuse_texture="tiles.png"/>
 	</detail>
 
 	<detail name="inner">
 		<geometry filename="car_inner.obj"/>
-		<material type="basic_deferred" diffuse_color="0,255,0"/>
+		<material type="textured_deferred"/>
 	</detail>
 
 	<detail name="glasses">
 		<geometry filename="car_glasses.obj"/>
-		<material type="basic_deferred" diffuse_color="0,0,255"/>
+		<material type="textured_deferred"/>
 	</detail>
 
 	<detail name="brakes">
 		<geometry filename="car_brakes.obj"/>
-		<material type="basic_deferred" diffuse_color="255,255,0" specular_level="0.5" specular_power="80" metallic_level="0.1"/>
+		<material type="textured_deferred"/>
 	</detail>
 </model>

@@ -1,6 +1,7 @@
 #include "Model.h"
 #include "../../ResourceManager.h"
 #include "../../Materials/BasicDeferredMaterial.h"
+#include "../../Materials/DeferredMaterial.h"
 #include <imEngine/Utils/StringUtils.h>
 #include <imEngine/Utils/Debug.h>
 
@@ -68,6 +69,12 @@ MaterialPtr Model::createMaterial(const XmlNode &materialNode) {
                 BasicDeferredMaterial* result = new BasicDeferredMaterial();
                 result->loadFromXML(materialNode);
                 return MaterialPtr((Material*)result);
+
+        } else if (type == "textured_deferred") {
+                TexturedDeferredMaterial* result = new TexturedDeferredMaterial();
+                result->loadFromXML(materialNode);
+                return MaterialPtr((Material*)result);
+
         } else {
                 IM_ERROR("Material " << type << " is not found");
                 return MaterialPtr();

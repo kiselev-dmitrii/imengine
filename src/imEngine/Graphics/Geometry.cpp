@@ -70,6 +70,7 @@ void Geometry::transform(const Mat4 &matrix) {
                         vertices[i].position = Vec3(position)/position.w;
 
                         vertices[i].normal = glm::normalize(normalMatrix * vertices[i].normal);
+                        vertices[i].tangent = glm::normalize(normalMatrix * vertices[i].tangent);
                 }
         m_vbo->unmap();
 
@@ -159,6 +160,7 @@ void Geometry::initBuffers() {
                 m_vbo->connect(0, 3, GL_FLOAT, offsetof(Vertex, position), sizeof(Vertex));
                 m_vbo->connect(1, 3, GL_FLOAT, offsetof(Vertex, normal), sizeof(Vertex));
                 m_vbo->connect(2, 2, GL_FLOAT, offsetof(Vertex, texcoords), sizeof(Vertex));
+                m_vbo->connect(3, 3, GL_FLOAT, offsetof(Vertex, tangent), sizeof(Vertex));
 
                 m_ibo->bind();
         m_vao->unbind();

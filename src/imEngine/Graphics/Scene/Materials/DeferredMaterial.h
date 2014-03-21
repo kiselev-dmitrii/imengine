@@ -22,13 +22,17 @@ public:
 
         /// Устанавливает диффузную/нормальную/спекулярную текстуру
         void            setDiffuseTexture(const String& name);
-        void            setNormalTexture(const String& name);
         void            setSpecularTexture(const String& name);
+        void            setNormalTexture(const String& name);
+
+        /// Устанавливает/отключает материал
+        void            bind();
+        void            unbind();
 
 private:
         Texture2D*      m_diffuseTexture;
-        Texture2D*      m_normalTexture;
         Texture2D*      m_specularTexture;
+        Texture2D*      m_normalTexture;
 };
 
 } //namespace imEngine
