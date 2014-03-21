@@ -1,6 +1,6 @@
 <model name="room">
 	<detail name="body">
 		<geometry filename="test_chamber.obj"/>
-		<material type="textured_deferred" diffuse_texture="tile_diffuse.png" specular_texture="tile_specular.png" normal="tile_normal.png" scale="100,100"/>
+		<material type="textured_deferred" diffuse_texture="tile_diffuse.png" specular_texture="tile_specular.png" normal_texture="tile_normal.png" scale="100,100"/>
 	</detail>
 </model>

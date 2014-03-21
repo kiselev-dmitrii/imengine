@@ -15,7 +15,7 @@ protected:
 
 private:
         Polygonal*      m_room;
-        Polygonal*      m_car;
+        Polygonal*      m_logo;
         PictureColor*   m_diffuseBuffer;
         PictureColor*   m_materialBuffer;
         PictureColor*   m_geometryBuffer;
@@ -30,9 +30,10 @@ void Application::initialize() {
         SceneDeferred* dscene = (SceneDeferred*) scene();
 
         m_room = new Polygonal("resources/models/room.xml", scene()->world());
+        m_logo = new Polygonal("resources/models/logo.xml", m_room);
 
         m_light1 = new PointLight(scene()->world());
-        m_light1->setPosition(Vec3(10,10,10));
+        m_light1->setPosition(Vec3(0,10,0));
         m_light1->setColor(Vec3(1.0, 1.0, 0.9));
 
         m_diffuseBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(0), gui()->root());

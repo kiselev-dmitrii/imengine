@@ -10,7 +10,7 @@ PointLight::PointLight(Object *parent) :
 
 void PointLight::bind(Scene* scene) {
         float farDistance = scene->activeCamera()->farDistance();
-        float tanHalfFovy = glm::tan(scene->activeCamera()->fieldOfView() / 2.0);
+        float tanHalfFovy = glm::tan(glm::radians(scene->activeCamera()->fieldOfView() / 2.0));
         float aspectRatio = scene->activeCamera()->aspectRatio();
 
         Vec3 viewSpaceLightPosition = Vec3(scene->activeCamera()->worldToLocalMatrix() * Vec4(worldPosition(), 1.0));
