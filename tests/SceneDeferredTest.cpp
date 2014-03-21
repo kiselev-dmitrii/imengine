@@ -22,7 +22,6 @@ private:
         PictureDepth*   m_depthBuffer;
 
         PointLight*     m_light1;
-        PointLight*     m_light2;
 };
 
 
@@ -34,10 +33,7 @@ void Application::initialize() {
 
         m_light1 = new PointLight(scene()->world());
         m_light1->setPosition(Vec3(10,10,10));
-        m_light2 = new PointLight(scene()->world());
-        m_light2->setPosition(Vec3(-10, 10, -10));
-        m_light2->setColor(Vec3(2.5, 2.5, 2.0));
-        m_light1->setColor(Vec3(2.5, 2.0, 2.5));
+        m_light1->setColor(Vec3(1.0, 1.0, 0.9));
 
         m_diffuseBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(0), gui()->root());
         m_materialBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(1), gui()->root());

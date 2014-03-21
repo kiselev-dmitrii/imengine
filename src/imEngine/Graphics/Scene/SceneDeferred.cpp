@@ -111,6 +111,8 @@ void SceneDeferred::render() {
         }
         //m_lbuffer.unbind();
 
+        // Lightning object pass
+
         /*
         Renderer::setBlendMode(BlendMode::NONE);
         Renderer::clearBuffers();

@@ -41,23 +41,24 @@ layout (location = 0) out vec4 fGBufferDiffuse;
 layout (location = 1) out vec4 fGBufferMaterial;
 layout (location = 2) out vec4 fGBufferGeometry;
 
+uniform vec2 		uScale;
 uniform sampler2D	uDiffuseTexture;
 uniform sampler2D	uSpecularTexture;
 uniform sampler2D 	uNormalTexture;
 
 void main() {
 	/// Fill diffuse buffer
-	fGBufferDiffuse = texture2D(uDiffuseTexture, v.texCoords);
+	fGBufferDiffuse = texture2D(uDiffuseTexture, v.texCoords * uScale);
 
 	/// Fill material buffer
-	float specularLevel = texture2D(uSpecularTexture, v.texCoords).r;
+	float specularLevel = texture2D(uSpecularTexture, v.texCoords * uScale).r;
 	float specularExponent = 1.0;
 	float metallicLevel = 1.0;
 	float ambientOcclusion = 1.0;
 	fGBufferMaterial = vec4(specularLevel, specularExponent, metallicLevel, ambientOcclusion);
 
 	/// Fill geometry buffer
-	vec3 n = texture2D(uNormalTexture, v.texCoords).xyz * 2.0 - 1.0;	// tangent space normal
+	vec3 n = texture2D(uNormalTexture, v.texCoords * uScale).xyz * 2.0 - 1.0;	// tangent space normal
 	n = v.tangentToViewMatrix * n;										// view space normal
 	fGBufferGeometry = vec4(n*0.5 + 0.5, 1.0);
 }

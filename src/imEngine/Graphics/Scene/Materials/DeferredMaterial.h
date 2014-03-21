@@ -20,6 +20,9 @@ public:
         /// Загружает параметры текстуры с XML ноды
         void            loadFromXML(const XmlNode& node);
 
+        /// Устанавливает масштаб
+        void            setScale(const Vec2& scale);
+
         /// Устанавливает диффузную/нормальную/спекулярную текстуру
         void            setDiffuseTexture(const String& name);
         void            setSpecularTexture(const String& name);
@@ -30,6 +33,7 @@ public:
         void            unbind();
 
 private:
+        Vec2            m_scale;
         Texture2D*      m_diffuseTexture;
         Texture2D*      m_specularTexture;
         Texture2D*      m_normalTexture;

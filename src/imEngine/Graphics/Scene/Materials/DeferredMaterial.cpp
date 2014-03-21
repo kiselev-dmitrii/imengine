@@ -1,23 +1,33 @@
 #include "DeferredMaterial.h"
 #include "../ResourceManager.h"
 #include <imEngine/System/Filesystem.h>
+#include <imEngine/Utils/StringUtils.h>
 
 namespace imEngine {
 
 TexturedDeferredMaterial::TexturedDeferredMaterial() :
         Material("materials/TexturedDeferredMaterial.glsl", false)
 {
-        m_diffuseTexture = m_specularTexture = m_normalTexture = RESOURCES->textures()->texture2D("model/empty.png");
+        setScale(Vec2(1,1));
+        setDiffuseTexture("empty.png");
+        setSpecularTexture("empty.png");
+        setNormalTexture("empty.png");
 }
 
 void TexturedDeferredMaterial::loadFromXML(const XmlNode &node) {
         String diffuseTexture = node.attribute("diffuse_texture").value();
         String specularTexture = node.attribute("specular_texture").value();
         String normalTexture = node.attribute("normal_texture").value();
+        String scale = node.attribute("scale").value();
 
         if (!diffuseTexture.empty()) setDiffuseTexture(diffuseTexture);
         if (!specularTexture.empty()) setSpecularTexture(specularTexture);
         if (!normalTexture.empty()) setNormalTexture(normalTexture);
+        if (!scale.empty()) setScale(StringUtils::toVec2(scale));
+}
+
+void TexturedDeferredMaterial::setScale(const Vec2 &scale) {
+        m_scale = scale;
 }
 
 void TexturedDeferredMaterial::setNormalTexture(const String &name) {
@@ -34,6 +44,8 @@ void TexturedDeferredMaterial::setSpecularTexture(const String &name) {
 
 void TexturedDeferredMaterial::bind() {
         m_program->bind();
+
+        m_program->setUniform("uScale", m_scale);
 
         m_diffuseTexture->bind(0);
         m_program->setUniform("uDiffuseTexture", 0);
