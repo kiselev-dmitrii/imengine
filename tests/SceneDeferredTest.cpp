@@ -33,7 +33,7 @@ void Application::initialize() {
         m_logo = new Polygonal("resources/models/logo.xml", m_room);
 
         m_light1 = new PointLight(scene()->world());
-        m_light1->setPosition(Vec3(0,10,0));
+        m_light1->setPosition(Vec3(0,2,0));
         m_light1->setColor(Vec3(1.0, 1.0, 0.9));
 
         m_diffuseBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(0), gui()->root());
