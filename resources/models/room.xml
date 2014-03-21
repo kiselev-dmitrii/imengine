@@ -1,0 +1,6 @@
+<model name="room">
+	<detail name="body">
+		<geometry filename="test_chamber.obj"/>
+		<material type="textured_deferred" diffuse_texture="room.png"/>
+	</detail>
+</model>

@@ -58,7 +58,6 @@ void main() {
 
 	/// Fill geometry buffer
 	vec3 n = texture2D(uNormalTexture, v.texCoords).xyz * 2.0 - 1.0;	// tangent space normal
-	n = vec3(0,0,1);		//remove it
 	n = v.tangentToViewMatrix * n;										// view space normal
 	fGBufferGeometry = vec4(n*0.5 + 0.5, 1.0);
 }

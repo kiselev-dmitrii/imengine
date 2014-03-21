@@ -91,7 +91,7 @@ void SceneDeferred::render() {
         Renderer::setBlendMode(BlendMode::ADD);
 
         // Рендер скайбокса
-        m_skybox->render(Mat3(viewMatrix), projectionMatrix);
+        //m_skybox->render(Mat3(viewMatrix), projectionMatrix);
 
         // Light Pass
         //m_lbuffer.bind();

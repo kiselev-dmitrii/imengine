@@ -14,6 +14,7 @@ protected:
         void    windowResizeEvent(int x, int y);
 
 private:
+        Polygonal*      m_room;
         Polygonal*      m_car;
         PictureColor*   m_diffuseBuffer;
         PictureColor*   m_materialBuffer;
@@ -29,7 +30,8 @@ void Application::initialize() {
         GraphicApplication::initialize();
         SceneDeferred* dscene = (SceneDeferred*) scene();
 
-        m_car = new Polygonal("resources/models/car.xml", scene()->world());
+        m_room = new Polygonal("resources/models/room.xml", scene()->world());
+
         m_light1 = new PointLight(scene()->world());
         m_light1->setPosition(Vec3(10,10,10));
         m_light2 = new PointLight(scene()->world());

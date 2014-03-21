@@ -19,6 +19,10 @@ Texture::Texture(TextureTarget::Enum target)  {
         IM_GLCALL(glGenTextures(1, &m_handle));
         IM_LOG("Texture" << m_handle << ": created " << GLUtils::convertEnumToString(m_target));
         bind();                                         //первый bind определяет тип текстуры
+
+        // По дефолту установим линейную фильтрацию
+        setMinimizationFilter(TextureMinFilter::LINEAR);
+        setMagnificationFilter(TextureMagFilter::LINEAR);
 }
 
 Texture::~Texture() {

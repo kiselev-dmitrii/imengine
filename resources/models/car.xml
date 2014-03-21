@@ -1,7 +1,7 @@
 <model name="car">
 	<detail name="body">
 		<geometry filename="car_body.obj"/>
-		<material type="textured_deferred" diffuse_texture="tiles.png"/>
+		<material type="textured_deferred"/>
 	</detail>
 
 	<detail name="inner">
