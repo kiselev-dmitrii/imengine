@@ -23,9 +23,9 @@ Program* Pass::program() const {
 
 //########################### BlitCopyPass ###################################//
 
-BlitCopyPass::BlitCopyPass(Texture2D* texture) :
+BlitCopyPass::BlitCopyPass() :
         Pass("passes/BlitCopyPass.glsl"),
-        m_texture(texture)
+        m_texture(nullptr)
 { }
 
 void BlitCopyPass::prepare() const {
@@ -35,9 +35,9 @@ void BlitCopyPass::prepare() const {
 
 //########################### ThresholdPass ##################################//
 
-ThresholdPass::ThresholdPass(Texture2D *texture) :
+ThresholdPass::ThresholdPass() :
         Pass("passes/ThresholdPass.glsl"),
-        m_texture(texture),
+        m_texture(nullptr),
         m_threshold(0.5)
 {  }
 
@@ -49,10 +49,10 @@ void ThresholdPass::prepare() const {
 
 //######################## DirectionalBlurPass ###############################//
 
-DirectionalBlurPass::DirectionalBlurPass(Texture2D *texture) :
-        Pass("passes/DirectionalBlurPass.glsl")
+DirectionalBlurPass::DirectionalBlurPass() :
+        Pass("passes/DirectionalBlurPass.glsl"),
+        m_texture(nullptr)
 {
-        setTexture(texture);
         setDirection(Vec2(1.0, 0.0));
         setRadius(16);
         setStep(1);

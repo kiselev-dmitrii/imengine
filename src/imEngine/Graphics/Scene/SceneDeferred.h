@@ -5,6 +5,7 @@
 #include <imEngine/Graphics/RenderTarget.h>
 #include <imEngine/Graphics/ScreenAlignedQuad.h>
 #include "Skybox.h"
+#include "PostEffects/Pass.h"
 
 namespace imEngine {
 
@@ -31,6 +32,7 @@ public:
         void            mousePressEvent(int x, int y, char button);
         void            mouseMoveEvent(int oldX, int oldY, int newX, int newY);
         void            mouseReleaseEvent(int x, int y, char button);
+        void            keyPressEvent(int key);
 
 public:
         void            initGBuffer();
@@ -41,7 +43,7 @@ private:
         RenderTarget            m_lbuffer;
         ScreenAlignedQuad       m_quad;
         SkyboxPtr               m_skybox;
-
+        DirectionalBlurPass     m_pass;         //temp
 
         Polygonal*              m_pickedObject;
 };

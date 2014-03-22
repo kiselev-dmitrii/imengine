@@ -33,7 +33,7 @@ protected:
 class BlitCopyPass : public Pass {
 public:
         /// Конструктор
-        BlitCopyPass(Texture2D* texture);
+        BlitCopyPass();
         /// Устанавливает текстуру
         void    setTexture(Texture2D* texture)                                  { m_texture = texture; }
 
@@ -50,7 +50,7 @@ private:
 class ThresholdPass : public Pass {
 public:
         /// Конструктор
-        ThresholdPass(Texture2D* texture);
+        ThresholdPass();
         /// Устанавливает текстуру
         void    setTexture(Texture2D* texture)                                  { m_texture = texture; }
         /// Устанавливает порог
@@ -70,7 +70,7 @@ private:
 class DirectionalBlurPass : public Pass {
 public:
         /// Конструктор
-        DirectionalBlurPass(Texture2D* texture);
+        DirectionalBlurPass();
 
         /// Устанавливает текстуру
         void    setTexture(Texture2D* texture);

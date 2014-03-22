@@ -2,7 +2,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Objects/Light/PointLight.h"
 #include "ResourceManager.h"
-#include "PostEffects/Pass.h"
 
 namespace imEngine {
 
@@ -10,6 +9,7 @@ SceneDeferred::SceneDeferred(GraphicApplication* application) :
         Scene(application),
         m_gbuffer(application->window()->size()),
         m_lbuffer(application->window()->size()),
+        m_pass(),
         m_pickedObject(nullptr)
 {
         initGBuffer();
@@ -137,13 +137,12 @@ void SceneDeferred::render() {
 
         m_lbuffer.unbind();
 
-
-        static DirectionalBlurPass copy(m_lbuffer.colorBufferTexture(0).get());
-        copy.setRadius(100);
-        copy.setDirection(Vec2(1,1));
+        m_pass.setTexture(m_lbuffer.colorBufferTexture(0).get());
+        m_pass.setRadius(100);
+        m_pass.setDirection(Vec2(1,1));
         Renderer::setBlendMode(BlendMode::NONE);
         Renderer::clearBuffers();
-        copy.apply();
+        m_pass.apply();
 }
 
 void SceneDeferred::windowResizeEvent(int w, int h) {
@@ -175,6 +174,14 @@ void SceneDeferred::mouseReleaseEvent(int x, int y, char button) {
         if (button != MouseButton::RIGHT) return;
 
         m_pickedObject = nullptr;
+}
+
+void SceneDeferred::keyPressEvent(int key) {
+        static int step = 1;
+        if (key == SDLK_LEFT) --step;
+        if (key == SDLK_RIGHT) ++step;
+        m_pass.setStep(step);
+        IM_VAR(step);
 }
 
 void SceneDeferred::initGBuffer() {

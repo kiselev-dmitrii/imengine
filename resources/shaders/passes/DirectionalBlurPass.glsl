@@ -22,7 +22,7 @@ uniform int 		uStep;
 vec4 incrementalGaussian(in sampler2D texture, in int radius, in vec2 direction, in int step, in vec2 origin) {
 	int numSamples = (radius/2)/step;
 	vec2 texelSize = 1.0 / vec2(textureSize(texture, 0));	
-	float sigma = float(radius) / 8.0;
+	float sigma = float(radius/step) / 8.0;
 
 	if (numSamples == 0) return texture2D(texture, origin);
 		
