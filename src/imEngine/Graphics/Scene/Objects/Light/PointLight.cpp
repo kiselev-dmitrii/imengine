@@ -12,13 +12,10 @@ void PointLight::bind(Scene* scene) {
         m_program->bind();
 
         Camera* cam = scene->activeCamera();
-        float farDistance = cam->farDistance();
-        float aspectRatio = cam->aspectRatio();
-        float tanFovyDiv2 = glm::tan(glm::radians(cam->fieldOfView() / 2));
 
-        m_program->setUniform("uFarDistance", farDistance);
-        m_program->setUniform("uAspectRatio", aspectRatio);
-        m_program->setUniform("uTanFovyDiv2", tanFovyDiv2);
+        m_program->setUniform("uNearDistance", cam->nearDistance());
+        m_program->setUniform("uFarDistance", cam->farDistance());
+        m_program->setUniform("uInvProjectionMatrix", glm::inverse(cam->viewToClipMatrix()));
 
         Vec3 diffuseColor = m_color;
         Vec3 specularColor = Vec3(1.0);

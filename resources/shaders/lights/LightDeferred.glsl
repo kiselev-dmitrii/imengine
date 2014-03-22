@@ -1,24 +1,10 @@
 ///### VERTEX SHADER ###///
-layout (location = 0) in vec2 aPosition;	// in [-1;1]x[-1;1]x[0;0]
+layout (location = 0) in vec2 aPosition;        // in [-1;1]x[-1;1]x[0;0]
 
 out vec2 vTexCoord;
-out vec3 vViewRay;
-
-uniform float uFarDistance;
-uniform float uAspectRatio;
-uniform float uTanFovyDiv2;
 
 void main() {
-	vTexCoord = 0.5*aPosition + 0.5;
-
-        // Создание луча направленного до очередной точки на farPlane
-        vViewRay = vec3(
-                aPosition.x * uAspectRatio * uFarDistance * uTanFovyDiv2,
-                aPosition.y * uFarDistance * uTanFovyDiv2,
-                -uFarDistance
-        );
-        vViewRay = normalize(vViewRay);
-
+        vTexCoord = 0.5*aPosition + 0.5;
         gl_Position = vec4(aPosition, 0.0, 1.0);
 }
 
@@ -26,7 +12,6 @@ void main() {
 ///### FRAGMENT SHADER ###///
 
 in vec2 vTexCoord;
-in vec3 vViewRay;
 
 layout (location = 0) out vec4 fLightBuffer;
 
@@ -41,21 +26,36 @@ struct Light {
         vec3 positionVS;
 };
 uniform Light uLight;
+uniform mat4  uInvProjectionMatrix;
+uniform float uNearDistance;
+uniform float uFarDistance;
+
+vec3 textureToViewSpace(in vec2 texCoord, in sampler2D depthBuffer, in float near, in float far, in mat4 invProjection) {
+        float depth = texture2D(depthBuffer, texCoord).r;
+        vec3 ndc = vec3(texCoord, depth) * 2.0 - 1.0;
+        vec4 clip;
+        clip.w = (2*near*far) / (near + far + ndc.z * (near - far));
+        clip.xyz = ndc.xyz * clip.w;
+
+        return (invProjection * clip).xyz;
+}
 
 void main() {
-        vec3 viewRay = normalize(vViewRay);
-        float depth = texture2D(uGBufferDepth, vTexCoord).r;
-
         /// Реконструируем позицию каждого пикселя
-        vec3 positionVS = vViewRay * depth;
+        vec3 positionVS = textureToViewSpace(vTexCoord, uGBufferDepth, uNearDistance, uFarDistance, uInvProjectionMatrix);
         vec3 normalVS = texture2D(uGBufferGeometry, vTexCoord).xyz * 2.0 - 1.0;
 
         /// Вычисляем освещение по фонгу
+        vec4 material = texture2D(uGBufferMaterial, vTexCoord);
+
         vec3 s = normalize(uLight.positionVS - positionVS);
         vec3 v = normalize(-positionVS);
         vec3 diffuseColor =     texture2D(uGBufferDiffuse, vTexCoord).rgb * 
                                 uLight.diffuse *
                                 max(dot(s, normalVS), 0.0);
 
-	fLightBuffer = vec4(positionVS, 1.0);
+        vec3 specularColor =    uLight.specular *
+                                max(pow(dot(v, reflect(-s, normalVS)), material.r*100.0), 0.0);
+
+        fLightBuffer = vec4(diffuseColor + specularColor, 1.0);
 }
