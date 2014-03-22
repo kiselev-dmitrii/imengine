@@ -32,14 +32,20 @@ void TexturedDeferredMaterial::setScale(const Vec2 &scale) {
 
 void TexturedDeferredMaterial::setNormalTexture(const String &name) {
         m_normalTexture = RESOURCES->textures()->texture2D(Filesystem::joinPath("model", name));
+        m_normalTexture->generateMipmaps();
+        m_normalTexture->setMinimizationFilter(TextureMinFilter::LINEAR_MIPMAP_LINEAR);
 }
 
 void TexturedDeferredMaterial::setDiffuseTexture(const String &name) {
         m_diffuseTexture = RESOURCES->textures()->texture2D(Filesystem::joinPath("model", name));
+        m_diffuseTexture->generateMipmaps();
+        m_diffuseTexture->setMinimizationFilter(TextureMinFilter::LINEAR_MIPMAP_LINEAR);
 }
 
 void TexturedDeferredMaterial::setSpecularTexture(const String &name) {
         m_specularTexture = RESOURCES->textures()->texture2D(Filesystem::joinPath("model", name));
+        m_specularTexture->generateMipmaps();
+        m_specularTexture->setMinimizationFilter(TextureMinFilter::LINEAR_MIPMAP_LINEAR);
 }
 
 void TexturedDeferredMaterial::bind() {
