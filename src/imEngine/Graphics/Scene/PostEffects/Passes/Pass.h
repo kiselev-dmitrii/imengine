@@ -1,7 +1,7 @@
 #ifndef PASS_H
 #define PASS_H
 
-#include <imEngine/Graphics/ScreenAlignedQuad.h>
+#include <imEngine/Graphics/GAPI/GAPI.h>
 
 namespace imEngine {
 
@@ -21,11 +21,10 @@ public:
 
 protected:
         /// Подготовительные действия: передача параметров в шейдер и т.д
-        virtual void    prepare() = 0;
+        virtual void    prepare() const = 0;
 
 protected:
-        Program*                        m_program;
-        static ScreenAlignedQuad        s_quad;
+        Program*        m_program;
 };
 
 } //namespace imEngine

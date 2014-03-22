@@ -1,18 +1,19 @@
 #include "Pass.h"
 #include "../../ResourceManager.h"
+#include <imEngine/Graphics/ScreenAlignedQuad.h>
 
 namespace imEngine {
-
-ScreenAlignedQuad Pass::s_quad;
 
 Pass::Pass(const String &filename) {
         m_program = RESOURCES->programs()->program(filename);
 }
 
 void Pass::apply() const {
+        static ScreenAlignedQuad quad;
+
         m_program->bind();
         prepare();
-        s_quad.render();
+        quad.render();
         m_program->unbind();
 }
 

@@ -2,6 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Objects/Light/PointLight.h"
 #include "ResourceManager.h"
+#include "PostEffects/Passes/BlitCopyPass.h"
 
 namespace imEngine {
 
@@ -94,16 +95,17 @@ void SceneDeferred::render() {
         // Рендер прозрачных деталей
         //...
 
-        Renderer::setDepthMode(DepthMode::NONE);
-        glClearColor(0.0,0.0,0.0,0.0);
-        Renderer::clearBuffers();
-        Renderer::setBlendMode(BlendMode::ADD);
-
         // Рендер скайбокса
         //m_skybox->render(Mat3(viewMatrix), projectionMatrix);
 
         // Light Pass
-        //m_lbuffer.bind();
+        m_lbuffer.bind();
+        Renderer::setDepthMode(DepthMode::NONE);
+        glClearColor(0.0,0.0,0.0,0.0);
+        Renderer::clearBuffers(Buffer::COLOR);
+        Renderer::setBlendMode(BlendMode::ADD);
+
+
         for (Light* light: m_lights) {
                 light->bind(this);
                 m_gbuffer.colorBufferTexture(0)->bind(0);
@@ -133,14 +135,13 @@ void SceneDeferred::render() {
 
         }
 
-        //m_lbuffer.unbind();
+        m_lbuffer.unbind();
 
 
-        /*
+        static BlitCopyPass copy(m_lbuffer.colorBufferTexture(0).get());
         Renderer::setBlendMode(BlendMode::NONE);
         Renderer::clearBuffers();
-        m_quad.render();
-        */
+        copy.apply();
 }
 
 void SceneDeferred::windowResizeEvent(int w, int h) {
