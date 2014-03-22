@@ -21,4 +21,30 @@ Program* Pass::program() const {
         return m_program;
 }
 
+//########################### BlitCopyPass ###################################//
+
+BlitCopyPass::BlitCopyPass(Texture2D* texture) :
+        Pass("passes/BlitCopyPass.glsl"),
+        m_texture(texture)
+{ }
+
+void BlitCopyPass::prepare() const {
+        m_texture->bind(0);
+        m_program->setUniform("uTexture", 0);
+}
+
+//########################### ThresholdPass ##################################//
+
+ThresholdPass::ThresholdPass(Texture2D *texture) :
+        Pass("passes/ThresholdPass.glsl"),
+        m_texture(texture),
+        m_threshold(0.5)
+{  }
+
+void ThresholdPass::prepare() const {
+        m_texture->bind(0);
+        m_program->setUniform("uTexture", 0);
+        m_program->setUniform("uThreshold", m_threshold);
+}
+
 } //namespace imEngine

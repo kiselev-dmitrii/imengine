@@ -2,7 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Objects/Light/PointLight.h"
 #include "ResourceManager.h"
-#include "PostEffects/Passes/BlitCopyPass.h"
+#include "PostEffects/Passes/Pass.h"
 
 namespace imEngine {
 
@@ -138,7 +138,8 @@ void SceneDeferred::render() {
         m_lbuffer.unbind();
 
 
-        static BlitCopyPass copy(m_lbuffer.colorBufferTexture(0).get());
+        static ThresholdPass copy(m_lbuffer.colorBufferTexture(0).get());
+        copy.setThreshold(0.8);
         Renderer::setBlendMode(BlendMode::NONE);
         Renderer::clearBuffers();
         copy.apply();

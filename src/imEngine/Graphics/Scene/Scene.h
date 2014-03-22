@@ -47,6 +47,8 @@ public:
         virtual void    mousePressEvent(int x, int y, char button);
         virtual void    mouseReleaseEvent(int x, int y, char button)            { }
         virtual void    mouseMoveEvent(int oldX, int oldY, int newX, int newY)  { }
+        virtual void    keyPressEvent(int key)                                  { }
+        virtual void    keyReleaseEvent(int key)                                { }
         virtual void    windowResizeEvent(int w, int h);
 
 public:

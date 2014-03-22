@@ -58,6 +58,7 @@ void GraphicApplication::mouseReleaseEvent(int x, int y, char button) {
 
 void GraphicApplication::keyPressEvent(int key) {
         m_gui->processKeyPress(key);
+        m_scene->keyPressEvent(key);
 
         switch (key) {
                 case SDLK_F11:
@@ -68,6 +69,7 @@ void GraphicApplication::keyPressEvent(int key) {
 
 void GraphicApplication::keyReleaseEvent(int key) {
         m_gui->processKeyRelease(key);
+        m_scene->keyReleaseEvent(key);
 }
 
 void GraphicApplication::windowResizeEvent(int x, int y) {
