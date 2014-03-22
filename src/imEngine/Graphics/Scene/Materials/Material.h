@@ -6,6 +6,14 @@
 
 namespace imEngine {
 
+/** @brief Тип материала
+ */
+enum class MaterialType {
+        DEFERRED,
+        TRANSPARENT,
+        UNLIGHTENED
+};
+
 
 /** @brief Базовый класс для материалов
  *
@@ -14,7 +22,7 @@ namespace imEngine {
 class Material {
 public:
         /// Конструктор
-        Material(const String& filename, bool isTransparent);
+        Material(const String& filename, MaterialType type);
 
         /// Активирует/деактивирует материал
         virtual void    bind() = 0;
@@ -22,13 +30,12 @@ public:
 
         /// Возвращает программу
         Program*        program() const;
-
-        /// Определяет, является ли материал прозрачным
-        bool            isTransparent() const;
+        /// Возвращает тип материала
+        MaterialType    type() const;
 
 protected:
         Program*        m_program;
-        bool            m_isTransparent;
+        MaterialType    m_type;
 };
 
 

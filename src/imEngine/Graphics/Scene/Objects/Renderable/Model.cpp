@@ -17,6 +17,17 @@ Model::Model(const ModelDetailList &details, Object *owner) :
         m_owner(owner)
 { }
 
+Model::Model(const String &geometry, MaterialPtr material, Object* owner) :
+        m_owner(owner)
+{
+        ModelDetail detail;
+        detail.geometry = RESOURCES->geometry()->geometry(geometry);
+        detail.material = material;
+        detail.owner = this;
+
+        m_details.push_back(detail);
+}
+
 ModelDetailList& Model::details() {
         return m_details;
 }

@@ -59,8 +59,10 @@ void SceneDeferred::render() {
         m_gbuffer.bind();
         Renderer::clearBuffers();
 
-        // Рендер непрозрачных деталей и поиск прозрачных
         std::list<ModelDetail*> transparentDetails;
+        std::list<ModelDetail*> unlightenedDetails;
+
+        // Рендер непрозрачных деталей
         for(Polygonal* object: m_polygonals) {
                 const Mat4& modelMatrix = object->localToWorldMatrix();
                 Mat4 modelViewMatrix = viewMatrix * modelMatrix;
@@ -68,14 +70,21 @@ void SceneDeferred::render() {
                 Mat3 normalMatrix = glm::transpose(Mat3(glm::inverse(modelViewMatrix)));
 
                 for (ModelDetail& detail: object->model().details()) {
-                        if (!detail.material->isTransparent()) {
-                                detail.material->bind();
-                                detail.material->program()->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
-                                detail.material->program()->setUniform("uModelViewMatrix", modelViewMatrix);
-                                detail.material->program()->setUniform("uNormalMatrix", normalMatrix);
-                                detail.geometry->render();
-                        } else {
-                                transparentDetails.push_back(&detail);
+                        switch (detail.material->type()) {
+                                case MaterialType::DEFERRED:
+                                        detail.material->bind();
+                                        detail.material->program()->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
+                                        detail.material->program()->setUniform("uModelViewMatrix", modelViewMatrix);
+                                        detail.material->program()->setUniform("uNormalMatrix", normalMatrix);
+                                        detail.geometry->render();
+                                        break;
+
+                                case MaterialType::TRANSPARENT:
+                                        transparentDetails.push_back(&detail);
+                                        break;
+                                case MaterialType::UNLIGHTENED:
+                                        unlightenedDetails.push_back(&detail);
+                                        break;
                         }
                 }
         }
@@ -109,9 +118,23 @@ void SceneDeferred::render() {
                 m_quad.render();
                 light->unbind();
         }
+
+        // Unlightened object pass
+        for (ModelDetail* detail: unlightenedDetails) {
+                const Mat4& modelMatrix = detail->owner->owner()->localToWorldMatrix();
+                Mat4 modelViewMatrix = viewMatrix * modelMatrix;
+                Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
+                Mat3 normalMatrix = glm::transpose(Mat3(glm::inverse(modelViewMatrix)));
+                detail->material->bind();
+                detail->material->program()->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
+                detail->material->program()->setUniform("uModelViewMatrix", modelViewMatrix);
+                detail->material->program()->setUniform("uNormalMatrix", normalMatrix);
+                detail->geometry->render();
+
+        }
+
         //m_lbuffer.unbind();
 
-        // Lightning object pass
 
         /*
         Renderer::setBlendMode(BlendMode::NONE);

@@ -30,8 +30,10 @@ public:
         explicit Model(Object* owner);
         /// Конструктор. Создает модель с деталями details
         explicit Model(const ModelDetailList& details, Object* owner);
+        /// Конструктор. Создает модель из одной детали
+        explicit Model(const String& geometry, MaterialPtr material, Object* owner);
 
-        /// Возвращает детали модели
+        /// Устанавливает/возвращает детали модели
         ModelDetailList&        details();
         /// Устанавливает/возвращает владельца модели
         Object*                 owner() const;

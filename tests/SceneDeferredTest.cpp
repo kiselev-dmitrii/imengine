@@ -4,6 +4,7 @@
 #include <imEngine/Graphics/Scene/Objects/Camera/FirstPersonCamera.h>
 #include <imEngine/Graphics/Scene/SceneDeferred.h>
 #include <imEngine/Graphics/Scene/Objects/Light/PointLight.h>
+#include <imEngine/Graphics/Scene/Materials/EmissiveMaterial.h>
 
 using namespace imEngine;
 
@@ -23,6 +24,8 @@ private:
 
         PointLight*     m_light1;
         PointLight*     m_light2;
+        Polygonal*      m_sphere1;
+        Polygonal*      m_sphere2;
 };
 
 
@@ -33,12 +36,14 @@ void Application::initialize() {
         m_room = new Polygonal("resources/models/room.xml", scene()->world());
         m_logo = new Polygonal("resources/models/logo.xml", m_room);
 
-        m_light1 = new PointLight(scene()->world());
-        m_light1->setPosition(Vec3(0,2,0));
+        m_sphere1 = new Polygonal("sphere.obj", MaterialPtr(new EmissiveMaterial()), scene()->world());
+        m_sphere1->setPosition(Vec3(0,2,0));
+        m_light1 = new PointLight(m_sphere1);
         m_light1->setColor(Vec3(1.0, 1.0, 0.9));
 
-        m_light2 = new PointLight(scene()->world());
-        m_light2->setPosition(Vec3(4,2,4));
+        m_sphere2 = new Polygonal("sphere.obj", MaterialPtr(new EmissiveMaterial()), scene()->world());
+        m_sphere2->setPosition(Vec3(4,2,4));
+        m_light2 = new PointLight(m_sphere2);
         m_light2->setColor(Vec3(1.0, 0.3, 0.9));
 
         m_diffuseBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(0), gui()->root());

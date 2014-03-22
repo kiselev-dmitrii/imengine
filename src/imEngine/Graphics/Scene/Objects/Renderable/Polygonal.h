@@ -12,6 +12,8 @@ class Polygonal : public Movable {
 public:
         /// Конструкторы
         Polygonal(const String& model, Object* parent);
+        /// Создает полигональный объект из одной детали
+        Polygonal(const String& geometry, MaterialPtr material, Object* parent);
 
         /// Возвращает AABB
         const AABB&     aabb() const;

@@ -13,6 +13,14 @@ Polygonal::Polygonal(const String &model, Object *parent) :
         calculateAABB();
 }
 
+Polygonal::Polygonal(const String &geometry, MaterialPtr material, Object* parent) :
+        Movable(parent),
+        m_model(geometry, material, this)
+{
+        scene()->registerPolygonal(this);
+        calculateAABB();
+}
+
 const AABB& Polygonal::aabb() const {
         return m_aabb;
 }

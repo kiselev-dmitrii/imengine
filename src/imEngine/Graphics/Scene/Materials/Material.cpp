@@ -3,17 +3,17 @@
 
 namespace imEngine {
 
-Material::Material(const String &program, bool isTransparent) {
+Material::Material(const String &program, MaterialType type) {
         m_program = RESOURCES->programs()->program(program);
-        m_isTransparent = isTransparent;
+        m_type = type;
 }
 
 Program* Material::program() const {
         return m_program;
 }
 
-bool Material::isTransparent() const {
-        return m_isTransparent;
+MaterialType Material::type() const {
+        return m_type;
 }
 
 } //namespace imEngine
