@@ -9,7 +9,7 @@ SceneDeferred::SceneDeferred(GraphicApplication* application) :
         Scene(application),
         m_gbuffer(application->window()->size()),
         m_lbuffer(application->window()->size()),
-        m_pass(),
+        m_bloom(),
         m_pickedObject(nullptr)
 {
         initGBuffer();
@@ -137,12 +137,11 @@ void SceneDeferred::render() {
 
         m_lbuffer.unbind();
 
-        m_pass.setTexture(m_lbuffer.colorBufferTexture(0).get());
-        m_pass.setRadius(100);
-        m_pass.setDirection(Vec2(1,1));
         Renderer::setBlendMode(BlendMode::NONE);
         Renderer::clearBuffers();
-        m_pass.apply();
+
+        m_bloom.setTexture(m_lbuffer.colorBufferTexture(0).get());
+        m_bloom.apply();
 }
 
 void SceneDeferred::windowResizeEvent(int w, int h) {
@@ -177,11 +176,18 @@ void SceneDeferred::mouseReleaseEvent(int x, int y, char button) {
 }
 
 void SceneDeferred::keyPressEvent(int key) {
+        /*
         static int step = 1;
+        static int radius = 0.0;
         if (key == SDLK_LEFT) --step;
         if (key == SDLK_RIGHT) ++step;
         m_pass.setStep(step);
+
+        if (key == '-') m_pass. setRadius(100);
+        if (key == '=') m_pass.setRadius(0);
         IM_VAR(step);
+        IM_VAR(radius);
+        */
 }
 
 void SceneDeferred::initGBuffer() {

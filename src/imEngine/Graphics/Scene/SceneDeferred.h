@@ -5,7 +5,7 @@
 #include <imEngine/Graphics/RenderTarget.h>
 #include <imEngine/Graphics/ScreenAlignedQuad.h>
 #include "Skybox.h"
-#include "PostEffects/Pass.h"
+#include "PostEffects/Bloom.h"
 
 namespace imEngine {
 
@@ -43,7 +43,7 @@ private:
         RenderTarget            m_lbuffer;
         ScreenAlignedQuad       m_quad;
         SkyboxPtr               m_skybox;
-        DirectionalBlurPass     m_pass;         //temp
+        Bloom                   m_bloom;         //temp
 
         Polygonal*              m_pickedObject;
 };

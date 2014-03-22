@@ -44,7 +44,7 @@ void Application::initialize() {
         m_sphere2 = new Polygonal("sphere.obj", MaterialPtr(new EmissiveMaterial()), scene()->world());
         m_sphere2->setPosition(Vec3(4,2,4));
         m_light2 = new PointLight(m_sphere2);
-        m_light2->setColor(Vec3(1.0, 0.3, 0.9));
+        m_light2->setColor(Vec3(0.3, 0.9, 0.9));
 
         m_diffuseBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(0), gui()->root());
         m_materialBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(1), gui()->root());
