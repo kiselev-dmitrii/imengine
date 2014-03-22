@@ -1,5 +1,5 @@
 #include "Pass.h"
-#include "../../ResourceManager.h"
+#include "../ResourceManager.h"
 #include <imEngine/Graphics/ScreenAlignedQuad.h>
 
 namespace imEngine {
@@ -45,6 +45,42 @@ void ThresholdPass::prepare() const {
         m_texture->bind(0);
         m_program->setUniform("uTexture", 0);
         m_program->setUniform("uThreshold", m_threshold);
+}
+
+//######################## DirectionalBlurPass ###############################//
+
+DirectionalBlurPass::DirectionalBlurPass(Texture2D *texture) :
+        Pass("passes/DirectionalBlurPass.glsl")
+{
+        setTexture(texture);
+        setDirection(Vec2(1.0, 0.0));
+        setRadius(16);
+        setStep(1);
+}
+
+void DirectionalBlurPass::setTexture(Texture2D *texture) {
+        m_texture = texture;
+        m_texture->setWrap(TextureWrapMode::CLAMP_TO_EDGE);
+}
+
+void DirectionalBlurPass::setDirection(const Vec2 &direction) {
+        m_direction = glm::normalize(direction);
+}
+
+void DirectionalBlurPass::setRadius(int radius) {
+        m_radius = radius;
+}
+
+void DirectionalBlurPass::setStep(int step) {
+        m_step = glm::clamp(step, 1, m_radius);
+}
+
+void DirectionalBlurPass::prepare() const {
+        m_texture->bind(0);
+        m_program->setUniform("uTexture", 0);
+        m_program->setUniform("uDirection", m_direction);
+        m_program->setUniform("uRadius", m_radius);
+        m_program->setUniform("uStep", m_step);
 }
 
 } //namespace imEngine

@@ -2,7 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Objects/Light/PointLight.h"
 #include "ResourceManager.h"
-#include "PostEffects/Passes/Pass.h"
+#include "PostEffects/Pass.h"
 
 namespace imEngine {
 
@@ -138,8 +138,9 @@ void SceneDeferred::render() {
         m_lbuffer.unbind();
 
 
-        static ThresholdPass copy(m_lbuffer.colorBufferTexture(0).get());
-        copy.setThreshold(0.8);
+        static DirectionalBlurPass copy(m_lbuffer.colorBufferTexture(0).get());
+        copy.setRadius(100);
+        copy.setDirection(Vec2(1,1));
         Renderer::setBlendMode(BlendMode::NONE);
         Renderer::clearBuffers();
         copy.apply();

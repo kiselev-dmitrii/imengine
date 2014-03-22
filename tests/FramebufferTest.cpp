@@ -4,7 +4,6 @@
 #include <imEngine/Graphics/GUI/Picture.h>
 #include <imEngine/Graphics/GAPI/Framebuffer/Framebuffer.h>
 #include <imEngine/Graphics/RenderTarget.h>
-#include <imEngine/Graphics/Scene/PostEffects/Blur.h>
 #include <imEngine/Graphics/PrimitiveRenderer.h>
 #include <imEngine/Graphics/Scene/Objects/Camera/FirstPersonCamera.h>
 
@@ -28,8 +27,6 @@ private:
         RenderTarget*           m_rt2;
         GeometryPtr             m_quad;
 
-        HBlur*                  m_hblur;
-        VBlur*                  m_vblur;
 
         PictureColor*           m_picture;
 
@@ -52,10 +49,6 @@ void Application::initialize() {
         scene()->setActiveCamera(m_secondCamera);
 
         m_quad = Geometry::plane();
-        m_hblur = new HBlur();
-        m_hblur->setSigma(20.0);
-        m_vblur = new VBlur();
-        m_vblur->setSigma(20.0);
 
         /// Buffers
         m_vbo = VertexBufferPtr(new VertexBuffer());
@@ -85,35 +78,6 @@ void Application::initialize() {
 }
 
 void Application::render() {
-        m_rt1->bind();
-                Renderer::clearBuffers();
-                scene()->setActiveCamera(m_firstCamera);
-                scene()->render();
-        m_rt1->unbind();
-
-        m_rt2->bind();
-                Renderer::clearBuffers();
-                m_hblur->setTexture(m_rt1->colorBufferTexture(0).get());
-                m_hblur->bind();
-                        m_vao->bind();
-                        Renderer::renderVertices(Primitive::TRIANGLE_STRIP, 4);
-                m_hblur->unbind();
-        m_rt2->unbind();
-
-        m_rt1->bind();
-                Renderer::clearBuffers();
-                m_vblur->setTexture(m_rt2->colorBufferTexture(0).get());
-                m_vblur->bind();
-                        m_vao->bind();
-                        Renderer::renderVertices(Primitive::TRIANGLE_STRIP, 4);
-                m_vblur->unbind();
-        m_rt1->unbind();
-
-        Renderer::clearBuffers();
-        scene()->setActiveCamera(m_secondCamera);
-        scene()->render();
-
-        gui()->processRender();
 }
 
 void Application::keyPressEvent(int key) {
