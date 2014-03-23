@@ -31,6 +31,7 @@ private:
 
         Bloom           m_bloom;
         DepthOfField    m_dof;
+        BlitCopyPass    m_copy;
 };
 
 } //namespace imEngine

@@ -18,7 +18,7 @@ void Bloom::setTexture(Texture2D *texture) {
         m_texture = texture;
 }
 
-void Bloom::process() {
+Texture2D* Bloom::apply() {
         Renderer::setBlendMode(BlendMode::NONE);
 
         m_rt1.bind();
@@ -39,12 +39,16 @@ void Bloom::process() {
                 m_blur.apply();
         m_rt1.unbind();
 
-        Renderer::clearBuffers(Buffer::COLOR);
-        Renderer::setBlendMode(BlendMode::ADD);
-        m_eq.setTexture(m_texture);
-        m_eq.apply();
-        m_eq.setTexture(m_rt1.colorBufferTexture(0).get());
-        m_eq.apply();
+        m_rt2.bind();
+                Renderer::clearBuffers(Buffer::COLOR);
+                Renderer::setBlendMode(BlendMode::ADD);
+                m_eq.setTexture(m_texture);
+                m_eq.apply();
+                m_eq.setTexture(m_rt1.colorBufferTexture(0).get());
+                m_eq.apply();
+        m_rt2.unbind();
+
+        return m_rt2.colorBufferTexture(0).get();
 }
 
 

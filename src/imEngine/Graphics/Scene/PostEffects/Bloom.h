@@ -11,10 +11,8 @@ class Bloom : public PostEffect {
 public:
         Bloom();
 
-        void    setTexture(Texture2D* texture);
-
-protected:
-        void    process();
+        void            setTexture(Texture2D* texture);
+        Texture2D*      apply();
 
 private:
         Texture2D*              m_texture;

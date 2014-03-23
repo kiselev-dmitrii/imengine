@@ -40,17 +40,17 @@ class DepthOfField : public PostEffect {
 public:
         DepthOfField();
 
-        void setInputTexture(Texture2D* texture)                                { m_inputTexture = texture; }
-        void setDepthTexture(Texture2D* texture)                                { m_depthTexture = texture; }
+        void            setInputTexture(Texture2D* texture)                                { m_inputTexture = texture; }
+        void            setDepthTexture(Texture2D* texture)                                { m_depthTexture = texture; }
 
-protected:
-        void            process();
+        Texture2D*      apply();
 
 private:
         Texture2D*      m_inputTexture;
         Texture2D*      m_depthTexture;
         DepthBlurPass   m_depthblur;
-        RenderTarget    m_rt;
+        RenderTarget    m_rt1;
+        RenderTarget    m_rt2;
 };
 
 } //namespace imEngine
