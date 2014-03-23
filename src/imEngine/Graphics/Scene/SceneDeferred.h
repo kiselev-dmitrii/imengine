@@ -1,11 +1,11 @@
 #ifndef SCENEDEFERRED_H
 #define SCENEDEFERRED_H
 
-#include "Scene.h"
 #include <imEngine/Graphics/RenderTarget.h>
 #include <imEngine/Graphics/ScreenAlignedQuad.h>
+#include "Scene.h"
+#include "PostEffects/PostEffectManager.h"
 #include "Skybox.h"
-#include "PostEffects/DepthOfField.h"
 
 namespace imEngine {
 
@@ -43,7 +43,7 @@ private:
         RenderTarget            m_lbuffer;
         ScreenAlignedQuad       m_quad;
         SkyboxPtr               m_skybox;
-        DepthOfField            m_dof;         //temp
+        PostEffectManager       m_posteffects;         //temp
 
         Polygonal*              m_pickedObject;
 };

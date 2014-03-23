@@ -9,7 +9,7 @@ SceneDeferred::SceneDeferred(GraphicApplication* application) :
         Scene(application),
         m_gbuffer(application->window()->size()),
         m_lbuffer(application->window()->size()),
-        m_dof(),
+        m_posteffects(this),
         m_pickedObject(nullptr)
 {
         initGBuffer();
@@ -144,9 +144,11 @@ void SceneDeferred::render() {
         Renderer::setBlendMode(BlendMode::NONE);
         Renderer::clearBuffers();
 
-        m_dof.setInputTexture(m_lbuffer.colorBufferTexture(0).get());
-        m_dof.setDepthTexture(m_gbuffer.depthBufferTexture().get());
-        m_dof.apply();
+        m_posteffects.apply(m_lbuffer.colorBufferTexture(0).get(),
+                            m_gbuffer.colorBufferTexture(0).get(),
+                            m_gbuffer.colorBufferTexture(1).get(),
+                            m_gbuffer.colorBufferTexture(2).get(),
+                            m_gbuffer.depthBufferTexture().get());
 }
 
 void SceneDeferred::windowResizeEvent(int w, int h) {
