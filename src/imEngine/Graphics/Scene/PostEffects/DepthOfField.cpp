@@ -11,19 +11,20 @@ DepthOfField::DepthOfField() :
 
 }
 
-void DepthOfField::apply() {
+void DepthOfField::process() {
         Renderer::setBlendMode(BlendMode::NONE);
 
-        m_hpass.setDepthTexture(m_depthTexture);
-        m_vpass.setDepthTexture(m_depthTexture);
+        m_depthblur.setDepthTexture(m_depthTexture);
 
         m_rt.bind();
-                m_hpass.setInputTexture(m_inputTexture);
-                m_hpass.apply();
+                m_depthblur.setInputTexture(m_inputTexture);
+                m_depthblur.setDirection(Vec2(1.0, 0.0));
+                m_depthblur.apply();
         m_rt.unbind();
 
-        m_vpass.setInputTexture(m_rt.colorBufferTexture(0).get());
-        m_vpass.apply();
+        m_depthblur.setInputTexture(m_rt.colorBufferTexture(0).get());
+        m_depthblur.setDirection(Vec2(0.0, 1.0));
+        m_depthblur.apply();
 }
 
 } //namespace imEngine

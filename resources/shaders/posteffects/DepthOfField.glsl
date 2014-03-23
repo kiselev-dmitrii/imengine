@@ -19,16 +19,11 @@ uniform sampler2D 	uDepthTexture;
 uniform float		uNearDistance;
 uniform float 		uFarDistance;
 uniform int 		uMaxRadius;
+uniform vec2 		uDirection;
 
 void main() {
 	float depth = texture2D(uDepthTexture, vTexCoord).r;
 	float ldepth = linearizeDepth(depth, uNearDistance, uFarDistance);
 	int radius = int(ldepth * uMaxRadius);
-#ifdef HPASS
-	vec2 direction = vec2(1.0, 0.0);
-#endif HPASS
-#ifdef VPASS
-	vec2 direction = vec2(0.0, 1.0);
-#endif VPASS
-	fResult = incrementalGaussian(uInputTexture, radius, direction, 1, vTexCoord);
+	fResult = incrementalGaussian(uInputTexture, radius, uDirection, 1, vTexCoord);
 }

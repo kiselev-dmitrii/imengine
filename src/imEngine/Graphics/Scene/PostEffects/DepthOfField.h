@@ -2,16 +2,18 @@
 #define DEPTHOFFIELD_H
 
 #include "Pass.h"
+#include "PostEffect.h"
 #include <imEngine/Graphics/RenderTarget.h>
 
 namespace imEngine {
 
 class DepthBlurPass : public Pass {
 public:
-        DepthBlurPass(const StringList& defines) : Pass("posteffects/DepthOfField.glsl", defines) { }
+        DepthBlurPass() : Pass("posteffects/DepthOfField.glsl")                 { }
 
         void setInputTexture(Texture2D* texture)                                { m_inputTexture = texture; }
         void setDepthTexture(Texture2D* texture)                                { m_depthTexture = texture; }
+        void setDirection(const Vec2& direction)                                { m_direction = direction; }
 
 protected:
         void prepare() const {
@@ -22,42 +24,32 @@ protected:
                 m_program->setUniform("uNearDistance", 0.05f);
                 m_program->setUniform("uFarDistance", 100.0f);
                 m_program->setUniform("uMaxRadius", 200);
+                m_program->setUniform("uDirection", m_direction);
 
         }
 
 private:
         Texture2D*      m_inputTexture;
         Texture2D*      m_depthTexture;
+        Vec2            m_direction;
 };
-
-
-class HDepthBlurPass : public DepthBlurPass {
-public:
-        HDepthBlurPass() : DepthBlurPass({"HPASS"})                             { }
-};
-
-class VDepthBlurPass : public DepthBlurPass {
-public:
-        VDepthBlurPass() : DepthBlurPass({"VPASS"})                             { }
-};
-
 
 /** @brief Постэффект для симулирования глубины резкости
  */
-class DepthOfField {
+class DepthOfField : public PostEffect {
 public:
         DepthOfField();
 
         void setInputTexture(Texture2D* texture)                                { m_inputTexture = texture; }
         void setDepthTexture(Texture2D* texture)                                { m_depthTexture = texture; }
 
-        void apply();
+protected:
+        void            process();
 
 private:
         Texture2D*      m_inputTexture;
         Texture2D*      m_depthTexture;
-        HDepthBlurPass  m_hpass;
-        VDepthBlurPass  m_vpass;
+        DepthBlurPass   m_depthblur;
         RenderTarget    m_rt;
 };
 

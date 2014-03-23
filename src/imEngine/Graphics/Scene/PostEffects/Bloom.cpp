@@ -18,7 +18,7 @@ void Bloom::setTexture(Texture2D *texture) {
         m_texture = texture;
 }
 
-void Bloom::apply() {
+void Bloom::process() {
         Renderer::setBlendMode(BlendMode::NONE);
 
         m_rt1.bind();

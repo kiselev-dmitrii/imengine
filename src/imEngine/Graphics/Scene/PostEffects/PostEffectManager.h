@@ -2,6 +2,7 @@
 #define POSTEFFECTMANAGER_H
 
 #include "Bloom.h"
+#include "DepthOfField.h"
 
 namespace imEngine {
 
@@ -10,7 +11,7 @@ public:
         PostEffectManager();
 
         const Bloom&            bloom();
-        //const DepthOfField&     depthOfField();
+        const DepthOfField&     depthOfField();
 };
 
 } //namespace imEngine

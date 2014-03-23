@@ -3,16 +3,19 @@
 
 #include "Pass.h"
 #include <imEngine/Graphics/RenderTarget.h>
+#include "PostEffect.h"
 
 namespace imEngine {
 
-class Bloom {
+class Bloom : public PostEffect {
 public:
         Bloom();
 
         void    setTexture(Texture2D* texture);
 
-        void    apply();
+protected:
+        void    process();
+
 private:
         Texture2D*              m_texture;
 
