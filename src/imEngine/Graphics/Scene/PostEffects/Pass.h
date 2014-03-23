@@ -13,6 +13,7 @@ class Pass {
 public:
         /// Конструтор. Создает программу
         Pass(const String& filename);
+        Pass(const String& filename, const StringList& defines);
 
         /// Осуществляет проход
         void            apply() const;

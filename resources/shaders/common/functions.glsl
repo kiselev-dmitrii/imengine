@@ -8,6 +8,11 @@ float luma( vec3 color ) {
 	return 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b;
 }
 
+/// Линеаризует глубину
+float linearizeDepth(in float depth, in float near, in float far) {
+        return (2.0*near) / (far+near - depth*(far-near));
+}
+
 /// Размывает по Гауссу точку origin в текстуре texture по направлению direction с радиусом radius. 
 /// Параметр step влияет на качество исходного изображения. Для лучшего резульата следует принять step = 1
 vec4 incrementalGaussian(in sampler2D texture, in int radius, in vec2 direction, in int step, in vec2 origin) {

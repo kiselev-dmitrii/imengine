@@ -5,7 +5,7 @@
 #include <imEngine/Graphics/RenderTarget.h>
 #include <imEngine/Graphics/ScreenAlignedQuad.h>
 #include "Skybox.h"
-#include "PostEffects/Bloom.h"
+#include "PostEffects/DepthOfField.h"
 
 namespace imEngine {
 
@@ -43,7 +43,7 @@ private:
         RenderTarget            m_lbuffer;
         ScreenAlignedQuad       m_quad;
         SkyboxPtr               m_skybox;
-        Bloom                   m_bloom;         //temp
+        DepthOfField            m_dof;         //temp
 
         Polygonal*              m_pickedObject;
 };

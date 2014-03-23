@@ -8,6 +8,10 @@ Pass::Pass(const String &filename) {
         m_program = RESOURCES->programs()->program(filename);
 }
 
+Pass::Pass(const String &filename, const StringList &defines) {
+        m_program = RESOURCES->programs()->program(filename, defines);
+}
+
 void Pass::apply() const {
         static ScreenAlignedQuad quad;
 
