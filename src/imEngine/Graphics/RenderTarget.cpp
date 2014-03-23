@@ -87,6 +87,18 @@ void RenderTarget::disableDepthBuffer() {
         m_depthRenderBuffer.reset();
 }
 
+void RenderTarget::setDepthBuffer(Texture2DPtr texture) {
+        InternalFormat::Enum internal = texture->internalFormat();
+        IM_ASSERT(internal == InternalFormat::DEPTH_NORM_1_COMP_16_BIT  ||
+                  internal == InternalFormat::DEPTH_NORM_1_COMP_24_BIT  ||
+                  internal == InternalFormat::DEPTH_NORM_1_COMP_32_BIT  ||
+                  internal == InternalFormat::DEPTH_FLOAT_1_COMP_32_BIT   );
+
+        disableDepthBuffer();
+        m_depthTextureBuffer = texture;
+        m_fbo->attachDepthBuffer(texture.get());
+}
+
 bool RenderTarget::isDepthBufferEnabled() const {
         return (m_depthTextureBuffer || m_depthRenderBuffer);
 }

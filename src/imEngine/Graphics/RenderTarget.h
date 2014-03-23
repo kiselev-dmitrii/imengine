@@ -30,6 +30,8 @@ public:
         /// Включает/выключает буфер глубины
         void            enableDepthBuffer(InternalFormat::Enum internal, bool isTexture);
         void            disableDepthBuffer();
+        /// Устанавливает буфер глубины из внешней текстуры
+        void            setDepthBuffer(Texture2DPtr texture);
         /// Определяет включен ли буфер глубины
         bool            isDepthBufferEnabled() const;
 

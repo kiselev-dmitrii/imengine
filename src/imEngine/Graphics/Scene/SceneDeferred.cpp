@@ -120,8 +120,12 @@ void SceneDeferred::render() {
                 m_quad.render();
                 light->unbind();
         }
+        m_lbuffer.unbind();
 
         // Unlightened object pass
+        m_lbuffer.setDepthBuffer(m_gbuffer.depthBufferTexture());
+        m_lbuffer.bind();
+        Renderer::setDepthMode(DepthMode::LESS);
         for (ModelDetail* detail: unlightenedDetails) {
                 const Mat4& modelMatrix = detail->owner->owner()->localToWorldMatrix();
                 Mat4 modelViewMatrix = viewMatrix * modelMatrix;
@@ -132,10 +136,10 @@ void SceneDeferred::render() {
                 detail->material->program()->setUniform("uModelViewMatrix", modelViewMatrix);
                 detail->material->program()->setUniform("uNormalMatrix", normalMatrix);
                 detail->geometry->render();
-
         }
-
+        Renderer::setDepthMode(DepthMode::NONE);
         m_lbuffer.unbind();
+        m_lbuffer.disableDepthBuffer();
 
         Renderer::setBlendMode(BlendMode::NONE);
         Renderer::clearBuffers();
