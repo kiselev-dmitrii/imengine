@@ -4,9 +4,12 @@
 #include "PostEffect.h"
 #include "Pass.h"
 #include <imEngine/Graphics/RenderTarget.h>
+#include <imEngine/Utils/Types.h>
 #include "../Objects/Camera/Camera.h"
 
 namespace imEngine {
+
+typedef std::vector<Vec3> VectorList;
 
 class OcclusionCalculationPass : public Pass {
 public:
@@ -18,8 +21,11 @@ public:
         void    setActiveCamera(Camera* camera)                                 { m_camera = camera; }
 
         void    setOcclusionRadius(int radius)                                  { m_radius = radius; }
+        void    setNumberSamples(uint num)                                      { m_numSamples = num; }
 
 protected:
+        /// Метод генерирует вектора лежащие внутри единичной полусферы (длины меньше 1)
+        void    generateOffsets();
         void    prepare() const;
 
 private:
@@ -30,6 +36,9 @@ private:
 
         int             m_radius;
 
+        const int       m_maxSamples;           //максимальное количетсво сэмплов (в шейдере определен массив такой же длины)
+        VectorList      m_offsets;
+        int             m_numSamples;
 };
 
 

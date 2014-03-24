@@ -73,6 +73,11 @@ public:
         bool            setUniform(const String& name, const Vec4& value);
         bool            setUniform(const String& name, const Mat3& value);
         bool            setUniform(const String& name, const Mat4& value);
+        /// Установка uniform-массива. Возвращает false, если переменная с данным именем остутствует в программе
+        bool            setUniform(const String &name, const float* array, uint size);
+        bool            setUniform(const String &name, const int* array, uint size);
+        bool            setUniform(const String &name, const Vec2* array, uint size);
+        bool            setUniform(const String &name, const Vec3* array, uint size);
 
         /// Возвращает индекс uniform переменной или -1, если переменная отсутствует в программе
         GLuint          uniformLocation(const String& name);

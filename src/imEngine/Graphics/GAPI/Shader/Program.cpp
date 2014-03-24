@@ -234,6 +234,38 @@ bool Program::setUniform(const String &name, const Mat4 &value) {
         return true;
 }
 
+bool Program::setUniform(const String &name, const float* array, uint size) {
+        bind();
+        GLuint location = uniformLocation(name);
+        if (location < 0 ) return false;
+        IM_GLCALL(glUniform1fv(location, size, array));
+        return true;
+}
+
+bool Program::setUniform(const String &name, const int* array, uint size) {
+        bind();
+        GLuint location = uniformLocation(name);
+        if (location < 0 ) return false;
+        IM_GLCALL(glUniform1iv(location, size, array));
+        return true;
+}
+
+bool Program::setUniform(const String &name, const Vec2* array, uint size) {
+        bind();
+        GLuint location = uniformLocation(name);
+        if (location < 0 ) return false;
+        IM_GLCALL(glUniform2fv(location, size, &(array[0].x)));
+        return true;
+}
+
+bool Program::setUniform(const String &name, const Vec3* array, uint size) {
+        bind();
+        GLuint location = uniformLocation(name);
+        if (location < 0 ) return false;
+        IM_GLCALL(glUniform3fv(location, size, &(array[0].x)));
+        return true;
+}
+
 GLuint Program::uniformLocation(const String &name) {
         auto it = m_uniformLocations.find(name);
         if (it == m_uniformLocations.end()) return -1;
