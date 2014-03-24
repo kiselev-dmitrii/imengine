@@ -38,3 +38,15 @@ vec4 incrementalGaussian(in sampler2D texture, in int radius, in vec2 direction,
 	
 	return result;
 }
+
+/// Трансформирует texture space координаты во view space координаты
+/// Для данной операции используется обратная матрица проекции, а также расстояние до ближней и дальней плоскости отсечения
+vec3 textureToViewSpace(in vec2 texCoord, in sampler2D depthBuffer, in float near, in float far, in mat4 invProjection) {
+        float depth = texture2D(depthBuffer, texCoord).r;
+        vec3 ndc = vec3(texCoord, depth) * 2.0 - 1.0;
+        vec4 clip;
+        clip.w = (2*near*far) / (near + far + ndc.z * (near - far));
+        clip.xyz = ndc.xyz * clip.w;
+
+        return (invProjection * clip).xyz;
+}
