@@ -20,7 +20,16 @@ uniform sampler2D 	uDepthTexture;
 
 uniform float 		uRadius;
 
+uniform float 		uNearDistance;
+uniform float 		uFarDistance;
+uniform mat4 		uProjectionMatrix;
+uniform mat4 		uInvProjectionMatrix;
+
 void main() {
 	float depth = texture2D(uDepthTexture, vTexCoord).r;
-	fResult = vec4(linearizeDepth(depth, 0.05, 1000.0));
+	
+	vec3 positionVS = textureToViewSpace(vTexCoord, uDepthTexture, uNearDistance, uFarDistance, uInvProjectionMatrix);
+	vec2 positionTS = viewToTextureSpace(positionVS, uProjectionMatrix);
+
+	fResult = vec4(positionTS, 0.0, 1.0);
 }

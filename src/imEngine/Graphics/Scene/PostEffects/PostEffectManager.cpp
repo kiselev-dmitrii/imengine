@@ -14,6 +14,7 @@ void PostEffectManager::apply(Texture2D *lightAccum, Texture2D *diffuseBuffer,
         m_ssao.setInputTexture(lightAccum);
         m_ssao.setNormalTexture(geometryBuffer);
         m_ssao.setDepthTexture(depthBuffer);
+        m_ssao.setActiveCamera(m_scene->activeCamera());
         result = m_ssao.apply();
 
 

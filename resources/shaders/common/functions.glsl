@@ -50,3 +50,10 @@ vec3 textureToViewSpace(in vec2 texCoord, in sampler2D depthBuffer, in float nea
 
         return (invProjection * clip).xyz;
 }
+
+/// Трансформирует view space координаты в texture space координаты
+vec2 viewToTextureSpace(in vec3 viewCoord, in mat4 projectionMatrix) {
+	vec4 clip = projectionMatrix * vec4(viewCoord, 1.0);
+	vec3 ndc = clip.xyz / clip.w;
+	return (ndc.xy * 0.5 + 0.5);
+}

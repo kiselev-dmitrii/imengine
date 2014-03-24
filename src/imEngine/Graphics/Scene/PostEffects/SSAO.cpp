@@ -12,6 +12,9 @@ OcclusionCalculationPass::OcclusionCalculationPass() :
 }
 
 void OcclusionCalculationPass::prepare() const {
+        const Mat4& projectionMatrix = m_camera->viewToClipMatrix();
+        Mat4 invProjectionMatrix = glm::inverse(projectionMatrix);
+
         m_inputTexture->bind(0);
         m_normalTexture->bind(1);
         m_depthTexture->bind(2);
@@ -20,6 +23,11 @@ void OcclusionCalculationPass::prepare() const {
         m_program->setUniform("uNormalTexture", 1);
         m_program->setUniform("uDepthTexture", 2);
         m_program->setUniform("uRadius", m_radius);
+
+        m_program->setUniform("uNearDistance", m_camera->nearDistance());
+        m_program->setUniform("uFarDistance", m_camera->farDistance());
+        m_program->setUniform("uProjectionMatrix", projectionMatrix);
+        m_program->setUniform("uInvProjectionMatrix", invProjectionMatrix);
 }
 
 //################################ SSAO ######################################//

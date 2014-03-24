@@ -4,6 +4,7 @@
 #include "PostEffect.h"
 #include "Pass.h"
 #include <imEngine/Graphics/RenderTarget.h>
+#include "../Objects/Camera/Camera.h"
 
 namespace imEngine {
 
@@ -14,6 +15,8 @@ public:
         void    setInputTexture(Texture2D* texture)                             { m_inputTexture = texture; }
         void    setNormalTexture(Texture2D* texture)                            { m_normalTexture = texture; }
         void    setDepthTexture(Texture2D* texture)                             { m_depthTexture = texture; }
+        void    setActiveCamera(Camera* camera)                                 { m_camera = camera; }
+
         void    setOcclusionRadius(int radius)                                  { m_radius = radius; }
 
 protected:
@@ -23,7 +26,10 @@ private:
         Texture2D*      m_inputTexture;
         Texture2D*      m_normalTexture;
         Texture2D*      m_depthTexture;
+        Camera*         m_camera;
+
         int             m_radius;
+
 };
 
 
@@ -38,6 +44,7 @@ public:
         void            setInputTexture(Texture2D* texture)                     { m_inputTexture = texture; }
         void            setNormalTexture(Texture2D* texture)                    { m_occlusionPass.setNormalTexture(texture); }
         void            setDepthTexture(Texture2D* texture)                     { m_occlusionPass.setDepthTexture(texture); }
+        void            setActiveCamera(Camera* camera)                         { m_occlusionPass.setActiveCamera(camera); }
 
         void            setOcclusionRadius(int radius)                          { m_occlusionPass.setOcclusionRadius(radius); }
 
