@@ -36,5 +36,5 @@ void main() {
 	vec3 positionVS = textureToViewSpace(vTexCoord, uDepthTexture, uNearDistance, uFarDistance, uInvProjectionMatrix);
 	vec2 positionTS = viewToTextureSpace(positionVS, uProjectionMatrix);
 
-	fResult = vec4(uOffsets[0], 1.0);
+	fResult = vec4(uOffsets[int(vTexCoord.x*128)], 1.0);
 }

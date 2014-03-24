@@ -19,7 +19,6 @@ OcclusionCalculationPass::OcclusionCalculationPass() :
 
 void OcclusionCalculationPass::generateOffsets() {
         for (uint i = 0; i < m_offsets.size(); ++i) {
-                /*
                 m_offsets[i] = Vec3(
                         glm::compRand1(-1.0f, 1.0f),
                         glm::compRand1(-1.0f, 1.0f),
@@ -28,8 +27,6 @@ void OcclusionCalculationPass::generateOffsets() {
                 );
                 m_offsets[i] = glm::normalize(m_offsets[i]);
                 m_offsets[i] *= glm::compRand1(0.0f, 1.0f);
-                */
-                m_offsets[i] = Vec3(1);
         }
 }
 
@@ -51,7 +48,7 @@ void OcclusionCalculationPass::prepare() const {
         m_program->setUniform("uProjectionMatrix", projectionMatrix);
         m_program->setUniform("uInvProjectionMatrix", invProjectionMatrix);
 
-        m_program->setUniform("uOffsets", &(m_offsets[0]), m_numSamples);
+        m_program->setUniform("uOffsets[0]", &(m_offsets[0]), m_numSamples);
         m_program->setUniform("uNumSamples", m_numSamples);
 }
 
