@@ -20,6 +20,14 @@ void PostEffectManager::apply(Texture2D *lightAccum, Texture2D *diffuseBuffer,
         m_copy.apply();
 }
 
+Bloom* PostEffectManager::bloom() {
+        return &m_bloom;
+}
+
+DepthOfField* PostEffectManager::depthOfField() {
+        return &m_dof;
+}
+
 void PostEffectManager::windowResizeEvent(int w, int h) {
         IM_TODO;
 }

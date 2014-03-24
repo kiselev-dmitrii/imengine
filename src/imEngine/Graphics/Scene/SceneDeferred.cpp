@@ -9,7 +9,7 @@ SceneDeferred::SceneDeferred(GraphicApplication* application) :
         Scene(application),
         m_gbuffer(application->window()->size()),
         m_lbuffer(application->window()->size()),
-        m_posteffects(this),
+        m_postEffects(this),
         m_pickedObject(nullptr)
 {
         initGBuffer();
@@ -49,6 +49,10 @@ Polygonal* SceneDeferred::pickObject(int x, int y) {
 
 RenderTarget* SceneDeferred::gbuffer() {
         return &m_gbuffer;
+}
+
+PostEffectManager* SceneDeferred::postEffects() {
+        return &m_postEffects;
 }
 
 void SceneDeferred::render() {
@@ -144,7 +148,7 @@ void SceneDeferred::render() {
         Renderer::setBlendMode(BlendMode::NONE);
         Renderer::clearBuffers();
 
-        m_posteffects.apply(m_lbuffer.colorBufferTexture(0).get(),
+        m_postEffects.apply(m_lbuffer.colorBufferTexture(0).get(),
                             m_gbuffer.colorBufferTexture(0).get(),
                             m_gbuffer.colorBufferTexture(1).get(),
                             m_gbuffer.colorBufferTexture(2).get(),

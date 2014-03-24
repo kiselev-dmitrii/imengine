@@ -20,30 +20,32 @@ public:
         ~SceneDeferred();
 
         /// Возвращает объект, который находится в позиции x,y в координатах окна
-        Polygonal*      pickObject(int x, int y);
+        Polygonal*              pickObject(int x, int y);
 
         /// Возвращает gbuffer
-        RenderTarget*   gbuffer();
+        RenderTarget*           gbuffer();
+        /// Возвращает менеджер постэффектов
+        PostEffectManager*      postEffects();
 
         /// Рендерит сцену
-        void            render();
+        void                    render();
         /// Обработка события
-        void            windowResizeEvent(int w, int h);
-        void            mousePressEvent(int x, int y, char button);
-        void            mouseMoveEvent(int oldX, int oldY, int newX, int newY);
-        void            mouseReleaseEvent(int x, int y, char button);
-        void            keyPressEvent(int key);
+        void                    windowResizeEvent(int w, int h);
+        void                    mousePressEvent(int x, int y, char button);
+        void                    mouseMoveEvent(int oldX, int oldY, int newX, int newY);
+        void                    mouseReleaseEvent(int x, int y, char button);
+        void                    keyPressEvent(int key);
 
 public:
-        void            initGBuffer();
-        void            initLBuffer();
+        void                    initGBuffer();
+        void                    initLBuffer();
 
 private:
         RenderTarget            m_gbuffer;
         RenderTarget            m_lbuffer;
         ScreenAlignedQuad       m_quad;
         SkyboxPtr               m_skybox;
-        PostEffectManager       m_posteffects;         //temp
+        PostEffectManager       m_postEffects;
 
         Polygonal*              m_pickedObject;
 };

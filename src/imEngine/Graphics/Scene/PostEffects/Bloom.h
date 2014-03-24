@@ -12,6 +12,8 @@ public:
         Bloom();
 
         void            setTexture(Texture2D* texture);
+        void            setRadius(int radius);
+
         Texture2D*      apply();
 
 private:

@@ -18,6 +18,10 @@ void Bloom::setTexture(Texture2D *texture) {
         m_texture = texture;
 }
 
+void Bloom::setRadius(int radius) {
+        m_blur.setRadius(radius);
+}
+
 Texture2D* Bloom::apply() {
         Renderer::setBlendMode(BlendMode::NONE);
 
