@@ -6,6 +6,10 @@
 #include <imEngine/Graphics/Scene/Objects/Light/PointLight.h>
 #include <imEngine/Graphics/Scene/Materials/EmissiveMaterial.h>
 
+#include <imEngine/Graphics/GUI/Panel.h>
+#include <imEngine/Graphics/GUI/Slider.h>
+#include <imEngine/Graphics/GUI/BoxLayout.h>
+
 using namespace imEngine;
 
 class Application : public GraphicApplication {
@@ -26,12 +30,17 @@ private:
         PointLight*     m_light2;
         Polygonal*      m_sphere1;
         Polygonal*      m_sphere2;
+
+        Panel*          m_pnl;
+        VBoxLayout*     m_bloomLayout;
+        HSlider*        m_radiusSlider;
+        SceneDeferred*  dscene;
 };
 
 
 void Application::initialize() {
         GraphicApplication::initialize();
-        SceneDeferred* dscene = (SceneDeferred*) scene();
+        dscene = (SceneDeferred*) scene();
 
         m_room = new Polygonal("resources/models/room.xml", scene()->world());
         m_logo = new Polygonal("resources/models/logo.xml", m_room);
@@ -51,6 +60,30 @@ void Application::initialize() {
         m_geometryBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(2), gui()->root());
         m_depthBuffer = new PictureDepth(dscene->gbuffer()->depthBufferTexture(), gui()->root());
         windowResizeEvent(window()->size().x, window()->size().y);
+
+        //////////////////////////////////////////////////////
+
+        m_pnl = new Panel("regular_panel.png", gui()->root());
+        m_pnl->setOpacity(0.9);
+        m_pnl->setPadding(20);
+        m_pnl->setSize(Vec2(200, 300));
+
+        m_bloomLayout = new VBoxLayout(m_pnl);
+        m_radiusSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_bloomLayout);
+        m_radiusSlider->setWidth(m_pnl->contentWidth());
+        m_radiusSlider->setMinMaxValues(0, 200);
+
+        m_bloomLayout->addWidget(new Text("Bloom radius", m_bloomLayout));
+        m_bloomLayout->addWidget(m_radiusSlider);
+        m_bloomLayout->addSpacing(20);
+        m_bloomLayout->addWidget(new Text("Bloom step", m_bloomLayout));
+
+        dscene->postEffects()->bloom()->setRadius(0);
+        auto changeBloomSettings = [&] (HSlider* slider) {
+                dscene->postEffects()->bloom()->setRadius(m_radiusSlider->value());
+        };
+
+        m_radiusSlider->onValueChanged += changeBloomSettings;
 
 }
 
