@@ -3,6 +3,7 @@
 
 #include "Bloom.h"
 #include "DepthOfField.h"
+#include "SSAO.h"
 
 namespace imEngine {
 class Scene;
@@ -21,6 +22,7 @@ public:
         /// Предоставляет интерфейс к настройкам постэффектов
         Bloom*          bloom();
         DepthOfField*   depthOfField();
+        SSAO*           ssao();
 
         /// Изменяет размеры рендер таргетов при изменении размеров окна
         void            windowResizeEvent(int w, int h);
@@ -30,6 +32,7 @@ private:
 
         Bloom           m_bloom;
         DepthOfField    m_dof;
+        SSAO            m_ssao;
 
         BlitCopyPass    m_copy;
 };

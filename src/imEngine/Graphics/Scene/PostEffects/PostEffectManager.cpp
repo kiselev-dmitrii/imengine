@@ -9,12 +9,22 @@ PostEffectManager::PostEffectManager(Scene *scene) :
 
 void PostEffectManager::apply(Texture2D *lightAccum, Texture2D *diffuseBuffer,
                               Texture2D *materialBuffer, Texture2D *geometryBuffer, Texture2D *depthBuffer) {
+        Texture2D* result;
+
+        m_ssao.setInputTexture(lightAccum);
+        m_ssao.setNormalTexture(geometryBuffer);
+        m_ssao.setDepthTexture(depthBuffer);
+        result = m_ssao.apply();
+
+
+        /*
         m_dof.setInputTexture(lightAccum);
         m_dof.setDepthTexture(depthBuffer);
-        Texture2D* result = m_dof.apply();
+        result = m_dof.apply();
 
         m_bloom.setTexture(result);
         result = m_bloom.apply();
+        */
 
         m_copy.setTexture(result);
         m_copy.apply();
