@@ -13,6 +13,8 @@ public:
 
         void            setTexture(Texture2D* texture);
         void            setRadius(int radius);
+        void            setStep(int step);
+        void            setThreshold(float threshold);
 
         Texture2D*      apply();
 

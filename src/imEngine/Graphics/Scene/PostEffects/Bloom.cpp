@@ -22,12 +22,19 @@ void Bloom::setRadius(int radius) {
         m_blur.setRadius(radius);
 }
 
+void Bloom::setStep(int step) {
+        m_blur.setStep(step);
+}
+
+void Bloom::setThreshold(float threshold) {
+        m_threshhold.setThreshold(threshold);
+}
+
 Texture2D* Bloom::apply() {
         Renderer::setBlendMode(BlendMode::NONE);
 
         m_rt1.bind();
                 m_threshhold.setTexture(m_texture);
-                m_threshhold.setThreshold(0.8);
                 m_threshhold.apply();
         m_rt1.unbind();
 

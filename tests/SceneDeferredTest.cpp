@@ -34,6 +34,8 @@ private:
         Panel*          m_pnl;
         VBoxLayout*     m_bloomLayout;
         HSlider*        m_radiusSlider;
+        HSlider*        m_stepSlider;
+        HSlider*        m_thresholdSlider;
         SceneDeferred*  dscene;
 };
 
@@ -69,21 +71,36 @@ void Application::initialize() {
         m_pnl->setSize(Vec2(200, 300));
 
         m_bloomLayout = new VBoxLayout(m_pnl);
+
         m_radiusSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_bloomLayout);
         m_radiusSlider->setWidth(m_pnl->contentWidth());
         m_radiusSlider->setMinMaxValues(0, 200);
 
+        m_stepSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_bloomLayout);
+        m_stepSlider->setWidth(m_pnl->contentWidth());
+        m_stepSlider->setMinMaxValues(1, 10);
+
+        m_thresholdSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_bloomLayout);
+        m_thresholdSlider->setWidth(m_pnl->contentWidth());
+
         m_bloomLayout->addWidget(new Text("Bloom radius", m_bloomLayout));
         m_bloomLayout->addWidget(m_radiusSlider);
-        m_bloomLayout->addSpacing(20);
         m_bloomLayout->addWidget(new Text("Bloom step", m_bloomLayout));
+        m_bloomLayout->addWidget(m_stepSlider);
+        m_bloomLayout->addWidget(new Text("Bloom threshold", m_bloomLayout));
+        m_bloomLayout->addWidget(m_thresholdSlider);
+        m_bloomLayout->addSpacing(20);
 
         dscene->postEffects()->bloom()->setRadius(0);
         auto changeBloomSettings = [&] (HSlider* slider) {
                 dscene->postEffects()->bloom()->setRadius(m_radiusSlider->value());
+                dscene->postEffects()->bloom()->setStep(m_stepSlider->value());
+                dscene->postEffects()->bloom()->setThreshold(m_thresholdSlider->value());
         };
 
         m_radiusSlider->onValueChanged += changeBloomSettings;
+        m_stepSlider->onValueChanged += changeBloomSettings;
+        m_thresholdSlider->onValueChanged += changeBloomSettings;
 
 }
 
