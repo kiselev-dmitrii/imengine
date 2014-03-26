@@ -3,35 +3,37 @@
 
 namespace imEngine {
 
-OcclusionCalculationPass::OcclusionCalculationPass() :
-        Pass("passes/OcclusionCalculationPass.glsl"),
-        m_inputTexture(nullptr),
+const int SSAOPass::s_maxSamples = 128;
+
+SSAOPass::SSAOPass() :
+        Pass("passes/SSAOPass.glsl"),
         m_normalTexture(nullptr),
         m_depthTexture(nullptr),
-        m_camera(nullptr),
-        m_radius(16),
-        m_maxSamples(128),
-        m_offsets(m_maxSamples),
-        m_numSamples(64)
+        m_activeCamera(nullptr),
+
+        m_radius(0.3),
+        m_penumbra(0.1),
+        m_numSamples(16),
+        m_offsets(s_maxSamples)
 {
         generateOffsets();
 }
 
-void OcclusionCalculationPass::generateOffsets() {
-        for (uint i = 0; i < m_offsets.size(); ++i) {
+void SSAOPass::generateOffsets() {
+        for (int i = 0; i < s_maxSamples; ++i) {
                 m_offsets[i] = Vec3(
                         glm::compRand1(-1.0f, 1.0f),
                         glm::compRand1(-1.0f, 1.0f),
-                        glm::compRand1(0.0f, 1.0f)
-
+                        glm::compRand1(-1.0f, 1.0f)
                 );
                 m_offsets[i] = glm::normalize(m_offsets[i]);
-                m_offsets[i] *= glm::compRand1(0.0f, 1.0f);
         }
 }
 
-void OcclusionCalculationPass::prepare() const {
-        const Mat4& projectionMatrix = m_camera->viewToClipMatrix();
+void SSAOPass::prepare() const {
+        float nearDistance = m_activeCamera->nearDistance();
+        float farDistance = m_activeCamera->farDistance();
+        const Mat4& projectionMatrix = m_activeCamera->viewToClipMatrix();
         Mat4 invProjectionMatrix = glm::inverse(projectionMatrix);
 
         m_inputTexture->bind(0);
@@ -41,15 +43,17 @@ void OcclusionCalculationPass::prepare() const {
         m_program->setUniform("uInputTexture", 0);
         m_program->setUniform("uNormalTexture", 1);
         m_program->setUniform("uDepthTexture", 2);
-        m_program->setUniform("uRadius", m_radius);
 
-        m_program->setUniform("uNearDistance", m_camera->nearDistance());
-        m_program->setUniform("uFarDistance", m_camera->farDistance());
+        m_program->setUniform("uNearDistance", nearDistance);
+        m_program->setUniform("uFarDistance", farDistance);
         m_program->setUniform("uProjectionMatrix", projectionMatrix);
         m_program->setUniform("uInvProjectionMatrix", invProjectionMatrix);
 
-        m_program->setUniform("uOffsets[0]", &(m_offsets[0]), m_numSamples);
+        m_program->setUniform("uOffsets[0]", &(m_offsets[0]), s_maxSamples);
         m_program->setUniform("uNumSamples", m_numSamples);
+
+        m_program->setUniform("uRadius", m_radius);
+        m_program->setUniform("uPenumbra", m_penumbra);
 }
 
 //################################ SSAO ######################################//

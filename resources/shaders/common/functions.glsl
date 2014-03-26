@@ -57,3 +57,8 @@ vec2 viewToTextureSpace(in vec3 viewCoord, in mat4 projectionMatrix) {
 	vec3 ndc = clip.xyz / clip.w;
 	return (ndc.xy * 0.5 + 0.5);
 }
+
+/// Декодирует нормаль из текстуры нормалей в точке texCoord
+vec3 decodeNormal(in vec2 texCoord, in sampler2D geometryBuffer) {
+	return texture2D(geometryBuffer, texCoord).xyz * 2.0 - 1.0;
+}
