@@ -17,15 +17,12 @@ void PostEffectManager::apply(Texture2D *lightAccum, Texture2D *diffuseBuffer,
         m_ssao.setActiveCamera(m_scene->activeCamera());
         result = m_ssao.apply();
 
-
-        /*
-        m_dof.setInputTexture(lightAccum);
+        m_dof.setInputTexture(result);
         m_dof.setDepthTexture(depthBuffer);
         result = m_dof.apply();
 
         m_bloom.setTexture(result);
         result = m_bloom.apply();
-        */
 
         m_copy.setTexture(result);
         m_copy.apply();
