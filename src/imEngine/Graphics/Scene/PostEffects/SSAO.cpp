@@ -3,39 +3,20 @@
 
 namespace imEngine {
 
-const int SSAOPass::s_maxSamples = 128;
-
 SSAOPass::SSAOPass() :
         Pass("passes/SSAOPass.glsl"),
+        m_inputTexture(nullptr),
         m_normalTexture(nullptr),
         m_depthTexture(nullptr),
-        m_activeCamera(nullptr),
-
-        m_radius(0.3),
-        m_penumbra(0.1),
-        m_numSamples(16),
-        m_offsets(s_maxSamples)
+        m_activeCamera(nullptr)
 {
-        generateOffsets();
-}
-
-void SSAOPass::generateOffsets() {
-        for (int i = 0; i < s_maxSamples; ++i) {
-                m_offsets[i] = Vec3(
-                        glm::compRand1(-1.0f, 1.0f),
-                        glm::compRand1(-1.0f, 1.0f),
-                        glm::compRand1(-1.0f, 1.0f)
-                );
-                m_offsets[i] = glm::normalize(m_offsets[i]);
-        }
+        setScreenRadius(8);
+        setViewRadius(0.4);
+        setPower(0.6);
+        setNumberSamples(16);
 }
 
 void SSAOPass::prepare() const {
-        float nearDistance = m_activeCamera->nearDistance();
-        float farDistance = m_activeCamera->farDistance();
-        const Mat4& projectionMatrix = m_activeCamera->viewToClipMatrix();
-        Mat4 invProjectionMatrix = glm::inverse(projectionMatrix);
-
         m_inputTexture->bind(0);
         m_normalTexture->bind(1);
         m_depthTexture->bind(2);
@@ -44,16 +25,15 @@ void SSAOPass::prepare() const {
         m_program->setUniform("uNormalTexture", 1);
         m_program->setUniform("uDepthTexture", 2);
 
-        m_program->setUniform("uNearDistance", nearDistance);
-        m_program->setUniform("uFarDistance", farDistance);
-        m_program->setUniform("uProjectionMatrix", projectionMatrix);
-        m_program->setUniform("uInvProjectionMatrix", invProjectionMatrix);
+        m_program->setUniform("uNearDistance", m_activeCamera->nearDistance());
+        m_program->setUniform("uFarDistance", m_activeCamera->farDistance());
+        m_program->setUniform("uProjectionMatrix", m_activeCamera->viewToClipMatrix());
+        m_program->setUniform("uInvProjectionMatrix", glm::inverse(m_activeCamera->viewToClipMatrix()));
 
-        m_program->setUniform("uOffsets[0]", &(m_offsets[0]), s_maxSamples);
+        m_program->setUniform("uScreenRadius", m_screenRadius);
+        m_program->setUniform("uViewRadius", m_viewRadius);
+        m_program->setUniform("uPower", m_power);
         m_program->setUniform("uNumSamples", m_numSamples);
-
-        m_program->setUniform("uRadius", m_radius);
-        m_program->setUniform("uPenumbra", m_penumbra);
 }
 
 //################################ SSAO ######################################//
@@ -68,8 +48,7 @@ Texture2D* SSAO::apply() {
         Renderer::setBlendMode(BlendMode::NONE);
 
         m_rt.bind();
-                m_occlusionPass.setInputTexture(m_inputTexture);
-                m_occlusionPass.apply();
+                m_ssaoPass.apply();
         m_rt.unbind();
 
         return m_rt.colorBufferTexture(0).get();

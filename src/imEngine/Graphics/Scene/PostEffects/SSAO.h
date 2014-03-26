@@ -11,6 +11,8 @@ namespace imEngine {
 
 typedef std::vector<Vec3> VectorList;
 
+/** @brief Проход для SSAO
+ */
 class SSAOPass : public Pass {
 public:
         SSAOPass();
@@ -21,17 +23,16 @@ public:
         void    setDepthTexture(Texture2D* texture)                             { m_depthTexture = texture; }
         void    setActiveCamera(Camera* camera)                                 { m_activeCamera = camera; }
 
-        /// Установка радиуса теней в VS
-        void    setRadius(float radius)                                         { m_radius = radius; }
-        /// Установка размера полутени в VS
-        void    setPenumbra(float distance)                                     { m_penumbra = glm::clamp(distance, 0.0f, m_radius); }
-        /// Установка количества сделанных сэмплов (больше сэмплов - лучше качество)
-        void    setNumberSamples(int num)                                       { m_numSamples = glm::clamp(num, 1, s_maxSamples); }
+        /// Устанавливает радиус тени в писелях
+        void    setScreenRadius(float radius)                                   { m_screenRadius = radius; }
+        /// Устанавливает радиус тени в VS (независимо от ScreenRadius)
+        void    setViewRadius(float radius)                                     { m_viewRadius = radius; }
+        /// Устанавливает четкость теней (число от 0 до 1)
+        void    setPower(float power)                                           { m_power = glm::clamp(power, 0.0f, 1.0f); }
+        /// Устанавилвает количество сэмплов - влияет на качество
+        void    setNumberSamples(int samples)                                   { m_numSamples = glm::clamp(samples, 1, 16); }
 
 protected:
-        /// Генерирует m_maxSpales векторов, равномерно расположенных на единичной сфере
-        void    generateOffsets();
-        /// Передает в шейдер параметры перед вызовом
         void    prepare() const;
 
 private:
@@ -40,12 +41,10 @@ private:
         Texture2D*      m_depthTexture;
         Camera*         m_activeCamera;
 
-        float           m_radius;
-        float           m_penumbra;
+        float           m_screenRadius;
+        float           m_viewRadius;
+        float           m_power;
         int             m_numSamples;
-
-        static const int        s_maxSamples;
-        VectorList              m_offsets;
 };
 
 
@@ -57,20 +56,19 @@ public:
         SSAO();
 
         /// Входные текстуры
-        void            setInputTexture(Texture2D* texture)                     { m_inputTexture = texture; }
-        void            setNormalTexture(Texture2D* texture)                    { m_occlusionPass.setNormalTexture(texture); }
-        void            setDepthTexture(Texture2D* texture)                     { m_occlusionPass.setDepthTexture(texture); }
-        void            setActiveCamera(Camera* camera)                         { m_occlusionPass.setActiveCamera(camera); }
+        void            setInputTexture(Texture2D* texture)                     { m_ssaoPass.setInputTexture(texture); }
+        void            setNormalTexture(Texture2D* texture)                    { m_ssaoPass.setNormalTexture(texture); }
+        void            setDepthTexture(Texture2D* texture)                     { m_ssaoPass.setDepthTexture(texture); }
+        void            setActiveCamera(Camera* camera)                         { m_ssaoPass.setActiveCamera(camera); }
 
-        void            setOcclusionRadius(int radius)                          { m_occlusionPass.setRadius(radius); }
+        /// Настройки SSAO прохода
+        SSAOPass*       ssaoPass()                                              { return &m_ssaoPass; }
 
         /// Применяет постэффект
         Texture2D*      apply();
 
 private:
-        Texture2D*                      m_inputTexture;
-        SSAOPass        m_occlusionPass;
-        DirectionalBlurPass             m_blurPass;
+        SSAOPass                        m_ssaoPass;
         RenderTarget                    m_rt;
 };
 
