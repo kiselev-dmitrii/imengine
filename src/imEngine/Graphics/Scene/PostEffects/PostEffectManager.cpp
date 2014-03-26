@@ -36,6 +36,10 @@ DepthOfField* PostEffectManager::depthOfField() {
         return &m_dof;
 }
 
+SSAO* PostEffectManager::ssao() {
+        return &m_ssao;
+}
+
 void PostEffectManager::windowResizeEvent(int w, int h) {
         IM_TODO;
 }

@@ -96,6 +96,27 @@ void Application::initialize() {
         m_bloomLayout->addWidget(m_thresholdSlider);
         m_bloomLayout->addSpacing(20);
 
+        HSlider* screenRadius = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_bloomLayout);
+        screenRadius->setWidth(m_pnl->contentWidth());
+        screenRadius->setMinMaxValues(1, 20);
+
+        HSlider* viewRadius = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_bloomLayout);
+        viewRadius->setWidth(m_pnl->contentWidth());
+        viewRadius->setMinMaxValues(0.01, 4);
+
+        HSlider* power = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_bloomLayout);
+        power->setWidth(m_pnl->contentWidth());
+
+        m_bloomLayout->addWidget(new Text("SSAO", m_bloomLayout));
+        m_bloomLayout->addWidget(new Text("Screen radius", m_bloomLayout));
+        m_bloomLayout->addWidget(screenRadius);
+        m_bloomLayout->addWidget(new Text("View radius", m_bloomLayout));
+        m_bloomLayout->addWidget(viewRadius);
+        m_bloomLayout->addWidget(new Text("Power", m_bloomLayout));
+        m_bloomLayout->addWidget(power);
+        m_bloomLayout->addSpacing(20);
+
+
         dscene->postEffects()->bloom()->setRadius(0);
         auto changeBloomSettings = [&] (HSlider* slider) {
                 dscene->postEffects()->bloom()->setRadius(m_radiusSlider->value());
@@ -106,6 +127,11 @@ void Application::initialize() {
         m_radiusSlider->onValueChanged += changeBloomSettings;
         m_stepSlider->onValueChanged += changeBloomSettings;
         m_thresholdSlider->onValueChanged += changeBloomSettings;
+
+
+        screenRadius->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->ssao()->ssaoPass()->setScreenRadius(slider->value()); };
+        viewRadius->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->ssao()->ssaoPass()->setViewRadius(slider->value()); };
+        power->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->ssao()->ssaoPass()->setPower(slider->value()); };
 
 }
 
