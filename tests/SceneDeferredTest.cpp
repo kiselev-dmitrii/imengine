@@ -37,6 +37,8 @@ private:
         HSlider*        m_stepSlider;
         HSlider*        m_thresholdSlider;
         SceneDeferred*  dscene;
+
+        Polygonal*      m_buddha;
 };
 
 
@@ -56,6 +58,9 @@ void Application::initialize() {
         m_sphere2->setPosition(Vec3(4,2,4));
         m_light2 = new PointLight(m_sphere2);
         m_light2->setColor(Vec3(0.3, 0.9, 0.9));
+
+        m_buddha = new Polygonal("resources/models/buddha.xml", m_room);
+        m_buddha->setPosition(Vec3(-2.0, 0.0, 2.0));
 
         m_diffuseBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(0), gui()->root());
         m_materialBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(1), gui()->root());
