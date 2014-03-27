@@ -9,9 +9,9 @@ PostEffectManager::PostEffectManager(Scene *scene) :
 
 void PostEffectManager::apply(Texture2D *lightAccum, Texture2D *diffuseBuffer,
                               Texture2D *materialBuffer, Texture2D *geometryBuffer, Texture2D *depthBuffer) {
-        Texture2D* result;
+        Texture2D* result = lightAccum;
 
-        m_ssao.setInputTexture(lightAccum);
+        m_ssao.setInputTexture(result);
         m_ssao.setNormalTexture(geometryBuffer);
         m_ssao.setDepthTexture(depthBuffer);
         m_ssao.setActiveCamera(m_scene->activeCamera());

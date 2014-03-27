@@ -1,0 +1,11 @@
+<model name="projector">
+	<detail name="body">
+		<geometry filename="projector_body.obj"/>
+		<material type="basic_deferred" diffuse_color="255,255,255"/>
+	</detail>
+
+	<detail name="light">
+		<geometry filename="projector_light.obj"/>
+		<material type="emissive"/>
+	</detail>
+</model>

@@ -16,6 +16,9 @@ public:
         /// Конструктор
         EmissiveMaterial();
 
+        /// Загружает параметры текстуры с XML ноды
+        void    loadFromXML(const XmlNode& node);
+
         void    setColor(const Vec3& color);
         void    setPower(float power);
 
