@@ -20,7 +20,7 @@ void SpotLight::bind(Scene *scene) {
         m_program->setUniform("uInvProjectionMatrix", glm::inverse(cam->viewToClipMatrix()));
 
         /// Настройки освещения
-        Vec3 diffuse = Vec3(0.5);
+        Vec3 diffuse = Vec3(1.3);
         Vec3 specular = Vec3(1.0);
         Vec3 positionVS = Vec3(cam->worldToLocalMatrix() * Vec4(worldPosition(), 1.0));
         /// Вычисление направление камеры
