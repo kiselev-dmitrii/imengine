@@ -111,18 +111,11 @@ void SceneDeferred::render() {
 
 
         for (Light* light: m_lights) {
-                light->bind(this);
-                m_gbuffer.colorBufferTexture(0)->bind(0);
-                m_gbuffer.colorBufferTexture(1)->bind(1);
-                m_gbuffer.colorBufferTexture(2)->bind(2);
-                m_gbuffer.depthBufferTexture()->bind(3);
-                light->program()->setUniform("uGBufferDiffuse", 0);
-                light->program()->setUniform("uGBufferMaterial", 1);
-                light->program()->setUniform("uGBufferGeometry", 2);
-                light->program()->setUniform("uGBufferDepth", 3);
-
-                m_quad.render();
-                light->unbind();
+                light->setDiffuseBuffer(m_gbuffer.colorBufferTexture(0).get());
+                light->setMaterialBuffer(m_gbuffer.colorBufferTexture(1).get());
+                light->setGeometryBuffer(m_gbuffer.colorBufferTexture(2).get());
+                light->setDepthBuffer(m_gbuffer.depthBufferTexture().get());
+                light->apply();
         }
         m_lbuffer.unbind();
 
