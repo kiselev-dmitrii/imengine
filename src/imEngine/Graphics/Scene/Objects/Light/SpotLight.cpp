@@ -15,10 +15,13 @@ SpotLight::SpotLight(Object *parent) :
         m_shadowProgram = RESOURCES->programs()->program("lights/VSM.glsl");
         m_frustum.setAspectRatio(1.0);
         m_rt.enableColorBuffer(0, InternalFormat::COLOR_FLOAT_3_COMP_32_BIT, true);
+        m_rt.enableDepthBuffer(InternalFormat::DEPTH_NORM_1_COMP_24_BIT, false);
 }
 
 void SpotLight::calculateShadowMap() {
         m_rt.bind();
+                Renderer::clearBuffers();
+                Renderer::setDepthMode(DepthMode::LESS);
                 const Mat4& projectionMatrix = m_frustum.viewToClipMatrix();
                 const Mat4& viewMatrix = worldToLocalMatrix();
 
@@ -35,6 +38,7 @@ void SpotLight::calculateShadowMap() {
                                 }
                         }
                 }
+                Renderer::setDepthMode(DepthMode::NONE);
         m_rt.unbind();
 }
 
