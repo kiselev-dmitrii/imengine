@@ -39,6 +39,8 @@ private:
         HSlider*        m_thresholdSlider;
         SceneDeferred*  dscene;
 
+        Movable*        m_empty;
+
         Polygonal*      m_buddha;
 };
 
@@ -55,11 +57,14 @@ void Application::initialize() {
         m_light1 = new PointLight(m_sphere1);
         m_light1->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
 
-        m_sphere2 = new Polygonal("resources/models/projector.xml", scene()->world());
+        m_empty = new Movable(scene()->world());
+
+        m_sphere2 = new Polygonal("resources/models/projector.xml", m_empty);
         m_sphere2->setPosition(Vec3(4,2,4));
         m_sphere2->lookAt(Vec3(0), Vec3(0,1,0));
         m_light2 = new SpotLight(m_sphere2);
         m_light2->lookAt(Vec3(0), Vec3(0,1,0));
+        m_light2->setPower(2.0);
 
         m_buddha = new Polygonal("resources/models/buddha.xml", m_room);
         m_buddha->setPosition(Vec3(-2.0, 0.0, 2.0));
@@ -139,6 +144,11 @@ void Application::initialize() {
 
 void Application::keyPressEvent(int key) {
         GraphicApplication::keyPressEvent(key);
+
+        if (key == SDLK_LEFT) m_empty->rotate(Vec3(0,1,0), 1.0, Space::WORLD);
+        if (key == SDLK_RIGHT) m_empty->rotate(Vec3(0,1,0), -1.0, Space::WORLD);
+        if (key == SDLK_UP) m_empty->rotate(Vec3(1,0,0), -1.0, Space::LOCAL);
+        if (key == SDLK_DOWN) m_empty->rotate(Vec3(1,0,0), 1.0, Space::LOCAL);
 }
 
 void Application::windowResizeEvent(int x, int y) {

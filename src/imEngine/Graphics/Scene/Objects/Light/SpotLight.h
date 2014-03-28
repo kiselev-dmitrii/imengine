@@ -34,7 +34,9 @@ private:
         /// Для генерирования теней
         Program*        m_shadowProgram;
         mutable Frustum m_frustum;
-        RenderTarget    m_rt;
+        RenderTarget    m_rt1;
+        RenderTarget    m_rt2;
+        DirectionalBlurPass     m_blur;
 };
 
 } //namespace imEngine
