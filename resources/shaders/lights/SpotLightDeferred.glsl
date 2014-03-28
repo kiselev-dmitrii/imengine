@@ -36,7 +36,8 @@ struct Light {
         vec3    directionVS;
         vec3    positionVS;
 
-        sampler2D shadowMap;
+        sampler2D       shadowMap;
+        mat4            shadowMatrix;
 };
 uniform Light uLight;
 
@@ -69,7 +70,10 @@ void main() {
                 fLightBuffer = vec4(0.0);
         }
 
-        float d = texture2D(uLight.shadowMap, vTexCoord).x;
-        float ld = linearizeDepth(d, uNearDistance, uFarDistance);
-        fLightBuffer = vec4(ld);
+        /// Переводим positionVS в NDC пространство источника света
+        vec4 positionLS = uLight.shadowMatrix * vec4(positionVS, 1.0);
+        positionLS /= positionLS.w;
+        vec4 positionLTS = positionLS*0.5 + 0.5;
+        if (positionLS.z > texture2D(uLight.shadowMap, positionLTS.xy).r) fLightBuffer = vec4(0.0);
+        else fLightBuffer = vec4(1.0);
 }

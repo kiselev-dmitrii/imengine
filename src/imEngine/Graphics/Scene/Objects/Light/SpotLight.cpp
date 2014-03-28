@@ -81,6 +81,13 @@ void SpotLight::prepare() const {
         // Установка теневой карты
         m_rt.colorBufferTexture(0)->bind(4);
         m_program->setUniform("uLight.shadowMap", 4);
+
+        // Установка матрицы, переводящей вершины:
+        // ViewSpace -> WorldSpace -> LightSpace -> LightClipSpace
+        Mat4 shadowMatrix = m_frustum.viewToClipMatrix() *
+                            this->worldToLocalMatrix() *
+                            scene()->activeCamera()->localToWorldMatrix();
+        m_program->setUniform("uLight.shadowMatrix", shadowMatrix);
 }
 
 } //namespace imEngine

@@ -33,7 +33,7 @@ private:
 
         /// Для генерирования теней
         Program*        m_shadowProgram;
-        Frustum         m_frustum;
+        mutable Frustum m_frustum;
         RenderTarget    m_rt;
 };
 
