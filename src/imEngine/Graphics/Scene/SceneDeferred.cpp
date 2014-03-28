@@ -102,6 +102,12 @@ void SceneDeferred::render() {
         // Рендер скайбокса
         //m_skybox->render(Mat3(viewMatrix), projectionMatrix);
 
+        // Рендер теневых карт
+        for (Light* light: m_lights) {
+                light->calculateShadowMap();
+        }
+
+
         // Light Pass
         m_lbuffer.bind();
         Renderer::setDepthMode(DepthMode::NONE);

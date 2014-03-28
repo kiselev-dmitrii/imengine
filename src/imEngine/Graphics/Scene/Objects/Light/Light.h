@@ -18,6 +18,9 @@ public:
         /// Конструктор. Регистрирует источник света на сцене
         Light(const String& filename, Object* parent);
 
+        /// Расчитывает теневую карту для объектов на сцене
+        virtual void    calculateShadowMap() = 0;
+
         /// Устанавливает G-buffer (обязательно)
         void            setDiffuseBuffer(Texture2D* texture)                    { m_diffuseBuffer = texture; }
         void            setMaterialBuffer(Texture2D* texture)                   { m_materialBuffer = texture; }

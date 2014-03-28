@@ -2,6 +2,8 @@
 #define SPOTLIGHT_H
 
 #include "Light.h"
+#include "../Camera/Frustum.h"
+#include <imEngine/Graphics/RenderTarget.h>
 
 namespace imEngine {
 
@@ -12,20 +14,27 @@ public:
         /// Конструктор
         SpotLight(Object* parent);
 
+        /// Рассчитывает теневую карту
+        void    calculateShadowMap();
+
         /// Устанавливает телесный угол развертки конуса
-        void    setCutoffAngle(float angle)                                     { m_cuttoffAngle = glm::clamp(angle, 0.0f, 90.0f); }
-        float   cutoffAngle() const                                             { return m_cuttoffAngle; }
+        void    setCutoffAngle(float angle);
+        float   cutoffAngle() const;
         /// Устанавливает внутренний угол затухания
-        void    setFalloffAngle(float angle)                                    { m_falloffAngle = glm::clamp(angle, 0.0f, m_cuttoffAngle); }
-        float   falloffAngle() const                                            { return m_falloffAngle; }
+        void    setFalloffAngle(float angle);
+        float   falloffAngle() const;
 
 protected:
         void    prepare() const;
 
 private:
-        float   m_cuttoffAngle;
-        float   m_falloffAngle;
+        float           m_cuttoffAngle;
+        float           m_falloffAngle;
 
+        /// Для генерирования теней
+        Program*        m_shadowProgram;
+        Frustum         m_frustum;
+        RenderTarget    m_rt;
 };
 
 } //namespace imEngine

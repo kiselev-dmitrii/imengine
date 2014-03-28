@@ -35,6 +35,8 @@ struct Light {
 
         vec3    directionVS;
         vec3    positionVS;
+
+        sampler2D shadowMap;
 };
 uniform Light uLight;
 
@@ -67,4 +69,7 @@ void main() {
                 fLightBuffer = vec4(0.0);
         }
 
+        float d = texture2D(uLight.shadowMap, vTexCoord).x;
+        float ld = linearizeDepth(d, uNearDistance, uFarDistance);
+        fLightBuffer = vec4(ld);
 }

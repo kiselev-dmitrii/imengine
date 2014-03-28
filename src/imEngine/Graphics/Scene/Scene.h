@@ -62,6 +62,13 @@ public:
         void            registerLight(Light* light);
         void            unregisterLight(Light* light);
 
+        /// Возвращает список доступных обхектов
+        CameraList&     cameras();
+        PolygonalList&  polygonals();
+        VolumeList&     volumes();
+        LightList&      ligths();
+
+
 protected:
         GraphicApplication* m_application;
 

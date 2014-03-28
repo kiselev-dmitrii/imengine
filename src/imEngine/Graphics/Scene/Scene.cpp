@@ -114,4 +114,20 @@ void Scene::unregisterLight(Light *light) {
         if (it != m_lights.end()) m_lights.erase(it);
 }
 
+CameraList& Scene::cameras() {
+        return m_cameras;
+}
+
+PolygonalList& Scene::polygonals() {
+        return m_polygonals;
+}
+
+VolumeList& Scene::volumes() {
+        return m_volumes;
+}
+
+LightList& Scene::ligths() {
+        return m_lights;
+}
+
 } //namespace imEngine
