@@ -12,6 +12,5 @@ void main() {
 layout (location = 0) out vec4 fResult;
 
 void main() {
-	float z = gl_FragCoord.z*2.0 - 1.0;
-	fResult = vec4(z, z*z, z, 1.0);
+	fResult = vec4(1,1,1,1);
 }

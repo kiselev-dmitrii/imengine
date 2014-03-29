@@ -4,6 +4,7 @@
 #include "../Movable.h"
 #include <imEngine/Graphics/GAPI/GAPI.h>
 #include <imEngine/Graphics/Scene/PostEffects/Pass.h>
+#include "ShadowTechnique.h"
 
 namespace imEngine {
 
@@ -17,9 +18,6 @@ class Light : public Movable, public Pass {
 public:
         /// Конструктор. Регистрирует источник света на сцене
         Light(const String& filename, Object* parent);
-
-        /// Расчитывает теневую карту для объектов на сцене
-        virtual void    calculateShadowMap() = 0;
 
         /// Устанавливает G-buffer (обязательно)
         void            setDiffuseBuffer(Texture2D* texture)                    { m_diffuseBuffer = texture; }
@@ -37,6 +35,11 @@ public:
         void            setPower(float power)                                   { m_power = power; }
         float           power() const                                           { return m_power; }
 
+        /// Устанавливает метод генерирования теней. По-дефолту метод не используется (nullptr)
+        void            setShadowTechnique(ShadowTechniquePtr technique);
+        /// Расчитывает теневую карту для объектов на сцене, если задан метод генерирования
+        void            calculateShadowMap();
+
 protected:
         /// Устанавливает uniform-переменные, которые часто требуется передавать в шейдер для расчета освещения
         void            setGBuffers() const;
@@ -52,6 +55,8 @@ protected:
         Vec3            m_diffuseColor;
         Vec3            m_specularColor;
         float           m_power;
+
+        ShadowTechniquePtr m_shadowTechnique;
 };
 
 

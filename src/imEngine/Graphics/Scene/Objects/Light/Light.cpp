@@ -6,7 +6,7 @@ namespace imEngine {
 
 Light::Light(const String& filename, Object* parent) :
         Movable(parent),
-        Pass(filename),
+        Pass(filename, {"NO_SHADOW_MAPPING"}),
         m_diffuseBuffer(nullptr),
         m_materialBuffer(nullptr),
         m_geometryBuffer(nullptr),
@@ -42,6 +42,18 @@ void Light::setCameraSettings() const {
 void Light::setLightColors() const {
         m_program->setUniform("uLight.diffuse", m_diffuseColor * m_power);
         m_program->setUniform("uLight.specular", m_specularColor * m_power);
+}
+
+void Light::setShadowTechnique(ShadowTechniquePtr technique) {
+        m_shadowTechnique = technique;
+        m_program->setDefines(technique->defines());
+        m_program->build();
+}
+
+void Light::calculateShadowMap() {
+        if (m_shadowTechnique) {
+                m_shadowTechnique->updateShadowMap(this, scene()->polygonals());
+        }
 }
 
 } //namespace imEngine

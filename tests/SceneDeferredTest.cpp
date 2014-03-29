@@ -64,6 +64,7 @@ void Application::initialize() {
         m_sphere2->lookAt(Vec3(0), Vec3(0,1,0));
         m_light2 = new SpotLight(m_sphere2);
         m_light2->lookAt(Vec3(0), Vec3(0,1,0));
+        m_light2->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
         m_light2->setPower(2.0);
 
         m_buddha = new Polygonal("resources/models/buddha.xml", m_room);
@@ -149,6 +150,8 @@ void Application::keyPressEvent(int key) {
         if (key == SDLK_RIGHT) m_empty->rotate(Vec3(0,1,0), -1.0, Space::WORLD);
         if (key == SDLK_UP) m_empty->rotate(Vec3(1,0,0), -1.0, Space::LOCAL);
         if (key == SDLK_DOWN) m_empty->rotate(Vec3(1,0,0), 1.0, Space::LOCAL);
+        if (key == SDLK_1) m_light2->setShadowTechnique(ShadowTechniquePtr(new SimpleShadowMapping()));
+        if (key == SDLK_2) m_light2->setShadowTechnique(ShadowTechniquePtr(new VarianceShadowMapping()));
 }
 
 void Application::windowResizeEvent(int x, int y) {

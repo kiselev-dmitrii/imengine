@@ -10,9 +10,6 @@ public:
         /// Конструктор
         PointLight(Object* parent);
 
-        /// Не поддерживает теневую карту
-        void            calculateShadowMap()                                    { }
-
 protected:
         void            prepare() const;
 };

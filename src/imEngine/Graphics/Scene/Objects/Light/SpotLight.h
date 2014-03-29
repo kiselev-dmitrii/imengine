@@ -14,9 +14,6 @@ public:
         /// Конструктор
         SpotLight(Object* parent);
 
-        /// Рассчитывает теневую карту
-        void    calculateShadowMap();
-
         /// Устанавливает телесный угол развертки конуса
         void    setCutoffAngle(float angle);
         float   cutoffAngle() const;
@@ -30,13 +27,6 @@ protected:
 private:
         float           m_cuttoffAngle;
         float           m_falloffAngle;
-
-        /// Для генерирования теней
-        Program*        m_shadowProgram;
-        mutable Frustum m_frustum;
-        RenderTarget    m_rt1;
-        RenderTarget    m_rt2;
-        DirectionalBlurPass     m_blur;
 };
 
 } //namespace imEngine

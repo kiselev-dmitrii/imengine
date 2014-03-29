@@ -11,6 +11,7 @@ void main() {
 
 ///### FRAGMENT SHADER ###///
 #include "../common/functions.glsl"
+#include "Shadow.glsl"
 
 in vec2 vTexCoord;
 layout (location = 0) out vec4 fLightBuffer;
@@ -35,27 +36,9 @@ struct Light {
 
         vec3    directionVS;
         vec3    positionVS;
-
-        sampler2D       shadowMap;
-        mat4            shadowMatrix;
 };
 uniform Light uLight;
-
-float chebyshevUpperBound(in float dist, in vec4 lightTextureCoords) {
-        // We retrive the two moments previously stored (depth and depth*depth)
-        vec2 moments = texture2D(uLight.shadowMap, lightTextureCoords.xy).xy;
-                
-        // Surface is fully lit. as the current fragment is before the light occluder
-        if (dist<= moments.x) return 1.0 ;
-        
-        float variance = moments.y - (moments.x*moments.x);
-        variance = max(variance,0.00002);
-        
-        float d = dist - moments.x;
-        float p_max = variance / (variance + d*d);
-        
-        return p_max;
-}
+uniform Shadow uShadow;
 
 void main() {
         /// Реконструируем позицию каждого пикселя
@@ -82,11 +65,7 @@ void main() {
                                         max(pow(dot(v, reflect(-s, normalVS)), material.r*100.0), 0.0);
 
 
-                /// Считаем тень
-                /// Переводим positionVS в Texture Space источника света
-                vec4 positionLTS = uLight.shadowMatrix * vec4(positionVS, 1.0);
-                positionLTS /= positionLTS.w;
-                float shadow = 1.0 - chebyshevUpperBound(positionLTS.z, positionLTS);
+                float shadow = calculateShadow(positionVS, uShadow);
 
                 fLightBuffer = vec4((diffuseColor + specularColor)*falloff*shadow, 1.0);
         } else {

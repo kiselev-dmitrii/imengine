@@ -68,6 +68,7 @@ void SceneDeferred::render() {
         std::list<ModelDetail*> unlightenedDetails;
 
         // Рендер непрозрачных деталей
+        Renderer::setCullMode(CullMode::BACK);
         for(Polygonal* object: m_polygonals) {
                 const Mat4& modelMatrix = object->localToWorldMatrix();
                 Mat4 modelViewMatrix = viewMatrix * modelMatrix;
