@@ -15,7 +15,15 @@ struct Shadow {
 
 float calculateShadow(in vec3 positionVS, in Shadow shadow) {
         vec4 shadowCoord = shadow.VStoSTS * vec4(positionVS, 1.0);
-        return textureProj(shadow.map, shadowCoord);	
+
+		float sum = 0;
+        sum += textureProjOffset(shadow.map, shadowCoord, ivec2(-1,-1));
+        sum += textureProjOffset(shadow.map, shadowCoord, ivec2(-1,1));
+        sum += textureProjOffset(shadow.map, shadowCoord, ivec2(1,1));
+        sum += textureProjOffset(shadow.map, shadowCoord, ivec2(1,-1));
+        sum /= 4.0;
+
+        return sum;
 }
 
 #endif //SHADOW_MAPPING
@@ -38,7 +46,8 @@ float calculateShadow(in vec3 positionVS, in Shadow shadow) {
         float d = dist - moments.x;
         float p_max = variance / (variance + d*d);
         
-        return pow(p_max, 5); 
+        //return pow(p_max, 5); 
+        return p_max;
 }
 
 #endif //VARIANCE_SHADOW_MAPPING

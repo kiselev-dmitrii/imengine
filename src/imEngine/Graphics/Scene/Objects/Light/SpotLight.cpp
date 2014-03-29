@@ -10,7 +10,7 @@ SpotLight::SpotLight(Object *parent) :
 {
         setCutoffAngle(20);
         setFalloffAngle(5);
-        setShadowTechnique(ShadowTechniquePtr(new VarianceShadowMapping()));
+        setShadowTechnique(ShadowTechniquePtr(new SimpleShadowMapping()));
 }
 
 void SpotLight::setCutoffAngle(float angle) {
