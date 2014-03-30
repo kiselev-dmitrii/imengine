@@ -15,6 +15,15 @@ ToggleButton::ToggleButton(const String &active, const String &checked, const St
 
 void ToggleButton::setChecked(bool checked) {
         m_isChecked = checked;
+
+        // Обновляем изображение
+        if (isEnabled()) {
+                if (m_isChecked) setCurrentImage(m_checkedImage);
+                else setCurrentImage(m_activeImage);
+        } else {
+                if (m_isChecked) setCurrentImage(m_disabledCheckedImage);
+                else setCurrentImage(m_disabledActiveImage);
+        }
 }
 
 bool ToggleButton::isChecked() const {
@@ -35,6 +44,8 @@ bool ToggleButton::onMouseRelease(int x, int y, char button) {
                 m_isChecked = !m_isChecked;
                 if (m_isChecked) setCurrentImage(m_checkedImage);
                 else setCurrentImage(m_activeImage);
+
+                onClick(this);
 
                 m_isPressed = false;
         }

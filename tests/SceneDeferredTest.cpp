@@ -9,6 +9,7 @@
 
 #include <imEngine/Graphics/GUI/Panel.h>
 #include <imEngine/Graphics/GUI/Slider.h>
+#include <imEngine/Graphics/GUI/ToggleButton.h>
 #include <imEngine/Graphics/GUI/BoxLayout.h>
 
 using namespace imEngine;
@@ -81,7 +82,7 @@ void Application::initialize() {
         m_pnl = new Panel("regular_panel.png", gui()->root());
         m_pnl->setOpacity(0.9);
         m_pnl->setPadding(20);
-        m_pnl->setSize(Vec2(200, 400));
+        m_pnl->setSize(Vec2(200, 500));
 
         m_pnlLayout = new VBoxLayout(m_pnl);
 
@@ -96,12 +97,17 @@ void Application::initialize() {
         m_thresholdSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
         m_thresholdSlider->setWidth(m_pnl->contentWidth());
 
+        ToggleButton* bloomBtn = new ToggleButton("big_checkbox_active.png", "big_checkbox_checked.png", "big_checkbox_active.png", "big_checkbox_checked.png", m_pnlLayout);
+        bloomBtn->setChecked(true);
+
         m_pnlLayout->addWidget(new Text("Bloom radius", m_pnlLayout));
         m_pnlLayout->addWidget(m_radiusSlider);
         m_pnlLayout->addWidget(new Text("Bloom step", m_pnlLayout));
         m_pnlLayout->addWidget(m_stepSlider);
         m_pnlLayout->addWidget(new Text("Bloom threshold", m_pnlLayout));
         m_pnlLayout->addWidget(m_thresholdSlider);
+        m_pnlLayout->addWidget(new Text("On/off", m_pnlLayout));
+        m_pnlLayout->addWidget(bloomBtn);
         m_pnlLayout->addSpacing(20);
 
         dscene->postEffects()->bloom()->setRadius(0);
@@ -114,6 +120,7 @@ void Application::initialize() {
         m_radiusSlider->onValueChanged += changeBloomSettings;
         m_stepSlider->onValueChanged += changeBloomSettings;
         m_thresholdSlider->onValueChanged += changeBloomSettings;
+        bloomBtn->onClick += [&] (ToggleButton* btn) { dscene->postEffects()->bloom()->setEnabled(btn->isChecked()); };
 
         /// SSAO
 
@@ -128,6 +135,9 @@ void Application::initialize() {
         HSlider* power = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
         power->setWidth(m_pnl->contentWidth());
 
+        ToggleButton* ssaoBtn = new ToggleButton("big_checkbox_active.png", "big_checkbox_checked.png", "big_checkbox_active.png", "big_checkbox_checked.png", m_pnlLayout);
+        ssaoBtn->setChecked(true);
+
         m_pnlLayout->addWidget(new Text("SSAO", m_pnlLayout));
         m_pnlLayout->addWidget(new Text("Screen radius", m_pnlLayout));
         m_pnlLayout->addWidget(screenRadius);
@@ -135,12 +145,15 @@ void Application::initialize() {
         m_pnlLayout->addWidget(viewRadius);
         m_pnlLayout->addWidget(new Text("Power", m_pnlLayout));
         m_pnlLayout->addWidget(power);
+        m_pnlLayout->addWidget(new Text("On/off", m_pnlLayout));
+        m_pnlLayout->addWidget(ssaoBtn);
         m_pnlLayout->addSpacing(20);
 
 
         screenRadius->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->ssao()->ssaoPass()->setScreenRadius(slider->value()); };
         viewRadius->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->ssao()->ssaoPass()->setViewRadius(slider->value()); };
         power->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->ssao()->ssaoPass()->setPower(slider->value()); };
+        ssaoBtn->onClick += [&] (ToggleButton* btn) { dscene->postEffects()->ssao()->setEnabled(btn->isChecked()); };
 
         /// DoF
         HSlider* maxNearRadius = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
@@ -157,6 +170,9 @@ void Application::initialize() {
         HSlider* focusEnd = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
         focusEnd->setWidth(m_pnl->contentWidth());
 
+        ToggleButton* dofBtn = new ToggleButton("big_checkbox_active.png", "big_checkbox_checked.png", "big_checkbox_active.png", "big_checkbox_checked.png", m_pnlLayout);
+        dofBtn->setChecked(true);
+
         m_pnlLayout->addWidget(new Text("DoF", m_pnlLayout));
         m_pnlLayout->addWidget(new Text("Max near radius", m_pnlLayout));
         m_pnlLayout->addWidget(maxNearRadius);
@@ -166,12 +182,15 @@ void Application::initialize() {
         m_pnlLayout->addWidget(focusStart);
         m_pnlLayout->addWidget(new Text("Focus end", m_pnlLayout));
         m_pnlLayout->addWidget(focusEnd);
+        m_pnlLayout->addWidget(new Text("On/off", m_pnlLayout));
+        m_pnlLayout->addWidget(dofBtn);
         m_pnlLayout->addSpacing(20);
 
         maxNearRadius->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->depthOfField()->depthBlurPass()->setNearMaxRadius(slider->value()); };
         maxFarRadius->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->depthOfField()->depthBlurPass()->setFarMaxRadius(slider->value()); };
         focusStart->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->depthOfField()->depthBlurPass()->setFocusStart(slider->value()); };
         focusEnd->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->depthOfField()->depthBlurPass()->setFocusEnd(slider->value()); };
+        dofBtn->onClick += [&] (ToggleButton* btn) { dscene->postEffects()->depthOfField()->setEnabled(btn->isChecked()); };
 }
 
 void Application::keyPressEvent(int key) {
