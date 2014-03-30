@@ -22,10 +22,45 @@ SceneDeferred::~SceneDeferred() {
 }
 
 Polygonal* SceneDeferred::pickObject(int x, int y) {
-        IVec2 size = application()->window()->size();
-        const Mat4& viewMatrix = activeCamera()->worldToLocalMatrix();
-        const Mat4& projectionMatrix = activeCamera()->viewToClipMatrix();
 
+        float aspectRatio = activeCamera()->aspectRatio();
+        float tanHalfFovy = glm::tan(glm::radians(activeCamera()->fieldOfView()/2));
+
+        /// Приводим мышь к [-1;1]
+        Vec2 m = Vec2(x,600-y)/Vec2(800, 600);
+        m = 2.0f * m - Vec2(1.0);
+
+        Vec3 vViewRay = Vec3(
+                m.x * aspectRatio * tanHalfFovy,
+                m.y * tanHalfFovy,
+                -1
+        );
+        vViewRay = glm::normalize(vViewRay);
+
+        Vec3 cameraForwardWS = activeCamera()->convertLocalToWorld(vViewRay) - activeCamera()->worldPosition();
+        Vec3 positionWS = activeCamera()->worldPosition();
+
+
+        /// Исключить объект, в котором мы сейчас находимся
+        Polygonal* exclude = nullptr;
+        for (Polygonal* polygonal: m_polygonals) {
+                const Mat4& invModelMatrix = polygonal->worldToLocalMatrix();
+                Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
+                if (polygonal->aabb().doesContain(modelSpacePosition)) exclude = polygonal;
+        }
+
+        while (glm::length(positionWS - cameraForwardWS) < 20.0) {
+                for (Polygonal* polygonal: m_polygonals) {
+                        if (polygonal == exclude) continue;
+                        const Mat4& invModelMatrix = polygonal->worldToLocalMatrix();
+                        Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
+                        if (polygonal->aabb().doesContain(modelSpacePosition)) return polygonal;
+                }
+                positionWS += 0.1f * cameraForwardWS;
+        }
+        return nullptr;
+
+        /*
         /// Получаем глубину
         float depth;
         m_gbuffer.bind();
@@ -44,6 +79,7 @@ Polygonal* SceneDeferred::pickObject(int x, int y) {
                 if (polygonal->aabb().doesContain(modelSpacePosition)) return polygonal;
         }
         return nullptr;
+        */
 
 }
 
