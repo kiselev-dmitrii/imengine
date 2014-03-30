@@ -9,15 +9,15 @@ namespace imEngine {
  */
 class PostEffect {
 public:
-        PostEffect() : m_enabled(true)                                          { }
+        PostEffect() : m_isEnabled(true)                                        { }
 
-        void   setEnabled(bool enabled)                                         { m_enabled = enabled; }
-        bool   isEnabled() const                                                { return m_enabled; }
+        void   setEnabled(bool enabled)                                         { m_isEnabled = enabled; }
+        bool   isEnabled() const                                                { return m_isEnabled; }
 
         virtual Texture2D*      apply() = 0;
 
 private:
-        bool    m_enabled;
+        bool    m_isEnabled;
 };
 
 } //namespace imEngine

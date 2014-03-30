@@ -11,19 +11,25 @@ void PostEffectManager::apply(Texture2D *lightAccum, Texture2D *diffuseBuffer,
                               Texture2D *materialBuffer, Texture2D *geometryBuffer, Texture2D *depthBuffer) {
         Texture2D* result = lightAccum;
 
-        m_ssao.setInputTexture(result);
-        m_ssao.setNormalTexture(geometryBuffer);
-        m_ssao.setDepthTexture(depthBuffer);
-        m_ssao.setActiveCamera(m_scene->activeCamera());
-        result = m_ssao.apply();
+        if (m_ssao.isEnabled()) {
+                m_ssao.setInputTexture(result);
+                m_ssao.setNormalTexture(geometryBuffer);
+                m_ssao.setDepthTexture(depthBuffer);
+                m_ssao.setActiveCamera(m_scene->activeCamera());
+                result = m_ssao.apply();
+        }
 
-        m_dof.setInputTexture(result);
-        m_dof.setDepthTexture(depthBuffer);
-        m_dof.setActiveCamera(m_scene->activeCamera());
-        result = m_dof.apply();
+        if (m_dof.isEnabled()) {
+                m_dof.setInputTexture(result);
+                m_dof.setDepthTexture(depthBuffer);
+                m_dof.setActiveCamera(m_scene->activeCamera());
+                result = m_dof.apply();
+        }
 
-        m_bloom.setTexture(result);
-        result = m_bloom.apply();
+        if (m_bloom.isEnabled()) {
+                m_bloom.setTexture(result);
+                result = m_bloom.apply();
+        }
 
         m_copy.setTexture(result);
         m_copy.apply();
