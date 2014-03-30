@@ -56,8 +56,6 @@ PostEffectManager* SceneDeferred::postEffects() {
 }
 
 void SceneDeferred::render() {
-        Renderer::setDepthMode(DepthMode::LESS);
-
         const Mat4& viewMatrix = activeCamera()->worldToLocalMatrix();
         const Mat4& projectionMatrix = activeCamera()->viewToClipMatrix();
 
@@ -69,6 +67,8 @@ void SceneDeferred::render() {
 
         // Рендер непрозрачных деталей
         Renderer::setCullMode(CullMode::BACK);
+        Renderer::setDepthMode(DepthMode::LESS);
+        Renderer::setBlendMode(BlendMode::NONE);
         for(Polygonal* object: m_polygonals) {
                 const Mat4& modelMatrix = object->localToWorldMatrix();
                 Mat4 modelViewMatrix = viewMatrix * modelMatrix;
