@@ -11,8 +11,8 @@ DepthBlurPass::DepthBlurPass() :
         m_camera(nullptr),
         m_direction(1, 0),
 
-        m_maxNearRadius(100),
-        m_maxFarRadius(200),
+        m_nearMaxRadius(100),
+        m_farMaxRadius(200),
         m_focusStart(0.1f),
         m_focusEnd(0.2f)
 { }
@@ -33,8 +33,8 @@ void DepthBlurPass::prepare() const {
         m_program->setUniform("uFarDistance", m_camera->farDistance());
         m_program->setUniform("uDirection", m_direction);
 
-        m_program->setUniform("uNearRadius", m_maxNearRadius);
-        m_program->setUniform("uFarRadius", m_maxFarRadius);
+        m_program->setUniform("uNearMaxRadius", m_nearMaxRadius);
+        m_program->setUniform("uFarMaxRadius", m_farMaxRadius);
         m_program->setUniform("uFocusStart", m_focusStart);
         m_program->setUniform("uFocusEnd", m_focusEnd);
 }

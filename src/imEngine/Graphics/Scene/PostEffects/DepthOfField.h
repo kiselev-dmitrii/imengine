@@ -26,11 +26,11 @@ public:
         void    setDirection(const Vec2& direction)                             { m_direction = direction; }
 
         /// Устанавливает/возвращает ближний максимальный радиус размытия
-        void    setMaxNearRadius(int radius)                                    { m_maxNearRadius = radius; }
-        int     maxNearRadius() const                                           { return m_maxNearRadius; }
+        void    setNearMaxRadius(int radius)                                    { m_nearMaxRadius = radius; }
+        int     nearMaxRadius() const                                           { return m_nearMaxRadius; }
         /// Устанавливает/возвращает максимальный дальний радиус размытия
-        void    setMaxFarRadius(int radius)                                     { m_maxFarRadius = radius; }
-        int     maxFarRadius() const                                            { return m_maxFarRadius; }
+        void    setFarMaxRadius(int radius)                                     { m_farMaxRadius = radius; }
+        int     farMaxRadius() const                                            { return m_farMaxRadius; }
         /// Устанавливает/возвращает дистанцию до начала фокусированной области в [0;1]
         /// start < end
         void    setFocusStart(float start)                                      { m_focusStart = glm::clamp(start, 0.0f, m_focusEnd); }
@@ -48,8 +48,8 @@ private:
         Camera*         m_camera;
         Vec2            m_direction;
 
-        int             m_maxNearRadius;
-        int             m_maxFarRadius;
+        int             m_nearMaxRadius;
+        int             m_farMaxRadius;
         float           m_focusStart;
         float           m_focusEnd;
 };

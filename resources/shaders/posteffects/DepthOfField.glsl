@@ -21,8 +21,8 @@ uniform float		uNearDistance;
 uniform float 		uFarDistance;
 uniform vec2 		uDirection;
 
-uniform int 		uNearRadius;
-uniform int 		uFarRadius;
+uniform int 		uNearMaxRadius;
+uniform int 		uFarMaxRadius;
 uniform float		uFocusStart;
 uniform float 		uFocusEnd;
 
@@ -31,8 +31,8 @@ void main() {
 	float ldepth = linearizeDepth(depth, uNearDistance, uFarDistance);
 
 	int radius = 0;
-	if (ldepth < uFocusStart) radius = int (uNearRadius * (1.0 - ldepth/uFocusStart));
-	if (ldepth > uFocusEnd) radius = int (((ldepth - uFocusEnd)/(1.0 - uFocusEnd)) * uFarRadius);
+	if (ldepth < uFocusStart) radius = int (uNearMaxRadius * (1.0 - ldepth/uFocusStart));
+	if (ldepth > uFocusEnd) radius = int (((ldepth - uFocusEnd)/(1.0 - uFocusEnd)) * uFarMaxRadius);
 	/*
 	float rad1 = uMaxRadius * (1.0 - ldepth/focusStart);
 	float rad2 = ((ldepth - focusEnd)/(1.0 - focusEnd)) * uMaxRadius;
