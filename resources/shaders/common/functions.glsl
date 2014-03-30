@@ -20,23 +20,31 @@ vec4 incrementalGaussian(in sampler2D texture, in int radius, in vec2 direction,
 	vec2 texelSize = 1.0 / vec2(textureSize(texture, 0));	
 	float sigma = float(radius/step) / 8.0;
 
+	/// Ранний выход, если радиус нулевой или мал
 	if (numSamples == 0) return texture2D(texture, origin);
 		
+	/// Вектор для хранения коэф. гауссовского распредления
 	vec3 gaussInc;
 	gaussInc.x = 1.0 / (sqrt(TWO_PI) * sigma);
 	gaussInc.y = exp(-1/(2*sigma*sigma));
 	gaussInc.z = gaussInc.y * gaussInc.y;
-	
-	vec4 result = texture2D(texture, origin) * gaussInc.x;	
-	for (int i = 1; i < numSamples; ++i) {
-		gaussInc.xy *= gaussInc.yz;
-		
-		vec2 offset = float(i) * direction * texelSize * float(step);
-		result += texture2D(texture, origin - offset) * gaussInc.x;
-		result += texture2D(texture, origin + offset) * gaussInc.x;
-	}
-	
-	return result;
+
+  	/// Центральный первый сэмпл
+  	vec4 result = texture2D(texture, origin) * gaussInc.x;
+  	float sum = gaussInc.x;
+  	gaussInc.xy *= gaussInc.yz;
+
+  	/// Расходимся от центра по оси direction и считаем суммы
+  	for (float i = 1.0f; i <= numSamples; i++) { 
+  		vec2 offset = i * direction * texelSize * float(step);
+    	result += texture2D(texture, origin - offset) * gaussInc.x;         
+    	result += texture2D(texture, origin + offset) * gaussInc.x;
+
+    	sum += 2 * gaussInc.x;
+    	gaussInc.xy *= gaussInc.yz;
+  	}
+
+  return  result / sum;
 }
 
 /// Трансформирует texture space координаты во view space координаты

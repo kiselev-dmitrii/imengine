@@ -19,6 +19,7 @@ void PostEffectManager::apply(Texture2D *lightAccum, Texture2D *diffuseBuffer,
 
         m_dof.setInputTexture(result);
         m_dof.setDepthTexture(depthBuffer);
+        m_dof.setActiveCamera(m_scene->activeCamera());
         result = m_dof.apply();
 
         m_bloom.setTexture(result);
