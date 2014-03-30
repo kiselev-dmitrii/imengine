@@ -202,6 +202,17 @@ void Application::keyPressEvent(int key) {
         if (key == SDLK_DOWN) m_empty->rotate(Vec3(1,0,0), 1.0, Space::LOCAL);
         if (key == SDLK_1) m_light2->setShadowTechnique(ShadowTechniquePtr(new SimpleShadowMapping()));
         if (key == SDLK_2) m_light2->setShadowTechnique(ShadowTechniquePtr(new VarianceShadowMapping()));
+        if (key == SDLK_F1) {
+                bool static isEnabled = true;
+                if (isEnabled) {
+                        gui()->root()->hide();
+                        gui()->root()->disable();
+                } else {
+                        gui()->root()->show();
+                        gui()->root()->enable();
+                }
+                isEnabled = !isEnabled;
+        }
 }
 
 void Application::windowResizeEvent(int x, int y) {
