@@ -5,6 +5,7 @@
 
 namespace imEngine {
 
+/*
 SceneDeferred::SceneDeferred(GraphicApplication* application) :
         Scene(application),
         m_gbuffer(application->window()->size()),
@@ -18,68 +19,6 @@ SceneDeferred::SceneDeferred(GraphicApplication* application) :
 }
 
 SceneDeferred::~SceneDeferred() {
-
-}
-
-Polygonal* SceneDeferred::pickObject(int x, int y) {
-
-        float aspectRatio = activeCamera()->aspectRatio();
-        float tanHalfFovy = glm::tan(glm::radians(activeCamera()->fieldOfView()/2));
-
-        /// Приводим мышь к [-1;1]
-        Vec2 m = Vec2(x,600-y)/Vec2(800, 600);
-        m = 2.0f * m - Vec2(1.0);
-
-        Vec3 vViewRay = Vec3(
-                m.x * aspectRatio * tanHalfFovy,
-                m.y * tanHalfFovy,
-                -1
-        );
-        vViewRay = glm::normalize(vViewRay);
-
-        Vec3 cameraForwardWS = activeCamera()->convertLocalToWorld(vViewRay) - activeCamera()->worldPosition();
-        Vec3 positionWS = activeCamera()->worldPosition();
-
-
-        /// Исключить объект, в котором мы сейчас находимся
-        Polygonal* exclude = nullptr;
-        for (Polygonal* polygonal: m_polygonals) {
-                const Mat4& invModelMatrix = polygonal->worldToLocalMatrix();
-                Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
-                if (polygonal->aabb().doesContain(modelSpacePosition)) exclude = polygonal;
-        }
-
-        while (glm::length(positionWS - cameraForwardWS) < 20.0) {
-                for (Polygonal* polygonal: m_polygonals) {
-                        if (polygonal == exclude) continue;
-                        const Mat4& invModelMatrix = polygonal->worldToLocalMatrix();
-                        Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
-                        if (polygonal->aabb().doesContain(modelSpacePosition)) return polygonal;
-                }
-                positionWS += 0.1f * cameraForwardWS;
-        }
-        return nullptr;
-
-        /*
-        /// Получаем глубину
-        float depth;
-        m_gbuffer.bind();
-                 glReadPixels(x, size.y-y-1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-        m_gbuffer.unbind();
-        Vec3 winSpacePosition(x, size.y-y-1, depth);
-
-        /// Получаем мировые координаты
-        Vec3 worldSpacePosition = glm::unProject(winSpacePosition, viewMatrix, projectionMatrix, Vec4(0,0, size));
-
-        /// Проходим по всем объектам и смотрим принадлежность точки boundBox
-        for (Polygonal* polygonal: m_polygonals) {
-                const Mat4& invModelMatrix = polygonal->worldToLocalMatrix();
-                Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(worldSpacePosition, 1.0));
-
-                if (polygonal->aabb().doesContain(modelSpacePosition)) return polygonal;
-        }
-        return nullptr;
-        */
 
 }
 
@@ -196,47 +135,6 @@ void SceneDeferred::windowResizeEvent(int w, int h) {
         m_gbuffer.setSize(IVec2(w, h));
 }
 
-void SceneDeferred::mousePressEvent(int x, int y, char button) {
-        Scene::mousePressEvent(x, y, button);
-        if (button != MouseButton::RIGHT) return;
-
-        m_pickedObject = pickObject(x, y);
-}
-
-void SceneDeferred::mouseMoveEvent(int oldX, int oldY, int newX, int newY) {
-        if (m_pickedObject) {
-                Vec2 delta = Vec2(newX, newY) - Vec2(oldX, oldY);
-                Vec2 angles = delta;
-
-                Vec3 worldSpaceCameraUp = activeCamera()->convertLocalToWorld(Vec3(0,1,0)) - activeCamera()->worldPosition();
-                Vec3 worldSpaceCameraRight = activeCamera()->convertLocalToWorld(Vec3(1,0,0)) - activeCamera()->worldPosition();
-                m_pickedObject->rotate(worldSpaceCameraUp, angles.x, Space::WORLD);
-                m_pickedObject->rotate(worldSpaceCameraRight, angles.y, Space::WORLD);
-        }
-}
-
-void SceneDeferred::mouseReleaseEvent(int x, int y, char button) {
-        Scene::mouseReleaseEvent(x, y, button);
-        if (button != MouseButton::RIGHT) return;
-
-        m_pickedObject = nullptr;
-}
-
-void SceneDeferred::keyPressEvent(int key) {
-        /*
-        static int step = 1;
-        static int radius = 0.0;
-        if (key == SDLK_LEFT) --step;
-        if (key == SDLK_RIGHT) ++step;
-        m_pass.setStep(step);
-
-        if (key == '-') m_pass. setRadius(100);
-        if (key == '=') m_pass.setRadius(0);
-        IM_VAR(step);
-        IM_VAR(radius);
-        */
-}
-
 void SceneDeferred::initGBuffer() {
         m_gbuffer.enableColorBuffer(0, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);        //GBufferDiffuse
         m_gbuffer.enableColorBuffer(1, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);        //GBufferMaterial
@@ -252,6 +150,6 @@ void SceneDeferred::initGBuffer() {
 void SceneDeferred::initLBuffer() {
         m_lbuffer.enableColorBuffer(0, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);
 }
-
+*/
 
 } //namespace imEngine

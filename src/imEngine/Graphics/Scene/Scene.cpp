@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "Objects/Camera/FirstPersonCamera.h"
+#include "SceneRenderer.h"
 
 namespace imEngine {
 
@@ -21,34 +22,62 @@ Scene::Scene(GraphicApplication *application) :
 {
         m_world = new World(this);
         m_activeCamera = new FirstPersonCamera(m_world);
+        m_sceneRenderer = new SceneRenderer(this);
 }
 
 Scene::~Scene() {
         delete m_world;
+        delete m_sceneRenderer;
 }
 
-Object* Scene::world() {
-        return m_world;
+Object* Scene::pickObject(int x, int y) {
+        float aspectRatio = activeCamera()->aspectRatio();
+        float tanHalfFovy = glm::tan(glm::radians(activeCamera()->fieldOfView()/2));
+        Vec2 winSize = Vec2(m_application->window()->size());
+
+        /// Приводим экранные координаты к [-1;1]
+        Vec2 m = Vec2(x,winSize.y - y)/winSize;
+        m = 2.0f * m - Vec2(1.0);
+
+        Vec3 vViewRay = Vec3(
+                m.x * aspectRatio * tanHalfFovy,
+                m.y * tanHalfFovy,
+                -1
+        );
+        vViewRay = glm::normalize(vViewRay);
+
+        Vec3 cameraForwardWS = activeCamera()->convertLocalToWorld(vViewRay) - activeCamera()->worldPosition();
+        Vec3 positionWS = activeCamera()->worldPosition();
+
+
+        /// Исключить объект, в котором мы сейчас находимся
+        Polygonal* exclude = nullptr;
+        for (Polygonal* polygonal: m_polygonals) {
+                const Mat4& invModelMatrix = polygonal->worldToLocalMatrix();
+                Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
+                if (polygonal->aabb().doesContain(modelSpacePosition)) exclude = polygonal;
+        }
+
+        while (glm::length(positionWS - cameraForwardWS) < 20.0) {
+                for (Polygonal* polygonal: m_polygonals) {
+                        if (polygonal == exclude) continue;
+                        const Mat4& invModelMatrix = polygonal->worldToLocalMatrix();
+                        Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
+                        if (polygonal->aabb().doesContain(modelSpacePosition)) return polygonal;
+                }
+                positionWS += 0.1f * cameraForwardWS;
+        }
+        return nullptr;
 }
 
-void Scene::setActiveCamera(Camera *camera) {
-        m_activeCamera = camera;
+void Scene::render() {
+        m_sceneRenderer->render();
 }
 
-Camera* Scene::activeCamera() const {
-        return m_activeCamera;
-}
-
-void Scene::setInputCaptured(bool enable) {
-        m_isInputCaptured = enable;
-}
-
-bool Scene::isInputCaptured() const {
-        return m_isInputCaptured;
-}
-
-GraphicApplication* Scene::application() {
-        return m_application;
+void Scene::windowResizeEvent(int w, int h) {
+        for (Camera* camera: m_cameras) camera->setAspectRatio(float(w)/h);
+        m_activeCamera->setAspectRatio(float(w)/h);
+        m_sceneRenderer->windowResizeEvent(w, h);
 }
 
 void Scene::update(float delta) {
@@ -71,11 +100,6 @@ void Scene::mousePressEvent(int x, int y, char button) {
                 mouse->setVisible(true);
                 setInputCaptured(false);
         }
-}
-
-void Scene::windowResizeEvent(int w, int h) {
-        for (Camera* camera: m_cameras) camera->setAspectRatio(float(w)/h);
-        m_activeCamera->setAspectRatio(float(w)/h);
 }
 
 void Scene::registerCamera(Camera *camera) {
@@ -114,20 +138,36 @@ void Scene::unregisterLight(Light *light) {
         if (it != m_lights.end()) m_lights.erase(it);
 }
 
-CameraList& Scene::cameras() {
-        return m_cameras;
+//########################### DefaultUserScene ###############################//
+
+DefaultUserScene::DefaultUserScene(GraphicApplication* application) :
+        Scene(application),
+        m_pickedObject(nullptr)
+{ }
+
+void DefaultUserScene::mousePressEvent(int x, int y, char button) {
+        Scene::mousePressEvent(x, y, button);
+        if (button != MouseButton::RIGHT) return;
+        m_pickedObject = (Polygonal*) pickObject(x, y); //временно
 }
 
-PolygonalList& Scene::polygonals() {
-        return m_polygonals;
+void DefaultUserScene::mouseReleaseEvent(int x, int y, char button) {
+        Scene::mouseReleaseEvent(x, y, button);
+        if (button != MouseButton::RIGHT) return;
+
+        m_pickedObject = nullptr;
 }
 
-VolumeList& Scene::volumes() {
-        return m_volumes;
-}
+void DefaultUserScene::mouseMoveEvent(int oldX, int oldY, int newX, int newY) {
+        if (m_pickedObject) {
+                Vec2 delta = Vec2(newX, newY) - Vec2(oldX, oldY);
+                Vec2 angles = delta;
 
-LightList& Scene::ligths() {
-        return m_lights;
+                Vec3 worldSpaceCameraUp = activeCamera()->convertLocalToWorld(Vec3(0,1,0)) - activeCamera()->worldPosition();
+                Vec3 worldSpaceCameraRight = activeCamera()->convertLocalToWorld(Vec3(1,0,0)) - activeCamera()->worldPosition();
+                m_pickedObject->rotate(worldSpaceCameraUp, angles.x, Space::WORLD);
+                m_pickedObject->rotate(worldSpaceCameraRight, angles.y, Space::WORLD);
+        }
 }
 
 } //namespace imEngine

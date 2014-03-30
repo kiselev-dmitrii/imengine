@@ -1,4 +1,5 @@
 #include <imEngine/Graphics/Scene/Scene.h>
+#include <imEngine/Graphics/Scene/SceneRenderer.h>
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/Graphics/GUI/Picture.h>
 #include <imEngine/Graphics/Scene/Objects/Camera/FirstPersonCamera.h>
@@ -38,7 +39,6 @@ private:
         HSlider*        m_radiusSlider;
         HSlider*        m_stepSlider;
         HSlider*        m_thresholdSlider;
-        SceneDeferred*  dscene;
 
         Movable*        m_empty;
 
@@ -48,7 +48,6 @@ private:
 
 void Application::initialize() {
         GraphicApplication::initialize();
-        dscene = (SceneDeferred*) scene();
 
         m_room = new Polygonal("resources/models/room.xml", scene()->world());
         m_logo = new Polygonal("resources/models/logo.xml", m_room);
@@ -71,10 +70,12 @@ void Application::initialize() {
         m_buddha = new Polygonal("resources/models/buddha.xml", m_room);
         m_buddha->setPosition(Vec3(-2.0, 0.0, 2.0));
 
-        m_diffuseBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(0), gui()->root());
-        m_materialBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(1), gui()->root());
-        m_geometryBuffer = new PictureColor(dscene->gbuffer()->colorBufferTexture(2), gui()->root());
-        m_depthBuffer = new PictureDepth(dscene->gbuffer()->depthBufferTexture(), gui()->root());
+        /*
+        m_diffuseBuffer = new PictureColor(scene()->renderer()->gBuffer()->colorBufferTexture(0), gui()->root());
+        m_materialBuffer = new PictureColor(scene()->renderer()->gBuffer()->colorBufferTexture(1), gui()->root());
+        m_geometryBuffer = new PictureColor(scene()->renderer()->gBuffer()->colorBufferTexture(2), gui()->root());
+        m_depthBuffer = new PictureDepth(scene()->renderer()->gBuffer()->depthBufferTexture(), gui()->root());
+        */
         windowResizeEvent(window()->size().x, window()->size().y);
 
         //////////////////////////////////////////////////////
@@ -110,17 +111,17 @@ void Application::initialize() {
         m_pnlLayout->addWidget(bloomBtn);
         m_pnlLayout->addSpacing(20);
 
-        dscene->postEffects()->bloom()->setRadius(0);
+        scene()->renderer()->bloom()->setRadius(0);
         auto changeBloomSettings = [&] (HSlider* slider) {
-                dscene->postEffects()->bloom()->setRadius(m_radiusSlider->value());
-                dscene->postEffects()->bloom()->setStep(m_stepSlider->value());
-                dscene->postEffects()->bloom()->setThreshold(m_thresholdSlider->value());
+                scene()->renderer()->bloom()->setRadius(m_radiusSlider->value());
+                scene()->renderer()->bloom()->setStep(m_stepSlider->value());
+                scene()->renderer()->bloom()->setThreshold(m_thresholdSlider->value());
         };
 
         m_radiusSlider->onValueChanged += changeBloomSettings;
         m_stepSlider->onValueChanged += changeBloomSettings;
         m_thresholdSlider->onValueChanged += changeBloomSettings;
-        bloomBtn->onClick += [&] (ToggleButton* btn) { dscene->postEffects()->bloom()->setEnabled(btn->isChecked()); };
+        bloomBtn->onClick += [&] (ToggleButton* btn) { scene()->renderer()->bloom()->setEnabled(btn->isChecked()); };
 
         /// SSAO
 
@@ -150,10 +151,10 @@ void Application::initialize() {
         m_pnlLayout->addSpacing(20);
 
 
-        screenRadius->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->ssao()->ssaoPass()->setScreenRadius(slider->value()); };
-        viewRadius->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->ssao()->ssaoPass()->setViewRadius(slider->value()); };
-        power->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->ssao()->ssaoPass()->setPower(slider->value()); };
-        ssaoBtn->onClick += [&] (ToggleButton* btn) { dscene->postEffects()->ssao()->setEnabled(btn->isChecked()); };
+        screenRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setScreenRadius(slider->value()); };
+        viewRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setViewRadius(slider->value()); };
+        power->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setPower(slider->value()); };
+        ssaoBtn->onClick += [&] (ToggleButton* btn) { scene()->renderer()->ssao()->setEnabled(btn->isChecked()); };
 
         /// DoF
         HSlider* maxNearRadius = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
@@ -186,11 +187,11 @@ void Application::initialize() {
         m_pnlLayout->addWidget(dofBtn);
         m_pnlLayout->addSpacing(20);
 
-        maxNearRadius->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->depthOfField()->depthBlurPass()->setNearMaxRadius(slider->value()); };
-        maxFarRadius->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->depthOfField()->depthBlurPass()->setFarMaxRadius(slider->value()); };
-        focusStart->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->depthOfField()->depthBlurPass()->setFocusStart(slider->value()); };
-        focusEnd->onValueChanged += [&] (HSlider* slider) { dscene->postEffects()->depthOfField()->depthBlurPass()->setFocusEnd(slider->value()); };
-        dofBtn->onClick += [&] (ToggleButton* btn) { dscene->postEffects()->depthOfField()->setEnabled(btn->isChecked()); };
+        maxNearRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setNearMaxRadius(slider->value()); };
+        maxFarRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFarMaxRadius(slider->value()); };
+        focusStart->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusStart(slider->value()); };
+        focusEnd->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusEnd(slider->value()); };
+        dofBtn->onClick += [&] (ToggleButton* btn) { scene()->renderer()->depthOfField()->setEnabled(btn->isChecked()); };
 }
 
 void Application::keyPressEvent(int key) {
@@ -218,6 +219,7 @@ void Application::keyPressEvent(int key) {
 void Application::windowResizeEvent(int x, int y) {
         GraphicApplication::windowResizeEvent(x, y);
 
+        /*
         m_diffuseBuffer->setSize(Vec2(window()->size())/8.0f);
         m_diffuseBuffer->setPosition(Vec2(0,0));
         m_materialBuffer->setSize(Vec2(window()->size())/8.0f);
@@ -226,6 +228,7 @@ void Application::windowResizeEvent(int x, int y) {
         m_geometryBuffer->setPosition(Vec2(2*m_diffuseBuffer->width(),0));
         m_depthBuffer->setSize(Vec2(window()->size())/8.0f);
         m_depthBuffer->setPosition(Vec2(3*m_diffuseBuffer->width(),0));
+        */
 }
 
 int main() {

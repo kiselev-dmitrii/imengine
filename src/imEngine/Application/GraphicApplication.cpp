@@ -1,5 +1,5 @@
 #include "GraphicApplication.h"
-#include <imEngine/Graphics/Scene/SceneDeferred.h>
+#include <imEngine/Graphics/Scene/Scene.h>
 
 namespace imEngine {
 
@@ -15,7 +15,7 @@ void GraphicApplication::initialize() {
         glClearColor(1,1,1,1);
         Renderer::setViewportSize(window()->size());
 
-        m_scene = new SceneDeferred(this);
+        m_scene = new DefaultUserScene(this);
         m_gui = new GuiManager("resources/gui/elementary/", this);
         m_fps = new FpsViewer(m_gui->root());
 }
