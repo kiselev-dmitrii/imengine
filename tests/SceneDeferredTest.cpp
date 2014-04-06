@@ -13,6 +13,7 @@
 #include <imEngine/Graphics/GUI/ToggleButton.h>
 #include <imEngine/Graphics/GUI/BoxLayout.h>
 #include <imEngine/Graphics/Scene/Materials/RaycastingMaterial.h>
+#include <imEngine/Graphics/Scene/Materials/IsosurfaceMaterial.h>
 
 using namespace imEngine;
 
@@ -75,8 +76,8 @@ void Application::initialize() {
         m_buddha->setPosition(Vec3(-2.0, 0.0, 2.0));
 
         m_data = new Texture3D();
-        m_data->load(256,256,128, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/textures/3d/engine.raw");
-        m_engine = new Volume(m_data, VolumeMaterialPtr(new RaycastingMaterial()), scene()->world());
+        m_data->load(256,256,256, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/textures/3d/skull.raw");
+        m_engine = new Volume(m_data, VolumeMaterialPtr(new IsosurfaceMaterial()), scene()->world());
         m_engine->setPosition(Vec3(2, 2, -2));
 
         /*

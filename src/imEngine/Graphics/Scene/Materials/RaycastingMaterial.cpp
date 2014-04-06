@@ -3,9 +3,12 @@
 namespace imEngine {
 
 RaycastingMaterial::RaycastingMaterial() :
-        VolumeMaterial("materials/RaycastingMaterial.glsl"),
-        m_step(0.01)
-{ }
+        VolumeMaterial("materials/RaycastingMaterial.glsl")
+{
+        setStep(0.01);
+        setMinDensity(0.0);
+        setMaxDensity(1.0);
+}
 
 void RaycastingMaterial::bind() {
         const Mat4& viewMatrix = m_camera->worldToLocalMatrix();
@@ -22,6 +25,8 @@ void RaycastingMaterial::bind() {
         m_program->setUniform("uVolumeTexture", 0);
         m_program->setUniform("uObjectSpaceCameraPosition", objectSpaceCameraPosition);
         m_program->setUniform("uStep", m_step);
+        m_program->setUniform("uMinDensity", m_minDensity);
+        m_program->setUniform("uMaxDensity", m_maxDensity);
 }
 
 void RaycastingMaterial::unbind() {
