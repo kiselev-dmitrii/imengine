@@ -21,6 +21,7 @@ layout (location = 0) out vec4 fResult;
 
 uniform sampler3D 	uVolumeTexture;
 uniform vec3 		uObjectSpaceCameraPosition;
+uniform float 		uStep;
 
 vec4 volumeRaycasting(vec3 vStartUV, vec3 vUVSpaceRayDirection, float stepSize, sampler3D volume) {
 	const int 	MAX_SAMPLES = 300;
@@ -62,5 +63,5 @@ void main() {
 	vec3 vObjectSpacePosition = vVolumeTexcoords - vec3(0.5);		//позиция вершины в ObjectSpace
 	vec3 vObjectSpaceRayDirection = vObjectSpacePosition - uObjectSpaceCameraPosition;
 
-	fResult = volumeRaycasting(vVolumeTexcoords, vObjectSpaceRayDirection, 0.01, uVolumeTexture);
+	fResult = volumeRaycasting(vVolumeTexcoords, vObjectSpaceRayDirection, uStep, uVolumeTexture);
 }

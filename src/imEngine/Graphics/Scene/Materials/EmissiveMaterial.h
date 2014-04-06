@@ -11,7 +11,7 @@ namespace imEngine {
  * При рендере, детали с этим материалом записываются сразу в LightBuffer, исключая
  * запись в GBuffer.
  */
-class EmissiveMaterial : public Material {
+class EmissiveMaterial : public EntityMaterial {
 public:
         /// Конструктор
         EmissiveMaterial();

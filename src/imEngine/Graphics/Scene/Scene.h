@@ -3,7 +3,7 @@
 
 #include <imEngine/Application/GraphicApplication.h>
 #include "Objects/Camera/Camera.h"
-#include "Objects/Renderable/Polygonal.h"
+#include "Objects/Renderable/Entity.h"
 #include "Objects/Renderable/Volume.h"
 #include "Objects/Light/Light.h"
 #include <list>
@@ -11,7 +11,7 @@
 namespace imEngine {
 
 typedef std::list<Camera*>      CameraList;
-typedef std::list<Polygonal*>   PolygonalList;
+typedef std::list<Entity*>      EntityList;
 typedef std::list<Volume*>      VolumeList;
 typedef std::list<Light*>       LightList;
 class SceneRenderer;
@@ -64,8 +64,8 @@ public:
         /// Регистрирует/убирает из списка зарегистрированных различных объекты
         void            registerCamera(Camera* camera);
         void            unregisterCamera(Camera* camera);
-        void            registerPolygonal(Polygonal* polygonal);
-        void            unregisterPolygonal(Polygonal* polygonal);
+        void            registerEntity(Entity* entity);
+        void            unregisterEntity(Entity* entity);
         void            registerVolume(Volume* volume);
         void            unregisterVolume(Volume* volume);
         void            registerLight(Light* light);
@@ -73,7 +73,7 @@ public:
 
         /// Возвращает список доступных обхектов
         CameraList&     cameras()                                               { return m_cameras; }
-        PolygonalList&  polygonals()                                            { return m_polygonals; }
+        EntityList&     entities()                                              { return m_entities; }
         VolumeList&     volumes()                                               { return m_volumes; }
         LightList&      ligths()                                                { return m_lights; }
 
@@ -86,7 +86,7 @@ protected:
         bool            m_isInputCaptured;
 
         CameraList      m_cameras;
-        PolygonalList   m_polygonals;
+        EntityList      m_entities;
         VolumeList      m_volumes;
         LightList       m_lights;
 };
@@ -105,7 +105,7 @@ public:
         void    mouseMoveEvent(int oldX, int oldY, int newX, int newY);
 
 private:
-        Polygonal*      m_pickedObject;
+        Entity* m_pickedObject;
 };
 
 } //namespace imEngine

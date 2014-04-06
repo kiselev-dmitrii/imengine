@@ -8,33 +8,85 @@
 
 namespace imEngine {
 
+//############################## Detail #####################################//
 
-Model::Model(Object* owner) :
-        m_owner(owner)
+Detail::Detail(const String &name, Geometry* geometry, MaterialPtr material, Model *owner) :
+        m_name(name),
+        m_owner(owner),
+        m_geometry(geometry),
+        m_material(material)
 { }
 
-Model::Model(const ModelDetailList &details, Object *owner) :
+void Detail::render(const Mat4 &modelMatrix, const Mat4 &viewMatrix, const Mat4 &projectionMatrix) const {
+        Mat4 modelViewMatrix = viewMatrix * modelMatrix;
+        Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
+        Mat3 normalMatrix = glm::transpose(Mat3(glm::inverse(modelViewMatrix)));
+
+        m_material->bind();
+        m_material->program()->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
+        m_material->program()->setUniform("uModelViewMatrix", modelViewMatrix);
+        m_material->program()->setUniform("uNormalMatrix", normalMatrix);
+        m_geometry->render();
+}
+
+//################################ Model #####################################//
+
+Model::Model(const String& name) :
+        m_name(name),
+        m_owner(nullptr)
+{ }
+
+Model::Model(const String &name, const MapStringDetail &details) :
+        m_name(name),
         m_details(details),
-        m_owner(owner)
+        m_owner(nullptr)
 { }
 
-Model::Model(const String &geometry, MaterialPtr material, Object* owner) :
-        m_owner(owner)
+Model::Model(const String &name, const String& geometry, const MaterialPtr &material) :
+        m_name(name),
+        m_owner(nullptr)
 {
-        ModelDetail detail;
-        detail.geometry = RESOURCES->geometry()->geometry(geometry);
-        detail.material = material;
-        detail.owner = this;
-
-        m_details.push_back(detail);
+        Geometry* g = RESOURCES->geometry()->geometry(geometry);
+        m_details.push_back(Detail("unnamed", g, material, this));
+        recalculateAABB();
 }
 
-ModelDetailList& Model::details() {
-        return m_details;
+Model::Model(const String &name, Geometry* geometry, const MaterialPtr &material) :
+        m_name(name),
+        m_owner(nullptr)
+{
+        m_details.push_back(Detail("unnamed", geometry, material, this));
+        recalculateAABB();
 }
 
-Object* Model::owner() const {
-        return m_owner;
+Model::Model(const Model &model) {
+        m_name = model.m_name;
+        m_aabb = model.m_aabb;
+        m_details = model.m_details;
+        m_owner = model.m_owner;
+
+        // При копировании нужно сменить владельцев у деталей
+        for (Detail& detail: m_details) detail.setOwner(this);
+}
+
+void Model::load(const String &filename) {
+        m_details.clear();
+        loadFromXML(filename);
+        recalculateAABB();
+}
+
+void Model::recalculateAABB() {
+        float minFloat = std::numeric_limits<float>::min();
+        float maxFloat = std::numeric_limits<float>::max();
+        m_aabb.max = Vec3(minFloat);
+        m_aabb.min = Vec3(maxFloat);
+
+        for (const Detail& detail: m_details) {
+                AABB geometryAABB = detail.geometry()->aabb();
+                m_aabb.max = glm::max(m_aabb.max, geometryAABB.max);
+                m_aabb.min = glm::min(m_aabb.min, geometryAABB.min);
+        }
+
 }
 
 void Model::loadFromXML(const String &filename) {
@@ -50,12 +102,11 @@ void Model::loadFromXML(const String &filename) {
 
 void Model::loadFromXML(const XmlNode &modelNode) {
         for (const XmlNode& detailNode: modelNode.children()) {
-                ModelDetail detail;
-                detail.geometry = createGeometry(detailNode.child("geometry"));
-                detail.material = createMaterial(detailNode.child("material"));
-                detail.owner = this;
+                String name = detailNode.attribute("name").value();
+                Geometry* geometry = createGeometry(detailNode.child("geometry"));
+                MaterialPtr material = createMaterial(detailNode.child("material"));
 
-                m_details.push_back(detail);
+                m_details.push_back(Detail(name, geometry, material, this));
         }
 }
 

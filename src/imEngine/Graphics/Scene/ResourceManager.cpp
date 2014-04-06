@@ -10,11 +10,14 @@ ResourceManager::ResourceManager() {
         m_programMgr = new ProgramManager("resources/shaders");
         m_textureMgr = new TextureManager("resources/textures");
         m_geometryMgr = new GeometryManager("resources/geometry");
+        m_modelMgr = new ModelManager("resources/models");
 }
 
 ResourceManager::~ResourceManager() {
+        delete m_programMgr;
         delete m_textureMgr;
         delete m_geometryMgr;
+        delete m_modelMgr;
 }
 
 ResourceManager* ResourceManager::instance() {
@@ -32,6 +35,10 @@ GeometryManager* ResourceManager::geometry() {
 
 ProgramManager* ResourceManager::programs() {
         return m_programMgr;
+}
+
+ModelManager* ResourceManager::models() {
+        return m_modelMgr;
 }
 
 //############################## FileResourceManagerAbstract ###################################//
@@ -79,6 +86,21 @@ Texture2D* TextureManager::texture2D(const String &name) {
         }
 }
 
+Texture3D* TextureManager::texture3D(const String& name, const IVec3& size, InternalFormat::Enum internal) {
+        Texture3D* texture = (Texture3D*) findResource(name);
+        if (texture) {
+                return texture;
+        } else {
+                texture = new Texture3D();
+                texture->load(size.x, size.y, size.z, internal,
+                              InternalFormat::assumeSourceType(internal),
+                              InternalFormat::assumeSourceFormat(internal),
+                              Filesystem::joinPath(directory(), name));
+                addResource(name, texture);
+                return texture;
+        }
+}
+
 void TextureManager::reloadAll() {
         for (auto& elem: m_resources) {
                 Texture* texture = elem.second;
@@ -113,7 +135,7 @@ void GeometryManager::reloadAll() {
 }
 
 
-//########################### GeometryManager ################################//
+//########################### ProgramManager ################################//
 
 ProgramManager::ProgramManager(const String &directory) :
         ResourceManagerAbstract(directory)
@@ -169,6 +191,31 @@ Program* ProgramManager::findResource(const String &name, const StringList &defi
 
 void ProgramManager::addResource(const String &name, Program *resource) {
         m_resources.insert(std::pair<String, Program*>(name, resource));
+}
+
+//########################### ModelManager ################################//
+
+ModelManager::ModelManager(const String &directory) :
+        ResourceManagerImplementation(directory)
+{ }
+
+Model* ModelManager::model(const String &name) {
+        Model* model = findResource(name) ;
+        if (model) {
+                return model;
+        } else {
+                model = new Model(name);
+                model->load(Filesystem::joinPath(directory(), name));
+                addResource(name, model);
+                return model;
+        }
+}
+
+void ModelManager::reloadAll() {
+        for (auto& item: m_resources) {
+                Model* model = item.second;
+                model->load(Filesystem::joinPath(directory(), item.first));
+        }
 }
 
 } //namespace imEngine

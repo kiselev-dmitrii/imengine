@@ -10,12 +10,14 @@
 #include <imEngine/Graphics/GAPI/Texture/CubeTexture.h>
 #include <imEngine/Graphics/GAPI/Shader/Program.h>
 #include <imEngine/Graphics/Geometry.h>
+#include <imEngine/Graphics/Scene/Objects/Renderable/Model.h>
 
 namespace imEngine {
 
 class TextureManager;
 class GeometryManager;
 class ProgramManager;
+class ModelManager;
 #define RESOURCES ResourceManager::instance()
 
 
@@ -32,6 +34,7 @@ public:
         TextureManager*         textures();
         GeometryManager*        geometry();
         ProgramManager*         programs();
+        ModelManager*           models();
 
 private:
         ResourceManager();
@@ -42,6 +45,7 @@ private:
         TextureManager*         m_textureMgr;
         GeometryManager*        m_geometryMgr;
         ProgramManager*         m_programMgr;
+        ModelManager*           m_modelMgr;
 };
 
 
@@ -119,7 +123,7 @@ public:
         /// Загружает или ищет текстуру в памяти
         Texture1D*      texture1D(const String& name);
         Texture2D*      texture2D(const String& name);
-        Texture3D*      texture3D(const String& name);
+        Texture3D*      texture3D(const String& name, const IVec3& size, InternalFormat::Enum internal);
         CubeTexture*    cubeTexture(const String& name);
 
         /// Перезагружает все текстуры
@@ -172,6 +176,20 @@ private:
 private:
         typedef std::multimap<String, Program*> MultiMapStringResource;
         MultiMapStringResource  m_resources;
+};
+
+
+/** @brief Менеджер моделей
+ */
+class ModelManager : public ResourceManagerImplementation<Model> {
+public:
+        /// Конструктор
+        ModelManager(const String& directory);
+
+        /// Загружает или ищет геометрию в памяти
+        Model*          model(const String& name);
+        /// Перезагружает всю геометрию
+        virtual void    reloadAll();
 };
 
 } //namespace imEngine

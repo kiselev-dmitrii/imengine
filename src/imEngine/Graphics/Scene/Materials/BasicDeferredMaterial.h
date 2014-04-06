@@ -6,7 +6,7 @@
 
 namespace imEngine {
 
-class BasicDeferredMaterial : public Material {
+class BasicDeferredMaterial : public EntityMaterial {
 public:
         /// Конструктор
         BasicDeferredMaterial();

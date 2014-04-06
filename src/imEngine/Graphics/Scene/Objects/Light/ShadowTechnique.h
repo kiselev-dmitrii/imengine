@@ -9,8 +9,8 @@
 namespace imEngine {
 
 class Light;
-class Polygonal;
-typedef std::list<Polygonal*>   PolygonalList;
+class Entity;
+typedef std::list<Entity*>   EntityList;
 
 /** @brief Базовый класс техники затенения
  *
@@ -40,13 +40,13 @@ public:
 
         /// Рендерит теневую карту c позиции источника света light.
         /// По завершению работы, теневая карта должна быть присвоена m_shadowMap
-        virtual void            updateShadowMap(Light* light, PolygonalList& objects) = 0;
+        virtual void            updateShadowMap(Light* light, EntityList& objects) = 0;
         /// Возвращает теневую карту
         Texture2D*              shadowMap();
 
 protected:
         /// Рендерит объекты objects с позиции источника света light
-        void           renderObjects(Light* light, PolygonalList& objects);
+        void           renderObjects(Light* light, EntityList& entities);
         /// Обновляет размер рендер таргетов
         virtual void   updateSize(const IVec2& size) = 0;
 
@@ -72,7 +72,7 @@ public:
         SimpleShadowMapping();
 
         /// Обновляет теневую карту
-        void    updateShadowMap(Light *light, PolygonalList &objects);
+        void    updateShadowMap(Light *light, EntityList &entities);
 
 protected:
         /// Обновляет размеры рендер таргетов
@@ -94,7 +94,7 @@ public:
         void    setSmoothLevel(int radius);
 
         /// Обновляет теневую карту
-        void    updateShadowMap(Light *light, PolygonalList &objects);
+        void    updateShadowMap(Light *light, EntityList &entities);
 
 protected:
         /// Обновляет размеры рендер таргетов

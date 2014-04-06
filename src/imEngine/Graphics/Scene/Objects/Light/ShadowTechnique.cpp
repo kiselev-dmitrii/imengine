@@ -35,19 +35,19 @@ Texture2D* ShadowTechnique::shadowMap() {
         return m_shadowMap;
 }
 
-void ShadowTechnique::renderObjects(Light *light, PolygonalList &objects) {
+void ShadowTechnique::renderObjects(Light *light, EntityList& entities) {
         const Mat4& projectionMatrix = m_frustum.viewToClipMatrix();
         const Mat4& viewMatrix = light->worldToLocalMatrix();
 
-        for(Polygonal* object: objects) {
+        for(Entity* object: entities) {
                 const Mat4& modelMatrix = object->localToWorldMatrix();
                 Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
 
-                for (ModelDetail& detail: object->model().details()) {
-                        if (detail.material->type() == MaterialType::DEFERRED) {
+                for (const Detail& detail: object->model()->details()) {
+                        if (detail.material()->type() == MaterialType::DEFERRED) {
                                 m_program->bind();
                                 m_program->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
-                                detail.geometry->render();
+                                detail.geometry()->render();
                                 m_program->unbind();
                         }
                 }
@@ -74,12 +74,12 @@ SimpleShadowMapping::SimpleShadowMapping() :
         m_rt.depthBufferTexture()->setBorderColor(Vec4(1.0));
 }
 
-void SimpleShadowMapping::updateShadowMap(Light *light, PolygonalList &objects) {
+void SimpleShadowMapping::updateShadowMap(Light *light, EntityList& entities) {
         m_rt.bind();
                 Renderer::setCullMode(CullMode::FRONT);
                 Renderer::clearBuffers();
                 Renderer::setDepthMode(DepthMode::LESS);
-                renderObjects(light, objects);
+                renderObjects(light, entities);
                 Renderer::setDepthMode(DepthMode::NONE);
                 Renderer::setCullMode(CullMode::BACK);
         m_rt.unbind();
@@ -114,12 +114,12 @@ void VarianceShadowMapping::setSmoothLevel(int radius) {
         m_blur.setRadius(radius);
 }
 
-void VarianceShadowMapping::updateShadowMap(Light *light, PolygonalList &objects) {
+void VarianceShadowMapping::updateShadowMap(Light *light, EntityList& entities) {
         m_rt1.bind();
                 Renderer::setCullMode(CullMode::BACK);
                 Renderer::clearBuffers();
                 Renderer::setDepthMode(DepthMode::LESS);
-                renderObjects(light, objects);
+                renderObjects(light, entities);
                 Renderer::setDepthMode(DepthMode::NONE);
                 Renderer::setCullMode(CullMode::BACK);
         m_rt1.unbind();

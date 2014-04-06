@@ -12,7 +12,7 @@ namespace imEngine {
  *      - NormalTexture - содержит нормаль в tangentCoords
  *      - SpecularTexture - текстура в оттенках серого, содержит параметры отражения
  */
-class TexturedDeferredMaterial : public Material {
+class TexturedDeferredMaterial : public EntityMaterial {
 public:
         /// Конструктор
         TexturedDeferredMaterial();

@@ -10,7 +10,7 @@
 namespace imEngine {
 
 class Scene;
-typedef std::list<ModelDetail*> ModelDetailPtrList;
+typedef std::list<Detail*> DetailPtrList;
 
 /** @brief Занимается отрисовкой сцены, применением постэффектов и т.д
  */
@@ -39,15 +39,17 @@ private:
         void            initLightAccum();
 
         /// Группирует детали по трем спискам
-        void            groupDetails(const PolygonalList& objects, ModelDetailPtrList* outRegular,
-                                                                   ModelDetailPtrList* outUnlightnment,
-                                                                   ModelDetailPtrList* outTransparent);
+        void            groupDetails(const EntityList& entities, DetailPtrList* outRegular,
+                                                                   DetailPtrList* outUnlightnment,
+                                                                   DetailPtrList* outTransparent);
         /// Рендерит объекты с видовой и проекционной матрицей
-        void            renderRegularDetails(const ModelDetailPtrList& details, const Mat4& viewMatrix, const Mat4& projectionMatrix);
+        void            renderRegularDetails(const DetailPtrList& details, const Mat4& viewMatrix, const Mat4& projectionMatrix);
         /// Выполяется вычисление освещения
         void            calculateLighting(const LightList& lights);
         /// Рендерит объекты неосвещаемые объекты
-        void            renderUnlightenedDetails(const ModelDetailPtrList& details, const Mat4& viewMatrix, const Mat4& projectionMatrix);
+        void            renderUnlightenedDetails(const DetailPtrList& details, const Mat4& viewMatrix, const Mat4& projectionMatrix);
+        /// Рендерит объемы
+        void            renderVolumes(const VolumeList& volumes);
         /// Применяет SSAO
         void            applySSAO(Texture2D* lightAccum,
                                   Texture2D* geometryBuffer, Texture2D* depthBuffer);

@@ -6,7 +6,7 @@ namespace imEngine {
 
 
 BasicDeferredMaterial::BasicDeferredMaterial() :
-        Material("materials/BasicDeferredMaterial.glsl", MaterialType::DEFERRED),
+        EntityMaterial("materials/BasicDeferredMaterial.glsl", MaterialType::DEFERRED),
         m_diffuseColor(0.7),
         m_specularLevel(1.0),
         m_specularExponent(1.0),

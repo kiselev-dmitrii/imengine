@@ -51,19 +51,19 @@ Object* Scene::pickObject(int x, int y) {
 
 
         /// Исключить объект, в котором мы сейчас находимся
-        Polygonal* exclude = nullptr;
-        for (Polygonal* polygonal: m_polygonals) {
-                const Mat4& invModelMatrix = polygonal->worldToLocalMatrix();
+        Entity* exclude = nullptr;
+        for (Entity* entity: m_entities) {
+                const Mat4& invModelMatrix = entity->worldToLocalMatrix();
                 Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
-                if (polygonal->aabb().doesContain(modelSpacePosition)) exclude = polygonal;
+                if (entity->aabb().doesContain(modelSpacePosition)) exclude = entity;
         }
 
         while (glm::length(positionWS - cameraForwardWS) < 20.0) {
-                for (Polygonal* polygonal: m_polygonals) {
-                        if (polygonal == exclude) continue;
-                        const Mat4& invModelMatrix = polygonal->worldToLocalMatrix();
+                for (Entity* entity: m_entities) {
+                        if (entity == exclude) continue;
+                        const Mat4& invModelMatrix = entity->worldToLocalMatrix();
                         Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
-                        if (polygonal->aabb().doesContain(modelSpacePosition)) return polygonal;
+                        if (entity->aabb().doesContain(modelSpacePosition)) return entity;
                 }
                 positionWS += 0.1f * cameraForwardWS;
         }
@@ -111,13 +111,13 @@ void Scene::unregisterCamera(Camera *camera) {
         if (it != m_cameras.end()) m_cameras.erase(it);
 }
 
-void Scene::registerPolygonal(Polygonal *polygonal) {
-        m_polygonals.push_back(polygonal);
+void Scene::registerEntity(Entity *entity) {
+        m_entities.push_back(entity);
 }
 
-void Scene::unregisterPolygonal(Polygonal *polygonal) {
-        auto it = std::find(m_polygonals.begin(), m_polygonals.end(), polygonal);
-        if (it != m_polygonals.end()) m_polygonals.erase(it);
+void Scene::unregisterEntity(Entity *entity) {
+        auto it = std::find(m_entities.begin(), m_entities.end(), entity);
+        if (it != m_entities.end()) m_entities.erase(it);
 }
 
 void Scene::registerVolume(Volume *volume) {
@@ -148,7 +148,7 @@ DefaultUserScene::DefaultUserScene(GraphicApplication* application) :
 void DefaultUserScene::mousePressEvent(int x, int y, char button) {
         Scene::mousePressEvent(x, y, button);
         if (button != MouseButton::RIGHT) return;
-        m_pickedObject = (Polygonal*) pickObject(x, y); //временно
+        m_pickedObject = (Entity*) pickObject(x, y); //временно
 }
 
 void DefaultUserScene::mouseReleaseEvent(int x, int y, char button) {

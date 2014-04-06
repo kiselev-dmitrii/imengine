@@ -52,7 +52,7 @@ void Light::setShadowTechnique(ShadowTechniquePtr technique) {
 
 void Light::calculateShadowMap() {
         if (m_shadowTechnique) {
-                m_shadowTechnique->updateShadowMap(this, scene()->polygonals());
+                m_shadowTechnique->updateShadowMap(this, scene()->entities());
         }
 }
 

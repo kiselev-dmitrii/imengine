@@ -13,11 +13,11 @@ SceneRenderer::SceneRenderer(Scene *scene) :
 
 void SceneRenderer::render() {
         /// Разделяем детали на 3 списка
-        ModelDetailPtrList      regularDetails;
-        ModelDetailPtrList      unlightenedDetails;
-        ModelDetailPtrList      transparentDetails;
+        DetailPtrList      regularDetails;
+        DetailPtrList      unlightenedDetails;
+        DetailPtrList      transparentDetails;
 
-        groupDetails(m_scene->polygonals(), &regularDetails, &unlightenedDetails, &transparentDetails);
+        groupDetails(m_scene->entities(), &regularDetails, &unlightenedDetails, &transparentDetails);
 
         /// Подготовливаем видовую и проекционную матрицы
         const Mat4& viewMatrix = m_scene->activeCamera()->worldToLocalMatrix();
@@ -58,42 +58,34 @@ void SceneRenderer::initLightAccum() {
         m_lightAccum.colorBufferTexture(0)->setWrap(TextureWrapMode::CLAMP_TO_EDGE);
 }
 
-void SceneRenderer::groupDetails(const PolygonalList &objects, ModelDetailPtrList *outRegular, ModelDetailPtrList *outUnlightnment, ModelDetailPtrList *outTransparent) {
-        for (Polygonal* object: objects) {
-                for (ModelDetail& detail: object->model().details()) {
-                        switch (detail.material->type()) {
+void SceneRenderer::groupDetails(const EntityList& entities, DetailPtrList *outRegular, DetailPtrList *outUnlightnment, DetailPtrList *outTransparent) {
+        for (Entity* entity: entities) {
+                for (const Detail& detail: entity->model()->details()) {
+                        switch (detail.material()->type()) {
                                 case MaterialType::DEFERRED:
-                                        outRegular->push_back(&detail);
+                                        outRegular->push_back(&const_cast<Detail&>(detail));
                                         break;
                                 case MaterialType::UNLIGHTENED:
-                                        outUnlightnment->push_back(&detail);
+                                        outUnlightnment->push_back(&const_cast<Detail&>(detail));
                                         break;
                                 case MaterialType::TRANSPARENT:
-                                        outTransparent->push_back(&detail);
+                                        outTransparent->push_back(&const_cast<Detail&>(detail));
                                         break;
                         }
                 }
         }
 }
 
-void SceneRenderer::renderRegularDetails(const ModelDetailPtrList &details, const Mat4 &viewMatrix, const Mat4 &projectionMatrix) {
+void SceneRenderer::renderRegularDetails(const DetailPtrList &details, const Mat4 &viewMatrix, const Mat4 &projectionMatrix) {
         m_gBuffer.bind();
                 Renderer::setCullMode(CullMode::BACK);
                 Renderer::setDepthMode(DepthMode::LESS);
                 Renderer::setBlendMode(BlendMode::NONE);
 
                 Renderer::clearBuffers();
-                for (ModelDetail* detail: details) {
-                        const Mat4& modelMatrix = detail->owner->owner()->localToWorldMatrix();
-                        Mat4 modelViewMatrix = viewMatrix * modelMatrix;
-                        Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
-                        Mat3 normalMatrix = glm::transpose(Mat3(glm::inverse(modelViewMatrix)));
-
-                        detail->material->bind();
-                        detail->material->program()->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
-                        detail->material->program()->setUniform("uModelViewMatrix", modelViewMatrix);
-                        detail->material->program()->setUniform("uNormalMatrix", normalMatrix);
-                        detail->geometry->render();
+                for (Detail* detail: details) {
+                        const Mat4& modelMatrix = detail->owner()->owner()->localToWorldMatrix();
+                        detail->render(modelMatrix, viewMatrix, projectionMatrix);
                 }
         m_gBuffer.unbind();
 }
@@ -119,7 +111,7 @@ void SceneRenderer::calculateLighting(const LightList &lights) {
         m_lightAccum.unbind();
 }
 
-void SceneRenderer::renderUnlightenedDetails(const ModelDetailPtrList &details, const Mat4 &viewMatrix, const Mat4 &projectionMatrix) {
+void SceneRenderer::renderUnlightenedDetails(const DetailPtrList &details, const Mat4 &viewMatrix, const Mat4 &projectionMatrix) {
         // Подключаем к lightAccum буфер глубины и рендерим в него наши обхекты
         m_lightAccum.setDepthBuffer(m_gBuffer.depthBufferTexture());
         m_lightAccum.bind();
@@ -127,21 +119,20 @@ void SceneRenderer::renderUnlightenedDetails(const ModelDetailPtrList &details, 
                 Renderer::setDepthMode(DepthMode::LESS);
                 Renderer::setBlendMode(BlendMode::NONE);
 
-                for (ModelDetail* detail: details) {
-                        const Mat4& modelMatrix = detail->owner->owner()->localToWorldMatrix();
-                        Mat4 modelViewMatrix = viewMatrix * modelMatrix;
-                        Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
-                        Mat3 normalMatrix = glm::transpose(Mat3(glm::inverse(modelViewMatrix)));
-
-                        detail->material->bind();
-                        detail->material->program()->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
-                        detail->material->program()->setUniform("uModelViewMatrix", modelViewMatrix);
-                        detail->material->program()->setUniform("uNormalMatrix", normalMatrix);
-                        detail->geometry->render();
-
+                for (Detail* detail: details) {
+                        const Mat4& modelMatrix = detail->owner()->owner()->localToWorldMatrix();
+                        detail->render(modelMatrix, viewMatrix, projectionMatrix);
                 }
+                renderVolumes(m_scene->volumes());
         m_lightAccum.unbind();
         m_lightAccum.disableDepthBuffer();
+}
+
+void SceneRenderer::renderVolumes(const VolumeList &volumes) {
+        Renderer::setBlendMode(BlendMode::ALPHA);
+        for (Volume* volume: volumes) {
+                volume->render();
+        }
 }
 
 void SceneRenderer::applySSAO(Texture2D *lightAccum, Texture2D *geometryBuffer, Texture2D *depthBuffer) {

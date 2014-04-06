@@ -6,6 +6,8 @@
 #include <imEngine/Graphics/RenderTarget.h>
 #include <imEngine/Graphics/PrimitiveRenderer.h>
 #include <imEngine/Graphics/Scene/Objects/Camera/FirstPersonCamera.h>
+#include <imEngine/Graphics/Scene/Objects/Renderable/Entity.h>
+#include <imEngine/Graphics/Scene/Objects/Renderable/Volume.h>
 
 using namespace imEngine;
 
@@ -17,8 +19,8 @@ protected:
 
         void    keyPressEvent(int key);
 private:
-        Polygonal*        m_car;
-        Polygonal*        m_wheel1;
+        Entity*        m_car;
+        Entity*        m_wheel1;
 
         Camera*         m_firstCamera;
         Camera*         m_secondCamera;
@@ -40,8 +42,8 @@ void Application::initialize() {
 
         Renderer::setBlendMode(BlendMode::ALPHA);
         Renderer::setDepthMode(DepthMode::LESS);
-        m_car = new Polygonal("resources/models/car.xml", scene()->world());
-        m_wheel1 = new Polygonal("resources/models/wheel.xml", m_car);
+        m_car = new Entity("resources/models/car.xml", scene()->world());
+        m_wheel1 = new Entity("resources/models/wheel.xml", m_car);
         m_wheel1->setPosition(Vec3(1.05,-0.7,0));
 
         m_firstCamera = scene()->activeCamera();

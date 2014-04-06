@@ -12,6 +12,7 @@
 #include <imEngine/Graphics/GUI/Slider.h>
 #include <imEngine/Graphics/GUI/ToggleButton.h>
 #include <imEngine/Graphics/GUI/BoxLayout.h>
+#include <imEngine/Graphics/Scene/Materials/RaycastingMaterial.h>
 
 using namespace imEngine;
 
@@ -22,8 +23,8 @@ protected:
         void    windowResizeEvent(int x, int y);
 
 private:
-        Polygonal*      m_room;
-        Polygonal*      m_logo;
+        Entity*      m_room;
+        Entity*      m_logo;
         PictureColor*   m_diffuseBuffer;
         PictureColor*   m_materialBuffer;
         PictureColor*   m_geometryBuffer;
@@ -31,8 +32,11 @@ private:
 
         PointLight*     m_light1;
         SpotLight*      m_light2;
-        Polygonal*      m_sphere1;
-        Polygonal*      m_sphere2;
+        Entity*      m_sphere1;
+        Entity*      m_sphere2;
+
+        Texture3D*      m_data;
+        Volume*         m_engine;
 
         Panel*          m_pnl;
         VBoxLayout*     m_pnlLayout;
@@ -42,24 +46,24 @@ private:
 
         Movable*        m_empty;
 
-        Polygonal*      m_buddha;
+        Entity*      m_buddha;
 };
 
 
 void Application::initialize() {
         GraphicApplication::initialize();
 
-        m_room = new Polygonal("resources/models/room.xml", scene()->world());
-        m_logo = new Polygonal("resources/models/logo.xml", m_room);
+        m_room = new Entity("room.xml", scene()->world());
+        m_logo = new Entity("logo.xml", m_room);
 
-        m_sphere1 = new Polygonal("sphere.obj", MaterialPtr(new EmissiveMaterial()), scene()->world());
+        m_sphere1 = new Entity("sphere.obj", EntityMaterialPtr(new EmissiveMaterial()), scene()->world());
         m_sphere1->setPosition(Vec3(0,2,0));
         m_light1 = new PointLight(m_sphere1);
         m_light1->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
 
         m_empty = new Movable(scene()->world());
 
-        m_sphere2 = new Polygonal("resources/models/projector.xml", m_empty);
+        m_sphere2 = new Entity("projector.xml", m_empty);
         m_sphere2->setPosition(Vec3(4,2,4));
         m_sphere2->lookAt(Vec3(0), Vec3(0,1,0));
         m_light2 = new SpotLight(m_sphere2);
@@ -67,8 +71,12 @@ void Application::initialize() {
         m_light2->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
         m_light2->setPower(2.0);
 
-        m_buddha = new Polygonal("resources/models/buddha.xml", m_room);
+        m_buddha = new Entity("buddha.xml", m_room);
         m_buddha->setPosition(Vec3(-2.0, 0.0, 2.0));
+
+        m_data = new Texture3D();
+        m_data->load(256,256,128, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/textures/3d/engine.raw");
+        m_engine = new Volume(m_data, VolumeMaterialPtr(new RaycastingMaterial()), scene()->world());
 
         /*
         m_diffuseBuffer = new PictureColor(scene()->renderer()->gBuffer()->colorBufferTexture(0), gui()->root());

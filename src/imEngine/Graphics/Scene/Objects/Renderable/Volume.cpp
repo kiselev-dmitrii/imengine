@@ -5,49 +5,33 @@
 
 namespace imEngine {
 
+GeometryPtr Volume::s_cube;
 
-Volume::Volume(Texture3D *texture, Object *parent) :
-        Movable(parent)
+Volume::Volume(Texture3D *data, const VolumeMaterialPtr &material, Object *parent) :
+        Movable(parent),
+        m_material(material)
 {
+        if (!s_cube) s_cube = Geometry::box(Vec3(-0.5), Vec3(0.5));
+        m_material->setData(data);
+        m_material->setObject(this);
         scene()->registerVolume(this);
-        m_program = RESOURCES->programs()->program("VolumeRenderer.glsl");
-        setTexture(texture);
-        m_cube = Geometry::box(Vec3(-0.5,-0.5,-0.5), Vec3(0.5,0.5,0.5));
 }
 
-void Volume::setTexture(Texture3D *texture) {
-        m_texture = texture;
-
-        m_texture->setWrap(TextureWrapMode::CLAMP_TO_BORDER);
-        m_texture->setMagnificationFilter(TextureMagFilter::LINEAR);
-        m_texture->setMinimizationFilter(TextureMinFilter::LINEAR_MIPMAP_LINEAR);
-        m_texture->setMinMipLevel(0);
-        m_texture->setMaxMipLevel(4);
-        m_texture->generateMipmaps();
+Volume::~Volume() {
+        scene()->unregisterVolume(this);
 }
 
-Texture3D* Volume::texture() {
-        return m_texture;
+void Volume::setMaterial(const VolumeMaterialPtr &material) {
+        material->setObject(this);
+        material->setData(m_material->data());
+        m_material = material;
 }
 
 void Volume::render() {
-        const Mat4& viewMatrix = scene()->activeCamera()->worldToLocalMatrix();
-        const Mat4& projectionMatrix = scene()->activeCamera()->viewToClipMatrix();
-        const Mat4& modelMatrix = localToWorldMatrix();
-
-        Mat4 modelViewProjectionMatrix = projectionMatrix * viewMatrix * modelMatrix;
-
-        Vec3 worldSpaceCameraPosition = scene()->activeCamera()->worldPosition();
-        Vec3 objectSpaceCameraPosition = Vec3(worldToLocalMatrix() * Vec4(worldSpaceCameraPosition, 1.0));
-
-        m_program->bind();
-        m_program->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
-        m_texture->bind(0);
-        m_program->setUniform("uVolumeTexture", 0);
-        m_program->setUniform("uObjectSpaceCameraPosition", objectSpaceCameraPosition);
-        m_cube->render();
+        m_material->setActiveCamera(scene()->activeCamera());
+        m_material->bind();
+        s_cube->render();
 }
-
 
 } //namespace imEngine
 

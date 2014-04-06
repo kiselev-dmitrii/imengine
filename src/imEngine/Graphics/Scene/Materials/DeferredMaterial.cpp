@@ -6,7 +6,7 @@
 namespace imEngine {
 
 TexturedDeferredMaterial::TexturedDeferredMaterial() :
-        Material("materials/TexturedDeferredMaterial.glsl", MaterialType::DEFERRED)
+        EntityMaterial("materials/TexturedDeferredMaterial.glsl", MaterialType::DEFERRED)
 {
         setScale(Vec2(1,1));
         setDiffuseTexture("empty.png");

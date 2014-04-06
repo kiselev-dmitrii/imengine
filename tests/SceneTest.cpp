@@ -18,8 +18,8 @@ protected:
 
         void    keyPressEvent(int key);
 private:
-        Polygonal*        m_car;
-        Polygonal*        m_wheel1;
+        Entity*        m_car;
+        Entity*        m_wheel1;
 
         Texture3D*              m_engine;
         Texture3D*              m_head;
@@ -45,8 +45,8 @@ void Application::initialize() {
 
         Renderer::setBlendMode(BlendMode::ALPHA);
         Renderer::setDepthMode(DepthMode::LESS);
-        m_car = new Polygonal("resources/models/car.xml", scene()->world());
-        m_wheel1 = new Polygonal("resources/models/wheel.xml", m_car);
+        m_car = new Entity("resources/models/car.xml", scene()->world());
+        m_wheel1 = new Entity("resources/models/wheel.xml", m_car);
         m_wheel1->setPosition(Vec3(1.05,-0.7,0));
 
         /// Грузим текстуру головы из dcm файлов
@@ -63,12 +63,14 @@ void Application::initialize() {
         m_engine = new Texture3D();
         m_engine->load(256,256,128, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/texture/engine.raw");
 
+        /*
         /// Создаем Volume объекты
         m_headVolume = new Volume(m_head, scene()->world());
         m_headVolume->setPosition(Vec3(3,3,0));
 
         m_engineVolume = new Volume(m_engine, scene()->world());
         m_engineVolume->setPosition(Vec3(4,5,0));
+        */
 
         m_firstCamera = scene()->activeCamera();
         m_secondCamera = new FirstPersonCamera(scene()->world());
