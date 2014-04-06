@@ -22,7 +22,7 @@ public:
         Texture3D*               data() const                                   { return m_material->data(); }
         /// Устанавливает/Возвращает материал
         void                     setMaterial(const VolumeMaterialPtr& material);
-        const VolumeMaterialPtr& material() const;
+        const VolumeMaterialPtr& material();
 
         /// Рендерит объект с заданным материалом
         void                     render();

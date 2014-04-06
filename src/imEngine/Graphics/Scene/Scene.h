@@ -103,9 +103,17 @@ public:
         void    mousePressEvent(int x, int y, char button);
         void    mouseReleaseEvent(int x, int y, char button);
         void    mouseMoveEvent(int oldX, int oldY, int newX, int newY);
+        void    keyPressEvent(int key);
 
 private:
-        Movable* m_pickedObject;
+        void    processMoveObject();
+        void    processRotateObject(int oldX, int oldY, int newX, int newY);
+
+private:
+        Movable*                m_pickedObject;
+        char                    m_btn;
+        float                   m_distance;
+        IVec2                   m_offset;
 };
 
 } //namespace imEngine

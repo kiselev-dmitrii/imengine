@@ -84,7 +84,7 @@ vec4 phongShading(vec3 L, vec3 N, vec3 V, float specPower, vec3 diffuseColor) {
 	float diffuse = max(dot(L,N),0.0);
 	vec3 halfVec = normalize(L+V);
 	float specular = pow(max(0.00001,dot(halfVec,N)),specPower);	
-	return vec4(((diffuse*diffuseColor + specular)),1.0);
+	return vec4(((diffuse*diffuseColor/* + 0.2*specular*/)),1.0);
 }
 
 void main() {

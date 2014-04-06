@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Objects/Camera/FirstPersonCamera.h"
 #include "SceneRenderer.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace imEngine {
 
@@ -155,31 +156,79 @@ void Scene::unregisterLight(Light *light) {
 DefaultUserScene::DefaultUserScene(GraphicApplication* application) :
         Scene(application),
         m_pickedObject(nullptr)
-{ }
+{
+        m_btn = 0;
+}
 
 void DefaultUserScene::mousePressEvent(int x, int y, char button) {
         Scene::mousePressEvent(x, y, button);
-        if (button != MouseButton::RIGHT) return;
+        m_btn = button;
         m_pickedObject = dynamic_cast<Movable*>(pickObject(x, y));
+
+        if (m_pickedObject) {
+                m_distance = glm::length(activeCamera()->worldPosition() - m_pickedObject->worldPosition());
+
+                Vec2 winSize = Vec2(application()->window()->size());
+                Vec3 ndc = glm::project(m_pickedObject->worldPosition(), activeCamera()->worldToLocalMatrix(), activeCamera()->viewToClipMatrix(), Vec4(0,0,winSize));
+
+                IVec2 p = application()->window()->mouse()->position();
+                m_offset = p - IVec2(ndc.x, winSize.y - ndc.y);
+                IM_LOG(ndc);
+        }
 }
 
 void DefaultUserScene::mouseReleaseEvent(int x, int y, char button) {
         Scene::mouseReleaseEvent(x, y, button);
-        if (button != MouseButton::RIGHT) return;
 
         m_pickedObject = nullptr;
+        m_btn = 0;
 }
 
 void DefaultUserScene::mouseMoveEvent(int oldX, int oldY, int newX, int newY) {
-        if (m_pickedObject) {
-                Vec2 delta = Vec2(newX, newY) - Vec2(oldX, oldY);
-                Vec2 angles = delta;
+        if (m_btn == MouseButton::RIGHT) processRotateObject(oldX, oldY, newX, newY);
+        if (m_btn == MouseButton::LEFT) processMoveObject();
+}
 
-                Vec3 worldSpaceCameraUp = activeCamera()->convertLocalToWorld(Vec3(0,1,0)) - activeCamera()->worldPosition();
-                Vec3 worldSpaceCameraRight = activeCamera()->convertLocalToWorld(Vec3(1,0,0)) - activeCamera()->worldPosition();
-                m_pickedObject->rotate(worldSpaceCameraUp, angles.x, Space::WORLD);
-                m_pickedObject->rotate(worldSpaceCameraRight, angles.y, Space::WORLD);
-        }
+void DefaultUserScene::keyPressEvent(int key) {
+        if (m_btn == MouseButton::LEFT) processMoveObject();
+}
+
+void DefaultUserScene::processMoveObject() {
+        if (!m_pickedObject) return;
+
+        float aspectRatio = activeCamera()->aspectRatio();
+        float tanHalfFovy = glm::tan(glm::radians(activeCamera()->fieldOfView()/2));
+        Vec2 winSize = Vec2(application()->window()->size());
+
+        /// Приводим экранные координаты к [-1;1]
+        IVec2 p = application()->window()->mouse()->position() - m_offset;
+        Vec2 m = Vec2(p.x, winSize.y - p.y)/winSize;
+        m = 2.0f * m - Vec2(1.0);
+
+        Vec3 vViewRay = Vec3(
+                m.x * aspectRatio * tanHalfFovy,
+                m.y * tanHalfFovy,
+                -1
+        );
+        vViewRay = glm::normalize(vViewRay);
+
+
+        Vec3 viewPosition = vViewRay * m_distance;
+        Vec3 worldPosition = activeCamera()->convertLocalToWorld(viewPosition);
+
+        m_pickedObject->setWorldPosition(worldPosition);
+}
+
+void DefaultUserScene::processRotateObject(int oldX, int oldY, int newX, int newY) {
+        if (!m_pickedObject) return;
+
+        Vec2 delta = Vec2(newX, newY) - Vec2(oldX, oldY);
+        Vec2 angles = delta;
+
+        Vec3 worldSpaceCameraUp = activeCamera()->convertLocalToWorld(Vec3(0,1,0)) - activeCamera()->worldPosition();
+        Vec3 worldSpaceCameraRight = activeCamera()->convertLocalToWorld(Vec3(1,0,0)) - activeCamera()->worldPosition();
+        m_pickedObject->rotate(worldSpaceCameraUp, angles.x, Space::WORLD);
+        m_pickedObject->rotate(worldSpaceCameraRight, angles.y, Space::WORLD);
 }
 
 } //namespace imEngine

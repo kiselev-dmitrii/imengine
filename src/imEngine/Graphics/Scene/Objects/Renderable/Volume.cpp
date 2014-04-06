@@ -30,6 +30,10 @@ void Volume::setMaterial(const VolumeMaterialPtr &material) {
         m_material = material;
 }
 
+const VolumeMaterialPtr& Volume::material() {
+        return m_material;
+}
+
 void Volume::render() {
         m_material->setActiveCamera(scene()->activeCamera());
         m_material->bind();
