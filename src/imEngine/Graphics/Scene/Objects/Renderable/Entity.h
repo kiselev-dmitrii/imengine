@@ -18,8 +18,6 @@ public:
         /// Деструктор
         ~Entity();
 
-        /// Возвращает AABB
-        const AABB&     aabb() const                                            { return m_model.aabb(); }
         /// Возвращает модель
         Model*          model()                                                 { return &m_model; }
 

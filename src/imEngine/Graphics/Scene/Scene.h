@@ -105,7 +105,7 @@ public:
         void    mouseMoveEvent(int oldX, int oldY, int newX, int newY);
 
 private:
-        Entity* m_pickedObject;
+        Movable* m_pickedObject;
 };
 
 } //namespace imEngine

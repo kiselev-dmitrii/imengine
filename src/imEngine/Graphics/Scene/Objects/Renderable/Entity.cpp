@@ -9,6 +9,7 @@ Entity::Entity(const String &model, Object *parent) :
         m_model(*(RESOURCES->models()->model(model)))
 {
         m_model.setOwner(this);
+        m_aabb = m_model.aabb();
         scene()->registerEntity(this);
 }
 
@@ -17,6 +18,7 @@ Entity::Entity(const String &geometry, EntityMaterialPtr material, Object *paren
         m_model(Model("unnamed", geometry, material))
 {
         m_model.setOwner(this);
+        m_aabb = m_model.aabb();
         scene()->registerEntity(this);
 }
 

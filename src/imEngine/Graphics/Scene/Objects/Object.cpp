@@ -22,6 +22,10 @@ Scene* Object::scene() const {
         return m_scene;
 }
 
+const AABB& Object::aabb() const {
+        return m_aabb;
+}
+
 const Vec3& Object::position() const {
         return m_psTransform.position;
 }

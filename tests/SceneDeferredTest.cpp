@@ -77,6 +77,7 @@ void Application::initialize() {
         m_data = new Texture3D();
         m_data->load(256,256,128, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/textures/3d/engine.raw");
         m_engine = new Volume(m_data, VolumeMaterialPtr(new RaycastingMaterial()), scene()->world());
+        m_engine->setPosition(Vec3(2, 2, -2));
 
         /*
         m_diffuseBuffer = new PictureColor(scene()->renderer()->gBuffer()->colorBufferTexture(0), gui()->root());

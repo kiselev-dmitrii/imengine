@@ -12,8 +12,11 @@ Volume::Volume(Texture3D *data, const VolumeMaterialPtr &material, Object *paren
         m_material(material)
 {
         if (!s_cube) s_cube = Geometry::box(Vec3(-0.5), Vec3(0.5));
+        m_aabb = s_cube->aabb();
+
         m_material->setData(data);
         m_material->setObject(this);
+
         scene()->registerVolume(this);
 }
 

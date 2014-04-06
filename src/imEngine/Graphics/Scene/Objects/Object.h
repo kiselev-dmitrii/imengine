@@ -2,6 +2,7 @@
 #define OBJECT_H
 
 #include <imEngine/Math/Common.h>
+#include <imEngine/Math/AABB.h>
 #include <imEngine/Utils/TreeNamedNode.h>
 
 namespace imEngine {
@@ -28,6 +29,8 @@ public:
 
         /// Возвращает указатель на сцену
         Scene*          scene() const;
+        /// Возвращает AABB
+        const AABB&     aabb() const;
 
         /// Возвращает позицию/ориентацию/масштаб объекта в родительской СК
         const Vec3&     position() const;
@@ -63,6 +66,7 @@ protected:
 
 protected:
         Scene*                  m_scene;
+        AABB                    m_aabb;
 
         Transform               m_psTransform;                          // трансформация в род. системе
         /// Кэшированная мировая трансформация

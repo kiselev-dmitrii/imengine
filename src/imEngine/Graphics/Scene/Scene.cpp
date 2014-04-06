@@ -51,20 +51,32 @@ Object* Scene::pickObject(int x, int y) {
 
 
         /// Исключить объект, в котором мы сейчас находимся
-        Entity* exclude = nullptr;
-        for (Entity* entity: m_entities) {
+        Object* exclude = nullptr;
+        for (Object* entity: m_entities) {
+                const Mat4& invModelMatrix = entity->worldToLocalMatrix();
+                Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
+                if (entity->aabb().doesContain(modelSpacePosition)) exclude = entity;
+        }
+        for (Object* entity: m_volumes) {
                 const Mat4& invModelMatrix = entity->worldToLocalMatrix();
                 Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
                 if (entity->aabb().doesContain(modelSpacePosition)) exclude = entity;
         }
 
         while (glm::length(positionWS - cameraForwardWS) < 20.0) {
-                for (Entity* entity: m_entities) {
+                for (Object* entity: m_entities) {
                         if (entity == exclude) continue;
                         const Mat4& invModelMatrix = entity->worldToLocalMatrix();
                         Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
                         if (entity->aabb().doesContain(modelSpacePosition)) return entity;
                 }
+                for (Object* entity: m_volumes) {
+                        if (entity == exclude) continue;
+                        const Mat4& invModelMatrix = entity->worldToLocalMatrix();
+                        Vec3 modelSpacePosition = Vec3(invModelMatrix * Vec4(positionWS, 1.0));
+                        if (entity->aabb().doesContain(modelSpacePosition)) return entity;
+                }
+
                 positionWS += 0.1f * cameraForwardWS;
         }
         return nullptr;
@@ -148,7 +160,7 @@ DefaultUserScene::DefaultUserScene(GraphicApplication* application) :
 void DefaultUserScene::mousePressEvent(int x, int y, char button) {
         Scene::mousePressEvent(x, y, button);
         if (button != MouseButton::RIGHT) return;
-        m_pickedObject = (Entity*) pickObject(x, y); //временно
+        m_pickedObject = dynamic_cast<Movable*>(pickObject(x, y));
 }
 
 void DefaultUserScene::mouseReleaseEvent(int x, int y, char button) {
