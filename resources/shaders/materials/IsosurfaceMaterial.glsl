@@ -21,12 +21,13 @@ layout (location = 0) out vec4 fResult;
 
 uniform sampler3D 	uVolumeTexture;
 uniform vec3 		uObjectSpaceCameraPosition;
-uniform float 		uStep;
+uniform int 		uStep;
+
 uniform float 		uThresholdDensity;
 
-/** Функция получает градиент в объеме volume c первым приближением
+/** Функция возвращает градиент в объеме volume c первым приближением
   */
-vec3 gradient(vec3 p, sampler3D volume) {
+vec3 gradient(in vec3 p, in sampler3D volume) {
 	const float delta = 0.01;
 	const vec3 dx = vec3(delta, 0.0, 0.0);
 	const vec3 dy = vec3(0.0, delta, 0.0);
@@ -41,65 +42,65 @@ vec3 gradient(vec3 p, sampler3D volume) {
 	return g;
 }
 
-/** Функция поулчает на вход начальную точку в текстурных координатах, и вектор направления в этой же системе координат
-    Луч проходит через объем volume с шагом stepSize до тех пор, пока не дойдет до пространства с плотностью density.
-    В результате, функция возвращает нормаль и позицию в текстурном пространстве к изоповрехности с плотностью density в точке 
-    соприкосновения луча с этой поверхностью.
-    Если луч не встречается с изоповерхностью такой плотности, то возаращается false, иначе true
-*/
-bool isosurfaceVolumeRaycasting(vec3 vTexSpaceStart, vec3 vTexSpaceDirection, float stepSize, sampler3D volume, float density,
-								out vec3 outTexSpaceNormal, out vec3 outTexSpacePosition) {
-	const int 	MAX_SAMPLES = 300;	
-
-	vec3 samplePoint = vTexSpaceStart;
-	vec3 stepVector = stepSize * normalize(vTexSpaceDirection);
-
-	float prevDensity = texture3D(volume, samplePoint).r;
-	samplePoint += stepVector;
-	for (int i = 0; i < MAX_SAMPLES; ++i) {
-		float curDensity = texture3D(volume, samplePoint).r;
-
-
-		if (prevDensity < density && curDensity >= density) {
-			vec3 prevPoint = samplePoint - stepVector;
-			vec3 curPoint = samplePoint;
-
-			float percent = (density - prevDensity)/(curDensity - prevDensity);		//приводим density к [0,1]
-			vec3 p = mix(prevPoint, curPoint, percent);								//считая что p плотность меняется между точками линейно
-			vec3 n = -normalize(gradient(p, volume));								//градиент показывает наибольшее возрастание функции
-																					//так как плотность у нас возрастает, то берем -gradient
-			outTexSpacePosition = p;
-			outTexSpaceNormal = n;
-			return true;
-		}
-
-		if (any(greaterThan(samplePoint, vec3(1.0))) || any(lessThan(samplePoint, vec3(0.0)))) break; 	//вышли за границы [0-1]
-		samplePoint += stepVector;
-		prevDensity = curDensity;
-	}
-	return false;
-}
-
 vec4 phongShading(vec3 L, vec3 N, vec3 V, float specPower, vec3 diffuseColor) {
 	float diffuse = max(dot(L,N),0.0);
 	vec3 halfVec = normalize(L+V);
 	float specular = pow(max(0.00001,dot(halfVec,N)),specPower);	
-	return vec4(((diffuse*diffuseColor/* + 0.2*specular*/)),1.0);
+	return vec4(((diffuse*diffuseColor + 0.2*specular)),1.0);
 }
 
-void main() {
-	vec3 vObjectSpacePosition = vVolumeTexcoords - vec3(0.5);		//позиция вершины в ObjectSpace
-	vec3 vObjectSpaceRayDirection = vObjectSpacePosition - uObjectSpaceCameraPosition;
+const int 	MAX_SAMPLES = 300;	
 
-	vec3 vTexSpacePosition;
-	vec3 vTexSpaceNormal;
-	bool isSurface = isosurfaceVolumeRaycasting(vVolumeTexcoords, vObjectSpaceRayDirection, uStep, uVolumeTexture, uThresholdDensity, 
-										        vTexSpaceNormal, vTexSpacePosition);
-	if (isSurface) {
-		vec3 vTexSpaceCameraPosition = uObjectSpaceCameraPosition + vec3(0.5);
-		vec3 V = normalize(vTexSpaceCameraPosition - vTexSpacePosition);
+void main() {
+	// Получаем направление в текстурных координатах
+	vec3 positionOS = vVolumeTexcoords - vec3(0.5);
+	vec3 directionTS = positionOS - uObjectSpaceCameraPosition;		//directionOS = directionTS
+	vec3 texelSize = 1.0/textureSize(uVolumeTexture, 0).xyz;
+
+	/// Текущая позиция и направление
+	vec3 positionTS = vVolumeTexcoords;
+	vec3 dir = normalize(directionTS) * texelSize * uStep;
+
+	// Будем искать точку и нормаль в ней, где плотность равна uThresholdDensity
+	vec3 pointTS = vec3(0.0);
+	vec3 normalTS = vec3(0.0);
+	bool foundPoint = false;
+
+	/// Первый шаг
+	float prevDensity = texture3D(uVolumeTexture, positionTS).r;
+	positionTS += dir;
+
+	for (int i = 0; i < MAX_SAMPLES; ++i) {
+		float curDensity = texture3D(uVolumeTexture, positionTS).r;
+
+		// Нашли границу
+		if (prevDensity < uThresholdDensity && curDensity >= uThresholdDensity) {
+			vec3 prevPoint = positionTS - dir;
+			vec3 curPoint = positionTS;
+
+			/// Считаем точку pointTS как линейную интерполяцию между соседними точками по плотности
+			/// А нормаль считаем как градиент
+			float percent = (uThresholdDensity - prevDensity)/(curDensity - prevDensity);
+			pointTS = mix(prevPoint, curPoint, percent);							
+			normalTS = -normalize(gradient(pointTS, uVolumeTexture));							
+			foundPoint = true;							
+
+			break;
+		}
+
+		positionTS += dir;
+		prevDensity = curDensity;
+
+		/// Условие выхода - вышли за границы текстуры
+		if (any(greaterThan(positionTS, vec3(1.0))) || any(lessThan(positionTS, vec3(0.0)))) break;
+	}
+
+	/// Если нашли границу - то считаем освещение поверхности
+	if (foundPoint) {
+		vec3 cameraPositionTS = uObjectSpaceCameraPosition + vec3(0.5);
+		vec3 V = normalize(cameraPositionTS - pointTS);
 		vec3 L = V;
-		fResult = phongShading(L, vTexSpaceNormal, V, 30.0, vec3(0.4));
+		fResult = phongShading(L, normalTS, V, 30.0, vec3(0.4));
 	} else {
 		fResult = vec4(0.0);
 	}

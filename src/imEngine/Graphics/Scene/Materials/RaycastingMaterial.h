@@ -13,25 +13,25 @@ public:
         /// Конструктор
         RaycastingMaterial();
 
-        /// Устанавливает шаг трассировки в диапазоне [0;1]
-        void    setStep(float step)                                             { m_step = glm::clamp(step, 0.0f, 1.0f); }
-        float   step() const                                                    { return m_step; }
-
         /// Устанавливает минимальную плотность
         void    setMinDensity(float density)                                    { m_minDensity = glm::clamp(density, 0.0f, 1.0f); }
         float   minDensity() const                                              { return m_minDensity; }
+
         /// Устанавливает максимальную плотность
         void    setMaxDensity(float density)                                    { m_maxDensity = glm::clamp(density, 0.0f, 1.0f); }
         float   maxDensity() const                                              { return m_maxDensity; }
 
-        /// Включает/выключает материал
+        /// Устанавливает плоскость отсечения
+        void    setClipPlane(const Vec4& plane);
+        Vec4    clipPlane() const;
+
+        /// Перегруженный метод установки материала
         void    bind();
-        void    unbind();
 
 private:
-        float   m_step;
         float   m_minDensity;
         float   m_maxDensity;
+        Vec4    m_clipPlane;
 };
 
 

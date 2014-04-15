@@ -13,20 +13,14 @@ public:
         /// Конструктор
         IsosurfaceMaterial();
 
-        /// Устанавливает шаг трассировки в диапазоне [0;1]
-        void    setStep(float step)                                             { m_step = glm::clamp(step, 0.0f, 1.0f); }
-        float   step() const                                                    { return m_step; }
-
         /// Устанавливает пороговую плотность
-        void    setThresholdDensity(float density)                              { m_thresholdDensity = density; }
+        void    setThresholdDensity(float density)                              { m_thresholdDensity = glm::clamp(density, 0.0f, 1.0f); }
         float   thresholdDensity() const                                        { return m_thresholdDensity; }
 
-        /// Включает/выключает материал
+        /// Перегруженный метод установки материала
         void    bind();
-        void    unbind();
 
 private:
-        float   m_step;
         float   m_thresholdDensity;
 };
 

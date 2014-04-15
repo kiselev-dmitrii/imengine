@@ -62,15 +62,25 @@ public:
         void            setData(Texture3D* data);
         Texture3D*      data() const;
         /// Установка активной камеры
-        void            setActiveCamera(Camera* camera);
+        void            setActiveCamera(Camera* camera)                         { m_camera = camera; }
         /// Установка рисуемого объекта
-        void            setObject(Object* object);
+        void            setObject(Object* object)                               { m_object = object; }
 
+        /// Необязательные параметры
+        /// Шаг трассировки в текселях
+        void            setStep(int step)                                       { m_step = glm::clamp(step, 1, 100); }
+        int             step() const                                            { return m_step; }
+
+        /// Активирует/деактивирует материал
+        void            bind();
+        void            unbind();
 
 protected:
         Texture3D*      m_texture;
         Camera*         m_camera;
         Object*         m_object;
+
+        int             m_step;
 };
 
 

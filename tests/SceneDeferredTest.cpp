@@ -45,6 +45,11 @@ private:
         HSlider*        m_stepSlider;
         HSlider*        m_thresholdSlider;
 
+        HSlider*        alphaSlider;
+        HSlider*        betaSlider;
+        HSlider*        gammaSlider;
+        HSlider*        distanceSlider;
+
         Movable*        m_empty;
 
         Entity*      m_buddha;
@@ -78,7 +83,6 @@ void Application::initialize() {
         m_data = new Texture3D();
         m_data->load(256,256,256, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/textures/3d/foot.raw");
         m_engine = new Volume(m_data, VolumeMaterialPtr(new RaycastingMaterial()), scene()->world());
-        // static_cast<RaycastingMaterial*>(m_engine->material().get())->setMinDensity(0.3);
         m_engine->setPosition(Vec3(2, 2, -2));
 
         /*
@@ -94,7 +98,7 @@ void Application::initialize() {
         m_pnl = new Panel("regular_panel.png", gui()->root());
         m_pnl->setOpacity(0.9);
         m_pnl->setPadding(20);
-        m_pnl->setSize(Vec2(200, 500));
+        m_pnl->setSize(Vec2(200, 600));
 
         m_pnlLayout = new VBoxLayout(m_pnl);
 
@@ -203,6 +207,46 @@ void Application::initialize() {
         focusStart->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusStart(slider->value()); };
         focusEnd->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusEnd(slider->value()); };
         dofBtn->onClick += [&] (ToggleButton* btn) { scene()->renderer()->depthOfField()->setEnabled(btn->isChecked()); };
+
+        /// Clip plane
+        alphaSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
+        alphaSlider->setWidth(m_pnl->contentWidth());
+        alphaSlider->setMinMaxValues(0, 360);
+
+        betaSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
+        betaSlider->setWidth(m_pnl->contentWidth());
+        betaSlider->setMinMaxValues(0, 360);
+
+        gammaSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
+        gammaSlider->setWidth(m_pnl->contentWidth());
+        gammaSlider->setMinMaxValues(0, 360);
+
+        distanceSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
+        distanceSlider->setWidth(m_pnl->contentWidth());
+        distanceSlider->setMinMaxValues(-1, 1);
+        distanceSlider->setValue(0);
+
+        m_pnlLayout->addWidget(new Text("ClipPlane", m_pnlLayout));
+        m_pnlLayout->addWidget(new Text("Alpha,Beta,Gamma,D", m_pnlLayout));
+        m_pnlLayout->addWidget(alphaSlider);
+        m_pnlLayout->addWidget(betaSlider);
+        m_pnlLayout->addWidget(gammaSlider);
+        m_pnlLayout->addWidget(distanceSlider);
+
+
+        auto changeClipPlane = [&] (HSlider* slider) {
+                Vec4 plane;
+                plane.x = glm::cos(glm::radians(alphaSlider->value()));
+                plane.y = glm::cos(glm::radians(betaSlider->value()));
+                plane.z = glm::cos(glm::radians(gammaSlider->value()));
+                plane.w = distanceSlider->value();
+
+                static_cast<RaycastingMaterial*>(m_engine->material().get())->setClipPlane(plane);
+        };
+        alphaSlider->onValueChanged += changeClipPlane;
+        betaSlider->onValueChanged += changeClipPlane;
+        gammaSlider->onValueChanged += changeClipPlane;
+        distanceSlider->onValueChanged += changeClipPlane;
 }
 
 void Application::keyPressEvent(int key) {

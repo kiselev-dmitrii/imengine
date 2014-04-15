@@ -21,37 +21,54 @@ layout (location = 0) out vec4 fResult;
 
 uniform sampler3D 	uVolumeTexture;
 uniform vec3 		uObjectSpaceCameraPosition;
-uniform float 		uStep;
+uniform int 		uStep;
+
 uniform float 		uMinDensity;
 uniform float 		uMaxDensity; 
+uniform vec4 		uClipPlane;
 
-vec4 volumeRaycasting(vec3 vStartUV, vec3 vUVSpaceRayDirection, float stepSize, sampler3D volume) {
-	const int 	MAX_SAMPLES = 300;
+vec4 alphaBlending(in vec4 oldColor, in vec4 newColor) {
+	float alpha = newColor.a - (newColor.a * oldColor.a);
+	return vec4(oldColor.rgb + alpha*newColor.rgb, oldColor.a + alpha);
+}
 
-	vec3 currentUV = vStartUV;
-	vec3 step = stepSize * normalize(vUVSpaceRayDirection);
+const int MAX_SAMPLES = 300;
+
+void main() {
+	// Получаем направление в текстурных координатах
+	vec3 positionOS = vVolumeTexcoords - vec3(0.5);
+	vec3 directionTS = positionOS - uObjectSpaceCameraPosition;		//directionOS = directionTS
+	vec3 texelSize = 1.0/textureSize(uVolumeTexture, 0).xyz;
+
+	// Трасировка
+	vec3 positionTS = vVolumeTexcoords;
+	vec3 dir = normalize(directionTS) * texelSize * uStep;
 
 	vec4 result = vec4(0.0);
 	for (int i = 0; i < MAX_SAMPLES; i++) {
-		float sample = texture3D(volume, currentUV).r;
-		if (sample >= uMinDensity && uMinDensity <= uMaxDensity) {
-			float prevAlpha = sample - (sample * result.a);
-			result.rgb += prevAlpha * vec3(sample);
-			result.a += prevAlpha;
+		float density = texture3D(uVolumeTexture, positionTS).r;
+		vec4 color = vec4(density);
+
+		// Если точка лежит с положительной стороны плоскости то набираем сумму
+		float side = dot(uClipPlane, vec4(positionTS, 1.0));
+		if (side > 0) {
+			// Граница плоскости
+			if (abs(side) < 3.0*length(texelSize)) {
+				color = vec4(1,1,1, 0.05);
+			}
+
+			// Сумма
+			if (density >= uMinDensity && density <= uMaxDensity) {
+				result = alphaBlending(result, color);
+			}
 		}
 
-		if (result.a > 0.99) break;																			//превышение суммы
-		if (any(greaterThan(currentUV, vec3(1.0))) || any(lessThan(currentUV, vec3(0.0)))) break;		//выход за границы
+		positionTS += dir;
 
-		currentUV += step;
+		// Условия выхода - превышение суммы и выход за границы кубической текстуры
+		if (result.a > 0.99) break;														
+		if (any(greaterThan(positionTS, vec3(1.0))) || any(lessThan(positionTS, vec3(0.0)))) break;
 	}
-	return result;
 
-}
-
-void main() {
-	vec3 vObjectSpacePosition = vVolumeTexcoords - vec3(0.5);		//позиция вершины в ObjectSpace
-	vec3 vObjectSpaceRayDirection = vObjectSpacePosition - uObjectSpaceCameraPosition;
-
-	fResult = volumeRaycasting(vVolumeTexcoords, vObjectSpaceRayDirection, uStep, uVolumeTexture);
+	fResult = result;
 }
