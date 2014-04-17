@@ -53,6 +53,9 @@ private:
         Movable*        m_empty;
 
         Entity*      m_buddha;
+
+        Texture2DPtr    m_densityToColorTexture;
+        PictureColor*   m_densityToColorPicture;
 };
 
 
@@ -80,9 +83,13 @@ void Application::initialize() {
         m_buddha = new Entity("buddha.xml", m_room);
         m_buddha->setPosition(Vec3(-2.0, 0.0, 2.0));
 
+        m_densityToColorTexture = Texture2DPtr(new Texture2D());
+        m_densityToColorTexture->load("resources/textures/density_to_color.png");
         m_data = new Texture3D();
         m_data->load(256,256,256, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/textures/3d/foot.raw");
         m_engine = new Volume(m_data, VolumeMaterialPtr(new RaycastingMaterial()), scene()->world());
+        static_cast<RaycastingMaterial*>(m_engine->material().get())->setDensityTexture(m_densityToColorTexture);
+
         m_engine->setPosition(Vec3(2, 2, -2));
 
         /*
@@ -207,6 +214,21 @@ void Application::initialize() {
         focusStart->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusStart(slider->value()); };
         focusEnd->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusEnd(slider->value()); };
         dofBtn->onClick += [&] (ToggleButton* btn) { scene()->renderer()->depthOfField()->setEnabled(btn->isChecked()); };
+
+        /// Min density
+        m_densityToColorPicture = new PictureColor(m_densityToColorTexture, m_pnlLayout);
+        m_densityToColorPicture->setWidth(m_pnlLayout->contentWidth());
+        m_pnlLayout->addWidget(m_densityToColorPicture);
+
+
+        HSlider* minDensity = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
+        minDensity->setWidth(m_pnl->contentWidth());
+        m_pnlLayout->addWidget(new Text("Min density", m_pnlLayout));
+        m_pnlLayout->addWidget(minDensity);
+
+        minDensity->onValueChanged += [&] (HSlider* slider) {
+                static_cast<RaycastingMaterial*>(m_engine->material().get())->setMinDensity(slider->value());
+        };
 
         /// Clip plane
         alphaSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);

@@ -20,6 +20,7 @@ in vec3 vVolumeTexcoords;
 layout (location = 0) out vec4 fResult;
 
 uniform sampler3D 	uVolumeTexture;
+uniform sampler2D	uDensityTexture;
 uniform vec3 		uObjectSpaceCameraPosition;
 uniform int 		uStep;
 
@@ -47,7 +48,9 @@ void main() {
 	vec4 result = vec4(0.0);
 	for (int i = 0; i < MAX_SAMPLES; i++) {
 		float density = texture3D(uVolumeTexture, positionTS).r;
-		vec4 color = vec4(density);
+		vec4 color;
+		color.rgb = texture2D(uDensityTexture, vec2(density, 0.0)).rgb;
+		color.a = density;
 
 		// Если точка лежит с положительной стороны плоскости то набираем сумму
 		float side = dot(uClipPlane, vec4(positionTS, 1.0));

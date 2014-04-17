@@ -61,6 +61,8 @@ void VolumeMaterial::bind() {
         m_program->setUniform("uModelViewProjectionMatrix", modelViewProjectionMatrix);
         m_texture->bind(0);
         m_program->setUniform("uVolumeTexture", 0);
+        m_densityTexture->bind(1);
+        m_program->setUniform("uDensityTexture", 1);
         m_program->setUniform("uObjectSpaceCameraPosition", objectSpaceCameraPosition);
         m_program->setUniform("uStep", m_step);
 }

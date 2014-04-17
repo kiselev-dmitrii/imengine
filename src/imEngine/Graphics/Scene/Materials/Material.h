@@ -70,6 +70,10 @@ public:
         /// Шаг трассировки в текселях
         void            setStep(int step)                                       { m_step = glm::clamp(step, 1, 100); }
         int             step() const                                            { return m_step; }
+        /// Устанавливает текстуру, переводящую плотность от [0;1] в цвет
+        void            setDensityTexture(const Texture2DPtr& texture)          { m_densityTexture = texture; }
+        Texture2DPtr    densityTexture() const                                  { return m_densityTexture; }
+
 
         /// Активирует/деактивирует материал
         void            bind();
@@ -81,6 +85,7 @@ protected:
         Object*         m_object;
 
         int             m_step;
+        Texture2DPtr    m_densityTexture;
 };
 
 

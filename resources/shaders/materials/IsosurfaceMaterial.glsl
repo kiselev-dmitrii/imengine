@@ -20,6 +20,7 @@ in vec3 vVolumeTexcoords;
 layout (location = 0) out vec4 fResult;
 
 uniform sampler3D 	uVolumeTexture;
+uniform sampler2D 	uDensityTexture;
 uniform vec3 		uObjectSpaceCameraPosition;
 uniform int 		uStep;
 
@@ -100,7 +101,8 @@ void main() {
 		vec3 cameraPositionTS = uObjectSpaceCameraPosition + vec3(0.5);
 		vec3 V = normalize(cameraPositionTS - pointTS);
 		vec3 L = V;
-		fResult = phongShading(L, normalTS, V, 30.0, vec3(0.4));
+		vec3 diffuseColor = texture2D(uDensityTexture, vec2(uThresholdDensity, 0.0)).rgb;
+		fResult = phongShading(L, normalTS, V, 30.0, diffuseColor);
 	} else {
 		fResult = vec4(0.0);
 	}
