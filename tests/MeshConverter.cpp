@@ -158,18 +158,14 @@ public:
         /// Устанавливает материал
         void            setMaterial(const String& materialName);
 
-        /// Возвращает имя детали
-        String          name() const;
-        /// Возвращает имя материала
-        String          material() const;
-        /// Возвращает строку с вершинами в base64
-        String          vertices() const;
-        /// Возвращает строку с индексами в base64
-        String          indices() const;
+        /// Сериализует в Json
+        StringList      serialize() const;
 
 private:
         VertexList      loadVertices(const aiMesh* mesh) const;
         IndexList       loadIndices(const aiMesh* mesh) const;
+        String          vertices() const;
+        String          indices() const;
 
 private:
         String          m_name;
@@ -198,24 +194,17 @@ void DetailContainer::setMaterial(const String &materialName) {
         m_materialName = materialName;
 }
 
-String DetailContainer::name() const {
-        return m_name;
-}
+StringList DetailContainer::serialize() const {
+        StringList result;
 
-String DetailContainer::material() const {
-        return m_materialName;
-}
+        result.push_back("{");
+        result.push_back("\t\"name\"\t\t:\t\"" + m_name + "\",");
+        result.push_back("\t\"material\"\t:\t\"" + m_materialName + "\",");
+        result.push_back("\t\"vertices\"\t:\t\"" + vertices() + "\",");
+        result.push_back("\t\"indices\"\t:\t\"" + indices() + "\",");
+        result.push_back("}");
 
-String DetailContainer::vertices() const {
-        uint len = m_vertices.size() * sizeof(Vertex);
-        ubyte* data = (ubyte*) &(m_vertices[0]);
-        return base64_encode(data, len);
-}
-
-String DetailContainer::indices() const {
-        uint len = m_indices.size() * sizeof(uint);
-        ubyte* data = (ubyte*) &(m_indices[0]);
-        return base64_encode(data, len);
+        return result;
 }
 
 VertexList DetailContainer::loadVertices(const aiMesh* mesh) const {
@@ -251,6 +240,18 @@ IndexList DetailContainer::loadIndices(const aiMesh* mesh) const {
         return indices;
 }
 
+String DetailContainer::vertices() const {
+        uint len = m_vertices.size() * sizeof(Vertex);
+        ubyte* data = (ubyte*) &(m_vertices[0]);
+        return base64_encode(data, len);
+}
+
+String DetailContainer::indices() const {
+        uint len = m_indices.size() * sizeof(uint);
+        ubyte* data = (ubyte*) &(m_indices[0]);
+        return base64_encode(data, len);
+}
+
 //############################################################################//
 
 /** @brief Тип материала
@@ -273,8 +274,15 @@ public:
         /// Парсит материал с помощью Assimp
         void            load(const aiMaterial* material);
 
+        /// Возвращает имя материала
+        String          name() const;
+
+        /// Сериализует материал в Json
+        StringList      serialize() const;
+
 private:
         Vec3            toVec3(const aiColor3D& color) const;
+        String          toJsonVec(const Vec3& vec) const;
 
 private:
         String          m_name;
@@ -324,13 +332,36 @@ void MaterialContainer::load(const aiMaterial *material) {
         m_type = MaterialType::GENERIC;
 }
 
+String MaterialContainer::name() const {
+        return m_name;
+}
+
+StringList MaterialContainer::serialize() const {
+        StringList result;
+
+        result.push_back("{");
+        result.push_back("\t\"name\"\t\t\t:\t\"" + m_name + "\",");
+        result.push_back("\t\"ambientColor\"\t:\t\"" + toJsonVec(m_ambientColor) + "\",");
+        result.push_back("\t\"diffuseColor\"\t:\t\"" + toJsonVec(m_diffuseColor) + "\",");
+        result.push_back("\t\"specularColor\"\t:\t\"" + toJsonVec(m_ambientColor) + "\",");
+        result.push_back("}");
+
+        return result;
+}
+
 Vec3 MaterialContainer::toVec3(const aiColor3D &color) const {
         return Vec3(color.r, color.b, color.b);
 }
 
+String MaterialContainer::toJsonVec(const Vec3 &vec) const {
+        std::stringstream ss;
+        ss << "[" << vec.x <<  ", " << vec.y << ", " << vec.z << "]";
+        return ss.str();
+}
+
 //############################################################################//
 
-typedef std::map<String, MaterialContainer> MaterialMap;
+typedef std::vector<MaterialContainer> MaterialList;
 typedef std::vector<DetailContainer> DetailList;
 
 class Mesh {
@@ -348,14 +379,14 @@ private:
         void            loadDetails(const aiScene* scene);
         void            loadMaterials(const aiScene* scene);
 
-        String          serializeMaterials(uint n, const MaterialMap& materials) const;
+        String          serializeMaterials(uint n, const MaterialList& materials) const;
         String          serializeDetails(uint n, const DetailList& details) const;
         String          serializeDetail(uint n, const DetailContainer& detail) const;
 
         String          indent(uint n) const;
 private:
         DetailList      m_details;
-        MaterialMap     m_materials;
+        MaterialList    m_materials;
 };
 
 //################################# Mesh #####################################//
@@ -373,6 +404,7 @@ void Mesh::load(const String &filename) {
                 return;
         }
 
+        loadMaterials(scene);
         loadDetails(scene);
 }
 
@@ -392,19 +424,38 @@ String Mesh::serialize() const {
         return result;
 }
 
+void Mesh::loadMaterials(const aiScene *scene) {
+        for (uint i = 0; i < scene->mNumMaterials; ++i) {
+                MaterialContainer material;
+                material.load(scene->mMaterials[i]);
+                m_materials.push_back(material);
+        }
+}
+
+
 void Mesh::loadDetails(const aiScene *scene) {
         for (uint i = 0; i < scene->mNumMeshes; ++i) {
                 DetailContainer detail;
                 detail.load(scene->mMeshes[i]);
+                detail.setMaterial(m_materials[scene->mMeshes[i]->mMaterialIndex].name());
                 m_details.push_back(detail);
         }
 }
 
-String Mesh::serializeMaterials(uint n, const MaterialMap &materials) const {
+String Mesh::serializeMaterials(uint n, const MaterialList &materials) const {
         String result;
 
         result += indent(n) + "\"materials\":\n";
         result += indent(n) + "[\n";
+
+        for (const MaterialContainer& material: materials) {
+                StringList m = material.serialize();
+                String ms = "\t\t" + StringUtils::join(m, "\n\t\t");
+                result += ms + ",\n";
+        }
+        result.erase(result.size()-2);
+        result += "\n";
+
         result += indent(n) + "]\n";
 
         return result;
@@ -415,26 +466,16 @@ String Mesh::serializeDetails(uint n, const DetailList &details) const {
 
         result += indent(n) + "\"details\":\n";
         result += indent(n) + "[\n";
+
         for (const DetailContainer& detail: details) {
-                result += serializeDetail(n+1, detail);
+                StringList d = detail.serialize();
+                String ds = "\t\t" + StringUtils::join(d, "\n\t\t");
+                result += ds + ",\n";
         }
         result.erase(result.size()-2);
         result += "\n";
 
         result += indent(n) + "]\n";
-
-        return result;
-}
-
-String Mesh::serializeDetail(uint n, const DetailContainer &detail) const {
-        String result;
-
-        result += indent(n) + "{\n";
-        result += indent(n+1) + "\"name\"\t\t:\t\"" + detail.name() + "\",\n";
-        result += indent(n+1) + "\"material\"\t:\t\"" + detail.material() + "\",\n";
-        result += indent(n+1) + "\"vertices\"\t:\t\"" + detail.vertices() + "\",\n";
-        result += indent(n+1) + "\"indices\"\t:\t\"" + detail.indices() + "\",\n";
-        result += indent(n) + "},\n";
 
         return result;
 }
