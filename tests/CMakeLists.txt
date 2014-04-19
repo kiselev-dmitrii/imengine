@@ -28,6 +28,8 @@ set(TESTS
         FramebufferTest
         SceneDeferredTest
         CubeTextureTest
+
+        MeshConverter
 )
 
 foreach(TEST ${TESTS})

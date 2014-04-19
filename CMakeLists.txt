@@ -105,6 +105,16 @@ else()
         list(APPEND imEngineLibs ${FREETYPE_LIBRARIES})
 endif()
 
+# JsonCpp
+find_package(JsonCpp REQUIRED)
+if(NOT JSONCPP_FOUND)
+        message(ERROR " JsonCpp not found!")
+        return()
+else()
+        list(APPEND imEngineIncludeDirs ${JSONCPP_INCLUDE_DIRS})
+        list(APPEND imEngineLibs ${JSONCPP_LIBRARIES})
+endif()
+
 # Luabind
 find_package(Luabind REQUIRED)
 if(NOT LUABIND_FOUND)
