@@ -18,6 +18,10 @@ namespace StringUtils {
         /// Парсит цвет в виде "255,255,255,255" и приводит его к промежутку [0;1]
         Vec4            toColor4(const String& str);
         Vec3            toColor3(const String& str);
+
+        /// Переводит массив байт в строку в base64 и обратно
+        String          toBase64(ubyte* bytes, uint length);
+        String          fromBase64(const String& string);
 }
 
 } //namespace imEngine
