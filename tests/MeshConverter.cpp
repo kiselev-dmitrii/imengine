@@ -57,8 +57,6 @@ DetailContainer::DetailContainer()
 void DetailContainer::load(const aiMesh* mesh) {
         IM_ASSERT(mesh->HasPositions());
         IM_ASSERT(mesh->HasNormals());
-        IM_ASSERT(mesh->HasTangentsAndBitangents());
-        IM_ASSERT(mesh->HasTextureCoords(0));
 
         m_name = mesh->mName.data;
         m_vertices = loadVertices(mesh);
@@ -88,10 +86,13 @@ VertexList DetailContainer::loadVertices(const aiMesh* mesh) const {
 
         for (uint i = 0; i < mesh->mNumVertices; ++i) {
                 Vertex v;
+
                 v.position = Vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
                 v.normal = Vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
-                v.tangent = Vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
-                v.texcoords = Vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+                if (mesh->HasTextureCoords(0)) v.texcoords = Vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+                else IM_LOG("WARNING: Mesh has no texture coords");
+                if (mesh->HasTangentsAndBitangents()) v.tangent = Vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
+                else IM_LOG("WARNING: Mesh has no tangent vectors");
 
                 vertices.push_back(v);
         }
@@ -170,6 +171,7 @@ private:
         float           m_specularPower;
         String          m_diffuseMap;
         String          m_normalMap;
+        String          m_heightMap;
         String          m_specularMap;
         /// Emissive
         Vec3            m_emissiveColor;
@@ -214,6 +216,10 @@ void MaterialContainer::load(const aiMaterial *material) {
         material->GetTexture(aiTextureType_NORMALS, 0, &normalMap);
         m_normalMap = normalMap.data;
 
+        aiString heightMap;
+        material->GetTexture(aiTextureType_HEIGHT, 0, &heightMap);
+        m_heightMap = heightMap.data;
+
         aiString specularMap;
         material->GetTexture(aiTextureType_SPECULAR, 0, &specularMap);
         m_specularMap = specularMap.data;
@@ -253,19 +259,20 @@ StringList MaterialContainer::serialize() const {
 
                 if (!m_diffuseMap.empty()) result.push_back("\t\"diffuseMap\"\t:\t\"" + m_diffuseMap + "\",");
                 if (!m_normalMap.empty()) result.push_back("\t\"normalMap\"\t:\t\"" + m_normalMap + "\",");
+                if (!m_heightMap.empty()) result.push_back("\t\"heightMap\"\t\t:\t\"" + m_heightMap + "\",");
                 if (!m_specularMap.empty()) result.push_back("\t\"specularMap\"\t:\t\"" + m_specularMap + "\",");
                 result.push_back("\t\"type\"\t\t\t:\t\"GENERIC\"");
 
         } else if (m_type == MaterialType::EMISSIVE) {
-                result.push_back("\t\"emissiveColor\"\t:\t\"" + toJsonVec(m_emissiveColor) + "\",");
+                result.push_back("\t\"emissiveColor\"\t:\t" + toJsonVec(m_emissiveColor) + ",");
                 result.push_back("\t\"type\"\t\t\t:\t\"EMISSIVE\"");
 
         } else if (m_type == MaterialType::TRANSPARENT) {
-                result.push_back("\t\"transparentColor\"\t:\t\"" + toJsonVec(m_transparentColor) + "\",");
+                result.push_back("\t\"transparentColor\"\t:\t" + toJsonVec(m_transparentColor) + ",");
                 result.push_back("\t\"type\"\t\t\t:\t\"TRANSPARENT\"");
 
         } else if (m_type == MaterialType::REFRACTION) {
-                result.push_back("\t\"transparentColor\"\t:\t\"" + toJsonVec(m_transparentColor) + "\",");
+                result.push_back("\t\"refractionIndex\"\t:\t" + toJsonFloat(m_refractionIndex) + ",");
                 result.push_back("\t\"type\"\t\t\t:\t\"REFRACTION\"");
 
         }
@@ -276,7 +283,7 @@ StringList MaterialContainer::serialize() const {
 }
 
 Vec3 MaterialContainer::toVec3(const aiColor3D &color) const {
-        return Vec3(color.r, color.b, color.b);
+        return Vec3(color.r, color.g, color.b);
 }
 
 String MaterialContainer::toJsonVec(const Vec3 &vec) const {
