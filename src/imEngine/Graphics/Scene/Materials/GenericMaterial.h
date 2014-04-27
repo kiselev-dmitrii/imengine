@@ -30,6 +30,10 @@ public:
         void            setSpecularPower(float power)                           { m_specularPower = power; }
         float           specularPower() const                                   { return m_specularPower; }
 
+        /// Устанавливает/возвращает масштаб текстур
+        void            setScale(const Vec2& scale)                             { m_scale = scale; }
+        const Vec2&     scale() const                                           { return m_scale; }
+
         /// Устанавливает/возвращает диффузную текстру
         void            setDiffuseTexture(const String& path);
         Texture2D*      diffuseTexture() const                                  { return m_diffuseTexture; }
@@ -53,6 +57,8 @@ private:
         Texture2D*      m_diffuseTexture;
         Texture2D*      m_specularTexture;
         Texture2D*      m_normalTexture;
+
+        Vec2            m_scale;
 };
 
 } //namespace imEngine

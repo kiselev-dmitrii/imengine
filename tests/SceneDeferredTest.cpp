@@ -62,10 +62,8 @@ private:
 void Application::initialize() {
         GraphicApplication::initialize();
 
-        /*
         m_room = new Entity("room.json", scene()->world());
-        */
-        m_logo = new Entity("tank.json", scene()->world());
+        m_logo = new Entity("uh60.json", scene()->world());
 
         /*
         m_sphere1 = new Entity("sphere.obj", EntityMaterialPtr(new EmissiveMaterial()), scene()->world());

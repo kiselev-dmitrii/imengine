@@ -16,19 +16,21 @@ public:
         /// Конструктор
         EmissiveMaterial();
 
-        /// Загружает параметры текстуры с XML ноды
-        void    loadFromXML(const XmlNode& node);
+        /// Загружает параметры материала из JsonValue
+        void            loadFromJson(const JsonValue& value);
 
-        void    setColor(const Vec3& color);
-        void    setPower(float power);
+        /// Устанавливает/возвращает цвет
+        void            setEmissiveColor(const Vec3& color)                     { m_emissiveColor = color; }
+        const Vec3&     emissiveColor() const                                   { return m_emissiveColor; }
 
-        void    bind();
-        void    unbind();
+        /// Включает/выключает материал
+        void            bind();
+        void            unbind();
 
 private:
-        Vec3    m_color;
-        float   m_power;
+        Vec3    m_emissiveColor;
 };
+
 
 } //namespace imEngine
 

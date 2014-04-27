@@ -4,30 +4,20 @@
 namespace imEngine {
 
 EmissiveMaterial::EmissiveMaterial() :
-        EntityMaterial("materials/EmissiveMaterial.glsl", MaterialType::UNLIGHTENED),
-        m_color(1.0),
-        m_power(1.0)
-{  }
-
-void EmissiveMaterial::loadFromXML(const XmlNode &node) {
-        String color = node.attribute("color").value();
-        String power = node.attribute("power").value();
-
-        if (!color.empty()) setColor(StringUtils::toColor3(color));
-        if (!power.empty()) setPower(std::stof(power));
+        EntityMaterial("materials/EmissiveMaterial.glsl", MaterialType::UNLIGHTENED)
+{
+        setEmissiveColor(Vec3(1.0));
 }
 
-void EmissiveMaterial::setColor(const Vec3 &color) {
-        m_color = color;
-}
+void EmissiveMaterial::loadFromJson(const JsonValue &value) {
+        JsonValue emissiveColor = value["emissiveColor"];
 
-void EmissiveMaterial::setPower(float power) {
-        m_power = power;
+        if (!emissiveColor.isNull()) setEmissiveColor(JsonUtils::toVec3(emissiveColor));
 }
 
 void EmissiveMaterial::bind() {
         m_program->bind();
-        m_program->setUniform("uIntensity", m_color*m_power);
+        m_program->setUniform("uIntensity", m_emissiveColor);
 }
 
 void EmissiveMaterial::unbind() {

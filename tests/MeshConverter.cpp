@@ -287,7 +287,7 @@ Vec3 MaterialContainer::toVec3(const aiColor3D &color) const {
 
 String MaterialContainer::toString(const Vec3 &vec) const {
         std::stringstream ss;
-        ss << "\"" << vec.x <<  "," << vec.y << "," << vec.z << "\"";
+        ss << "[" << vec.x <<  ", " << vec.y << ", " << vec.z << "]";
         return ss.str();
 }
 

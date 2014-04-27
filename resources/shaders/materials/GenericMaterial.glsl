@@ -46,6 +46,7 @@ uniform vec3 		uDiffuseColor;
 uniform vec3 		uSpecularColor;
 uniform float 		uSpecularPower;
 
+uniform vec2 		uScale;
 uniform sampler2D	uDiffuseTexture;
 uniform sampler2D	uSpecularTexture;
 uniform sampler2D 	uNormalTexture;
@@ -53,19 +54,19 @@ uniform sampler2D 	uNormalTexture;
 void main() {
 	/// Fill diffuse buffer
 	vec3 diffuseColor = uDiffuseColor;
-	diffuseColor *= texture2D(uDiffuseTexture, v.texCoords).rgb;
+	diffuseColor *= texture2D(uDiffuseTexture, v.texCoords * uScale).rgb;
 	diffuseColor += uAmbientColor;
 	fGBufferDiffuse = vec4(diffuseColor, 1.0);
 
 	/// Fill material buffer
-	float specularLevel = texture2D(uSpecularTexture, v.texCoords).r * uSpecularPower;
+	float specularLevel = texture2D(uSpecularTexture, v.texCoords * uScale).r * uSpecularPower;
 	float specularExponent = 1.0;
 	float metallicLevel = 1.0;
 	float ambientOcclusion = 1.0;
 	fGBufferMaterial = vec4(specularLevel, specularExponent, metallicLevel, ambientOcclusion);
 
 	/// Fill geometry buffer
-	vec3 n = texture2D(uNormalTexture, v.texCoords).xyz * 2.0 - 1.0;	// tangent space normal
+	vec3 n = texture2D(uNormalTexture, v.texCoords * uScale).xyz * 2.0 - 1.0;	// tangent space normal
 	n = v.tangentToViewMatrix * n;										// view space normal
 	fGBufferGeometry = vec4(n*0.5 + 0.5, 1.0);
 }

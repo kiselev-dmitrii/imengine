@@ -13,29 +13,35 @@ GenericMaterial::GenericMaterial() :
         setSpecularColor(Vec3(1));
         setSpecularPower(40.0f);
 
+        setScale(Vec2(1.0));
+
         setDiffuseTexture("model/empty_diffuse.png");
         setSpecularTexture("model/empty_specular.png");
         setNormalTexture("model/empty_normal.png");
 }
 
 void GenericMaterial::loadFromJson(const JsonValue &value) {
-        String ambientColor = value.get("ambientColor", "").asString();
-        String diffuseColor = value.get("diffuseColor", "").asString();
-        String specularColor = value.get("specularColor", "").asString();
-        float  specularPower = value.get("specularPower", 40).asFloat();
+        JsonValue ambientColor = value["ambientColor"];
+        JsonValue diffuseColor = value["diffuseColor"];
+        JsonValue specularColor = value["specularColor"];
+        JsonValue specularPower = value["specularPower"];
 
-        String diffuseMap = value.get("diffuseMap", "").asString();
-        String specularMap = value.get("specualrMap", "").asString();
-        String normalMap = value.get("normalMap", "").asString();
+        JsonValue diffuseMap = value["diffuseMap"];
+        JsonValue specularMap = value["specularMap"];
+        JsonValue normalMap = value["normalMap"];
 
-        if (!ambientColor.empty()) setAmbientColor(StringUtils::toVec3(ambientColor));
-        if (!diffuseColor.empty()) setDiffuseColor(StringUtils::toVec3(diffuseColor));
-        if (!specularColor.empty()) setSpecularColor(StringUtils::toVec3(specularColor));
-        setSpecularPower(specularPower);
+        JsonValue scale = value["scale"];
 
-        if (!diffuseMap.empty()) setDiffuseTexture("model/" + diffuseMap);
-        if (!specularMap.empty()) setSpecularTexture("model/" + specularMap);
-        if (!normalMap.empty()) setNormalTexture("model/" + normalMap);
+        if (!ambientColor.isNull()) setAmbientColor(JsonUtils::toVec3(ambientColor));
+        if (!diffuseColor.isNull()) setDiffuseColor(JsonUtils::toVec3(diffuseColor));
+        if (!specularColor.isNull()) setSpecularColor(JsonUtils::toVec3(specularColor));
+        if (!specularPower.isNull()) setSpecularPower(specularPower.asFloat());
+
+        if (!scale.isNull()) setScale(JsonUtils::toVec2(scale));
+
+        if (!diffuseMap.isNull()) setDiffuseTexture("model/" + diffuseMap.asString());
+        if (!specularMap.isNull()) setSpecularTexture("model/" + specularMap.asString());
+        if (!normalMap.isNull()) setNormalTexture("model/" + normalMap.asString());
 }
 
 void GenericMaterial::setDiffuseTexture(const String &path) {
@@ -63,6 +69,8 @@ void GenericMaterial::bind() {
         m_program->setUniform("uDiffuseColor", m_diffuseColor);
         m_program->setUniform("uSpecularColor", m_specularColor);
         m_program->setUniform("uSpecularPower", m_specularPower);
+
+        m_program->setUniform("uScale", m_scale);
 
         m_diffuseTexture->bind(0);
         m_program->setUniform("uDiffuseTexture", 0);

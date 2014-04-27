@@ -127,7 +127,7 @@ MaterialPtr Model::loadMaterial(const JsonValue &material) {
                 return MaterialPtr((Material*)result);
         } else if (type == "EMISSIVE") {
                 EmissiveMaterial* result = new EmissiveMaterial();
-                //result->loadFromXML(materialNode);
+                result->loadFromJson(material);
                 return MaterialPtr((Material*)result);
         } else {
                 IM_ERROR(type << " is unknown type");

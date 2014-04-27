@@ -1,6 +1,7 @@
 {
 	"materials": {
 		"DefaultMaterial": {
+			"scale"			: 	[100, 100],
 			"diffuseMap"	: 	"tile_diffuse.png",
 			"specularMap" 	:	"tile_specular.png",
 			"normalMap"		:	"tile_normal.png",
