@@ -1,6 +1,0 @@
-<model name="wheel">
-	<detail name="wheel">
-		<geometry filename="car_wheel.obj"/>
-		<material type="phong" diffuse="0,0,0" shininess="10.0"/>
-	</detail>
-</model>

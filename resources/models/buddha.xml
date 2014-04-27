@@ -1,6 +1,0 @@
-<model name="buddha">
-	<detail name="buddha">
-		<geometry filename="buddha.obj"/>
-		<material type="basic_deferred" diffuse_color="255,255,255"/>
-	</detail>
-</model>

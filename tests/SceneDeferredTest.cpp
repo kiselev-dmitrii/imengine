@@ -62,22 +62,18 @@ private:
 void Application::initialize() {
         GraphicApplication::initialize();
 
-        m_room = new Entity("room.json", scene()->world());
-        m_logo = new Entity("uh60.json", scene()->world());
+        m_room = new Entity("tank.json", scene()->world());
+        m_logo = new Entity("logo.json", m_room);
 
-        /*
-        m_sphere1 = new Entity("sphere.obj", EntityMaterialPtr(new EmissiveMaterial()), scene()->world());
-        m_sphere1->setPosition(Vec3(0,2,0));
-        */
-        m_light1 = new PointLight(scene()->world());
-        m_light1->setPosition(Vec3(0, 10, 0));
+        m_sphere1 = new Entity("light_sphere.json", scene()->world());
+        m_light1 = new PointLight(m_sphere1);
         m_light1->setPower(2.0);
         m_light1->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
+        m_sphere1->setPosition(Vec3(0.0, 2.0, 1.0));
 
-        /*
         m_empty = new Movable(scene()->world());
 
-        m_sphere2 = new Entity("projector.xml", m_empty);
+        m_sphere2 = new Entity("projector.json", m_empty);
         m_sphere2->setPosition(Vec3(4,2,4));
         m_sphere2->lookAt(Vec3(0), Vec3(0,1,0));
         m_light2 = new SpotLight(m_sphere2);
@@ -85,6 +81,7 @@ void Application::initialize() {
         m_light2->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
         m_light2->setPower(2.0);
 
+        /*
         m_buddha = new Entity("buddha.xml", m_room);
         m_buddha->setPosition(Vec3(-2.0, 0.0, 2.0));
         */
