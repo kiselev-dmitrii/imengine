@@ -15,7 +15,7 @@ public:
         GenericMaterial();
 
         /// Загружает параметры материала из Json элемента
-        void            loadFromJson(const JsonValue& value);
+        void            loadFromJson(const JsonValue& value, const String& texturePath);
 
         /// Устанавливает/возвращает окружающий цвет
         void            setAmbientColor(const Vec3& color)                      { m_ambientColor = color; }
@@ -39,6 +39,10 @@ public:
         /// Устанавливает/возвращает нормальную текстуру
         void            setNormalTexture(const String& path)                    { return m_normalTexture; }
         Texture2D*      normalTexture() const;
+
+        /// Устанавливает/отключает материал
+        void            bind();
+        void            unbind();
 
 private:
         Vec3            m_ambientColor;
