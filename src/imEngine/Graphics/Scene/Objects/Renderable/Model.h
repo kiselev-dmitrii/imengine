@@ -3,6 +3,7 @@
 
 #include <imEngine/Graphics/Geometry.h>
 #include <imEngine/Graphics/Scene/Materials/Material.h>
+#include <json/json.h>
 
 namespace imEngine {
 class Model;
@@ -14,7 +15,7 @@ class ModelObject;
 class Detail {
 public:
         /// Конструктор
-        Detail(const String& name, Geometry* geometry, MaterialPtr material, Model* owner);
+        Detail(const String& name, GeometryPtr geometry, MaterialPtr material, Model* owner);
 
         /// Возвращает имя детали
         const String&           name() const                                    { return m_name; }
@@ -22,7 +23,7 @@ public:
         void                    setMaterial(const MaterialPtr& material)        { m_material = material; }
         const MaterialPtr&      material() const                                { return m_material; }
         /// Возвращает геометрию
-        Geometry*               geometry() const                                { return m_geometry; }
+        GeometryPtr             geometry() const                                { return m_geometry; }
         /// Устанавливает/возвращает владующую модель
         void                    setOwner(Model* owner)                          { m_owner = owner; }
         Model*                  owner()                                         { return m_owner; }
@@ -34,7 +35,7 @@ private:
         String          m_name;
         Model*          m_owner;
 
-        Geometry*       m_geometry;
+        GeometryPtr     m_geometry;
         MaterialPtr     m_material;
 };
 typedef std::vector<Detail> MapStringDetail;
@@ -47,18 +48,12 @@ typedef std::vector<Detail> MapStringDetail;
  */
 class Model {
 public:
-        /// Конструирует модель без деталей
+        /// Конструирует модель с именем name (без деталей)
         Model(const String& name);
-        /// Конструирует модель с деталями
-        Model(const String& name, const MapStringDetail& details);
-        /// Создает модель из одной детали
-        Model(const String& name, const String& geometry, const MaterialPtr& material);
-        Model(const String& name, Geometry* geometry, const MaterialPtr& material);
         /// Конструктор копирования
         Model(const Model& model);
 
-        /// Загружает модель из файла (xml или obj)
-        /// Парсит файл и создает детали
+        /// Загружает модель из json файла, содержащего геометрию и материалы
         void                    load(const String& filename);
 
         /// Возвращает имя модели
@@ -72,11 +67,12 @@ public:
         Object*                 owner() const                                   { return m_owner; }
 
 private:
+        void                    loadFromJson(const String& filename);
+        void                    loadFromJson(const Json::Value& root);
+        GeometryPtr             loadGeometry(const String& encodedVertices, const String& encodedIndices);
+        MaterialPtr             loadMaterial(const Json::Value& material);
+
         void                    recalculateAABB();
-        void                    loadFromXML(const String& filename);
-        void                    loadFromXML(const XmlNode& node);
-        Geometry*               createGeometry(const XmlNode& node);
-        MaterialPtr             createMaterial(const XmlNode& node);
 
 private:
         String          m_name;
@@ -84,7 +80,6 @@ private:
         MapStringDetail m_details;
         Object*         m_owner;
 };
-
 
 
 } //namespace imEngine

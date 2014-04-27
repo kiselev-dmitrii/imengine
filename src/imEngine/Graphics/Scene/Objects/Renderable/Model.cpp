@@ -5,12 +5,13 @@
 #include "../../Materials/EmissiveMaterial.h"
 #include <imEngine/Utils/StringUtils.h>
 #include <imEngine/Utils/Debug.h>
+#include <cstring>
 
 namespace imEngine {
 
 //############################## Detail #####################################//
 
-Detail::Detail(const String &name, Geometry* geometry, MaterialPtr material, Model *owner) :
+Detail::Detail(const String &name, GeometryPtr geometry, MaterialPtr material, Model *owner) :
         m_name(name),
         m_owner(owner),
         m_geometry(geometry),
@@ -36,29 +37,6 @@ Model::Model(const String& name) :
         m_owner(nullptr)
 { }
 
-Model::Model(const String &name, const MapStringDetail &details) :
-        m_name(name),
-        m_details(details),
-        m_owner(nullptr)
-{ }
-
-Model::Model(const String &name, const String& geometry, const MaterialPtr &material) :
-        m_name(name),
-        m_owner(nullptr)
-{
-        Geometry* g = RESOURCES->geometry()->geometry(geometry);
-        m_details.push_back(Detail("unnamed", g, material, this));
-        recalculateAABB();
-}
-
-Model::Model(const String &name, Geometry* geometry, const MaterialPtr &material) :
-        m_name(name),
-        m_owner(nullptr)
-{
-        m_details.push_back(Detail("unnamed", geometry, material, this));
-        recalculateAABB();
-}
-
 Model::Model(const Model &model) {
         m_name = model.m_name;
         m_aabb = model.m_aabb;
@@ -71,8 +49,87 @@ Model::Model(const Model &model) {
 
 void Model::load(const String &filename) {
         m_details.clear();
-        loadFromXML(filename);
+        loadFromJson(filename);
         recalculateAABB();
+}
+
+void Model::loadFromJson(const String &filename) {
+        Json::Value root;
+        Json::Reader reader;
+
+        std::ifstream file(filename);
+        bool isOk = reader.parse(file, root, false);
+        if (!isOk) {
+                IM_ERROR("Cannot open file " << filename);
+                return;
+        }
+
+        loadFromJson(root);
+}
+
+void Model::loadFromJson(const Json::Value &root) {
+        Json::Value details = root["details"];
+        Json::Value materials = root["materials"];
+
+        for (const Json::Value& detail: details) {
+                String name = detail.get("name", "");
+                String materialName = detail.get("material", "");
+                String vertices = detail.get("vertices", "");
+                String indices = details.get("indices", "");
+
+                if (vertices.empty() || indices.empty()) {
+                        IM_ERROR("Detail doesn't contain mesh data");
+                        return;
+                }
+                if (materialName.empty()) {
+                        IM_ERROR("Detail has not material");
+                        return;
+                }
+
+                GeometryPtr geometry = loadGeometry(vertices, indices);
+                MaterialPtr material = loadMaterial(materials[materialName]);
+
+                m_details.push_back(Detail(name, geometry, material, this));
+        }
+}
+
+GeometryPtr Model::loadGeometry(const String &encodedVertices, const String &encodedIndices) {
+        String decodedVertices = StringUtils::fromBase64(encodedVertices);
+        String decodedIndices = StringUtils::fromBase64(encodedIndices);
+
+        uint numVertices = decodedVertices.size() / sizeof(Vertex);
+        uint numIndices = decodedIndices.size() / sizeof(uint);
+
+        VertexList vertices;
+        vertices.resize(numVertices);
+        std::memcpy(&(vertices[0]), decodedVertices.c_str(), decodedVertices.size());
+
+        IndexList indices;
+        indices.resize(numIndices);
+        std::memcpy(&(indices[0]), decodedIndices.c_str(), decodedIndices.size());
+
+        return GeometryPtr(new Geometry(vertices, indices));
+}
+
+MaterialPtr Model::loadMaterial(const Json::Value &material) {
+        String type = material.get("type", "");
+        if (type.empty()) {
+                IM_ERROR("Material has not type");
+                return;
+        }
+
+        if (type == "GENERIC") {
+                TexturedDeferredMaterial* result = new TexturedDeferredMaterial();
+                //result->loadFromXML(material);
+                return MaterialPtr((Material*)result);
+        } else if (type == "EMISSIVE") {
+                EmissiveMaterial* result = new EmissiveMaterial();
+                //result->loadFromXML(materialNode);
+                return MaterialPtr((Material*)result);
+        } else {
+                IM_ERROR(type << " is unknown type");
+                return MaterialPtr();
+        }
 }
 
 void Model::recalculateAABB() {
@@ -87,27 +144,6 @@ void Model::recalculateAABB() {
                 m_aabb.min = glm::min(m_aabb.min, geometryAABB.min);
         }
 
-}
-
-void Model::loadFromXML(const String &filename) {
-        XmlDocument doc;
-        XmlResult result = doc.load_file(filename.c_str());
-        if (!result) {
-                IM_ERROR("Cannot open file " << filename);
-                return;
-        }
-
-        loadFromXML(doc.first_child());
-}
-
-void Model::loadFromXML(const XmlNode &modelNode) {
-        for (const XmlNode& detailNode: modelNode.children()) {
-                String name = detailNode.attribute("name").value();
-                Geometry* geometry = createGeometry(detailNode.child("geometry"));
-                MaterialPtr material = createMaterial(detailNode.child("material"));
-
-                m_details.push_back(Detail(name, geometry, material, this));
-        }
 }
 
 Geometry* Model::createGeometry(const XmlNode &geometryNode) {
