@@ -248,8 +248,7 @@ String MaterialContainer::name() const {
 StringList MaterialContainer::serialize() const {
         StringList result;
 
-        result.push_back("{");
-        result.push_back("\t\"name\"\t\t\t:\t\"" + m_name + "\",");
+        result.push_back("\"" + m_name + "\": {");
 
         if (m_type == MaterialType::GENERIC) {
                 result.push_back("\t\"ambientColor\"\t:\t" + toJsonVec(m_ambientColor) + ",");
@@ -384,8 +383,7 @@ void Mesh::loadDetails(const aiScene *scene) {
 String Mesh::serializeMaterials(uint n, const MaterialList &materials) const {
         String result;
 
-        result += indent(n) + "\"materials\":\n";
-        result += indent(n) + "[\n";
+        result += indent(n) + "\"materials\": {\n";
 
         for (const MaterialContainer& material: materials) {
                 StringList m = material.serialize();
@@ -395,7 +393,7 @@ String Mesh::serializeMaterials(uint n, const MaterialList &materials) const {
         result.erase(result.size()-2);
         result += "\n";
 
-        result += indent(n) + "]\n";
+        result += indent(n) + "}\n";
 
         return result;
 }
