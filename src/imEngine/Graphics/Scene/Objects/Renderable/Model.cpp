@@ -143,44 +143,6 @@ void Model::recalculateAABB() {
                 m_aabb.max = glm::max(m_aabb.max, geometryAABB.max);
                 m_aabb.min = glm::min(m_aabb.min, geometryAABB.min);
         }
-
-}
-
-Geometry* Model::createGeometry(const XmlNode &geometryNode) {
-        IM_VAR(geometryNode.name());
-        String filename = geometryNode.attribute("filename").value();
-        if (filename == "") {
-                IM_ERROR("Tag geometry must contain attribute filename");
-                return nullptr;
-        }
-
-        return RESOURCES->geometry()->geometry(filename);
-}
-
-MaterialPtr Model::createMaterial(const XmlNode &materialNode) {
-        String type = materialNode.attribute("type").value();
-        if (type == "") {
-                IM_ERROR("Tag material must contain attribute type");
-                return MaterialPtr();
-        }
-
-        if (type == "basic_deferred") {
-                BasicDeferredMaterial* result = new BasicDeferredMaterial();
-                result->loadFromXML(materialNode);
-                return MaterialPtr((Material*)result);
-
-        } else if (type == "textured_deferred") {
-                TexturedDeferredMaterial* result = new TexturedDeferredMaterial();
-                result->loadFromXML(materialNode);
-                return MaterialPtr((Material*)result);
-        } else if (type == "emissive") {
-                EmissiveMaterial* result = new EmissiveMaterial();
-                result->loadFromXML(materialNode);
-                return MaterialPtr((Material*)result);
-        } else {
-                IM_ERROR("Material " << type << " is not found");
-                return MaterialPtr();
-        }
 }
 
 
