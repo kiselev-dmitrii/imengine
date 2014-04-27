@@ -187,7 +187,7 @@ public:
         ModelManager(const String& directory);
 
         /// Загружает или ищет геометрию в памяти
-        Model*          model(const String& name);
+        Model           model(const String& name);
         /// Перезагружает всю геометрию
         virtual void    reloadAll();
 };

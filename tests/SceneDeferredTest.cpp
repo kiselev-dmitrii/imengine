@@ -62,14 +62,21 @@ private:
 void Application::initialize() {
         GraphicApplication::initialize();
 
-        m_room = new Entity("room.xml", scene()->world());
-        m_logo = new Entity("logo.xml", m_room);
+        /*
+        m_room = new Entity("room.json", scene()->world());
+        */
+        m_logo = new Entity("tank.json", scene()->world());
 
+        /*
         m_sphere1 = new Entity("sphere.obj", EntityMaterialPtr(new EmissiveMaterial()), scene()->world());
         m_sphere1->setPosition(Vec3(0,2,0));
-        m_light1 = new PointLight(m_sphere1);
+        */
+        m_light1 = new PointLight(scene()->world());
+        m_light1->setPosition(Vec3(0, 10, 0));
+        m_light1->setPower(2.0);
         m_light1->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
 
+        /*
         m_empty = new Movable(scene()->world());
 
         m_sphere2 = new Entity("projector.xml", m_empty);
@@ -82,6 +89,7 @@ void Application::initialize() {
 
         m_buddha = new Entity("buddha.xml", m_room);
         m_buddha->setPosition(Vec3(-2.0, 0.0, 2.0));
+        */
 
         m_densityToColorTexture = Texture2DPtr(new Texture2D());
         m_densityToColorTexture->load("resources/textures/density_to_color.png");

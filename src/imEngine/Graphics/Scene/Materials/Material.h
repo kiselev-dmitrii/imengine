@@ -4,6 +4,7 @@
 #include <imEngine/Graphics/GAPI/GAPI.h>
 #include <json/json.h>
 #include <imEngine/FileContainers/Json.h>
+#include <imEngine/FileContainers/Xml.h>
 #include <imEngine/Graphics/Scene/Objects/Camera/Camera.h>
 
 namespace imEngine {

@@ -3,7 +3,7 @@
 
 #include <imEngine/Graphics/Geometry.h>
 #include <imEngine/Graphics/Scene/Materials/Material.h>
-#include <json/json.h>
+#include <imEngine/FileContainers/Json.h>
 
 namespace imEngine {
 class Model;
@@ -68,9 +68,9 @@ public:
 
 private:
         void                    loadFromJson(const String& filename);
-        void                    loadFromJson(const Json::Value& root);
+        void                    loadFromJson(const JsonValue& root);
         GeometryPtr             loadGeometry(const String& encodedVertices, const String& encodedIndices);
-        MaterialPtr             loadMaterial(const Json::Value& material);
+        MaterialPtr             loadMaterial(const JsonValue& material);
 
         void                    recalculateAABB();
 

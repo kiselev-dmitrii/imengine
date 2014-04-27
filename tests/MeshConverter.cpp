@@ -74,7 +74,7 @@ StringList DetailContainer::serialize() const {
         result.push_back("\t\"name\"\t\t:\t\"" + m_name + "\",");
         result.push_back("\t\"material\"\t:\t\"" + m_materialName + "\",");
         result.push_back("\t\"vertices\"\t:\t\"" + vertices() + "\",");
-        result.push_back("\t\"indices\"\t:\t\"" + indices() + "\",");
+        result.push_back("\t\"indices\"\t:\t\"" + indices() + "\"");
         result.push_back("}");
 
         return result;
@@ -158,8 +158,8 @@ public:
 
 private:
         Vec3            toVec3(const aiColor3D& color) const;
-        String          toJsonVec(const Vec3& vec) const;
-        String          toJsonFloat(float value) const;
+        String          toString(const Vec3& vec) const;
+        String          toString(float value) const;
 
 private:
         String          m_name;
@@ -251,10 +251,10 @@ StringList MaterialContainer::serialize() const {
         result.push_back("\"" + m_name + "\": {");
 
         if (m_type == MaterialType::GENERIC) {
-                result.push_back("\t\"ambientColor\"\t:\t" + toJsonVec(m_ambientColor) + ",");
-                result.push_back("\t\"diffuseColor\"\t:\t" + toJsonVec(m_diffuseColor) + ",");
-                result.push_back("\t\"specularColor\"\t:\t" + toJsonVec(m_specularColor) + ",");
-                result.push_back("\t\"specularPower\"\t:\t" + toJsonFloat(m_specularPower) + ",");
+                result.push_back("\t\"ambientColor\"\t:\t" + toString(m_ambientColor) + ",");
+                result.push_back("\t\"diffuseColor\"\t:\t" + toString(m_diffuseColor) + ",");
+                result.push_back("\t\"specularColor\"\t:\t" + toString(m_specularColor) + ",");
+                result.push_back("\t\"specularPower\"\t:\t" + toString(m_specularPower) + ",");
 
                 if (!m_diffuseMap.empty()) result.push_back("\t\"diffuseMap\"\t:\t\"" + m_diffuseMap + "\",");
                 if (!m_normalMap.empty()) result.push_back("\t\"normalMap\"\t:\t\"" + m_normalMap + "\",");
@@ -263,15 +263,15 @@ StringList MaterialContainer::serialize() const {
                 result.push_back("\t\"type\"\t\t\t:\t\"GENERIC\"");
 
         } else if (m_type == MaterialType::EMISSIVE) {
-                result.push_back("\t\"emissiveColor\"\t:\t" + toJsonVec(m_emissiveColor) + ",");
+                result.push_back("\t\"emissiveColor\"\t:\t" + toString(m_emissiveColor) + ",");
                 result.push_back("\t\"type\"\t\t\t:\t\"EMISSIVE\"");
 
         } else if (m_type == MaterialType::TRANSPARENT) {
-                result.push_back("\t\"transparentColor\"\t:\t" + toJsonVec(m_transparentColor) + ",");
+                result.push_back("\t\"transparentColor\"\t:\t" + toString(m_transparentColor) + ",");
                 result.push_back("\t\"type\"\t\t\t:\t\"TRANSPARENT\"");
 
         } else if (m_type == MaterialType::REFRACTION) {
-                result.push_back("\t\"refractionIndex\"\t:\t" + toJsonFloat(m_refractionIndex) + ",");
+                result.push_back("\t\"refractionIndex\"\t:\t" + toString(m_refractionIndex) + ",");
                 result.push_back("\t\"type\"\t\t\t:\t\"REFRACTION\"");
 
         }
@@ -285,13 +285,13 @@ Vec3 MaterialContainer::toVec3(const aiColor3D &color) const {
         return Vec3(color.r, color.g, color.b);
 }
 
-String MaterialContainer::toJsonVec(const Vec3 &vec) const {
+String MaterialContainer::toString(const Vec3 &vec) const {
         std::stringstream ss;
-        ss << "[" << vec.x <<  ", " << vec.y << ", " << vec.z << "]";
+        ss << "\"" << vec.x <<  "," << vec.y << "," << vec.z << "\"";
         return ss.str();
 }
 
-String MaterialContainer::toJsonFloat(float value) const {
+String MaterialContainer::toString(float value) const {
         std::stringstream ss;
         ss << value;
         return ss.str();

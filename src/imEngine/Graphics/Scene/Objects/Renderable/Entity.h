@@ -13,8 +13,6 @@ class Entity : public Movable {
 public:
         /// Конструктор. Создает сущеность с моделью из файла model
         Entity(const String& model, Object* parent);
-        /// Конструктор. Создает полигональный объект из одной детали
-        Entity(const String& geometry, EntityMaterialPtr material, Object* parent);
         /// Деструктор
         ~Entity();
 

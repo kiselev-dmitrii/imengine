@@ -199,15 +199,15 @@ ModelManager::ModelManager(const String &directory) :
         ResourceManagerImplementation(directory)
 { }
 
-Model* ModelManager::model(const String &name) {
+Model ModelManager::model(const String &name) {
         Model* model = findResource(name) ;
         if (model) {
-                return model;
+                return *model;
         } else {
                 model = new Model(name);
                 model->load(Filesystem::joinPath(directory(), name));
                 addResource(name, model);
-                return model;
+                return *model;
         }
 }
 

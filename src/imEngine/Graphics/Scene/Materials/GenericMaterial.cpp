@@ -1,5 +1,7 @@
 #include "GenericMaterial.h"
+#include "../ResourceManager.h"
 #include <imEngine/System/Filesystem.h>
+#include <imEngine/Utils/StringUtils.h>
 
 namespace imEngine {
 
@@ -11,29 +13,29 @@ GenericMaterial::GenericMaterial() :
         setSpecularColor(Vec3(1));
         setSpecularPower(40.0f);
 
-        setDiffuseTexture("models/empty/empty_diffuse.png");
-        setSpecularTexture("models/empty/empty_specular.png");
-        setNormalTexture("models/empty/empty_normal.png");
+        setDiffuseTexture("model/empty_diffuse.png");
+        setSpecularTexture("model/empty_specular.png");
+        setNormalTexture("model/empty_normal.png");
 }
 
-void GenericMaterial::loadFromJson(const JsonValue &value, const String &texturePath) {
-        String ambientColor = value.get("ambientColor", "");
-        String diffuseColor = value.get("diffuseColor", "");
-        String specularColor = value.get("specularColor", "");
-        String specularPower = value.get("specularPower", "");
+void GenericMaterial::loadFromJson(const JsonValue &value) {
+        String ambientColor = value.get("ambientColor", "").asString();
+        String diffuseColor = value.get("diffuseColor", "").asString();
+        String specularColor = value.get("specularColor", "").asString();
+        float  specularPower = value.get("specularPower", 40).asFloat();
 
-        String diffuseMap = value.get("diffuseMap", "");
-        String specularMap = value.get("specualrMap", "");
-        String normalMap = value.get("normalMap", "");
+        String diffuseMap = value.get("diffuseMap", "").asString();
+        String specularMap = value.get("specualrMap", "").asString();
+        String normalMap = value.get("normalMap", "").asString();
 
         if (!ambientColor.empty()) setAmbientColor(StringUtils::toVec3(ambientColor));
         if (!diffuseColor.empty()) setDiffuseColor(StringUtils::toVec3(diffuseColor));
         if (!specularColor.empty()) setSpecularColor(StringUtils::toVec3(specularColor));
-        if (!specularPower.empty()) setSpecularPower(std::stof(specularPower));
+        setSpecularPower(specularPower);
 
-        if (!diffuseMap.empty()) setDiffuseTexture(Filesystem::joinPath(texturePath, diffuseMap));
-        if (!specularMap.empty()) setSpecularTexture(Filesystem::joinPath(texturePath, specularMap));
-        if (!normalMap.empty()) setNormalTexture(Filesystem::joinPath(texturePath, normalMap));
+        if (!diffuseMap.empty()) setDiffuseTexture("model/" + diffuseMap);
+        if (!specularMap.empty()) setSpecularTexture("model/" + specularMap);
+        if (!normalMap.empty()) setNormalTexture("model/" + normalMap);
 }
 
 void GenericMaterial::setDiffuseTexture(const String &path) {

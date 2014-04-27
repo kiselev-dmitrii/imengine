@@ -1,11 +1,14 @@
 #include "Model.h"
 #include "../../ResourceManager.h"
+#include "../../Materials/GenericMaterial.h"
 #include "../../Materials/BasicDeferredMaterial.h"
 #include "../../Materials/DeferredMaterial.h"
 #include "../../Materials/EmissiveMaterial.h"
 #include <imEngine/Utils/StringUtils.h>
 #include <imEngine/Utils/Debug.h>
+#include <imEngine/System/Filesystem.h>
 #include <cstring>
+#include <fstream>
 
 namespace imEngine {
 
@@ -57,25 +60,25 @@ void Model::loadFromJson(const String &filename) {
         Json::Value root;
         Json::Reader reader;
 
-        std::ifstream file(filename);
-        bool isOk = reader.parse(file, root, false);
+        std::ifstream ifile(filename, std::ifstream::binary);
+        bool isOk = reader.parse(ifile, root, false);
         if (!isOk) {
-                IM_ERROR("Cannot open file " << filename);
+                IM_ERROR("Cannot open file " << filename << ": " << reader.getFormatedErrorMessages());
                 return;
         }
 
         loadFromJson(root);
 }
 
-void Model::loadFromJson(const Json::Value &root) {
-        Json::Value details = root["details"];
-        Json::Value materials = root["materials"];
+void Model::loadFromJson(const JsonValue &root) {
+        JsonValue details = root["details"];
+        JsonValue materials = root["materials"];
 
         for (const Json::Value& detail: details) {
-                String name = detail.get("name", "");
-                String materialName = detail.get("material", "");
-                String vertices = detail.get("vertices", "");
-                String indices = details.get("indices", "");
+                String name = detail.get("name", "").asString();
+                String materialName = detail.get("material", "").asString();
+                String vertices = detail.get("vertices", "").asString();
+                String indices = detail.get("indices", "").asString();
 
                 if (vertices.empty() || indices.empty()) {
                         IM_ERROR("Detail doesn't contain mesh data");
@@ -111,16 +114,16 @@ GeometryPtr Model::loadGeometry(const String &encodedVertices, const String &enc
         return GeometryPtr(new Geometry(vertices, indices));
 }
 
-MaterialPtr Model::loadMaterial(const Json::Value &material) {
-        String type = material.get("type", "");
+MaterialPtr Model::loadMaterial(const JsonValue &material) {
+        String type = material.get("type", "").asString();
         if (type.empty()) {
                 IM_ERROR("Material has not type");
-                return;
+                return MaterialPtr();
         }
 
         if (type == "GENERIC") {
-                TexturedDeferredMaterial* result = new TexturedDeferredMaterial();
-                //result->loadFromXML(material);
+                GenericMaterial* result = new GenericMaterial();
+                result->loadFromJson(material);
                 return MaterialPtr((Material*)result);
         } else if (type == "EMISSIVE") {
                 EmissiveMaterial* result = new EmissiveMaterial();
