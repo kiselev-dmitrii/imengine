@@ -67,7 +67,6 @@ void Application::initialize() {
 
         m_sphere1 = new Entity("light_sphere.json", scene()->world());
         m_light1 = new PointLight(m_sphere1);
-        m_light1->setPower(2.0);
         m_light1->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
         m_sphere1->setPosition(Vec3(0.0, 2.0, 1.0));
 
