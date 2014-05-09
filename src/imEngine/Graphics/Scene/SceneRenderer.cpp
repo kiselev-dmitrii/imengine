@@ -54,7 +54,7 @@ void SceneRenderer::initGBuffer() {
 }
 
 void SceneRenderer::initLightAccum() {
-        m_lightAccum.enableColorBuffer(0, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);
+        m_lightAccum.enableColorBuffer(0, InternalFormat::COLOR_FLOAT_3_COMP_16_BIT, true);
         m_lightAccum.colorBufferTexture(0)->setWrap(TextureWrapMode::CLAMP_TO_EDGE);
 }
 

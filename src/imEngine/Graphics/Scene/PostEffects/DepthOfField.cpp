@@ -46,8 +46,8 @@ DepthOfField::DepthOfField() :
         m_rt1(Renderer::viewportSize()),
         m_rt2(Renderer::viewportSize())
 {
-        m_rt1.enableColorBuffer(0, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);
-        m_rt2.enableColorBuffer(0, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);
+        m_rt1.enableColorBuffer(0, InternalFormat::COLOR_FLOAT_3_COMP_16_BIT, true);
+        m_rt2.enableColorBuffer(0, InternalFormat::COLOR_FLOAT_3_COMP_16_BIT, true);
 }
 
 Texture2D* DepthOfField::apply() {

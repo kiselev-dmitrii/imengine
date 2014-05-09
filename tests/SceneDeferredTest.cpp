@@ -25,7 +25,6 @@ protected:
 
 private:
         Entity*      m_room;
-        Entity*      m_logo;
         PictureColor*   m_diffuseBuffer;
         PictureColor*   m_materialBuffer;
         PictureColor*   m_geometryBuffer;
@@ -62,8 +61,17 @@ private:
 void Application::initialize() {
         GraphicApplication::initialize();
 
-        m_room = new Entity("tank.json", scene()->world());
-        m_logo = new Entity("logo.json", m_room);
+        m_room = new Entity("room.json", scene()->world());
+
+        Entity* vase1 = new Entity("vase.json", m_room);
+        Entity* vase2 = new Entity("vase.json", m_room);
+        vase2->setPosition(Vec3(1, 0.0, 1));
+        Entity* vase3 = new Entity("vase.json", m_room);
+        vase3->setPosition(Vec3(2, 0.0, 2));
+        Entity* vase4 = new Entity("vase.json", m_room);
+        vase4->setPosition(Vec3(3, 0.0, 3));
+        Entity* vase5 = new Entity("vase.json", m_room);
+        vase5->setPosition(Vec3(4, 0.0, 4));
 
         m_sphere1 = new Entity("light_sphere.json", scene()->world());
         m_light1 = new PointLight(m_sphere1);
@@ -79,6 +87,7 @@ void Application::initialize() {
         m_light2->lookAt(Vec3(0), Vec3(0,1,0));
         m_light2->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
         m_light2->setPower(2.0);
+
 
         /*
         m_buddha = new Entity("buddha.xml", m_room);
@@ -107,7 +116,7 @@ void Application::initialize() {
         m_pnl = new Panel("regular_panel.png", gui()->root());
         m_pnl->setOpacity(0.9);
         m_pnl->setPadding(20);
-        m_pnl->setSize(Vec2(200, 600));
+        m_pnl->setSize(Vec2(400, 600));
 
         m_pnlLayout = new VBoxLayout(m_pnl);
 
