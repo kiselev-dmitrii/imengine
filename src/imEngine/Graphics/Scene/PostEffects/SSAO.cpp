@@ -41,7 +41,7 @@ void SSAOPass::prepare() const {
 SSAO::SSAO() :
         m_rt(Renderer::viewportSize())
 {
-        m_rt.enableColorBuffer(0, InternalFormat::COLOR_FLOAT_3_COMP_16_BIT, true);
+        m_rt.enableColorBuffer(0, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);
 }
 
 Texture2D* SSAO::apply() {

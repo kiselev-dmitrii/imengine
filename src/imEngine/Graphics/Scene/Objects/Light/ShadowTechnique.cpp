@@ -62,7 +62,7 @@ SimpleShadowMapping::SimpleShadowMapping() :
         ShadowTechnique("lights/WriteDepth.glsl", {"SHADOW_MAPPING"}),
         m_rt(m_size)
 {
-        setShadowMapSize(IVec2(1024, 1024));
+        setShadowMapSize(IVec2(128, 128));
 
         m_rt.enableDepthBuffer(InternalFormat::DEPTH_NORM_1_COMP_24_BIT, true);
 
@@ -98,7 +98,7 @@ VarianceShadowMapping::VarianceShadowMapping() :
         m_rt1(m_size),
         m_rt2(m_size)
 {
-        setShadowMapSize(IVec2(1024, 1024));
+        setShadowMapSize(IVec2(128, 128));
 
         m_rt1.enableColorBuffer(0, InternalFormat::COLOR_FLOAT_3_COMP_32_BIT, true);
         m_rt1.enableDepthBuffer(InternalFormat::DEPTH_NORM_1_COMP_24_BIT, false);
