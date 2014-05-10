@@ -61,7 +61,7 @@ private:
 void Application::initialize() {
         GraphicApplication::initialize();
 
-        m_room = new Entity("tank.json", scene()->world());
+        m_room = new Entity("sponza.json", scene()->world());
 
         Entity* vase1 = new Entity("vase.json", m_room);
         Entity* vase2 = new Entity("vase.json", m_room);
