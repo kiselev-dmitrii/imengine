@@ -77,6 +77,7 @@ void Application::initialize() {
         m_light1 = new PointLight(m_sphere1);
         m_light1->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
         m_sphere1->setPosition(Vec3(0.0, 2.0, 1.0));
+        m_light1->setPower(10.0);
 
         m_empty = new Movable(scene()->world());
 
@@ -86,7 +87,7 @@ void Application::initialize() {
         m_light2 = new SpotLight(m_sphere2);
         m_light2->lookAt(Vec3(0), Vec3(0,1,0));
         m_light2->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
-        m_light2->setPower(2.0);
+        m_light2->setPower(20.0);
 
 
         /*

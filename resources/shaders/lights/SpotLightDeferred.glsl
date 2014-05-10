@@ -30,6 +30,7 @@ uniform float uFarDistance;
 struct Light {
         vec3    diffuse;
         vec3    specular;
+        float   attenuation;
 
         float   cutoffAngle;    //в градусах
         float   falloffAngle;   //в градусах
@@ -64,10 +65,14 @@ void main() {
                 vec3 specularColor =    uLight.specular *
                                         max(pow(dot(v, reflect(-s, normalVS)), material.r*100.0), 0.0);
 
-
+                /// Вычисляем тень
                 float shadow = calculateShadow(positionVS, uShadow);
 
-                fLightBuffer = vec4((diffuseColor + specularColor)*falloff*shadow, 1.0);
+                /// Вычисляем коэффециент угасания света с дистанцией
+                float d = distance(uLight.positionVS, positionVS);
+                float attenuation = 1.0f/(1.0f + uLight.attenuation * d*d);
+
+                fLightBuffer = vec4((diffuseColor + specularColor)*falloff*shadow*attenuation, 1.0);
         } else {
                 fLightBuffer = vec4(0.0);
         }

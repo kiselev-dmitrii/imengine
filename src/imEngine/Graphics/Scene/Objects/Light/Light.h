@@ -31,6 +31,10 @@ public:
         /// Устанавливает/возвращает отражательный свет
         void            setSpecularColor(const Vec3& color)                     { m_specularColor = glm::clamp(color, Vec3(0.0), Vec3(1.0)); }
         const Vec3&     specularColor() const                                   { return m_specularColor; }
+
+        /// Устанавливает/возврашает коэффициент угасания (0 - нет угасания)
+        void            setAttenuation(float attenuation)                       { m_attenuation = attenuation; }
+        float           attenuation() const                                     { return m_attenuation; }
         /// Устанавливает/возвращает мощность источника света
         void            setPower(float power)                                   { m_power = power; }
         float           power() const                                           { return m_power; }
@@ -44,7 +48,7 @@ protected:
         /// Устанавливает uniform-переменные, которые часто требуется передавать в шейдер для расчета освещения
         void            setGBuffers() const;
         void            setCameraSettings() const;
-        void            setLightColors() const;
+        void            setCommonLightSettings() const;
 
 protected:
         Texture2D*      m_diffuseBuffer;
@@ -54,6 +58,7 @@ protected:
 
         Vec3            m_diffuseColor;
         Vec3            m_specularColor;
+        float           m_attenuation;
         float           m_power;
 
         ShadowTechniquePtr m_shadowTechnique;

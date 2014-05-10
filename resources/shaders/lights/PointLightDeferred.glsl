@@ -21,9 +21,11 @@ uniform sampler2D uGBufferGeometry;
 uniform sampler2D uGBufferDepth;
 
 struct Light {
-        vec3 diffuse;
-        vec3 specular;
-        vec3 positionVS;
+        vec3    diffuse;
+        vec3    specular;
+        float   attenuation;
+
+        vec3    positionVS;
 };
 uniform Light uLight;
 uniform mat4  uInvProjectionMatrix;
@@ -57,5 +59,9 @@ void main() {
         vec3 specularColor =    uLight.specular *
                                 max(pow(dot(v, reflect(-s, normalVS)), material.r*100.0), 0.0);
 
-        fLightBuffer = vec4(diffuseColor + specularColor, 1.0);
+        /// Вычисляем коэффециент угасания света с дистанцией
+        float d = distance(uLight.positionVS, positionVS);
+        float attenuation = 1.0f/(1.0f + uLight.attenuation * d*d);
+
+        fLightBuffer = vec4((diffuseColor + specularColor)*attenuation, 1.0);
 }

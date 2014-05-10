@@ -33,7 +33,7 @@ float SpotLight::falloffAngle() const {
 void SpotLight::prepare() const {
         setGBuffers();
         setCameraSettings();
-        setLightColors();
+        setCommonLightSettings();
 
         // Установка позиции источника
         Vec3 positionVS = Vec3(scene()->activeCamera()->worldToLocalMatrix() * Vec4(worldPosition(), 1.0));

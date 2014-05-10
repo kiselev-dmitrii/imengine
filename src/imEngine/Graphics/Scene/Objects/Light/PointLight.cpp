@@ -4,13 +4,13 @@
 namespace imEngine {
 
 PointLight::PointLight(Object *parent) :
-        Light("lights/LightDeferred.glsl", parent)
+        Light("lights/PointLightDeferred.glsl", parent)
 { }
 
 void PointLight::prepare() const {
         setGBuffers();
         setCameraSettings();
-        setLightColors();
+        setCommonLightSettings();
 
         /// Установка позиции
         Vec3 positionVS = Vec3(scene()->activeCamera()->worldToLocalMatrix() * Vec4(worldPosition(), 1.0));

@@ -14,6 +14,7 @@ Light::Light(const String& filename, Object* parent) :
 
         m_diffuseColor(1.0),
         m_specularColor(1.0),
+        m_attenuation(1.0),
         m_power(1.0)
 {
         scene()->registerLight(this);
@@ -39,9 +40,10 @@ void Light::setCameraSettings() const {
         m_program->setUniform("uInvProjectionMatrix", glm::inverse(cam->viewToClipMatrix()));
 }
 
-void Light::setLightColors() const {
+void Light::setCommonLightSettings() const {
         m_program->setUniform("uLight.diffuse", m_diffuseColor * m_power);
         m_program->setUniform("uLight.specular", m_specularColor * m_power);
+        m_program->setUniform("uLight.attenuation", m_attenuation);
 }
 
 void Light::setShadowTechnique(ShadowTechniquePtr technique) {
