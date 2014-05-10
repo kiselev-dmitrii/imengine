@@ -61,7 +61,7 @@ private:
 void Application::initialize() {
         GraphicApplication::initialize();
 
-        m_room = new Entity("room.json", scene()->world());
+        m_room = new Entity("tank.json", scene()->world());
 
         Entity* vase1 = new Entity("vase.json", m_room);
         Entity* vase2 = new Entity("vase.json", m_room);
@@ -78,6 +78,7 @@ void Application::initialize() {
         m_light1->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
         m_sphere1->setPosition(Vec3(0.0, 2.0, 1.0));
         m_light1->setPower(10.0);
+        m_light1->setAttenuation(0.1);
 
         m_empty = new Movable(scene()->world());
 
@@ -87,7 +88,7 @@ void Application::initialize() {
         m_light2 = new SpotLight(m_sphere2);
         m_light2->lookAt(Vec3(0), Vec3(0,1,0));
         m_light2->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
-        m_light2->setPower(20.0);
+        m_light2->setPower(80.0);
 
 
         /*
