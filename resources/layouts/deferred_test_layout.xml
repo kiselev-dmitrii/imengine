@@ -1,22 +1,47 @@
 <root>
-	<panel name="settings" position="10,20" size="400,300" padding="40,40,40,40" active="regular_panel.png">
-		<vbox>
-			<hbox>
-				<edit padding="9,9,9,9" width="200" active="regular_lineedit_active.png" disabled="regular_lineedit_disabled.png" focused="regular_lineedit_focused.png" />
-				<button text="test" active="regular_btn_active.png" hover="regular_btn_hover.png" pressed="regular_btn_pressed.png" disabled="regular_btn_disabled.png" focused="regular_btn_focused.png" />
-			</hbox>
+	<panel name="settings" size="300,500" padding="20,20,20,20" active="regular_panel.png">
+	<vbox>
+		<text text="Bloom:" />
+		<text text="Radius:" />
+		<hslider width="260" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+		<text text="Step:" />
+		<hslider width="260" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+		<text text="Threshold:" />
+		<hslider width="260" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+		<hbox>
+			<text text="Enable:" alignment="CENTER"/>
+			<toggle set_checked="1" active="big_checkbox_active.png" checked="big_checkbox_checked.png" disabled_active="big_checkbox_active.png" disabled_checked="big_checkbox_checked.png" />
+		</hbox>
 
-			<button text="test" active="regular_btn_active.png" hover="regular_btn_hover.png" pressed="regular_btn_pressed.png" disabled="regular_btn_disabled.png" focused="regular_btn_focused.png"/>
-			<button text="test" active="regular_btn_active.png" hover="regular_btn_hover.png" pressed="regular_btn_pressed.png" disabled="regular_btn_disabled.png" focused="regular_btn_focused.png"/>
-			<spacing spacing="10"/>
+		<spacing spacing="20"/>
 
-			<text text="Background" /> 
-			<hslider width="320" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
-			<spacing spacing="10"/>
+		<text text="SSAO:" />
+		<text text="Screen radius:" />
+		<hslider width="260" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+		<text text="View radius:" />
+		<hslider width="260" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+		<text text="Power:" />
+		<hslider width="260" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+		<hbox>
+			<text text="Enable:" alignment="CENTER"/>
+			<toggle set_checked="1" active="big_checkbox_active.png" checked="big_checkbox_checked.png" disabled_active="big_checkbox_active.png" disabled_checked="big_checkbox_checked.png" />
+		</hbox>
 
-			<text text="Foreground" /> 
-			<hslider width="320" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
-			<spacing spacing="10"/>
-		</vbox>
+		<spacing spacing="20"/>
+
+		<text text="Depth of field:" />
+		<text text="Near radius:" />
+		<hslider width="260" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+		<text text="Far radius:" />
+		<hslider width="260" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+		<text text="Focus start:" />
+		<hslider width="260" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+		<text text="Focus end:" />
+		<hslider width="260" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+		<hbox>
+			<text text="Enable:" alignment="CENTER"/>
+			<toggle set_checked="1" active="big_checkbox_active.png" checked="big_checkbox_checked.png" disabled_active="big_checkbox_active.png" disabled_checked="big_checkbox_checked.png" />
+		</hbox>
+	</vbox>
 	</panel>
 </root>
