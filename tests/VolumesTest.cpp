@@ -12,10 +12,50 @@
 #include <imEngine/Graphics/GUI/Slider.h>
 #include <imEngine/Graphics/GUI/ToggleButton.h>
 #include <imEngine/Graphics/GUI/BoxLayout.h>
+#include <imEngine/Graphics/GUI/LineEdit.h>
+#include <imEngine/Graphics/GUI/TextButton.h>
 #include <imEngine/Graphics/Scene/Materials/RaycastingMaterial.h>
 #include <imEngine/Graphics/Scene/Materials/IsosurfaceMaterial.h>
+#include <imEngine/System/Filesystem.h>
+
+#include <sstream>
+#include <iomanip>
+#include <boost/filesystem.hpp>
 
 using namespace imEngine;
+
+String toString(float value) {
+        std::stringstream ss;
+        ss << std::setprecision(4) << value;
+        return ss.str();
+}
+
+class TextSlider : public HBoxLayout {
+public:
+        TextSlider(float min, float max, float width, WidgetAbstract* parent);
+
+public:
+        HSlider*        slider;
+        Text*           value;
+};
+
+TextSlider::TextSlider(float min, float max, float width, WidgetAbstract *parent) :
+        HBoxLayout(parent)
+{
+        setWidth(width);
+
+        slider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", this);
+        slider->setWidth(width - 40);
+        slider->setMinMaxValues(min, max);
+        addWidget(slider);
+
+        value = new Text("0", this);
+        addWidget(value);
+
+        slider->onValueChanged += [&] (HSlider* slider) {
+               value->setText(toString(slider->value()));
+        };
+}
 
 class Application : public GraphicApplication {
 protected:
@@ -37,6 +77,8 @@ private:
 
         Texture3D*      m_data;
         Volume*         m_engine;
+        LineEdit*     lut_path;
+        LineEdit*     data_path;
 
         Panel*          m_pnl;
         VBoxLayout*     m_pnlLayout;
@@ -44,10 +86,10 @@ private:
         HSlider*        m_stepSlider;
         HSlider*        m_thresholdSlider;
 
-        HSlider*        alphaSlider;
-        HSlider*        betaSlider;
-        HSlider*        gammaSlider;
-        HSlider*        distanceSlider;
+        TextSlider*     alpha;
+        TextSlider*     beta;
+        TextSlider*     gamma;
+        TextSlider*     shift;
 
         Movable*        m_empty;
 
@@ -55,11 +97,18 @@ private:
 
         Texture2DPtr    m_densityToColorTexture;
         PictureColor*   m_densityToColorPicture;
+
+        RaycastingMaterial*  raycastingMaterial;
+        IsosurfaceMaterial*  isosurfaceMaterial;
+
 };
 
 
 void Application::initialize() {
         GraphicApplication::initialize();
+        scene()->renderer()->bloom()->setEnabled(false);
+        scene()->renderer()->ssao()->setEnabled(false);
+        scene()->renderer()->depthOfField()->setEnabled(false);
 
         m_room = new Entity("sponza.json", scene()->world());
 
@@ -75,38 +124,20 @@ void Application::initialize() {
 
         m_sphere1 = new Entity("light_sphere.json", scene()->world());
         m_light1 = new PointLight(m_sphere1);
-        m_light1->setDiffuseColor(Vec3(0.3, 1.0, 0.9));
+        m_light1->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
         m_sphere1->setPosition(Vec3(0.0, 2.0, 1.0));
-        m_light1->setPower(10.0);
-        m_light1->setAttenuation(0.5);
+        m_light1->setPower(1.0);
+        m_light1->setAttenuation(0.0);
 
-        m_sphere1 = new Entity("light_sphere.json", scene()->world());
-        m_light1 = new PointLight(m_sphere1);
-        m_light1->setDiffuseColor(Vec3(1.0, 1.0, 0.3));
-        m_sphere1->setPosition(Vec3(0.0, 2.0, 1.0));
-        m_light1->setPower(10.0);
-        m_light1->setAttenuation(0.5);
+        m_empty = new Movable(scene()->world());
 
-
-        m_sphere2 = new Entity("projector.json", scene()->world());
+        m_sphere2 = new Entity("projector.json", m_empty);
         m_sphere2->setPosition(Vec3(4,2,4));
         m_sphere2->lookAt(Vec3(0), Vec3(0,1,0));
         m_light2 = new SpotLight(m_sphere2);
         m_light2->lookAt(Vec3(0), Vec3(0,1,0));
         m_light2->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
-        m_light2->setPower(2.0);
-        m_light2->setCutoffAngle(45);
-        m_light2->setAttenuation(0.001);
-
-        m_sphere2 = new Entity("projector.json", scene()->world());
-        m_sphere2->setPosition(Vec3(4,2,4));
-        m_sphere2->lookAt(Vec3(0), Vec3(0,1,0));
-        m_light2 = new SpotLight(m_sphere2);
-        m_light2->lookAt(Vec3(0), Vec3(0,1,0));
-        m_light2->setDiffuseColor(Vec3(1.0, 1.0, 0.9));
-        m_light2->setPower(2.0);
-        m_light2->setCutoffAngle(45);
-        m_light2->setAttenuation(0.001);
+        m_light2->setPower(80.0);
 
 
         /*
@@ -117,11 +148,11 @@ void Application::initialize() {
         m_densityToColorTexture = Texture2DPtr(new Texture2D());
         m_densityToColorTexture->load("resources/textures/density_to_color.png");
         m_data = new Texture3D();
-        m_data->load(256,256,256, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/textures/3d/foot.raw");
-        m_engine = new Volume(m_data, VolumeMaterialPtr(new RaycastingMaterial()), scene()->world());
-        static_cast<RaycastingMaterial*>(m_engine->material().get())->setDensityTexture(m_densityToColorTexture);
+        m_data->load(256,256, 256, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/textures/3d/foot.raw");
+        m_engine = new Volume(m_data, VolumeMaterialPtr(new IsosurfaceMaterial()), scene()->world());
+        m_engine->material()->setDensityTexture(m_densityToColorTexture);
 
-        m_engine->setPosition(Vec3(2, -2, -2));
+        m_engine->setPosition(Vec3(2, 2, -2));
 
         /*
         m_diffuseBuffer = new PictureColor(scene()->renderer()->gBuffer()->colorBufferTexture(0), gui()->root());
@@ -136,10 +167,11 @@ void Application::initialize() {
         m_pnl = new Panel("regular_panel.png", gui()->root());
         m_pnl->setOpacity(0.9);
         m_pnl->setPadding(20);
-        m_pnl->setSize(Vec2(300, 500));
+        m_pnl->setSize(Vec2(300, 360));
 
         m_pnlLayout = new VBoxLayout(m_pnl);
 
+        /*
         m_radiusSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
         m_radiusSlider->setWidth(m_pnl->contentWidth());
         m_radiusSlider->setMinMaxValues(0, 200);
@@ -245,63 +277,130 @@ void Application::initialize() {
         focusStart->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusStart(slider->value()); };
         focusEnd->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusEnd(slider->value()); };
         dofBtn->onClick += [&] (ToggleButton* btn) { scene()->renderer()->depthOfField()->setEnabled(btn->isChecked()); };
-
-        /// Min density
-        /*
-        m_densityToColorPicture = new PictureColor(m_densityToColorTexture, m_pnlLayout);
-        m_densityToColorPicture->setWidth(m_pnlLayout->contentWidth());
-        m_pnlLayout->addWidget(m_densityToColorPicture);
-
-
-        HSlider* minDensity = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        minDensity->setWidth(m_pnl->contentWidth());
-        m_pnlLayout->addWidget(new Text("Min density", m_pnlLayout));
-        m_pnlLayout->addWidget(minDensity);
-
-        minDensity->onValueChanged += [&] (HSlider* slider) {
-                static_cast<RaycastingMaterial*>(m_engine->material().get())->setMinDensity(slider->value());
-        };
-
-        /// Clip plane
-        alphaSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        alphaSlider->setWidth(m_pnl->contentWidth());
-        alphaSlider->setMinMaxValues(0, 360);
-
-        betaSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        betaSlider->setWidth(m_pnl->contentWidth());
-        betaSlider->setMinMaxValues(0, 360);
-
-        gammaSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        gammaSlider->setWidth(m_pnl->contentWidth());
-        gammaSlider->setMinMaxValues(0, 360);
-
-        distanceSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        distanceSlider->setWidth(m_pnl->contentWidth());
-        distanceSlider->setMinMaxValues(-1, 1);
-        distanceSlider->setValue(0);
-
-        m_pnlLayout->addWidget(new Text("ClipPlane", m_pnlLayout));
-        m_pnlLayout->addWidget(new Text("Alpha,Beta,Gamma,D", m_pnlLayout));
-        m_pnlLayout->addWidget(alphaSlider);
-        m_pnlLayout->addWidget(betaSlider);
-        m_pnlLayout->addWidget(gammaSlider);
-        m_pnlLayout->addWidget(distanceSlider);
-
-
-        auto changeClipPlane = [&] (HSlider* slider) {
-                Vec4 plane;
-                plane.x = glm::cos(glm::radians(alphaSlider->value()));
-                plane.y = glm::cos(glm::radians(betaSlider->value()));
-                plane.z = glm::cos(glm::radians(gammaSlider->value()));
-                plane.w = distanceSlider->value();
-
-                static_cast<RaycastingMaterial*>(m_engine->material().get())->setClipPlane(plane);
-        };
-        alphaSlider->onValueChanged += changeClipPlane;
-        betaSlider->onValueChanged += changeClipPlane;
-        gammaSlider->onValueChanged += changeClipPlane;
-        distanceSlider->onValueChanged += changeClipPlane;
         */
+        /// Data
+        m_pnlLayout->addWidget(new Text("Data:", m_pnlLayout));
+        HBoxLayout* data_load = new HBoxLayout(m_pnlLayout);
+        data_load->setWidth(m_pnl->contentWidth());
+        m_pnlLayout->addWidget(data_load);
+
+        data_path = new LineEdit("regular_lineedit_active.png", "regular_lineedit_disabled.png", "regular_lineedit_focused.png", data_load);
+        data_path->setPadding(9);
+        data_path->setWidth(data_load->width()*0.75);
+        data_load->addWidget(data_path);
+
+        TextButton* data_btn = new TextButton("Load", "regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", data_load);
+        data_btn->setWidth(data_load->width()*0.25);
+        data_load->addWidget(data_btn);
+
+        data_btn->onClick += [&] (Button* button) {
+                String path = Filesystem::joinPath("resources/textures/3d", data_path->text());
+                IM_VAR(path);
+                if (boost::filesystem::exists(path)) {
+                        IM_LOG("Found");
+                        m_data->load(256,256,256, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, path);
+                        m_engine->setData(m_data);
+                }
+        };
+
+
+        /// Look up table
+        m_pnlLayout->addWidget(new Text("Look up table:", m_pnlLayout));
+        HBoxLayout* lut_load = new HBoxLayout(m_pnlLayout);
+        lut_load->setWidth(m_pnl->contentWidth());
+        m_pnlLayout->addWidget(lut_load);
+
+        lut_path = new LineEdit("regular_lineedit_active.png", "regular_lineedit_disabled.png", "regular_lineedit_focused.png", lut_load);
+        lut_path->setPadding(9);
+        lut_path->setWidth(lut_load->width()*0.75);
+        lut_load->addWidget(lut_path);
+
+        TextButton* lut_btn = new TextButton("Load", "regular_btn_active.png", "regular_btn_hover.png", "regular_btn_pressed.png", "regular_btn_disabled.png", "regular_btn_focused.png", lut_load);
+        lut_btn->setWidth(lut_load->width()*0.25);
+        lut_load->addWidget(lut_btn);
+
+        lut_btn->onClick += [&] (Button* button) {
+                String path = Filesystem::joinPath("resources/textures", lut_path->text());
+                IM_VAR(path);
+                if (boost::filesystem::exists(path)) {
+                        IM_LOG("Found");
+                        m_densityToColorTexture->load(path);
+                }
+        };
+
+        m_densityToColorPicture = new PictureColor(m_densityToColorTexture, m_pnlLayout);
+        m_densityToColorPicture->setWidth(m_pnl->contentWidth());
+        m_densityToColorPicture->setHeight(30);
+
+        m_pnlLayout->addWidget(m_densityToColorPicture);
+        m_pnlLayout->addSpacing(10);
+
+        /// Step
+        TextSlider* step = new TextSlider(1, 10, m_pnl->contentWidth(), m_pnlLayout);
+        m_pnlLayout->addWidget(new Text("Step:", m_pnlLayout));
+        m_pnlLayout->addWidget(step);
+        step->slider->onValueChanged += [&] (HSlider* slider) {
+                m_engine->material()->setStep(slider->value());
+        };
+
+        /// Raycasting Material
+        raycastingMaterial = dynamic_cast<RaycastingMaterial*>(m_engine->material().get());
+        isosurfaceMaterial = dynamic_cast<IsosurfaceMaterial*>(m_engine->material().get());
+        if (raycastingMaterial) {
+                /// MinDensity
+                TextSlider* minDensity = new TextSlider(0, 1, m_pnl->contentWidth(), m_pnlLayout);
+                m_pnlLayout->addWidget(new Text("Min Density:", m_pnlLayout));
+                m_pnlLayout->addWidget(minDensity);
+                minDensity->slider->onValueChanged += [&] (HSlider* slider) {
+                        raycastingMaterial->setMinDensity(slider->value());
+                };
+
+                /// MaxDensity
+                TextSlider* maxDensity = new TextSlider(0, 1, m_pnl->contentWidth(), m_pnlLayout);
+                m_pnlLayout->addWidget(new Text("Max Density:", m_pnlLayout));
+                m_pnlLayout->addWidget(maxDensity);
+                maxDensity->slider->onValueChanged += [&] (HSlider* slider) {
+                        raycastingMaterial->setMaxDensity(slider->value());
+                };
+
+                /// ClipPlane
+                alpha = new TextSlider(0, 360, m_pnl->contentWidth(), m_pnlLayout);
+                beta = new TextSlider(0, 360, m_pnl->contentWidth(), m_pnlLayout);
+                gamma = new TextSlider(0, 360, m_pnl->contentWidth(), m_pnlLayout);
+                shift = new TextSlider(0, 10, m_pnl->contentWidth(), m_pnlLayout);
+
+                m_pnlLayout->addWidget(new Text("Clip Plane:", m_pnlLayout));
+                m_pnlLayout->addWidget(new Text("alpha:", m_pnlLayout));
+                m_pnlLayout->addWidget(alpha);
+                m_pnlLayout->addWidget(new Text("beta:", m_pnlLayout));
+                m_pnlLayout->addWidget(beta);
+                m_pnlLayout->addWidget(new Text("gamma:", m_pnlLayout));
+                m_pnlLayout->addWidget(gamma);
+                m_pnlLayout->addWidget(new Text("shift:", m_pnlLayout));
+                m_pnlLayout->addWidget(shift);
+                auto changeClipPlane = [&] (HSlider* slider) {
+                        Vec4 plane;
+                        plane.x = glm::cos(glm::radians(alpha->slider->value()));
+                        plane.y = glm::cos(glm::radians(beta->slider->value()));
+                        plane.z = glm::cos(glm::radians(gamma->slider->value()));
+                        plane.w = shift->slider->value();
+                        IM_VAR(plane);
+                        raycastingMaterial->setClipPlane(plane);
+                };
+                alpha->slider->onValueChanged += changeClipPlane;
+                beta->slider->onValueChanged += changeClipPlane;
+                gamma->slider->onValueChanged += changeClipPlane;
+                shift->slider->onValueChanged += changeClipPlane;
+
+        } else {
+                /// MaxDensity
+                TextSlider* threshold = new TextSlider(0, 1, m_pnl->contentWidth(), m_pnlLayout);
+                m_pnlLayout->addWidget(new Text("Threshold:", m_pnlLayout));
+                m_pnlLayout->addWidget(threshold);
+                threshold->slider->onValueChanged += [&] (HSlider* slider) {
+                        isosurfaceMaterial->setThresholdDensity(slider->value());
+                };
+        }
 }
 
 void Application::keyPressEvent(int key) {
@@ -330,14 +429,14 @@ void Application::windowResizeEvent(int x, int y) {
         GraphicApplication::windowResizeEvent(x, y);
 
         /*
-        m_diffuseBuffer->setSize(Vec2(window()->size())/2.0f);
+        m_diffuseBuffer->setSize(Vec2(window()->size())/8.0f);
         m_diffuseBuffer->setPosition(Vec2(0,0));
-        m_materialBuffer->setSize(Vec2(window()->size())/2.0f);
+        m_materialBuffer->setSize(Vec2(window()->size())/8.0f);
         m_materialBuffer->setPosition(Vec2(m_diffuseBuffer->width(),0));
-        m_geometryBuffer->setSize(Vec2(window()->size())/2.0f);
-        m_geometryBuffer->setPosition(Vec2(0,m_diffuseBuffer->height()));
-        m_depthBuffer->setSize(Vec2(window()->size())/2.0f);
-        m_depthBuffer->setPosition(Vec2(m_diffuseBuffer->width(),m_diffuseBuffer->height()));
+        m_geometryBuffer->setSize(Vec2(window()->size())/8.0f);
+        m_geometryBuffer->setPosition(Vec2(2*m_diffuseBuffer->width(),0));
+        m_depthBuffer->setSize(Vec2(window()->size())/8.0f);
+        m_depthBuffer->setPosition(Vec2(3*m_diffuseBuffer->width(),0));
         */
 }
 

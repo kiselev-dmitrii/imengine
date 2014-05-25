@@ -28,6 +28,7 @@ set(TESTS
         FramebufferTest
         SceneDeferredTest
         CubeTextureTest
+        VolumesTest
 
         MeshConverter
 )
