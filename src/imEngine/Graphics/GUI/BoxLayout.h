@@ -85,6 +85,9 @@ protected:
         /// Обновляет размер виджета
         void    updateSize();
 
+        /// Загружает дочерние виджеты из XML-ноды
+        void    loadChildrenFromXml(const XmlNode &node);
+
 };
 
 /** @brief Используется для группировки виджетов в вертикальные столбцы
@@ -107,6 +110,9 @@ public:
 protected:
         /// Обновляет размер виджета
         void    updateSize();
+
+        /// Загружает дочерние виджеты из XML-ноды
+        void    loadChildrenFromXml(const XmlNode &node);
 };
 
 } //namespace imEngine

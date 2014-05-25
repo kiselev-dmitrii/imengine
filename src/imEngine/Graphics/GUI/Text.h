@@ -15,6 +15,9 @@ public:
         /// Конструктор
         Text(const String& text, WidgetAbstract* parent);
 
+        /// Загружает настройки с XML-ноды
+        void            loadFromXml(const XmlNode &node);
+
         /// Устанавливает/возвращает текст
         void            setText(const String& text);
         const String&   text() const;

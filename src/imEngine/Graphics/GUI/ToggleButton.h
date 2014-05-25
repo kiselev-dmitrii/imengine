@@ -16,6 +16,9 @@ public:
         ToggleButton(const String& active, const String& checked, const String& disabledActive,
                      const String& disabledChecked, WidgetAbstract* parent);
 
+        /// Загружает настройки из XML-ноды
+        void    loadFromXml(const XmlNode &node);
+
         /// Устанавливает/возвращает нажатое состояние кнопки
         void    setChecked(bool checked);
         bool    isChecked() const;

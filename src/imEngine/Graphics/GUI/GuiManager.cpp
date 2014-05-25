@@ -37,6 +37,20 @@ GuiManager::~GuiManager() {
         delete m_root;
 }
 
+void GuiManager::loadLayout(const String &filename) {
+        String path = Filesystem::joinPath("resources/layouts", filename);
+
+        XmlDocument doc;
+        XmlResult result = doc.load_file(path.c_str());
+        if (!result) {
+                IM_ERROR("Cannot open file " << path << ": " << result.description());
+                return;
+        }
+
+        XmlNode rootNode = doc.child("root");
+        root()->loadFromXml(rootNode);
+}
+
 void GuiManager::setTheme(const String &themePath) {
         if (themePath == m_themePath) return;
         m_themePath = themePath;

@@ -13,6 +13,13 @@ ToggleButton::ToggleButton(const String &active, const String &checked, const St
         m_isChecked(false)
 { }
 
+void ToggleButton::loadFromXml(const XmlNode &node) {
+        String checked = node.attribute("checked").value();
+        if (!checked.empty()) setChecked(std::stoi(checked));
+
+        BothStretchableTexturedWidget::loadFromXml(node);
+}
+
 void ToggleButton::setChecked(bool checked) {
         m_isChecked = checked;
 

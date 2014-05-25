@@ -1,5 +1,6 @@
 #include "TexturedWidget.h"
 #include <imEngine/Utils/Debug.h>
+#include <imEngine/Utils/StringUtils.h>
 
 namespace imEngine {
 
@@ -108,6 +109,13 @@ HStretchableTexturedWidget::HStretchableTexturedWidget(const String &initialImag
         setWidgetElementCount(3);
 }
 
+void HStretchableTexturedWidget::loadFromXml(const XmlNode &node) {
+        String width = node.attribute("width").value();
+        if (!width.empty()) setWidth(std::stof(width));
+
+        WidgetAbstract::loadFromXml(node);
+}
+
 void HStretchableTexturedWidget::setWidth(float width) {
         if (width == m_size.x) return;
         if (width < minimalWidth()) return;
@@ -177,6 +185,13 @@ VStretchableTexturedWidget::VStretchableTexturedWidget(const String &initialImag
         setWidgetElementCount(3);
 }
 
+void VStretchableTexturedWidget::loadFromXml(const XmlNode &node) {
+        String height = node.attribute("height").value();
+        if (!height.empty()) setHeight(std::stof(height));
+
+        WidgetAbstract::loadFromXml(node);
+}
+
 void VStretchableTexturedWidget::setHeight(float height) {
         if (height == m_size.y) return;
         if (height < minimalHeight()) return;
@@ -242,6 +257,13 @@ BothStretchableTexturedWidget::BothStretchableTexturedWidget(const String &initi
         m_size = manager()->imageGeometry(currentImage())->size;
         setMinimalSize(Vec2(2*m_size.x/3, 2*m_size.y/3));
         setWidgetElementCount(9);
+}
+
+void BothStretchableTexturedWidget::loadFromXml(const XmlNode& node) {
+        String size = node.attribute("size").value();
+        if (!size.empty()) setSize(StringUtils::toVec2(size));
+
+        WidgetAbstract::loadFromXml(node);
 }
 
 void BothStretchableTexturedWidget::setWidth(float width) {

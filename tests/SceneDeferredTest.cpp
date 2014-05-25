@@ -123,6 +123,8 @@ void Application::initialize() {
 
         m_engine->setPosition(Vec3(2, -2, -2));
 
+        gui()->loadLayout("deferred_test_layout.xml");
+
         /*
         m_diffuseBuffer = new PictureColor(scene()->renderer()->gBuffer()->colorBufferTexture(0), gui()->root());
         m_materialBuffer = new PictureColor(scene()->renderer()->gBuffer()->colorBufferTexture(1), gui()->root());

@@ -65,6 +65,9 @@ public:
         /// Конструктор
         explicit HStretchableTexturedWidget(const String &initialImage, WidgetAbstract *parent);
 
+        /// Загружает параметры из XML-ноды
+        void    loadFromXml(const XmlNode& node);
+
         /// Установка ширины
         void    setWidth(float width);
 
@@ -81,6 +84,9 @@ public:
         /// Конструктор
         explicit VStretchableTexturedWidget(const String &initialImage, WidgetAbstract* parent);
 
+        /// Загружает параметры из XML-ноды
+        void    loadFromXml(const XmlNode& node);
+
         /// Установка высоты
         void    setHeight(float height);
 
@@ -96,6 +102,9 @@ class BothStretchableTexturedWidget : public TexturedWidgetAbstract, public Both
 public:
         /// Конструктор
         explicit BothStretchableTexturedWidget(const String &initialImage, WidgetAbstract* parent);
+
+        /// Загружает параметры из XML-ноды
+        void    loadFromXml(const XmlNode& node);
 
         /// Установка ширины
         void    setWidth(float width);

@@ -28,6 +28,22 @@ Text::Text(const String &text, WidgetAbstract *parent) :
         initBuffer();
 }
 
+void Text::loadFromXml(const XmlNode &node) {
+        String color = node.attribute("color").value();
+        String font = node.attribute("font").value();
+
+        if (!color.empty()) setColor(StringUtils::toColor3(color));
+        if (!font.empty()) {
+                StringList params = StringUtils::split(font, ", ");
+                String filename = params[0];
+                int size = std::stoi(params[1]);
+
+                setFont(FontPtr(new Font(filename, size)));
+        }
+
+        WidgetAbstract::loadFromXml(node);
+}
+
 void Text::setText(const String &text) {
         if (text == m_text) return;
 

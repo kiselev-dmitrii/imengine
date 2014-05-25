@@ -1,5 +1,15 @@
 #include "Widget.h"
 #include <imEngine/Utils/Debug.h>
+#include <imEngine/Utils/StringUtils.h>
+
+#include "Text.h"
+#include "Panel.h"
+#include "Button.h"
+#include "TextButton.h"
+#include "ToggleButton.h"
+#include "Slider.h"
+#include "LineEdit.h"
+#include "BoxLayout.h"
 
 namespace imEngine {
 
@@ -21,6 +31,24 @@ WidgetAbstract::WidgetAbstract(WidgetAbstract *parent) :
 {
         notifyPositionUpdated();
         if (parent) m_manager = parent->manager();
+}
+
+void WidgetAbstract::loadFromXml(const XmlNode &node) {
+        String name = node.attribute("name").value();
+        String position = node.attribute("position").value();
+        String padding = node.attribute("padding").value();
+        String visible = node.attribute("visible").value();
+        String opacity = node.attribute("opacity").value();
+        String enabled = node.attribute("enabled").value();
+
+        if (!name.empty()) setName(name);
+        if (!position.empty()) setPosition(StringUtils::toVec2(position));
+        if (!padding.empty()) setPadding(StringUtils::toVec4(padding));
+        if (!visible.empty()) setVisible(std::stoi(visible));
+        if (!opacity.empty()) setOpacity(std::stof(opacity));
+        if (!enabled.empty()) setEnabled(std::stoi(enabled));
+
+        loadChildrenFromXml(node);
 }
 
 void WidgetAbstract::setVisible(bool isVisible) {
@@ -116,11 +144,15 @@ void WidgetAbstract::setPadding(const WidgetPadding &padding) {
 }
 
 void WidgetAbstract::setPadding(float left, float top, float right, float bottom) {
-        setPadding({left, top, right, bottom});
+        setPadding(WidgetPadding{left, top, right, bottom});
+}
+
+void WidgetAbstract::setPadding(const Vec4 &padding) {
+        setPadding(padding.x, padding.y, padding.z, padding.w);
 }
 
 void WidgetAbstract::setPadding(float offset) {
-        setPadding({offset, offset, offset, offset});
+        setPadding(WidgetPadding{offset, offset, offset, offset});
 }
 
 WidgetPadding WidgetAbstract::padding() const {
@@ -318,6 +350,93 @@ bool WidgetAbstract::isInsideWidget(int x, int y) {
 
 void WidgetAbstract::renderChildren() {
         for (WidgetAbstract* node: children()) node->processRender();
+}
+
+WidgetAbstract* WidgetAbstract::createWidget(const XmlNode &node) {
+        String type = node.name();
+        if (type == "button") return createButton(node);
+        if (type == "toggle") return createToggle(node);
+        if (type == "panel") return createPanel(node);
+        if (type == "text") return createText(node);
+        if (type == "edit") return createLineEdit(node);
+        if (type == "vslider") return createVSlider(node);
+        if (type == "hslider") return createHSlider(node);
+        if (type == "vbox") return createVBoxLayout(node);
+        if (type == "hbox") return createHBoxLayout(node);
+
+        return nullptr;
+}
+
+WidgetAbstract* WidgetAbstract::createButton(const XmlNode &node) {
+         String active = node.attribute("active").value();
+         String hover = node.attribute("hover").value();
+         String pressed = node.attribute("pressed").value();
+         String disabled = node.attribute("disabled").value();
+         String focused = node.attribute("focused").value();
+         String text = node.attribute("text").value();
+
+         if (!text.empty()) return new TextButton(text, active, hover, pressed, disabled, focused, this);
+         else return new Button(active, hover, pressed, disabled, focused, this);
+}
+
+WidgetAbstract* WidgetAbstract::createToggle(const XmlNode &node) {
+         String active = node.attribute("active").value();
+         String checked = node.attribute("checked").value();
+         String disabledActive = node.attribute("disabled_active").value();
+         String disabledChecked = node.attribute("disabled_checked").value();
+
+         return new ToggleButton(active, checked, disabledActive, disabledChecked, this);
+}
+
+WidgetAbstract* WidgetAbstract::createPanel(const XmlNode &node) {
+        String active = node.attribute("active").value();
+        return new Panel(active, this);
+}
+
+WidgetAbstract* WidgetAbstract::createText(const XmlNode &node) {
+        String text = node.attribute("text").value();
+        return new Text(text, this);
+}
+
+WidgetAbstract* WidgetAbstract::createLineEdit(const XmlNode& node) {
+        String active = node.attribute("active").value();
+        String disabled = node.attribute("disabled").value();
+        String focused = node.attribute("focused").value();
+
+        return new LineEdit(active, disabled, focused, this);
+}
+
+WidgetAbstract* WidgetAbstract::createVSlider(const XmlNode &node) {
+        String background = node.attribute("background").value();
+        String selection = node.attribute("selection").value();
+        String active = node.attribute("active").value();
+        String hover = node.attribute("hover").value();
+
+        return new VSlider(background, selection, active, hover, this);
+}
+
+WidgetAbstract* WidgetAbstract::createHSlider(const XmlNode &node) {
+        String background = node.attribute("background").value();
+        String selection = node.attribute("selection").value();
+        String active = node.attribute("active").value();
+        String hover = node.attribute("hover").value();
+
+        return new HSlider(background, selection, active, hover, this);
+}
+
+WidgetAbstract* WidgetAbstract::createHBoxLayout(const XmlNode &node) {
+        return new HBoxLayout(this);
+}
+
+WidgetAbstract* WidgetAbstract::createVBoxLayout(const XmlNode &node) {
+        return new VBoxLayout(this);
+}
+
+void WidgetAbstract::loadChildrenFromXml(const XmlNode &node) {
+        for (XmlNode& child: node.children()) {
+                WidgetAbstract* widget = createWidget(child);
+                widget->loadFromXml(child);
+        }
 }
 
 void WidgetAbstract::onAttachChild(TreeNode *node) {

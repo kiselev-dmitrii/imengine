@@ -133,6 +133,34 @@ void HBoxLayout::updateSize() {
         m_size.y = height;
 }
 
+void HBoxLayout::loadChildrenFromXml(const XmlNode &node) {
+        for (XmlNode& child: node.children()) {
+                /// Обрабатываем сначала элементы не являющиеся виджетами
+                /// а затем добавлям виджеты
+                String type = child.name();
+                if (type == "spacing") {
+                        String spacing = child.attribute("spacing").value();
+                        addSpacing(std::stof(spacing));
+
+                } else if(type == "stretch") {
+                        String factor = child.attribute("factor").value();
+                        addStretch(std::stof(factor));
+
+                } else {
+                        WidgetAbstract* widget = createWidget(child);
+
+                        WidgetVAlignment::Enum vAlignment =  WidgetVAlignment::TOP;
+                        String alignment = child.attribute("alignment").value();
+                        if (alignment == "CENTER") vAlignment = WidgetVAlignment::CENTER;
+                        else if (alignment == "BOTTOM") vAlignment = WidgetVAlignment::BOTTOM;
+                        else vAlignment = WidgetVAlignment::TOP;
+                        addWidget(widget, vAlignment);
+
+                        widget->loadFromXml(child);
+                }
+        }
+}
+
 //############################## HBoxLayout ##################################//
 
 VBoxLayout::VBoxLayout(WidgetAbstract *parent) :
@@ -205,6 +233,34 @@ void VBoxLayout::updateSize() {
         // Обновляем размеры
         m_size.x = width;
         if (m_size.y < height) m_size.y = height;
+}
+
+void VBoxLayout::loadChildrenFromXml(const XmlNode &node) {
+        for (XmlNode& child: node.children()) {
+                /// Обрабатываем сначала элементы не являющиеся виджетами
+                /// а затем добавлям виджеты
+                String type = child.name();
+                if (type == "spacing") {
+                        String spacing = child.attribute("spacing").value();
+                        addSpacing(std::stof(spacing));
+
+                } else if(type == "stretch") {
+                        String factor = child.attribute("factor").value();
+                        addStretch(std::stof(factor));
+
+                } else {
+                        WidgetAbstract* widget = createWidget(child);
+
+                        WidgetHAlignment::Enum hAlignment =  WidgetHAlignment::LEFT;
+                        String alignment = child.attribute("alignment").value();
+                        if (alignment == "CENTER") hAlignment = WidgetHAlignment::CENTER;
+                        else if (alignment == "RIGHT") hAlignment = WidgetHAlignment::RIGHT;
+                        else hAlignment = WidgetHAlignment::LEFT;
+                        addWidget(widget, hAlignment);
+
+                        widget->loadFromXml(child);
+                }
+        }
 }
 
 } //namespace imEngine

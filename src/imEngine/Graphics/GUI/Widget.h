@@ -3,6 +3,7 @@
 
 #include <imEngine/Graphics/GAPI/GAPI.h>
 #include <imEngine/Utils/TreeNamedNode.h>
+#include <imEngine/FileContainers/Xml.h>
 #include "GuiManager.h"
 
 
@@ -47,6 +48,9 @@ public:
         /// Конструктор. paret - указатель на родителя
         explicit WidgetAbstract(WidgetAbstract* parent);
 
+        /// Загружает настройки с XML-ноды
+        virtual void    loadFromXml(const XmlNode& node);
+
         /// Устанавливает/возвращает видимость виджета
         void            setVisible(bool isVisible);
         bool            isVisible() const;
@@ -81,6 +85,7 @@ public:
         /// Устанавливает/возвращает внутрений отступ
         void            setPadding(const WidgetPadding& padding);
         void            setPadding(float left, float top, float right, float bottom);
+        void            setPadding(const Vec4& padding);
         void            setPadding(float offset);
         WidgetPadding   padding() const;
 
@@ -176,6 +181,20 @@ protected:
         bool            isInsideWidget(int x, int y);
         /// Рендерит детей виджета
         void            renderChildren();
+
+        /// Создает виджет по XML-ноде
+        WidgetAbstract* createWidget(const XmlNode& node);
+        WidgetAbstract* createButton(const XmlNode& node);
+        WidgetAbstract* createToggle(const XmlNode& node);
+        WidgetAbstract* createPanel(const XmlNode& node);
+        WidgetAbstract* createText(const XmlNode& node);
+        WidgetAbstract* createLineEdit(const XmlNode& node);
+        WidgetAbstract* createVSlider(const XmlNode& node);
+        WidgetAbstract* createHSlider(const XmlNode& node);
+        WidgetAbstract* createHBoxLayout(const XmlNode& node);
+        WidgetAbstract* createVBoxLayout(const XmlNode& node);
+        /// Рекурсивно загружает дочерние виджеты XML-ноды
+        virtual void    loadChildrenFromXml(const XmlNode& node);
 
 private:
         /// Действия при добавлении, удалении дочерних виджетов
