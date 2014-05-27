@@ -148,6 +148,7 @@ void HBoxLayout::loadChildrenFromXml(const XmlNode &node) {
 
                 } else {
                         WidgetAbstract* widget = createWidget(child);
+                        widget->loadFromXml(child);
 
                         WidgetVAlignment::Enum vAlignment =  WidgetVAlignment::TOP;
                         String alignment = child.attribute("alignment").value();
@@ -155,8 +156,6 @@ void HBoxLayout::loadChildrenFromXml(const XmlNode &node) {
                         else if (alignment == "BOTTOM") vAlignment = WidgetVAlignment::BOTTOM;
                         else vAlignment = WidgetVAlignment::TOP;
                         addWidget(widget, vAlignment);
-
-                        widget->loadFromXml(child);
                 }
         }
 }
@@ -250,6 +249,7 @@ void VBoxLayout::loadChildrenFromXml(const XmlNode &node) {
 
                 } else {
                         WidgetAbstract* widget = createWidget(child);
+                        widget->loadFromXml(child);
 
                         WidgetHAlignment::Enum hAlignment =  WidgetHAlignment::LEFT;
                         String alignment = child.attribute("alignment").value();
@@ -257,8 +257,6 @@ void VBoxLayout::loadChildrenFromXml(const XmlNode &node) {
                         else if (alignment == "RIGHT") hAlignment = WidgetHAlignment::RIGHT;
                         else hAlignment = WidgetHAlignment::LEFT;
                         addWidget(widget, hAlignment);
-
-                        widget->loadFromXml(child);
                 }
         }
 }
