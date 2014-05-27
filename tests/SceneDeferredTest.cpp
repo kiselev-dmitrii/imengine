@@ -20,41 +20,24 @@ using namespace imEngine;
 class Application : public GraphicApplication {
 protected:
         void    initialize();
-        void    keyPressEvent(int key);
         void    windowResizeEvent(int x, int y);
 
 private:
         Entity*      m_room;
+
+        PointLight*     m_light1;
+        SpotLight*      m_light2;
+        Entity*         m_sphere1;
+        Entity*         m_sphere2;
+
+        Texture3D*      m_data;
+        Volume*         m_engine;
+        Movable*        m_empty;
+
         PictureColor*   m_diffuseBuffer;
         PictureColor*   m_materialBuffer;
         PictureColor*   m_geometryBuffer;
         PictureDepth*   m_depthBuffer;
-
-        PointLight*     m_light1;
-        SpotLight*      m_light2;
-        Entity*      m_sphere1;
-        Entity*      m_sphere2;
-
-        Texture3D*      m_data;
-        Volume*         m_engine;
-
-        Panel*          m_pnl;
-        VBoxLayout*     m_pnlLayout;
-        HSlider*        m_radiusSlider;
-        HSlider*        m_stepSlider;
-        HSlider*        m_thresholdSlider;
-
-        HSlider*        alphaSlider;
-        HSlider*        betaSlider;
-        HSlider*        gammaSlider;
-        HSlider*        distanceSlider;
-
-        Movable*        m_empty;
-
-        Entity*      m_buddha;
-
-        Texture2DPtr    m_densityToColorTexture;
-        PictureColor*   m_densityToColorPicture;
 };
 
 
@@ -109,17 +92,12 @@ void Application::initialize() {
         m_light2->setAttenuation(0.001);
 
 
-        /*
-        m_buddha = new Entity("buddha.xml", m_room);
-        m_buddha->setPosition(Vec3(-2.0, 0.0, 2.0));
-        */
-
-        m_densityToColorTexture = Texture2DPtr(new Texture2D());
-        m_densityToColorTexture->load("resources/textures/density_to_color.png");
+        Texture2DPtr densityToColorTexture = Texture2DPtr(new Texture2D());
+        densityToColorTexture->load("resources/textures/density_to_color.png");
         m_data = new Texture3D();
         m_data->load(256,256,256, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/textures/3d/foot.raw");
         m_engine = new Volume(m_data, VolumeMaterialPtr(new RaycastingMaterial()), scene()->world());
-        static_cast<RaycastingMaterial*>(m_engine->material().get())->setDensityTexture(m_densityToColorTexture);
+        static_cast<RaycastingMaterial*>(m_engine->material().get())->setDensityTexture(densityToColorTexture);
 
         m_engine->setPosition(Vec3(2, -2, -2));
 
@@ -133,199 +111,48 @@ void Application::initialize() {
         */
         windowResizeEvent(window()->size().x, window()->size().y);
 
+        gui()->root()->dbgShowHierarchy();
+
         //////////////////////////////////////////////////////
+        HSlider* bloomRadius = (HSlider*) gui()->root()->find("bloom_radius", true);
+        HSlider* bloomStep = (HSlider*) gui()->root()->find("bloom_step", true);
+        HSlider* bloomThreshold = (HSlider*) gui()->root()->find("bloom_threshold", true);
+        ToggleButton* bloomEnabled = (ToggleButton*) gui()->root()->find("bloom_enabled", true);
 
-        m_pnl = new Panel("regular_panel.png", gui()->root());
-        m_pnl->setOpacity(0.9);
-        m_pnl->setPadding(20);
-        m_pnl->setSize(Vec2(300, 500));
+        HSlider* ssaoSRadius = (HSlider*) gui()->root()->find("ssao_sradius", true);
+        HSlider* ssaoVRadius = (HSlider*) gui()->root()->find("ssao_vradius", true);
+        HSlider* ssaoPower = (HSlider*) gui()->root()->find("ssao_power", true);
+        ToggleButton* ssaoEnabled = (ToggleButton*) gui()->root()->find("ssao_enabled", true);
 
-        m_pnlLayout = new VBoxLayout(m_pnl);
+        HSlider* dofNear = (HSlider*) gui()->root()->find("dof_near", true);
+        HSlider* dofFar = (HSlider*) gui()->root()->find("dof_far", true);
+        HSlider* dofStart = (HSlider*) gui()->root()->find("dof_start", true);
+        HSlider* dofEnd = (HSlider*) gui()->root()->find("dof_end", true);
+        ToggleButton* dofEnabled = (ToggleButton*) gui()->root()->find("dof_enabled", true);
 
-        m_radiusSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        m_radiusSlider->setWidth(m_pnl->contentWidth());
-        m_radiusSlider->setMinMaxValues(0, 200);
+        Button* btnLogo = (Button*) gui()->root()->find("btn_logo", true);
 
-        m_stepSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        m_stepSlider->setWidth(m_pnl->contentWidth());
-        m_stepSlider->setMinMaxValues(1, 10);
+        bloomRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->bloom()->setRadius(slider->value()); };
+        bloomStep->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->bloom()->setStep(slider->value()); };
+        bloomThreshold->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->bloom()->setThreshold(slider->value()); };
+        bloomEnabled->onClick += [&] (ToggleButton* button) { scene()->renderer()->bloom()->setEnabled(button->isChecked()); };
 
-        m_thresholdSlider = new HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        m_thresholdSlider->setWidth(m_pnl->contentWidth());
+        ssaoSRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setScreenRadius(slider->value()); };
+        ssaoVRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setViewRadius(slider->value()); };
+        ssaoPower->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setPower(slider->value()); };
+        ssaoEnabled->onClick += [&] (ToggleButton* button) { scene()->renderer()->ssao()->setEnabled(button->isChecked()); };
 
-        ToggleButton* bloomBtn = new ToggleButton("big_checkbox_active.png", "big_checkbox_checked.png", "big_checkbox_active.png", "big_checkbox_checked.png", m_pnlLayout);
-        bloomBtn->setChecked(true);
+        dofNear->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setNearMaxRadius(slider->value()); };
+        dofFar->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFarMaxRadius(slider->value()); };
+        dofStart->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusStart(slider->value()); };
+        dofEnd->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusEnd(slider->value()); };
+        dofEnabled->onClick += [&] (ToggleButton* button) { scene()->renderer()->depthOfField()->setEnabled(button->isChecked()); };
 
-        m_pnlLayout->addWidget(new Text("Bloom radius", m_pnlLayout));
-        m_pnlLayout->addWidget(m_radiusSlider);
-        m_pnlLayout->addWidget(new Text("Bloom step", m_pnlLayout));
-        m_pnlLayout->addWidget(m_stepSlider);
-        m_pnlLayout->addWidget(new Text("Bloom threshold", m_pnlLayout));
-        m_pnlLayout->addWidget(m_thresholdSlider);
-        m_pnlLayout->addWidget(new Text("On/off", m_pnlLayout));
-        m_pnlLayout->addWidget(bloomBtn);
-        m_pnlLayout->addSpacing(20);
-
-        scene()->renderer()->bloom()->setRadius(0);
-        auto changeBloomSettings = [&] (HSlider* slider) {
-                scene()->renderer()->bloom()->setRadius(m_radiusSlider->value());
-                scene()->renderer()->bloom()->setStep(m_stepSlider->value());
-                scene()->renderer()->bloom()->setThreshold(m_thresholdSlider->value());
+        btnLogo->onClick += [&] (Button* button) {
+                Panel* settings = (Panel*) gui()->root()->find("settings", true);
+                if (settings->isVisible()) settings->hide();
+                else settings->show();
         };
-
-        m_radiusSlider->onValueChanged += changeBloomSettings;
-        m_stepSlider->onValueChanged += changeBloomSettings;
-        m_thresholdSlider->onValueChanged += changeBloomSettings;
-        bloomBtn->onClick += [&] (ToggleButton* btn) { scene()->renderer()->bloom()->setEnabled(btn->isChecked()); };
-
-        /// SSAO
-
-        HSlider* screenRadius = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        screenRadius->setWidth(m_pnl->contentWidth());
-        screenRadius->setMinMaxValues(1, 20);
-
-        HSlider* viewRadius = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        viewRadius->setWidth(m_pnl->contentWidth());
-        viewRadius->setMinMaxValues(0.01, 4);
-
-        HSlider* power = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        power->setWidth(m_pnl->contentWidth());
-
-        ToggleButton* ssaoBtn = new ToggleButton("big_checkbox_active.png", "big_checkbox_checked.png", "big_checkbox_active.png", "big_checkbox_checked.png", m_pnlLayout);
-        ssaoBtn->setChecked(true);
-
-        m_pnlLayout->addWidget(new Text("SSAO", m_pnlLayout));
-        m_pnlLayout->addWidget(new Text("Screen radius", m_pnlLayout));
-        m_pnlLayout->addWidget(screenRadius);
-        m_pnlLayout->addWidget(new Text("View radius", m_pnlLayout));
-        m_pnlLayout->addWidget(viewRadius);
-        m_pnlLayout->addWidget(new Text("Power", m_pnlLayout));
-        m_pnlLayout->addWidget(power);
-        m_pnlLayout->addWidget(new Text("On/off", m_pnlLayout));
-        m_pnlLayout->addWidget(ssaoBtn);
-        m_pnlLayout->addSpacing(20);
-
-
-        screenRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setScreenRadius(slider->value()); };
-        viewRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setViewRadius(slider->value()); };
-        power->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setPower(slider->value()); };
-        ssaoBtn->onClick += [&] (ToggleButton* btn) { scene()->renderer()->ssao()->setEnabled(btn->isChecked()); };
-
-        /// DoF
-        HSlider* maxNearRadius = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        maxNearRadius->setWidth(m_pnl->contentWidth());
-        maxNearRadius->setMinMaxValues(1, 200);
-
-        HSlider* maxFarRadius = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        maxFarRadius->setWidth(m_pnl->contentWidth());
-        maxFarRadius->setMinMaxValues(1, 200);
-
-        HSlider* focusStart = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        focusStart->setWidth(m_pnl->contentWidth());
-
-        HSlider* focusEnd = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        focusEnd->setWidth(m_pnl->contentWidth());
-
-        ToggleButton* dofBtn = new ToggleButton("big_checkbox_active.png", "big_checkbox_checked.png", "big_checkbox_active.png", "big_checkbox_checked.png", m_pnlLayout);
-        dofBtn->setChecked(true);
-
-        m_pnlLayout->addWidget(new Text("DoF", m_pnlLayout));
-        m_pnlLayout->addWidget(new Text("Max near radius", m_pnlLayout));
-        m_pnlLayout->addWidget(maxNearRadius);
-        m_pnlLayout->addWidget(new Text("Max far radius", m_pnlLayout));
-        m_pnlLayout->addWidget(maxFarRadius);
-        m_pnlLayout->addWidget(new Text("Focus start", m_pnlLayout));
-        m_pnlLayout->addWidget(focusStart);
-        m_pnlLayout->addWidget(new Text("Focus end", m_pnlLayout));
-        m_pnlLayout->addWidget(focusEnd);
-        m_pnlLayout->addWidget(new Text("On/off", m_pnlLayout));
-        m_pnlLayout->addWidget(dofBtn);
-        m_pnlLayout->addSpacing(20);
-
-        maxNearRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setNearMaxRadius(slider->value()); };
-        maxFarRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFarMaxRadius(slider->value()); };
-        focusStart->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusStart(slider->value()); };
-        focusEnd->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusEnd(slider->value()); };
-        dofBtn->onClick += [&] (ToggleButton* btn) { scene()->renderer()->depthOfField()->setEnabled(btn->isChecked()); };
-
-        /// Min density
-        /*
-        m_densityToColorPicture = new PictureColor(m_densityToColorTexture, m_pnlLayout);
-        m_densityToColorPicture->setWidth(m_pnlLayout->contentWidth());
-        m_pnlLayout->addWidget(m_densityToColorPicture);
-
-
-        HSlider* minDensity = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        minDensity->setWidth(m_pnl->contentWidth());
-        m_pnlLayout->addWidget(new Text("Min density", m_pnlLayout));
-        m_pnlLayout->addWidget(minDensity);
-
-        minDensity->onValueChanged += [&] (HSlider* slider) {
-                static_cast<RaycastingMaterial*>(m_engine->material().get())->setMinDensity(slider->value());
-        };
-
-        /// Clip plane
-        alphaSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        alphaSlider->setWidth(m_pnl->contentWidth());
-        alphaSlider->setMinMaxValues(0, 360);
-
-        betaSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        betaSlider->setWidth(m_pnl->contentWidth());
-        betaSlider->setMinMaxValues(0, 360);
-
-        gammaSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        gammaSlider->setWidth(m_pnl->contentWidth());
-        gammaSlider->setMinMaxValues(0, 360);
-
-        distanceSlider = new  HSlider("slider_background.png", "slider_selection.png", "slider_btn_active.png", "slider_btn_hover.png", m_pnlLayout);
-        distanceSlider->setWidth(m_pnl->contentWidth());
-        distanceSlider->setMinMaxValues(-1, 1);
-        distanceSlider->setValue(0);
-
-        m_pnlLayout->addWidget(new Text("ClipPlane", m_pnlLayout));
-        m_pnlLayout->addWidget(new Text("Alpha,Beta,Gamma,D", m_pnlLayout));
-        m_pnlLayout->addWidget(alphaSlider);
-        m_pnlLayout->addWidget(betaSlider);
-        m_pnlLayout->addWidget(gammaSlider);
-        m_pnlLayout->addWidget(distanceSlider);
-
-
-        auto changeClipPlane = [&] (HSlider* slider) {
-                Vec4 plane;
-                plane.x = glm::cos(glm::radians(alphaSlider->value()));
-                plane.y = glm::cos(glm::radians(betaSlider->value()));
-                plane.z = glm::cos(glm::radians(gammaSlider->value()));
-                plane.w = distanceSlider->value();
-
-                static_cast<RaycastingMaterial*>(m_engine->material().get())->setClipPlane(plane);
-        };
-        alphaSlider->onValueChanged += changeClipPlane;
-        betaSlider->onValueChanged += changeClipPlane;
-        gammaSlider->onValueChanged += changeClipPlane;
-        distanceSlider->onValueChanged += changeClipPlane;
-        */
-}
-
-void Application::keyPressEvent(int key) {
-        GraphicApplication::keyPressEvent(key);
-
-        if (key == SDLK_LEFT) m_empty->rotate(Vec3(0,1,0), 1.0, Space::WORLD);
-        if (key == SDLK_RIGHT) m_empty->rotate(Vec3(0,1,0), -1.0, Space::WORLD);
-        if (key == SDLK_UP) m_empty->rotate(Vec3(1,0,0), -1.0, Space::LOCAL);
-        if (key == SDLK_DOWN) m_empty->rotate(Vec3(1,0,0), 1.0, Space::LOCAL);
-        if (key == SDLK_1) m_light2->setShadowTechnique(ShadowTechniquePtr(new SimpleShadowMapping()));
-        if (key == SDLK_2) m_light2->setShadowTechnique(ShadowTechniquePtr(new VarianceShadowMapping()));
-        if (key == SDLK_F1) {
-                bool static isEnabled = true;
-                if (isEnabled) {
-                        gui()->root()->hide();
-                        gui()->root()->disable();
-                } else {
-                        gui()->root()->show();
-                        gui()->root()->enable();
-                }
-                isEnabled = !isEnabled;
-        }
 }
 
 void Application::windowResizeEvent(int x, int y) {

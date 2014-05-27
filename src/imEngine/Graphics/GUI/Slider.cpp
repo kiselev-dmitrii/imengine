@@ -41,6 +41,21 @@ HSlider::HSlider(const String &sldBackground, const String &sldSelection, const 
         m_button->alignVertical(WidgetVAlignment::CENTER);
 }
 
+void HSlider::loadFromXml(const XmlNode &node)
+{
+        String min = node.attribute("min").value();
+        String max = node.attribute("max").value();
+        String value = node.attribute("value").value();
+        String percent = node.attribute("percent").value();
+
+        if (!min.empty()) setMinValue(std::stof(min));
+        if (!max.empty()) setMaxValue(std::stof(max));
+        if (!value.empty()) setValue(std::stof(value));
+        if (!percent.empty()) setPercent(std::stof(value));
+
+        HStretchableTexturedWidget::loadFromXml(node);
+}
+
 void HSlider::setPercent(float percent) {
         m_button->setPercent(percent);
 }
@@ -73,6 +88,21 @@ VSlider::VSlider(const String &sldBackground, const String &sldSelection, const 
         m_button = new VSliderButton(btnActive, btnHover, m_offset, m_offset, this);
         m_button->setPercent(0);
         m_button->alignHorizontal(WidgetHAlignment::CENTER);
+}
+
+void VSlider::loadFromXml(const XmlNode &node)
+{
+        String min = node.attribute("min").value();
+        String max = node.attribute("max").value();
+        String value = node.attribute("value").value();
+        String percent = node.attribute("percent").value();
+
+        if (!min.empty()) setMinValue(std::stof(min));
+        if (!max.empty()) setMaxValue(std::stof(max));
+        if (!value.empty()) setValue(std::stof(value));
+        if (!percent.empty()) setPercent(std::stof(value));
+
+        VStretchableTexturedWidget::loadFromXml(node);
 }
 
 void VSlider::setPercent(float percent) {

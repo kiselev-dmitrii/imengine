@@ -48,6 +48,9 @@ public:
         HSlider(const String& sldBackground, const String& sldSelection,
                 const String& btnActive, const String& btnHover, WidgetAbstract* parent);
 
+        /// Загружает настройки из XML-ноды
+        void    loadFromXml(const XmlNode &node);
+
         /// Устанавливает/возвращает значение слайдера в процентах
         void    setPercent(float percent);
         float   percent() const;
@@ -76,6 +79,9 @@ public:
         /// btnActive, btnHover - текстуры для соответствующих состояний кнопки
         VSlider(const String& sldBackground, const String& sldSelection,
                 const String& btnActive, const String& btnHover, WidgetAbstract* parent);
+
+        /// Загружает настройки из XML-ноды
+        void    loadFromXml(const XmlNode &node);
 
         /// Устанавливает/возвращает значение слайдера в процентах
         void    setPercent(float percent);
