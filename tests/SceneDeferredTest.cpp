@@ -44,7 +44,7 @@ private:
 void Application::initialize() {
         GraphicApplication::initialize();
 
-        m_room = new Entity("sponza.json", scene()->world());
+        m_room = new Entity("room.json", scene()->world());
 
         Entity* vase1 = new Entity("vase.json", m_room);
         Entity* vase2 = new Entity("vase.json", m_room);
@@ -132,20 +132,50 @@ void Application::initialize() {
 
         Button* btnLogo = (Button*) gui()->root()->find("btn_logo", true);
 
-        bloomRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->bloom()->setRadius(slider->value()); };
-        bloomStep->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->bloom()->setStep(slider->value()); };
-        bloomThreshold->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->bloom()->setThreshold(slider->value()); };
+        bloomRadius->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->bloom()->setRadius(slider->value());
+                ((Text*)slider->parent()->find("bloom_radius_value", false))->setText(std::to_string(slider->value()));
+        };
+        bloomStep->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->bloom()->setStep(slider->value());
+                ((Text*)slider->parent()->find("bloom_step_value", false))->setText(std::to_string(slider->value()));
+        };
+        bloomThreshold->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->bloom()->setThreshold(slider->value());
+                ((Text*)slider->parent()->find("bloom_threshold_value", false))->setText(std::to_string(slider->value()));
+        };
         bloomEnabled->onClick += [&] (ToggleButton* button) { scene()->renderer()->bloom()->setEnabled(button->isChecked()); };
 
-        ssaoSRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setScreenRadius(slider->value()); };
-        ssaoVRadius->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setViewRadius(slider->value()); };
-        ssaoPower->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->ssao()->ssaoPass()->setPower(slider->value()); };
+        ssaoSRadius->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->ssao()->ssaoPass()->setScreenRadius(slider->value());
+                ((Text*)slider->parent()->find("ssao_sradius_value", false))->setText(std::to_string(slider->value()));
+        };
+        ssaoVRadius->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->ssao()->ssaoPass()->setViewRadius(slider->value());
+                ((Text*)slider->parent()->find("ssao_vradius_value", false))->setText(std::to_string(slider->value()));
+        };
+        ssaoPower->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->ssao()->ssaoPass()->setPower(slider->value());
+                ((Text*)slider->parent()->find("ssao_power_value", false))->setText(std::to_string(slider->value()));
+        };
         ssaoEnabled->onClick += [&] (ToggleButton* button) { scene()->renderer()->ssao()->setEnabled(button->isChecked()); };
 
-        dofNear->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setNearMaxRadius(slider->value()); };
-        dofFar->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFarMaxRadius(slider->value()); };
-        dofStart->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusStart(slider->value()); };
-        dofEnd->onValueChanged += [&] (HSlider* slider) { scene()->renderer()->depthOfField()->depthBlurPass()->setFocusEnd(slider->value()); };
+        dofNear->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->depthOfField()->depthBlurPass()->setNearMaxRadius(slider->value());
+                ((Text*)slider->parent()->find("dof_near_value", false))->setText(std::to_string(slider->value()));
+        };
+        dofFar->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->depthOfField()->depthBlurPass()->setFarMaxRadius(slider->value());
+                ((Text*)slider->parent()->find("dof_far_value", false))->setText(std::to_string(slider->value()));
+        };
+        dofStart->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->depthOfField()->depthBlurPass()->setFocusStart(slider->value());
+                ((Text*)slider->parent()->find("dof_start_value", false))->setText(std::to_string(slider->value()));
+        };
+        dofEnd->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->depthOfField()->depthBlurPass()->setFocusEnd(slider->value());
+                ((Text*)slider->parent()->find("dof_end_value", false))->setText(std::to_string(slider->value()));
+        };
         dofEnabled->onClick += [&] (ToggleButton* button) { scene()->renderer()->depthOfField()->setEnabled(button->isChecked()); };
 
         btnLogo->onClick += [&] (Button* button) {
