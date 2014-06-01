@@ -22,6 +22,7 @@ void RenderTarget::enableColorBuffer(uint i, InternalFormat::Enum internal, bool
                 SourceType::Enum srcType = InternalFormat::assumeSourceType(internal);
                 SourceFormat::Enum srcFormat = InternalFormat::assumeSourceFormat(internal);
                 texture->allocate(m_size.x, m_size.y, internal, srcType, srcFormat);
+                texture->setWrap(TextureWrapMode::CLAMP_TO_EDGE);
 
                 disableColorBuffer(i);
                 m_colorTextureBuffers[i] = texture;
@@ -66,6 +67,7 @@ void RenderTarget::enableDepthBuffer(InternalFormat::Enum internal, bool isTextu
                 SourceType::Enum srcType = InternalFormat::assumeSourceType(internal);
                 SourceFormat::Enum srcFormat = InternalFormat::assumeSourceFormat(internal);
                 texture->allocate(m_size.x, m_size.y, internal, srcType, srcFormat);
+                texture->setWrap(TextureWrapMode::CLAMP_TO_EDGE);
 
                 disableDepthBuffer();
                 m_depthTextureBuffer = texture;

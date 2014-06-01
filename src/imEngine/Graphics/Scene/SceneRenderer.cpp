@@ -46,16 +46,10 @@ void SceneRenderer::initGBuffer() {
         m_gBuffer.enableColorBuffer(1, InternalFormat::COLOR_NORM_4_COMP_8_BIT, true);        //GBufferMaterial
         m_gBuffer.enableColorBuffer(2, InternalFormat::COLOR_FLOAT_4_COMP_16_BIT, true);      //GBufferGeometry
         m_gBuffer.enableDepthBuffer(InternalFormat::DEPTH_NORM_1_COMP_24_BIT, true);          //GBufferDepth
-
-        m_gBuffer.colorBufferTexture(0)->setWrap(TextureWrapMode::CLAMP_TO_EDGE);
-        m_gBuffer.colorBufferTexture(1)->setWrap(TextureWrapMode::CLAMP_TO_EDGE);
-        m_gBuffer.colorBufferTexture(2)->setWrap(TextureWrapMode::CLAMP_TO_EDGE);
-        m_gBuffer.depthBufferTexture()->setWrap(TextureWrapMode::CLAMP_TO_EDGE);
 }
 
 void SceneRenderer::initLightAccum() {
         m_lightAccum.enableColorBuffer(0, InternalFormat::COLOR_FLOAT_3_COMP_16_BIT, true);
-        m_lightAccum.colorBufferTexture(0)->setWrap(TextureWrapMode::CLAMP_TO_EDGE);
 }
 
 void SceneRenderer::groupDetails(const EntityList& entities, DetailPtrList *outRegular, DetailPtrList *outUnlightnment, DetailPtrList *outTransparent) {

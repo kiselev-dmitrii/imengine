@@ -62,7 +62,7 @@ SimpleShadowMapping::SimpleShadowMapping() :
         ShadowTechnique("lights/WriteDepth.glsl", {"SHADOW_MAPPING"}),
         m_rt(m_size)
 {
-        setShadowMapSize(IVec2(128, 128));
+        setShadowMapSize(IVec2(1024, 1024));
 
         m_rt.enableDepthBuffer(InternalFormat::DEPTH_NORM_1_COMP_24_BIT, true);
 

@@ -70,8 +70,8 @@
 								"name" : "light1",
 								"type" : "point_light",
 								"diffuse_color" : [0.3, 1.0, 0.9],
-								"power" : 10,
-								"attenuation" : 0.5
+								"power" : 5,
+								"attenuation" : 0.3
 							}
 						]
 					},
@@ -86,8 +86,8 @@
 								"name" : "light2",
 								"type" : "point_light",
 								"diffuse_color" : [1.0, 1.0, 0.3],
-								"power" : 10,
-								"attenuation" : 0.5
+								"power" : 5,
+								"attenuation" : 0.3
 							}
 						]
 					},
@@ -105,7 +105,7 @@
 								"type" : "spot_light",
 								"target" : [0,0,0],
 								"diffuse_color" : [1, 1, 0.9],
-								"power" : 2.0,
+								"power" : 0.8,
 								"attenuation" : 0.001,
 								"cutoff_angle" : 45
 							}
@@ -125,7 +125,7 @@
 								"type" : "spot_light",
 								"target" : [0,0,0],
 								"diffuse_color" : [1, 1, 0.9],
-								"power" : 2.0,
+								"power" : 0.8,
 								"attenuation" : 0.001,
 								"cutoff_angle" : 45
 							}
