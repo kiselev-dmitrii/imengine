@@ -207,11 +207,11 @@ void Object::notifyTransformUpdated() {
 Object* Object::createObject(const JsonValue &node) {
         String type = node["type"].asString();
 
-        if (type == "entity") return createEntity(node);
-        if (type == "volume") return createVolume(node);
-        if (type == "point_light") return new PointLight(this);
-        if (type == "spot_light") return new SpotLight(this);
-        if (type == "first_person_camera") return new FirstPersonCamera(this);
+        if (type == "ENTITY") return createEntity(node);
+        if (type == "VOLUME") return createVolume(node);
+        if (type == "POINT_LIGHT") return new PointLight(this);
+        if (type == "SPOT_LIGHT") return new SpotLight(this);
+        if (type == "FIRST_PERSON_CAMERA") return new FirstPersonCamera(this);
 
         return nullptr;
 }
