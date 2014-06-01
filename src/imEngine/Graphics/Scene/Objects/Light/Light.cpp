@@ -17,6 +17,7 @@ Light::Light(const String& filename, Object* parent) :
         m_attenuation(1.0),
         m_power(1.0)
 {
+        m_type = ObjectType::LIGHT;
         scene()->registerLight(this);
 }
 
@@ -32,6 +33,15 @@ void Light::loadFromJson(const JsonValue &node) {
         if (!power.isNull()) setPower(power.asFloat());
 
         Movable::loadFromJson(node);
+}
+
+void Light::saveAsJson(JsonValue &result) {
+        Movable::saveAsJson(result);
+
+        result["diffuse_color"] = JsonUtils::fromVec3(diffuseColor());
+        result["specular_color"] = JsonUtils::fromVec3(specularColor());
+        result["attenuation"] = attenuation();
+        result["power"] = power();
 }
 
 void Light::setGBuffers() const {

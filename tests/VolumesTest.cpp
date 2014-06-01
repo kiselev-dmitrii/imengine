@@ -149,7 +149,7 @@ void Application::initialize() {
         m_densityToColorTexture->load("resources/textures/density_to_color.png");
         m_data = new Texture3D();
         m_data->load(256,256, 256, InternalFormat::COLOR_NORM_1_COMP_8_BIT, SourceType::UBYTE, SourceFormat::R, "resources/textures/3d/foot.raw");
-        m_engine = new Volume(m_data, VolumeMaterialPtr(new IsosurfaceMaterial()), scene()->world());
+        m_engine = new Volume(m_data, VolumeMaterialPtr(new RaycastingMaterial()), scene()->world());
         m_engine->material()->setDensityTexture(m_densityToColorTexture);
 
         m_engine->setPosition(Vec3(2, 2, -2));

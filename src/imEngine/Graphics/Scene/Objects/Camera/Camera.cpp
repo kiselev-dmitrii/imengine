@@ -12,6 +12,8 @@ Camera::Camera(Object* parent) :
         m_movementSpeed(5),
         m_rotationSpeed(40)
 {
+        m_type = ObjectType::CAMERA;
+
         scene()->registerCamera(this);
         initHelper();
 }
@@ -27,12 +29,12 @@ void Camera::loadFromJson(const JsonValue &node) {
         Movable::loadFromJson(node);
 }
 
-void Camera::setMovementSpeed(float speed) {
-        m_movementSpeed = speed;
-}
+void Camera::saveAsJson(JsonValue &result) {
+        Movable::saveAsJson(result);
+        Frustum::saveAsJson(result);
 
-void Camera::setRotationSpeed(float speed) {
-        m_rotationSpeed = speed;
+        result["movement_speed"] = movementSpeed();
+        result["rotation_speed"] = rotationSpeed();
 }
 
 void Camera::renderHelper() {

@@ -6,11 +6,15 @@ namespace imEngine {
 
 FirstPersonCamera::FirstPersonCamera(Object *parent) :
         Camera(parent)
-{}
+{
+        m_type = ObjectType::FIRST_PERSON_CAMERA;
+}
 
 FirstPersonCamera::FirstPersonCamera(const Vec3 &psPosition, const Vec3 &psUp, const Vec3 &psRight, Object* parent) :
         Camera(parent)
 {
+        m_type = ObjectType::FIRST_PERSON_CAMERA;
+
         setPosition(psPosition);
         setOrientation(psRight, psUp);
 }

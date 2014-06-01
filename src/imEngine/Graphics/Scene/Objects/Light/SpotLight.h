@@ -16,6 +16,8 @@ public:
 
         /// Загружает настройки из json-ноды
         void    loadFromJson(const JsonValue &node);
+        /// Сохраняет настройки в виде json-ноды
+        void    saveAsJson(JsonValue &result);
 
         /// Устанавливает телесный угол развертки конуса
         void    setCutoffAngle(float angle);

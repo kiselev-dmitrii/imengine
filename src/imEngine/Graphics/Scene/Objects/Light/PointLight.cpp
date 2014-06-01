@@ -5,7 +5,9 @@ namespace imEngine {
 
 PointLight::PointLight(Object *parent) :
         Light("lights/PointLightDeferred.glsl", parent)
-{ }
+{
+        m_type = ObjectType::POINT_LIGHT;
+}
 
 void PointLight::prepare() const {
         setGBuffers();

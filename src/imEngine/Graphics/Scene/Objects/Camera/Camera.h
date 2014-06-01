@@ -17,10 +17,15 @@ public:
 
         /// Загружает настройки из json-ноды
         void            loadFromJson(const JsonValue &node);
+        /// Сохраняет настройки в виде json-ноды
+        void            saveAsJson(JsonValue &result);
 
-        /// Устанавливает скорость перемещения камеры
-        void            setMovementSpeed(float speed);
-        void            setRotationSpeed(float speed);
+        /// Устанавливает/возвращает скорость перемещения камеры
+        void            setMovementSpeed(float speed)                           { m_movementSpeed = speed; }
+        float           movementSpeed() const                                   { return m_movementSpeed; }
+        /// Устанавливает/возвращает скорость поворота камеры
+        void            setRotationSpeed(float speed)                           { m_rotationSpeed = speed; }
+        float           rotationSpeed() const                                   { return m_rotationSpeed; }
 
         /// Рендерит хелпер в виде камеры
         void            renderHelper();

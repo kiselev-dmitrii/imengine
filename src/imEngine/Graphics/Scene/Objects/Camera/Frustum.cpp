@@ -32,6 +32,14 @@ void Frustum::loadFromJson(const JsonValue &node) {
         if (!fov.isNull()) setFieldOfView(fov.asFloat());
 }
 
+void Frustum::saveAsJson(JsonValue &result) {
+        result["projection"] = isOrthographic() ? "ORTHOGRAPHIC" : "PERSPECTIVE";
+        result["near"] = nearDistance();
+        result["far"] = farDistance();
+        result["aspect"] = aspectRatio();
+        result["fov"] = fieldOfView();
+}
+
 void Frustum::setOrthographic(bool isOrthographic) {
         m_isOrthographic = isOrthographic;
         m_isNeedToUpdateMatrix = true;

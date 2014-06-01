@@ -39,6 +39,16 @@ void Scene::loadScene(const String &filename) {
         world()->loadFromJson(root["objects"]);
 }
 
+void Scene::saveScene(const String &filename) {
+        JsonValue objects(Json::objectValue);
+        world()->saveAsJson(objects);
+
+        JsonValue root(Json::objectValue);
+        root["objects"] = objects;
+
+        JsonUtils::saveFile(root, filename);
+}
+
 Object* Scene::pickObject(int x, int y) {
         float aspectRatio = activeCamera()->aspectRatio();
         float tanHalfFovy = glm::tan(glm::radians(activeCamera()->fieldOfView()/2));

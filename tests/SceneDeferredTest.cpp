@@ -21,6 +21,7 @@ class Application : public GraphicApplication {
 protected:
         void    initialize();
         void    windowResizeEvent(int x, int y);
+        void    keyPressEvent(int key);
 
 private:
         Entity*      m_room;
@@ -201,6 +202,10 @@ void Application::windowResizeEvent(int x, int y) {
         m_depthBuffer->setSize(Vec2(window()->size())/2.0f);
         m_depthBuffer->setPosition(Vec2(m_diffuseBuffer->width(),m_diffuseBuffer->height()));
         */
+}
+
+void Application::keyPressEvent(int key) {
+        if (key == SDLK_F1) scene()->saveScene("my_scene.json");
 }
 
 int main() {

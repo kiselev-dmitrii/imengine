@@ -13,6 +13,29 @@
 
 namespace imEngine {
 
+
+//############################ ObjectType ####################################//
+
+String ObjectType::toString(ObjectType::Enum type) {
+        switch (type) {
+                case OBJECT: return "OBJECT";
+                case MOVABLE: return "MOVABLE";
+                case LIGHT: return "LIGHT";
+                case CAMERA: return "CAMERA";
+
+                case FIRST_PERSON_CAMERA: return "FIRST_PERSON_CAMERA";
+                case TARGET_CAMERA: return "TARGET_CAMERA";
+                case ENTITY: return "ENTITY";
+                case VOLUME: return "VOLUME";
+                case SPOT_LIGHT: return "SPOT_LIGHT";
+                case POINT_LIGHT: return "POINT_LIGHT";
+
+                default:
+                        IM_ERROR("Unknown ObjectType");
+                        return "";
+        }
+}
+
 //############################ Object ########################################//
 
 Object::Object(Object *parent) :
@@ -22,6 +45,8 @@ Object::Object(Object *parent) :
         m_isNeedToUpdateLocalToWorldMatrix(true),
         m_isNeedToUpdateWorldToLocalMatrix(true)
 {
+        m_type = ObjectType::OBJECT;
+
         if (parent != nullptr) m_scene = parent->scene();
         notifyTransformUpdated();
 }
@@ -37,12 +62,29 @@ void Object::loadFromJson(const JsonValue &node) {
         }
 }
 
+void Object::saveAsJson(JsonValue& result) {
+        JsonValue childrenValues(Json::arrayValue);
+        for (Object* child: children()) {
+                JsonValue value(Json::objectValue);
+                child->saveAsJson(value);
+                childrenValues.append(value);
+        }
+
+        result["name"] = name();
+        result["type"] = ObjectType::toString(type());
+        result["children"] = childrenValues;
+}
+
 Scene* Object::scene() const {
         return m_scene;
 }
 
 const AABB& Object::aabb() const {
         return m_aabb;
+}
+
+ObjectType::Enum Object::type() const {
+        return m_type;
 }
 
 const Vec3& Object::position() const {

@@ -64,6 +64,7 @@
 						"type" : "entity",
 						"model" : "light_sphere.json",
 						"position" : [0, 2, 1],
+                        "position" : [ 3.653007507324219, 7.597323417663574, 4.049255847930908 ],
 
 						"children" : [
 							{
@@ -79,7 +80,7 @@
 						"name" : "sphere2",
 						"type" : "entity",
 						"model" : "light_sphere.json",
-						"position" : [0, 2, 1],
+						"position" : [ 1.851277589797974, 6.614600181579590, -2.065096378326416 ],
 
 						"children" : [
 							{
@@ -96,14 +97,13 @@
 						"name" : "projector1",
 						"type" : "entity",
 						"model" : "projector.json",
-						"position" : [4,2,4],
-						"target" : [0, 0, 0],
+						"orientation" : [-0.03396455198526382, -0.6549475789070129, -0.3619248867034912, 0.6624968647956848 ],
+                        "position" : [ -0.8568570613861084, 2.271003246307373, 2.855023145675659 ],
 
 						"children" : [
 							{
 								"name" : "light3",
 								"type" : "spot_light",
-								"target" : [0,0,0],
 								"diffuse_color" : [1, 1, 0.9],
 								"power" : 0.8,
 								"attenuation" : 0.001,
@@ -116,14 +116,13 @@
 						"name" : "projector2",
 						"type" : "entity",
 						"model" : "projector.json",
-						"position" : [4,2,4],
-						"target" : [0, 0, 0],
+						"orientation" : [-0.06902443617582321, -0.9502931237220764, -0.2046025544404984, 0.2242829352617264 ],
+                        "position" : [ 1.681953430175781, 2.976338863372803, -2.745151042938232 ],
 
 						"children" : [
 							{
 								"name" : "light4",
 								"type" : "spot_light",
-								"target" : [0,0,0],
 								"diffuse_color" : [1, 1, 0.9],
 								"power" : 0.8,
 								"attenuation" : 0.001,

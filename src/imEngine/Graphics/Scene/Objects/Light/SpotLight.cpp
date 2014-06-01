@@ -8,6 +8,8 @@ namespace imEngine {
 SpotLight::SpotLight(Object *parent) :
         Light("lights/SpotLightDeferred.glsl", parent)
 {
+        m_type = ObjectType::SPOT_LIGHT;
+
         setCutoffAngle(20);
         setFalloffAngle(5);
         setShadowTechnique(ShadowTechniquePtr(new SimpleShadowMapping()));
@@ -21,6 +23,13 @@ void SpotLight::loadFromJson(const JsonValue &node) {
         if (!falloffAngle.isNull()) setFalloffAngle(falloffAngle.asFloat());
 
         Light::loadFromJson(node);
+}
+
+void SpotLight::saveAsJson(JsonValue &result) {
+        Light::saveAsJson(result);
+
+        result["cutoff_angle"] = cutoffAngle();
+        result["falloff_angle"] = falloffAngle();
 }
 
 void SpotLight::setCutoffAngle(float angle) {

@@ -29,6 +29,8 @@ public:
 
         /// Загружает сцену из файла
         void            loadScene(const String& filename);
+        /// Сохраняет сцену в файл
+        void            saveScene(const String& filename);
 
         /// Возвращает корневой объект сцены
         Object*         world()                                                 { return m_world; }

@@ -9,6 +9,25 @@
 namespace imEngine {
 class Scene;
 
+/** @brief Определяет тип объекта
+ */
+namespace ObjectType {
+        enum Enum {
+                OBJECT,
+                MOVABLE,
+                LIGHT,
+                CAMERA,
+
+                FIRST_PERSON_CAMERA,
+                TARGET_CAMERA,
+                ENTITY,
+                VOLUME,
+                SPOT_LIGHT,
+                POINT_LIGHT
+        };
+
+        String   toString(ObjectType::Enum type);
+}
 
 /** @brief Структура для хранения позиции, поворота и масштаба
  */
@@ -30,11 +49,15 @@ public:
 
         /// Загружает настройки из json-ноды
         virtual void    loadFromJson(const JsonValue& node);
+        /// Сохраняет настройки в виде json-ноды
+        virtual void    saveAsJson(JsonValue& result);
 
         /// Возвращает указатель на сцену
         Scene*          scene() const;
         /// Возвращает AABB
         const AABB&     aabb() const;
+        /// Возвращает тип объекта
+        ObjectType::Enum type() const;
 
         /// Возвращает позицию/ориентацию/масштаб объекта в родительской СК
         const Vec3&     position() const;
@@ -76,6 +99,7 @@ protected:
 protected:
         Scene*                  m_scene;
         AABB                    m_aabb;
+        ObjectType::Enum        m_type;
 
         Transform               m_psTransform;                          // трансформация в род. системе
         /// Кэшированная мировая трансформация

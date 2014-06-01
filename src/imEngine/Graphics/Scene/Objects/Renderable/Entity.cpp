@@ -8,6 +8,8 @@ Entity::Entity(const String &model, Object *parent) :
         Movable(parent),
         m_model(RESOURCES->models()->model(model))
 {
+        m_type = ObjectType::ENTITY;
+
         m_model.setOwner(this);
         m_aabb = m_model.aabb();
         scene()->registerEntity(this);

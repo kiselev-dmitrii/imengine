@@ -21,6 +21,8 @@ public:
 
         /// Загружает настройки из json-ноды
         void            loadFromJson(const JsonValue &node);
+        /// Сохраняет настройки в виде json-ноды
+        void            saveAsJson(JsonValue &result);
 
         /// Устанавливает G-buffer (обязательно)
         void            setDiffuseBuffer(Texture2D* texture)                    { m_diffuseBuffer = texture; }

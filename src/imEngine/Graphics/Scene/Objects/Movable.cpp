@@ -10,6 +10,8 @@ Movable::Movable(Object *parent) :
 Movable::Movable(const Vec3 &position, const Quat &orientation, const Vec3 &scale, Object *parent) :
         Object(parent)
 {
+        m_type = ObjectType::MOVABLE;
+
         setPosition(position);
         setOrientation(orientation);
         setScale(scale);
@@ -41,6 +43,14 @@ void Movable::loadFromJson(const JsonValue &node) {
         }
 
         Object::loadFromJson(node);
+}
+
+void Movable::saveAsJson(JsonValue &result) {
+        Object::saveAsJson(result);
+
+        result["position"] = JsonUtils::fromVec3(position());
+        result["orientation"] = JsonUtils::fromQuat(orientation());
+        result["scale"] = JsonUtils::fromVec3(scale());
 }
 
 void Movable::setPosition(const Vec3 &psPosition) {
