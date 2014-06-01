@@ -16,6 +16,11 @@ public:
         /// Деструктор
         ~Entity();
 
+        /// Загружает настройки из json-ноды
+        void            loadFromJson(const JsonValue &node);
+        /// Сохраняет настройки в виде json-ноды
+        void            saveAsJson(JsonValue &result);
+
         /// Возвращает модель
         Model*          model()                                                 { return &m_model; }
 

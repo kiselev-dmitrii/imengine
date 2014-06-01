@@ -27,6 +27,9 @@ public:
         /// Конструктор
         Material(const String& filename, MaterialType type);
 
+        /// Загружуает настройки материала из json-ноды
+        virtual void    loadFromJson(const JsonValue& node)                     { }
+
         /// Активирует/деактивирует материал
         virtual void    bind() = 0;
         virtual void    unbind() = 0;
@@ -59,7 +62,7 @@ public:
         VolumeMaterial(const String& filename);
 
         /// Загружает настройки материала из json-ноды
-        virtual void    loadFromJson(const JsonValue& node);
+        void            loadFromJson(const JsonValue& node);
 
         /// Обязательные параметры
         /// Установка/возвращение данных в виде трехмерной текстуры

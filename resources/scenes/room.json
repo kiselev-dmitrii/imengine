@@ -26,7 +26,7 @@
 			{
 				"name" : "room",
 				"type" : "ENTITY",
-				"model" : "room.json",
+				"model" : "sponza.json",
 
 				"children" : [
 					{
@@ -119,6 +119,14 @@
 						"orientation" : [-0.06902443617582321, -0.9502931237220764, -0.2046025544404984, 0.2242829352617264 ],
                         "position" : [ 1.681953430175781, 2.976338863372803, -2.745151042938232 ],
 
+                        "materials" : [
+                        	{
+                        		"name" : "lamp",
+                        		"type" : "EMISSIVE",
+                        		"emissiveColor" : [2,2,2]
+                        	}
+                        ],
+
 						"children" : [
 							{
 								"name" : "light4",
@@ -129,20 +137,6 @@
 								"cutoff_angle" : 45
 							}
 						]
-					},
-
-					{
-						"name" : "foot",
-						"type" : "VOLUME",
-						"data" : "3d/foot.raw",
-						"size" : [256, 256, 256],
-						"format" : "COLOR_NORM_1_COMP_8_BIT",
-						"material" : {
-							"type" : "RAYCASTING",
-							"step" : 1,
-							"density_texture" : "resources/textures/density_to_color.png"
-						},
-						"position" : [2, -2, -2]
 					}
 				]
 				/*	

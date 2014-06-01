@@ -56,22 +56,26 @@ public:
         /// Загружает модель из json файла, содержащего геометрию и материалы
         void                    load(const String& filename);
 
+        /// Возвращает список деталей модели
+        MapStringDetail&        details()                                       { return m_details; }
+        /// Возвращает деталь с именем name
+        Detail*                 detail(const String& name);
+
         /// Возвращает имя модели
         const String&           name() const                                    { return m_name; }
         /// Возвращает aabb модели
         const AABB&             aabb() const                                    { return m_aabb; }
-        /// Возвращает список деталей модели
-        MapStringDetail&        details()                                       { return m_details; }
+
         /// Устанавливает/возвращает владельца модели
         void                    setOwner(Object* owner)                         { m_owner = owner; }
         Object*                 owner() const                                   { return m_owner; }
 
+public:
+        static GeometryPtr      decodeGeometry(const String& encodedVertices, const String& encodedIndices);
+        static MaterialPtr      createMaterial(const JsonValue& node);
+
 private:
         void                    loadFromJson(const String& filename);
-        void                    loadFromJson(const JsonValue& root);
-        GeometryPtr             loadGeometry(const String& encodedVertices, const String& encodedIndices);
-        MaterialPtr             loadMaterial(const JsonValue& material);
-
         void                    recalculateAABB();
 
 private:

@@ -55,20 +55,25 @@ void Model::load(const String &filename) {
         recalculateAABB();
 }
 
-void Model::loadFromJson(const String &filename) {
-        Json::Value root = JsonUtils::loadFile(filename);
-        loadFromJson(root);
+Detail* Model::detail(const String &name) {
+        for (Detail& detail: m_details) {
+                if (name == detail.name()) return &detail;
+        }
+
+        return nullptr;
 }
 
-void Model::loadFromJson(const JsonValue &root) {
+void Model::loadFromJson(const String &filename) {
+        Json::Value root = JsonUtils::loadFile(filename);
+
         JsonValue details = root["details"];
         JsonValue materials = root["materials"];
 
         for (const Json::Value& detail: details) {
-                String name = detail.get("name", "").asString();
-                String materialName = detail.get("material", "").asString();
-                String vertices = detail.get("vertices", "").asString();
-                String indices = detail.get("indices", "").asString();
+                String name = detail["name"].asString();
+                String materialName = detail["material"].asString();
+                String vertices = detail["vertices"].asString();
+                String indices = detail["indices"].asString();
 
                 if (vertices.empty() || indices.empty()) {
                         IM_ERROR("Detail doesn't contain mesh data");
@@ -79,14 +84,14 @@ void Model::loadFromJson(const JsonValue &root) {
                         return;
                 }
 
-                GeometryPtr geometry = loadGeometry(vertices, indices);
-                MaterialPtr material = loadMaterial(materials[materialName]);
-
+                GeometryPtr geometry = decodeGeometry(vertices, indices);
+                MaterialPtr material = createMaterial(materials[materialName]);
+                material->loadFromJson(materials[materialName]);
                 m_details.push_back(Detail(name, geometry, material, this));
         }
 }
 
-GeometryPtr Model::loadGeometry(const String &encodedVertices, const String &encodedIndices) {
+GeometryPtr Model::decodeGeometry(const String &encodedVertices, const String &encodedIndices) {
         String decodedVertices = StringUtils::fromBase64(encodedVertices);
         String decodedIndices = StringUtils::fromBase64(encodedIndices);
 
@@ -104,25 +109,14 @@ GeometryPtr Model::loadGeometry(const String &encodedVertices, const String &enc
         return GeometryPtr(new Geometry(vertices, indices));
 }
 
-MaterialPtr Model::loadMaterial(const JsonValue &material) {
-        String type = material.get("type", "").asString();
-        if (type.empty()) {
-                IM_ERROR("Material has not type");
-                return MaterialPtr();
-        }
+MaterialPtr Model::createMaterial(const JsonValue &node) {
+        String type = node["type"].asString();
 
-        if (type == "GENERIC") {
-                GenericMaterial* result = new GenericMaterial();
-                result->loadFromJson(material);
-                return MaterialPtr((Material*)result);
-        } else if (type == "EMISSIVE") {
-                EmissiveMaterial* result = new EmissiveMaterial();
-                result->loadFromJson(material);
-                return MaterialPtr((Material*)result);
-        } else {
-                IM_ERROR(type << " is unknown type");
-                return MaterialPtr();
-        }
+        if (type == "GENERIC") return MaterialPtr(new GenericMaterial());
+        if (type == "EMISSIVE") return MaterialPtr(new EmissiveMaterial());
+
+        IM_ERROR("Type " << type << " is unknown type of material");
+        return MaterialPtr();
 }
 
 void Model::recalculateAABB() {
