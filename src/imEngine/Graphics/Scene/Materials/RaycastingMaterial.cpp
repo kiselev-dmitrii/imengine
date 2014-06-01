@@ -10,6 +10,18 @@ RaycastingMaterial::RaycastingMaterial() :
         setClipPlane(Vec4(1,1,1,0));
 }
 
+void RaycastingMaterial::loadFromJson(const JsonValue &node) {
+        JsonValue minDensity = node["min_density"];
+        JsonValue maxDensity = node["max_density"];
+        JsonValue clipPlane = node["clip_plane"] ;
+
+        if (!minDensity.isNull()) setMinDensity(minDensity.asFloat());
+        if (!maxDensity.isNull()) setMaxDensity(maxDensity.asFloat());
+        if (!clipPlane.isNull()) setClipPlane(JsonUtils::toVec4(clipPlane));
+
+        VolumeMaterial::loadFromJson(node);
+}
+
 void RaycastingMaterial::setClipPlane(const Vec4 &plane) {
         m_clipPlane = Vec4(glm::normalize(Vec3(plane.x, plane.y, plane.z)), plane.w);
 }

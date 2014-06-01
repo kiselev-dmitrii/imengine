@@ -13,6 +13,9 @@ public:
         /// Конструктор
         RaycastingMaterial();
 
+        /// Загружает настройки из json-ноды
+        void            loadFromJson(const JsonValue& node);
+
         /// Устанавливает минимальную плотность
         void            setMinDensity(float density)                            { m_minDensity = glm::clamp(density, 0.0f, 1.0f); }
         float           minDensity() const                                      { return m_minDensity; }

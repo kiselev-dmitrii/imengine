@@ -13,6 +13,16 @@ SpotLight::SpotLight(Object *parent) :
         setShadowTechnique(ShadowTechniquePtr(new SimpleShadowMapping()));
 }
 
+void SpotLight::loadFromJson(const JsonValue &node) {
+        JsonValue cutoffAngle = node["cutoff_angle"];
+        JsonValue falloffAngle = node["falloff_angle"];
+
+        if (!cutoffAngle.isNull()) setCutoffAngle(cutoffAngle.asFloat());
+        if (!falloffAngle.isNull()) setFalloffAngle(falloffAngle.asFloat());
+
+        Light::loadFromJson(node);
+}
+
 void SpotLight::setCutoffAngle(float angle) {
         m_cuttoffAngle = glm::clamp(angle, 0.0f, 90.0f);
         if (m_shadowTechnique) m_shadowTechnique->frustum()->setFieldOfView(2*angle);

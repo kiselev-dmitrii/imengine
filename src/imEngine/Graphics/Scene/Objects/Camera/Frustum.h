@@ -3,6 +3,7 @@
 
 #include <imEngine/Math/Common.h>
 #include <imEngine/Math/Plane.h>
+#include <imEngine/FileContainers/Json.h>
 
 namespace imEngine {
 
@@ -13,6 +14,9 @@ class Frustum {
 public:
         /// Конструктор
         Frustum();
+
+        /// Загружает настройки из json-ноды
+        void            loadFromJson(const JsonValue& node);
 
         /// Устанавливает/определяет ортогональный тип проекции
         void            setOrthographic(bool isOrthographic);

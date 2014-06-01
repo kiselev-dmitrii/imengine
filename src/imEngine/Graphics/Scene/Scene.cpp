@@ -2,6 +2,7 @@
 #include "Objects/Camera/FirstPersonCamera.h"
 #include "SceneRenderer.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <imEngine/System/Filesystem.h>
 
 namespace imEngine {
 
@@ -29,6 +30,13 @@ Scene::Scene(GraphicApplication *application) :
 Scene::~Scene() {
         delete m_world;
         delete m_sceneRenderer;
+}
+
+void Scene::loadScene(const String &filename) {
+        String path = Filesystem::joinPath("resources/scenes", filename);
+        Json::Value root = JsonUtils::loadFile(path);
+
+        world()->loadFromJson(root["objects"]);
 }
 
 Object* Scene::pickObject(int x, int y) {

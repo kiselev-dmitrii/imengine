@@ -1,23 +1,37 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<document>
 
-<scene name="chamber01">
-	<models>
-		<model name="car">
-			<detail name="body" mesh="car_body.obj" material="car_metal" />
-			<detail name="glasses" mesh="car_glasses.obj" material="car_glass"/>
-		</model>
-	
-		<model name="wheel">
-			<detail name="tire" mesh="car_tire.obj" material="rubber"/>
-			<detail name="wheel" mesh="car_wheel.obj" material="metal.xml"/>
-		</model>
-	<models>>
+<effects>
+	<ssao sradius="10" vradius="2" power="10"/>
+	<dof focus_start="0" focus_end="1" near_radius="200" far_radius="200"/>
+	<bloom radius="200" step="4" threshold="10"/>
+</effects>
 
-	<world>
-		<object name="car1" import="car.xml/car">
-			<camera type="free" position="0; 2; 2"/>
-		</object>
+<world>
+	<entity name="room" model="room.json">
+		<entity name="vase1" model="vase.json">
+			<details>
+				<material name="detail01" type="GENERIC" color="1,1,0"/>
+			</details>
+		</entity>
 
-		<spot_light position="0; 0; 10" target="0;0;0"/>
-	</world>
-</scene>
+		<entity name="vase2" model="vase.json">
+			<details>
+				<material name="detail01" type="REFLECTION" reflectionIndex="0.1"/>
+				<material name="detail02" type="REFLECTION" reflectionIndex="0.1"/>
+			</details>
+		</entity>
+
+		<entity name="car" position="10,0,10" model="car_body.json">
+			<details>
+				<material name="body" type="GENERIC" color="1,0,0"/>
+			</details>
+
+			<entity name="wheel01" position="1,0,1" model="car_wheel.json" />
+			<entity name="wheel02" position="-1,0,1" model="car_wheel.json" />
+			<spotlight name="light01" position="0.8,0.3,0.8"/>
+			<spotlight name="light02" position="-0.8,0.3,0.8" color="1,1,1" power="20"/>
+		</entity>
+	</entity>
+</world>
+
+</document>

@@ -14,6 +14,24 @@ Frustum::Frustum() :
         m_isNeedToUpdateMatrix(true)
 { }
 
+void Frustum::loadFromJson(const JsonValue &node) {
+        JsonValue projection = node["projection"];
+        JsonValue near = node["near"];
+        JsonValue far = node["far"];
+        JsonValue aspect = node["aspect"];
+        JsonValue fov = node["fov"];
+
+        if (!projection.isNull()) {
+                if (projection.asString() == "ORTHOGRAPHIC") setOrthographic(true);
+                if (projection.asString() == "PERSPECTIVE") setOrthographic(false);
+                else IM_LOG("Unknown type of project");
+        }
+        if (!near.isNull()) setNearDistance(near.asFloat());
+        if (!far.isNull()) setFarDistance(far.asFloat());
+        if (!aspect.isNull()) setAspectRatio(aspect.asFloat());
+        if (!fov.isNull()) setFieldOfView(fov.asFloat());
+}
+
 void Frustum::setOrthographic(bool isOrthographic) {
         m_isOrthographic = isOrthographic;
         m_isNeedToUpdateMatrix = true;

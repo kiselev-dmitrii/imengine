@@ -1,7 +1,22 @@
 #include "Json.h"
 #include <imEngine/Utils/Debug.h>
+#include <fstream>
 
 namespace imEngine {
+
+JsonValue JsonUtils::loadFile(const String &path) {
+        Json::Value root;
+        Json::Reader reader;
+
+        std::ifstream ifile(path, std::ifstream::binary);
+        bool isOk = reader.parse(ifile, root, false);
+        if (!isOk) {
+                IM_ERROR("Cannot open file " << path << ": " << reader.getFormatedErrorMessages());
+                return JsonValue();
+        }
+
+        return root;
+}
 
 Vec2 JsonUtils::toVec2(const JsonValue &value) {
         IM_ASSERT(value.isArray());
@@ -34,6 +49,11 @@ Vec4 JsonUtils::toVec4(const JsonValue &value) {
         result.z = value[2].asFloat();
         result.w = value[3].asFloat();
         return result;
+}
+
+Quat JsonUtils::toQuat(const JsonValue &value) {
+        Vec4 vec = toVec4(value);
+        return Quat(vec.x, vec.y, vec.z, vec.w);
 }
 
 } //namespace imEngine

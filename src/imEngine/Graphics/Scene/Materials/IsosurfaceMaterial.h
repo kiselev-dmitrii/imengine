@@ -13,6 +13,9 @@ public:
         /// Конструктор
         IsosurfaceMaterial();
 
+        /// Загружает настройки из json-ноды
+        void    loadFromJson(const JsonValue &node);
+
         /// Устанавливает пороговую плотность
         void    setThresholdDensity(float density)                              { m_thresholdDensity = glm::clamp(density, 0.0f, 1.0f); }
         float   thresholdDensity() const                                        { return m_thresholdDensity; }

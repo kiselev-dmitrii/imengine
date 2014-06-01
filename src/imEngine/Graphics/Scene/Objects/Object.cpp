@@ -1,9 +1,17 @@
 #include "Object.h"
 #include <glm/gtx/quaternion.hpp>
 #include "../Scene.h"
+#include "../ResourceManager.h"
+
+#include "Renderable/Entity.h"
+#include "Renderable/Volume.h"
+#include "Light/PointLight.h"
+#include "Light/SpotLight.h"
+#include "Camera/FirstPersonCamera.h"
+#include "../Materials/RaycastingMaterial.h"
+#include "../Materials/IsosurfaceMaterial.h"
 
 namespace imEngine {
-
 
 //############################ Object ########################################//
 
@@ -16,6 +24,17 @@ Object::Object(Object *parent) :
 {
         if (parent != nullptr) m_scene = parent->scene();
         notifyTransformUpdated();
+}
+
+void Object::loadFromJson(const JsonValue &node) {
+        JsonValue name = node["name"];
+        if (!name.isNull()) setName(name.asString());
+
+        JsonValue children = node["children"];
+        for (JsonValue child : children) {
+                Object* object = createObject(child);
+                object->loadFromJson(child);
+        }
 }
 
 Scene* Object::scene() const {
@@ -143,6 +162,41 @@ void Object::notifyTransformUpdated() {
         for (Object* node: children()) node->notifyTransformUpdated();
 }
 
+Object* Object::createObject(const JsonValue &node) {
+        String type = node["type"].asString();
+
+        if (type == "entity") return createEntity(node);
+        if (type == "volume") return createVolume(node);
+        if (type == "point_light") return new PointLight(this);
+        if (type == "spot_light") return new SpotLight(this);
+        if (type == "first_person_camera") return new FirstPersonCamera(this);
+
+        return nullptr;
+}
+
+Object* Object::createEntity(const JsonValue &node) {
+        String model = node["model"].asString();
+        return new Entity(model, this);
+}
+
+Object* Object::createVolume(const JsonValue &node) {
+        String data = node["data"].asString();
+        Vec3 size = JsonUtils::toVec3(node["size"]);
+        InternalFormat::Enum internal = InternalFormat::fromString(node["format"].asString());
+        String materialType = node["material"]["type"].asString();
+
+        VolumeMaterialPtr material;
+        if (materialType == "RAYCASTING") material.reset(new RaycastingMaterial());
+        else if (materialType == "ISOSURFACE") material.reset(new IsosurfaceMaterial());
+        else {
+                IM_ERROR("Material not found");
+                return nullptr;
+        }
+        material->loadFromJson(node["material"]);
+
+        Texture3D* texture = RESOURCES->textures()->texture3D(data, IVec3(size), internal);
+        return new Volume(texture, material, this);
+}
 
 
 } //namespace imEngine

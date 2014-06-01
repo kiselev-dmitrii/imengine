@@ -58,6 +58,9 @@ public:
         /// Конструктор
         VolumeMaterial(const String& filename);
 
+        /// Загружает настройки материала из json-ноды
+        virtual void    loadFromJson(const JsonValue& node);
+
         /// Обязательные параметры
         /// Установка/возвращение данных в виде трехмерной текстуры
         void            setData(const String& name, const IVec3& size, InternalFormat::Enum internal);
@@ -73,6 +76,7 @@ public:
         void            setStep(int step)                                       { m_step = glm::clamp(step, 1, 100); }
         int             step() const                                            { return m_step; }
         /// Устанавливает текстуру, переводящую плотность от [0;1] в цвет
+        void            setDensityTexture(const String& path);
         void            setDensityTexture(const Texture2DPtr& texture)          { m_densityTexture = texture; }
         Texture2DPtr    densityTexture() const                                  { return m_densityTexture; }
 

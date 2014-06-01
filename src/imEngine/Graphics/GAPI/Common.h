@@ -2,6 +2,7 @@
 #define GAPICOMMON_H
 
 #include <GL/glew.h>
+#include <imEngine/Utils/Types.h>
 
 namespace imEngine {
 
@@ -82,6 +83,9 @@ namespace InternalFormat {
 
         SourceFormat::Enum      assumeSourceFormat(InternalFormat::Enum internal);
         SourceType::Enum        assumeSourceType(InternalFormat::Enum internal);
+
+        String                  toString(InternalFormat::Enum internal);
+        InternalFormat::Enum    fromString(const String& internal);
 }
 
 

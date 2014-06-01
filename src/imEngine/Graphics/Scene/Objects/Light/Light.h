@@ -19,6 +19,9 @@ public:
         /// Конструктор. Регистрирует источник света на сцене
         Light(const String& filename, Object* parent);
 
+        /// Загружает настройки из json-ноды
+        void            loadFromJson(const JsonValue &node);
+
         /// Устанавливает G-buffer (обязательно)
         void            setDiffuseBuffer(Texture2D* texture)                    { m_diffuseBuffer = texture; }
         void            setMaterialBuffer(Texture2D* texture)                   { m_materialBuffer = texture; }

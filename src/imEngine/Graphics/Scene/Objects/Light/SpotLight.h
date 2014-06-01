@@ -14,6 +14,9 @@ public:
         /// Конструктор
         SpotLight(Object* parent);
 
+        /// Загружает настройки из json-ноды
+        void    loadFromJson(const JsonValue &node);
+
         /// Устанавливает телесный угол развертки конуса
         void    setCutoffAngle(float angle);
         float   cutoffAngle() const;

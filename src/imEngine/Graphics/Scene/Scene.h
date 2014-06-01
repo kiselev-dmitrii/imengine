@@ -27,6 +27,9 @@ public:
         /// Деструктор
         virtual ~Scene();
 
+        /// Загружает сцену из файла
+        void            loadScene(const String& filename);
+
         /// Возвращает корневой объект сцены
         Object*         world()                                                 { return m_world; }
 

@@ -29,6 +29,14 @@ VolumeMaterial::VolumeMaterial(const String &filename) :
         setStep(1);
 }
 
+void VolumeMaterial::loadFromJson(const JsonValue &node) {
+        JsonValue step = node["step"];
+        JsonValue densityTexture = node["density_texture"];
+
+        if (!step.isNull()) setStep(step.asInt());
+        if (!densityTexture.isNull()) setDensityTexture(densityTexture.asString());
+}
+
 void VolumeMaterial::setData(const String &name, const IVec3& size, InternalFormat::Enum internal) {
         setData(RESOURCES->textures()->texture3D(name, size, internal));
 }
@@ -46,6 +54,11 @@ void VolumeMaterial::setData(Texture3D *data) {
 
 Texture3D* VolumeMaterial::data() const {
         return m_texture;
+}
+
+void VolumeMaterial::setDensityTexture(const String &path) {
+        m_densityTexture.reset(new Texture2D());
+        m_densityTexture->load(path);
 }
 
 void VolumeMaterial::bind() {

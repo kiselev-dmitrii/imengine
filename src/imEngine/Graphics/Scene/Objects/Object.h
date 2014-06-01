@@ -4,6 +4,7 @@
 #include <imEngine/Math/Common.h>
 #include <imEngine/Math/AABB.h>
 #include <imEngine/Utils/TreeNamedNode.h>
+#include <imEngine/FileContainers/Json.h>
 
 namespace imEngine {
 class Scene;
@@ -26,6 +27,9 @@ class Object : public TreeNamedNode<Object> {
 public:
         /// Конструктор
         explicit Object(Object* parent);
+
+        /// Загружает настройки из json-ноды
+        virtual void    loadFromJson(const JsonValue& node);
 
         /// Возвращает указатель на сцену
         Scene*          scene() const;
@@ -63,6 +67,11 @@ protected:
         void            updateWorldToLocalMatrix() const;
         /// Оповещает объект и дочерние объекты, о том, что позиция данного объекта изменилась
         void            notifyTransformUpdated();
+
+        /// Создает объект по json-ноде
+        Object*         createObject(const JsonValue& node);
+        Object*         createEntity(const JsonValue& node);
+        Object*         createVolume(const JsonValue& node);
 
 protected:
         Scene*                  m_scene;

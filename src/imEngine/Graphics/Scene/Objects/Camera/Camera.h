@@ -15,6 +15,9 @@ public:
         /// Конструктор
         explicit Camera(Object* parent);
 
+        /// Загружает настройки из json-ноды
+        void            loadFromJson(const JsonValue &node);
+
         /// Устанавливает скорость перемещения камеры
         void            setMovementSpeed(float speed);
         void            setRotationSpeed(float speed);

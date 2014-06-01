@@ -16,6 +16,17 @@ Camera::Camera(Object* parent) :
         initHelper();
 }
 
+void Camera::loadFromJson(const JsonValue &node) {
+        JsonValue movementSpeed = node["movement_speed"];
+        JsonValue rotationSpeed = node["rotation_speed"];
+
+        if (!movementSpeed.isNull()) setMovementSpeed(movementSpeed.asFloat());
+        if (!rotationSpeed.isNull()) setRotationSpeed(rotationSpeed.asFloat());
+
+        Frustum::loadFromJson(node);
+        Movable::loadFromJson(node);
+}
+
 void Camera::setMovementSpeed(float speed) {
         m_movementSpeed = speed;
 }

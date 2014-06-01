@@ -24,6 +24,9 @@ public:
         /// Конструктор. Принимает на вход начальную позицию
         explicit Movable(const Vec3& position, const Quat& orientation, const Vec3& scale, Object* parent);
 
+        /// Загружает настройки из json-ноды
+        void            loadFromJson(const JsonValue &node);
+
         /// Устанавливает позицию/ориентацию/масштаб в родительской СК
         void            setPosition(const Vec3& psPosition);
         void            setOrientation(const Quat& psOrientation);

@@ -1,0 +1,262 @@
+{
+	"effects" : {
+		"ssao": {
+			"sradius" : 10,
+			"vradius" : 2,
+			"power" : 10
+		},
+
+		"dof": {
+			"focus_start" : 0,
+			"focus_end" : 1,
+			"near_radius" : 200,
+			"far_radius" : 200
+		},
+
+		"bloom": {
+			"radius" : 200,
+			"step" : 4,
+			"threshold" : 10
+		}
+	},
+
+	"objects" : {
+		"name" : "world",
+		"children" : [
+			{
+				"name" : "room",
+				"type" : "entity",
+				"model" : "room.json",
+
+				"children" : [
+					{
+						"name" : "vase1",
+						"type" : "entity",
+						"model" : "vase.json"
+					},
+					{
+						"name" : "vase2",
+						"type" : "entity",
+						"model" : "vase.json",
+						"position" : [1, 0, 1]
+					},
+					{
+						"name" : "vase3",
+						"type" : "entity",
+						"model" : "vase.json",
+						"position" : [2, 0, 2]
+					},
+					{
+						"name" : "vase4",
+						"type" : "entity",
+						"model" : "vase.json",
+						"position" : [3, 0, 3]
+					},
+					{
+						"name" : "vase5",
+						"type" : "entity",
+						"model" : "vase.json",
+						"position" : [4, 0, 4]
+					},
+
+					{
+						"name" : "sphere1",
+						"type" : "entity",
+						"model" : "light_sphere.json",
+						"position" : [0, 2, 1],
+
+						"children" : [
+							{
+								"name" : "light1",
+								"type" : "point_light",
+								"diffuse_color" : [0.3, 1.0, 0.9],
+								"power" : 10,
+								"attenuation" : 0.5
+							}
+						]
+					},
+					{
+						"name" : "sphere2",
+						"type" : "entity",
+						"model" : "light_sphere.json",
+						"position" : [0, 2, 1],
+
+						"children" : [
+							{
+								"name" : "light2",
+								"type" : "point_light",
+								"diffuse_color" : [1.0, 1.0, 0.3],
+								"power" : 10,
+								"attenuation" : 0.5
+							}
+						]
+					},
+
+					{
+						"name" : "projector1",
+						"type" : "entity",
+						"model" : "projector.json",
+						"position" : [4,2,4],
+						"target" : [0, 0, 0],
+
+						"children" : [
+							{
+								"name" : "light3",
+								"type" : "spot_light",
+								"target" : [0,0,0],
+								"diffuse_color" : [1, 1, 0.9],
+								"power" : 2.0,
+								"attenuation" : 0.001,
+								"cutoff_angle" : 45
+							}
+						]
+					},
+
+					{
+						"name" : "projector2",
+						"type" : "entity",
+						"model" : "projector.json",
+						"position" : [4,2,4],
+						"target" : [0, 0, 0],
+
+						"children" : [
+							{
+								"name" : "light4",
+								"type" : "spot_light",
+								"target" : [0,0,0],
+								"diffuse_color" : [1, 1, 0.9],
+								"power" : 2.0,
+								"attenuation" : 0.001,
+								"cutoff_angle" : 45
+							}
+						]
+					},
+
+					{
+						"name" : "foot",
+						"type" : "volume",
+						"data" : "3d/foot.raw",
+						"size" : [256, 256, 256],
+						"format" : "COLOR_NORM_1_COMP_8_BIT",
+						"material" : {
+							"type" : "RAYCASTING",
+							"step" : 1,
+							"density_texture" : "resources/textures/density_to_color.png"
+						},
+						"position" : [2, -2, -2]
+					}
+				]
+				/*	
+				"children" : [
+					{
+						"name" : "foot",
+						"type" : "volume",
+						"texture" : "foot.raw",
+						"size" : [128, 128, 128],
+						"format" : "COLOR_NORM_1_COMP_8_BIT",
+
+						"material" : {
+							"type" : "RAYCASTING",
+							"step" : 1.0,
+							"density_texture" : "xray.png",
+							"clip_plane" : [22, 33, 12, 10]
+						}
+					},
+					{
+						"name" : "vase1",
+						"type" : "entity",
+						"model" : "vase.json",
+						"materials" : [
+							{ 
+								"name" : "detail01",
+								"type" : "GENERIC", 
+								"color" : [1, 1, 0] 
+							},
+							{
+								"name" : "detail01",
+								"type" : "GENERIC", 
+								"color" : [1, 1, 0] 
+							}
+						]
+					},
+	
+					{
+						"name" : "vase2",
+						"type" : "entity",
+						"model" : "vase.json",
+						"materials" : [
+						{ 
+							"name" : "detail01",
+							"type" : "REFLECTION", 
+							"reflectionIndex" : 0.1 
+						},
+						{ 
+							"name" : "detail02",
+							"type" : "REFLECTION", 
+							"reflectionIndex" : 0.1 
+						}
+						]
+					},
+	
+					{
+						"name" : "car",
+						"type" : "entity",
+						"model" : "car_body.json",
+	
+						"position" : [10, 0, 10],
+						"materials" : [
+							{
+								"name" : "body",
+								"type" : "GENERIC",
+								"color" : [1, 0, 0]
+							}
+						],
+	
+						"children" : [
+							{
+								"name" : "wheel01",
+								"type" : "entity", 
+								"position" : [1, 0, 1],
+								"model" : "car_wheel.json"
+							},
+	
+							{ 
+								"name" : "wheel02",
+								"type" : "entity", 
+								"position" : [-1, 0, 1], 
+								"model" : "car_wheel.json" 
+							},
+	
+							{ 
+								"name" : "light01",
+								"type" : "spot_light",
+								"position" : [-0.8, 0.3, 0.8],
+							},
+	
+							{
+								"name" : "light02",
+								"type" : "spotlight",
+								"position" : [0.8, 0.3, 0.8],
+								"orientation" : [1, 0.8, 0.9, 1.0],
+	
+								"diffuse_color" : [1, 1, 0.9],
+								"specular_color" : [1, 1, 1,],
+								"power" : 20,
+								"attenuation" : 0.3,
+								"cutoff" : 20,
+								"falloff" : 5,
+	
+								"shadow_technique" : {
+									"type" : "SIMPLE_SHADOW_MAP",
+									"smooth" : 10,
+									"size" : [1024, 1024]
+								}
+							},
+						]
+					}
+				]
+				*/
+			}
+		]
+	}
+}

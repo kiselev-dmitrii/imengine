@@ -20,6 +20,20 @@ Light::Light(const String& filename, Object* parent) :
         scene()->registerLight(this);
 }
 
+void Light::loadFromJson(const JsonValue &node) {
+        JsonValue diffuseColor = node["diffuse_color"];
+        JsonValue specularColor = node["specular_color"];
+        JsonValue attenuation = node["attenuation"];
+        JsonValue power = node["power"];
+
+        if (!diffuseColor.isNull()) setDiffuseColor(JsonUtils::toVec3(diffuseColor));
+        if (!specularColor.isNull()) setSpecularColor(JsonUtils::toVec3(specularColor));
+        if (!attenuation.isNull()) setAttenuation(attenuation.asFloat());
+        if (!power.isNull()) setPower(power.asFloat());
+
+        Movable::loadFromJson(node);
+}
+
 void Light::setGBuffers() const {
         m_diffuseBuffer->bind(0);
         m_materialBuffer->bind(1);

@@ -13,17 +13,6 @@ Entity::Entity(const String &model, Object *parent) :
         scene()->registerEntity(this);
 }
 
-/*
-Entity::Entity(const String &geometry, EntityMaterialPtr material, Object *parent) :
-        Movable(parent),
-        m_model(Model("unnamed", geometry, material))
-{
-        m_model.setOwner(this);
-        m_aabb = m_model.aabb();
-        scene()->registerEntity(this);
-}
-*/
-
 Entity::~Entity() {
         scene()->unregisterEntity(this);
 }

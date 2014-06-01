@@ -15,6 +15,34 @@ Movable::Movable(const Vec3 &position, const Quat &orientation, const Vec3 &scal
         setScale(scale);
 }
 
+void Movable::loadFromJson(const JsonValue &node) {
+        JsonValue position = node["position"];
+        JsonValue orientation = node["orientation"];
+        JsonValue scale = node["scale"];
+
+        JsonValue worldPosition = node["world_position"];
+        JsonValue worldOrientation = node["world_orientation"];
+        JsonValue worldScale = node["world_scale"];
+
+        JsonValue target = node["target"];
+        JsonValue up = node["up"];
+
+        if (!position.isNull()) setPosition(JsonUtils::toVec3(position));
+        if (!orientation.isNull()) setOrientation(JsonUtils::toQuat(orientation));
+        if (!scale.isNull()) setScale(JsonUtils::toVec3(scale));
+
+        if (!worldPosition.isNull()) setWorldPosition(JsonUtils::toVec3(worldPosition));
+        if (!worldOrientation.isNull()) setWorldOrientation(JsonUtils::toQuat(worldOrientation));
+        if (!worldScale.isNull()) setWorldScale(JsonUtils::toVec3(worldScale));
+
+        if (!target.isNull()) {
+                if (!up.isNull()) lookAt(JsonUtils::toVec3(target), JsonUtils::toVec3(up));
+                else lookAt(JsonUtils::toVec3(target), Vec3(0,1,0));
+        }
+
+        Object::loadFromJson(node);
+}
+
 void Movable::setPosition(const Vec3 &psPosition) {
         m_psTransform.position = psPosition;
         notifyTransformUpdated();

@@ -44,6 +44,7 @@ private:
 void Application::initialize() {
         GraphicApplication::initialize();
 
+        /*
         m_room = new Entity("room.json", scene()->world());
 
         Entity* vase1 = new Entity("vase.json", m_room);
@@ -100,7 +101,9 @@ void Application::initialize() {
         static_cast<RaycastingMaterial*>(m_engine->material().get())->setDensityTexture(densityToColorTexture);
 
         m_engine->setPosition(Vec3(2, -2, -2));
+        */
 
+        scene()->loadScene("room.json");
         gui()->loadLayout("deferred_test_layout.xml");
 
         /*

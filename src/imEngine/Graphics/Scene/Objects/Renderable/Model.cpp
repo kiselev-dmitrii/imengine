@@ -8,7 +8,6 @@
 #include <imEngine/Utils/Debug.h>
 #include <imEngine/System/Filesystem.h>
 #include <cstring>
-#include <fstream>
 
 namespace imEngine {
 
@@ -57,16 +56,7 @@ void Model::load(const String &filename) {
 }
 
 void Model::loadFromJson(const String &filename) {
-        Json::Value root;
-        Json::Reader reader;
-
-        std::ifstream ifile(filename, std::ifstream::binary);
-        bool isOk = reader.parse(ifile, root, false);
-        if (!isOk) {
-                IM_ERROR("Cannot open file " << filename << ": " << reader.getFormatedErrorMessages());
-                return;
-        }
-
+        Json::Value root = JsonUtils::loadFile(filename);
         loadFromJson(root);
 }
 
