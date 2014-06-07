@@ -59,9 +59,10 @@ void Light::setGBuffers() const {
 void Light::setCameraSettings() const {
         Camera* cam = scene()->activeCamera();
 
+        m_program->setUniform("uAspectRatio", cam->aspectRatio());
+        m_program->setUniform("uTanHalfFovy", glm::tan(glm::radians(cam->fieldOfView()/2)));
         m_program->setUniform("uNearDistance", cam->nearDistance());
         m_program->setUniform("uFarDistance", cam->farDistance());
-        m_program->setUniform("uInvProjectionMatrix", glm::inverse(cam->viewToClipMatrix()));
 }
 
 void Light::setCommonLightSettings() const {

@@ -25,10 +25,11 @@ void SSAOPass::prepare() const {
         m_program->setUniform("uNormalTexture", 1);
         m_program->setUniform("uDepthTexture", 2);
 
+        m_program->setUniform("uAspectRatio", m_activeCamera->aspectRatio());
+        m_program->setUniform("uTanHalfFovy", glm::tan(glm::radians(m_activeCamera->fieldOfView()/2)));
         m_program->setUniform("uNearDistance", m_activeCamera->nearDistance());
         m_program->setUniform("uFarDistance", m_activeCamera->farDistance());
         m_program->setUniform("uProjectionMatrix", m_activeCamera->viewToClipMatrix());
-        m_program->setUniform("uInvProjectionMatrix", glm::inverse(m_activeCamera->viewToClipMatrix()));
 
         m_program->setUniform("uScreenRadius", m_screenRadius);
         m_program->setUniform("uViewRadius", m_viewRadius);

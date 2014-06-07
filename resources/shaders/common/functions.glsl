@@ -13,6 +13,29 @@ float linearizeDepth(in float depth, in float near, in float far) {
         return (2.0*near) / (far+near - depth*(far-near));
 }
 
+/// Возвращает дистанцию по глубине
+float depthToDistance(in float depth, in float near, in float far) {
+        return (near*far) / (far - depth*(far - near));
+}
+
+/// Трансформирует texture space координаты во view space координаты
+vec3 textureToViewSpace(in vec2 texCoord, in sampler2D depthBuffer, in float aspect, in float tanHalfFovy, in float near, in float far) {
+        vec2 tc = texCoord*2.0f - 1.0f;
+        vec3 viewRay = vec3(
+                tc.x * aspect * tanHalfFovy,
+                tc.y * tanHalfFovy,
+                -1.0f
+        );
+        return viewRay * depthToDistance(texture2D(depthBuffer, texCoord).r, near, far);
+}
+
+/// Трансформирует view space координаты в texture space координаты
+vec2 viewToTextureSpace(in vec3 viewCoord, in mat4 projectionMatrix) {
+  vec4 clip = projectionMatrix * vec4(viewCoord, 1.0f);
+  vec3 ndc = clip.xyz / clip.w;
+  return (ndc.xy * 0.5f + 0.5f);
+}
+
 /// Размывает по Гауссу точку origin в текстуре texture по направлению direction с радиусом radius. 
 /// Параметр step влияет на качество исходного изображения. Для лучшего резульата следует принять step = 1
 vec4 incrementalGaussian(in sampler2D texture, in int radius, in vec2 direction, in int step, in vec2 origin) {
@@ -45,25 +68,6 @@ vec4 incrementalGaussian(in sampler2D texture, in int radius, in vec2 direction,
   	}
 
   return  result / sum;
-}
-
-/// Трансформирует texture space координаты во view space координаты
-/// Для данной операции используется обратная матрица проекции, а также расстояние до ближней и дальней плоскости отсечения
-vec3 textureToViewSpace(in vec2 texCoord, in sampler2D depthBuffer, in float near, in float far, in mat4 invProjection) {
-        float depth = texture2D(depthBuffer, texCoord).r;
-        vec3 ndc = vec3(texCoord, depth) * 2.0 - 1.0;
-        vec4 clip;
-        clip.w = (2*near*far) / (near + far + ndc.z * (near - far));
-        clip.xyz = ndc.xyz * clip.w;
-
-        return (invProjection * clip).xyz;
-}
-
-/// Трансформирует view space координаты в texture space координаты
-vec2 viewToTextureSpace(in vec3 viewCoord, in mat4 projectionMatrix) {
-	vec4 clip = projectionMatrix * vec4(viewCoord, 1.0);
-	vec3 ndc = clip.xyz / clip.w;
-	return (ndc.xy * 0.5 + 0.5);
 }
 
 /// Декодирует нормаль из текстуры нормалей в точке texCoord

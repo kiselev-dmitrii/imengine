@@ -2,23 +2,39 @@
 layout (location = 0) in vec2 aPosition;        // in [-1;1]x[-1;1]x[0;0]
 
 out vec2 vTexCoord;
+out vec3 vViewRay;
+
+/// Для генерирования vViewRay
+uniform float uAspectRatio;
+uniform float uTanHalfFovy;
 
 void main() {
         vTexCoord = 0.5*aPosition + 0.5;
+        vViewRay = vec3(
+                aPosition.x * uAspectRatio * uTanHalfFovy,
+                aPosition.y * uTanHalfFovy,
+                -1
+        );
         gl_Position = vec4(aPosition, 0.0, 1.0);
 }
 
 
 ///### FRAGMENT SHADER ###///
+#include "../common/functions.glsl"
 
 in vec2 vTexCoord;
-
+in vec3 vViewRay;
 layout (location = 0) out vec4 fLightBuffer;
 
+/// Входные данные для освещения
 uniform sampler2D uGBufferDiffuse;
 uniform sampler2D uGBufferMaterial;
 uniform sampler2D uGBufferGeometry;
 uniform sampler2D uGBufferDepth;
+
+/// Для преобразования из Texture Space во View Space
+uniform float uNearDistance;
+uniform float uFarDistance;
 
 struct Light {
         vec3    diffuse;
@@ -28,23 +44,11 @@ struct Light {
         vec3    positionVS;
 };
 uniform Light uLight;
-uniform mat4  uInvProjectionMatrix;
-uniform float uNearDistance;
-uniform float uFarDistance;
-
-vec3 textureToViewSpace(in vec2 texCoord, in sampler2D depthBuffer, in float near, in float far, in mat4 invProjection) {
-        float depth = texture2D(depthBuffer, texCoord).r;
-        vec3 ndc = vec3(texCoord, depth) * 2.0 - 1.0;
-        vec4 clip;
-        clip.w = (2*near*far) / (near + far + ndc.z * (near - far));
-        clip.xyz = ndc.xyz * clip.w;
-
-        return (invProjection * clip).xyz;
-}
 
 void main() {
         /// Реконструируем позицию каждого пикселя
-        vec3 positionVS = textureToViewSpace(vTexCoord, uGBufferDepth, uNearDistance, uFarDistance, uInvProjectionMatrix);
+        float depth = texture2D(uGBufferDepth, vTexCoord).r;
+        vec3 positionVS = vViewRay * depthToDistance(depth, uNearDistance, uFarDistance);
         vec3 normalVS = texture2D(uGBufferGeometry, vTexCoord).xyz * 2.0 - 1.0;
 
         /// Вычисляем освещение по фонгу

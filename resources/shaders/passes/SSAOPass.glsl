@@ -20,10 +20,11 @@ uniform sampler2D	uNormalTexture;
 uniform sampler2D 	uDepthTexture;
 
 /// Для преобразования из View Space в Tex Space и обратно
+uniform float 		uAspectRatio;
+uniform float 		uTanHalfFovy;
 uniform float 		uNearDistance;
 uniform float 		uFarDistance;
 uniform mat4 		uProjectionMatrix;
-uniform mat4 		uInvProjectionMatrix;
 
 /// Параметры
 uniform float 		uScreenRadius;		//радиус в пикселях
@@ -55,7 +56,7 @@ void main() {
 	vec2 texelSize = 1.0/textureSize(uDepthTexture, 0);
 
 	/// Восстанавливаем позицию и нормаль
-	vec3 positionVS = textureToViewSpace(vTexCoord, uDepthTexture, uNearDistance, uFarDistance, uInvProjectionMatrix);
+	vec3 positionVS = textureToViewSpace(vTexCoord, uDepthTexture, uAspectRatio, uTanHalfFovy, uNearDistance, uFarDistance);
 	vec3 normalVS = decodeNormal(vTexCoord, uNormalTexture);
 
 	/// Считаем затенение
@@ -63,7 +64,7 @@ void main() {
 	for (int i = 0; i < uNumSamples; ++i) {
 		/// Берем точку на поверхности 
 		vec2 sampleTS = vTexCoord + poisson[i] * (uScreenRadius * texelSize);
-		vec3 sampleVS = textureToViewSpace(sampleTS, uDepthTexture, uNearDistance, uFarDistance, uInvProjectionMatrix);
+		vec3 sampleVS = textureToViewSpace(sampleTS, uDepthTexture, uAspectRatio, uTanHalfFovy, uNearDistance, uFarDistance);
 
 		/// Смотрим расстояние до этой точки и угол между вектором к ней и нормалью
 		vec3 sampleDir = normalize(sampleVS - positionVS);

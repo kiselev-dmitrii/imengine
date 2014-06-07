@@ -2,9 +2,19 @@
 layout (location = 0) in vec2 aPosition;        // in [-1;1]x[-1;1]x[0;0]
 
 out vec2 vTexCoord;
+out vec3 vViewRay;
+
+/// Для генерирования vViewRay
+uniform float uAspectRatio;
+uniform float uTanHalfFovy;
 
 void main() {
         vTexCoord = 0.5*aPosition + 0.5;
+        vViewRay = vec3(
+                aPosition.x * uAspectRatio * uTanHalfFovy,
+                aPosition.y * uTanHalfFovy,
+                -1
+        );
         gl_Position = vec4(aPosition, 0.0, 1.0);
 }
 
@@ -14,6 +24,7 @@ void main() {
 #include "Shadow.glsl"
 
 in vec2 vTexCoord;
+in vec3 vViewRay;
 layout (location = 0) out vec4 fLightBuffer;
 
 /// Входные данные для освещения
@@ -23,7 +34,6 @@ uniform sampler2D uGBufferGeometry;
 uniform sampler2D uGBufferDepth;
 
 /// Для преобразования из Texture Space во View Space
-uniform mat4  uInvProjectionMatrix;
 uniform float uNearDistance;
 uniform float uFarDistance;
 
@@ -43,7 +53,8 @@ uniform Shadow uShadow;
 
 void main() {
         /// Реконструируем позицию каждого пикселя
-        vec3 positionVS = textureToViewSpace(vTexCoord, uGBufferDepth, uNearDistance, uFarDistance, uInvProjectionMatrix);
+        float depth = texture2D(uGBufferDepth, vTexCoord).r;
+        vec3 positionVS = vViewRay * depthToDistance(depth, uNearDistance, uFarDistance);
         vec3 normalVS = decodeNormal(vTexCoord, uGBufferGeometry);
 
         vec3 s = normalize(uLight.positionVS - positionVS);             //вектор указывающий на источник 
