@@ -7,6 +7,21 @@
 
 namespace imEngine {
 
+class UpSamplingPass : public Pass {
+public:
+        /// Конструктор
+        UpSamplingPass();
+        /// Устанавливает текстуру
+        void    setTexture(Texture2D* texture)                                  { m_texture = texture; }
+
+protected:
+        void    prepare() const;
+
+private:
+        Texture2D*      m_texture;
+};
+
+
 class Bloom : public PostEffect {
 public:
         Bloom();
@@ -24,9 +39,11 @@ private:
         DirectionalBlurPass     m_blur;
         ThresholdPass           m_threshhold;
         BlitCopyPass            m_eq;
+        UpSamplingPass          m_upsampling;
 
         RenderTarget            m_rt1;
         RenderTarget            m_rt2;
+        RenderTarget            m_result;
 };
 
 } //namespace imEngine

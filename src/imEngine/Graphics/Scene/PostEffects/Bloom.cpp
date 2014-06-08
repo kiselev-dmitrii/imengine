@@ -2,12 +2,28 @@
 
 namespace imEngine {
 
+//################################ UpSamplingPass #####################################//
+
+UpSamplingPass::UpSamplingPass() :
+        Pass("passes/UpSamplingPass.glsl"),
+        m_texture(nullptr)
+{ }
+
+void UpSamplingPass::prepare() const {
+        m_texture->bind(0);
+        m_program->setUniform("uTexture", 0);
+}
+
+//################################ Bloom #####################################//
+
 Bloom::Bloom() :
-        m_rt1(Renderer::viewportSize()),
-        m_rt2(Renderer::viewportSize())
+        m_rt1(Renderer::viewportSize()/2),
+        m_rt2(Renderer::viewportSize()/2),
+        m_result(Renderer::viewportSize())
 {
         m_rt1.enableColorBuffer(0, InternalFormat::COLOR_FLOAT_3_COMP_16_BIT, true);
         m_rt2.enableColorBuffer(0, InternalFormat::COLOR_FLOAT_3_COMP_16_BIT, true);
+        m_result.enableColorBuffer(0, InternalFormat::COLOR_FLOAT_3_COMP_16_BIT, true);
 
         m_threshhold.setThreshold(0.9);
         m_blur.setRadius(100);
@@ -50,16 +66,16 @@ Texture2D* Bloom::apply() {
                 m_blur.apply();
         m_rt1.unbind();
 
-        m_rt2.bind();
+        m_result.bind();
                 Renderer::clearBuffers(Buffer::COLOR);
                 Renderer::setBlendMode(BlendMode::ADD);
                 m_eq.setTexture(m_texture);
                 m_eq.apply();
-                m_eq.setTexture(m_rt1.colorBufferTexture(0).get());
-                m_eq.apply();
-        m_rt2.unbind();
+                m_upsampling.setTexture(m_rt1.colorBufferTexture(0).get());
+                m_upsampling.apply();
+        m_result.unbind();
 
-        return m_rt2.colorBufferTexture(0).get();
+        return m_result.colorBufferTexture(0).get();
 }
 
 
