@@ -51,7 +51,9 @@ void main() {
 
 		float dist = depthToDistance(texture2D(uDepthTexture, sampleTS).r, uNearDistance, uFarDistance);
 		if (dist < -sampleVS.z)	{ 		//поверхность ближе чем луч => луч врезался
-			reflectColor = texture2D(uInputTexture, sampleTS).xyz;
+			vec3 sampleNormal = decodeNormal(sampleTS, uNormalTexture);
+			float orientation = dot(normalize(dir), sampleNormal);
+			if (orientation < 0) reflectColor = texture2D(uInputTexture, sampleTS).xyz;
 			break;
 		}
 	}

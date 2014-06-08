@@ -26,13 +26,13 @@
 			{
 				"name" : "room",
 				"type" : "ENTITY",
-				"model" : "sponza.json",
+				"model" : "room.json",
 
 				"children" : [
 					{
 						"name" : "vase1",
 						"type" : "ENTITY",
-						"model" : "vase.json"
+						"model" : "logo.json"
 					},
 					{
 						"name" : "vase2",
