@@ -9,7 +9,6 @@
 
 namespace imEngine {
 
-typedef std::vector<Vec3> VectorList;
 
 /** @brief Проход для SSAO
  */
@@ -68,8 +67,8 @@ public:
         Texture2D*      apply();
 
 private:
-        SSAOPass                        m_ssaoPass;
-        RenderTarget                    m_rt;
+        SSAOPass        m_ssaoPass;
+        RenderTarget    m_rt;
 };
 
 } //namespace imEngine

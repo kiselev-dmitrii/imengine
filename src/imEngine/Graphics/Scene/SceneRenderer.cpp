@@ -158,6 +158,14 @@ void SceneRenderer::applyPostEffects(Texture2D *lightAccum, Texture2D *diffuseBu
                 result = m_dof.apply();
         }
 
+        if (m_reflections.isEnabled()) {
+                m_reflections.setInputTexture(result);
+                m_reflections.setNormalTexture(geometryBuffer);
+                m_reflections.setDepthTexture(depthBuffer);
+                m_reflections.setActiveCamera(m_scene->activeCamera());
+                result = m_reflections.apply();
+        }
+
         if (m_bloom.isEnabled()) {
                 m_bloom.setTexture(result);
                 result = m_bloom.apply();

@@ -134,6 +134,10 @@ void Application::initialize() {
         HSlider* dofEnd = (HSlider*) gui()->root()->find("dof_end", true);
         ToggleButton* dofEnabled = (ToggleButton*) gui()->root()->find("dof_enabled", true);
 
+        HSlider* ssrrStep = (HSlider*) gui()->root()->find("ssrr_step", true);
+        HSlider* ssrrMaxSamples = (HSlider*) gui()->root()->find("ssrr_max_samples", true);
+        ToggleButton* ssrrEnabled = (ToggleButton*) gui()->root()->find("ssrr_enabled", true);
+
         Button* btnLogo = (Button*) gui()->root()->find("btn_logo", true);
 
         bloomRadius->onValueChanged += [&] (HSlider* slider) {
@@ -181,6 +185,18 @@ void Application::initialize() {
                 ((Text*)slider->parent()->find("dof_end_value", false))->setText(std::to_string(slider->value()));
         };
         dofEnabled->onClick += [&] (ToggleButton* button) { scene()->renderer()->depthOfField()->setEnabled(button->isChecked()); };
+
+        ssrrStep->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->reflections()->reflectionPass()->setViewSpaceStep(slider->value());
+                ((Text*)slider->parent()->find("ssrr_step_value", false))->setText(std::to_string(slider->value()));
+        };
+        ssrrMaxSamples->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->reflections()->reflectionPass()->setMaxNumSamples(slider->value());
+                ((Text*)slider->parent()->find("ssrr_max_samples_value", false))->setText(std::to_string(slider->value()));
+        };
+        ssrrEnabled->onClick += [&] (ToggleButton* button) { scene()->renderer()->reflections()->setEnabled(button->isChecked()); };
+
+
 
         btnLogo->onClick += [&] (Button* button) {
                 Panel* settings = (Panel*) gui()->root()->find("settings", true);

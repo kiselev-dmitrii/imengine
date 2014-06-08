@@ -5,6 +5,7 @@
 #include "PostEffects/Bloom.h"
 #include "PostEffects/DepthOfField.h"
 #include "PostEffects/SSAO.h"
+#include "PostEffects/Reflections.h"
 #include "Scene.h"
 
 namespace imEngine {
@@ -27,6 +28,7 @@ public:
         Bloom*          bloom()                                                 { return &m_bloom; }
         DepthOfField*   depthOfField()                                          { return &m_dof; }
         SSAO*           ssao()                                                  { return &m_ssao; }
+        Reflections*    reflections()                                           { return &m_reflections; }
 
         /// Рендерит сцену
         void            render();
@@ -70,6 +72,7 @@ private:
         SSAO            m_ssao;
         DepthOfField    m_dof;
         Bloom           m_bloom;
+        Reflections     m_reflections;
 
         /// Копирующуй проход
         BlitCopyPass    m_copy;

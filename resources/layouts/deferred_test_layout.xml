@@ -1,5 +1,5 @@
 <root>
-	<panel name="settings" size="340,500" opacity="0.9" padding="20,20,20,20" active="regular_panel.png">
+	<panel name="settings" size="340,600" opacity="0.9" padding="20,20,20,20" active="regular_panel.png">
 	<vbox>
 		<text text="Bloom:" font="resources/font/Lobster.ttf, 23"/>
 		<text text="Radius:" />
@@ -72,6 +72,24 @@
 			<text text="Enable:" alignment="CENTER"/>
 			<toggle name="dof_enabled" set_checked="1" active="big_checkbox_active.png" checked="big_checkbox_checked.png" disabled_active="big_checkbox_active.png" disabled_checked="big_checkbox_checked.png" />
 		</hbox>
+
+		<spacing spacing="20"/>
+
+		<text text="SSRR:" font="resources/font/Lobster.ttf, 23"/>
+		<text text="Step:" />
+		<hbox>
+			<hslider name="ssrr_step" min="0.0001" max="1" width="230" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+			<text name="ssrr_step_value" text="0.0"/>
+		</hbox>
+		<hbox>
+			<hslider name="ssrr_max_samples" min="0" max="200" width="230" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+			<text name="ssrr_max_samples_value" text="0.0"/>
+		</hbox>
+		<hbox>
+			<text text="Enable:" alignment="CENTER"/>
+			<toggle name="ssrr_enabled" set_checked="1" active="big_checkbox_active.png" checked="big_checkbox_checked.png" disabled_active="big_checkbox_active.png" disabled_checked="big_checkbox_checked.png" />
+		</hbox>
+
 	</vbox>
 	</panel>
 
