@@ -37,8 +37,8 @@ void main() {
 	vec3 positionVS = textureToViewSpace(vTexCoord, uDepthTexture, uAspectRatio, uTanHalfFovy, uNearDistance, uFarDistance);
 	vec3 normalVS = decodeNormal(vTexCoord, uNormalTexture);
 
-	vec3 v = normalize(positionVS);
-	vec3 r = reflect(v, normalVS);
+	vec3 v = -normalize(positionVS);
+	vec3 r = reflect(-v, normalVS);
 	vec3 dir = r*uViewSpaceStep;
 
 	vec3 reflectColor = vec3(0.0);
@@ -49,8 +49,8 @@ void main() {
 
 		if (any(greaterThan(sampleTS, vec2(1.0))) || any(lessThan(sampleTS, vec2(0.0)))) break;		//выход за границы
 
-		vec3 surfaceVS = textureToViewSpace(sampleTS, uDepthTexture, uAspectRatio, uTanHalfFovy, uNearDistance, uFarDistance);
-		if (-surfaceVS.z < -sampleVS.z)	{ 		//поверхность ближе чем луч => луч врезался
+		float dist = depthToDistance(texture2D(uDepthTexture, sampleTS).r, uNearDistance, uFarDistance);
+		if (dist < -sampleVS.z)	{ 		//поверхность ближе чем луч => луч врезался
 			reflectColor = texture2D(uInputTexture, sampleTS).xyz;
 			break;
 		}
