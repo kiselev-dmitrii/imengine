@@ -23,11 +23,14 @@ public:
         void    setActiveCamera(Camera* camera)                                 { m_activeCamera = camera; }
 
         /// Устанавливает/возвращает шаг трассировки в ViewSpace
-        void    setViewSpaceStep(float step)                                    { m_viewSpaceStep = glm::clamp(step, 0.0001f, 100.0f); }
+        void    setViewSpaceStep(float step)                                    { m_viewSpaceStep = glm::clamp(step, 0.001f, 100.0f); }
         float   viewSpaceStep() const                                           { return m_viewSpaceStep; }
         /// Устанавливает/возвращает максимальное количество сэмплов
         void    setMaxNumSamples(int samples)                                   { m_maxNumSamples = glm::clamp(samples, 0, 200); }
         int     maxNumSamples() const                                           { return m_maxNumSamples; }
+        /// Устанавливает количество приближений при трассировке
+        void    setNumRefinemetns(int refinements)                              { m_numRefinements = glm::clamp(refinements, 0, 20); }
+        int     numRefinements() const                                          { return m_numRefinements; }
 
 protected:
         void    prepare() const;
@@ -40,6 +43,7 @@ private:
 
         float           m_viewSpaceStep;
         int             m_maxNumSamples;
+        int             m_numRefinements;
 };
 
 

@@ -85,6 +85,11 @@
 			<hslider name="ssrr_max_samples" min="0" max="200" width="230" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
 			<text name="ssrr_max_samples_value" text="0.0"/>
 		</hbox>
+		<text text="Num refinements:" />
+		<hbox>
+			<hslider name="ssrr_num_refinements" min="0" max="20" width="230" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
+			<text name="ssrr_num_refinements_value" text="0.0"/>
+		</hbox>
 		<hbox>
 			<text text="Enable:" alignment="CENTER"/>
 			<toggle name="ssrr_enabled" set_checked="1" active="big_checkbox_active.png" checked="big_checkbox_checked.png" disabled_active="big_checkbox_active.png" disabled_checked="big_checkbox_checked.png" />

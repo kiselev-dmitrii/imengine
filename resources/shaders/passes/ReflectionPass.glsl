@@ -29,8 +29,9 @@ uniform mat4 		uProjectionMatrix;
 /// Параметры
 uniform float 		uViewSpaceStep;
 uniform int 		uMaxNumSamples;
+uniform int 		uNumRefinements;	
 
-vec3 calculateReflection(in float initialStep, in int numRefinements, in int maxNumSamples) {
+vec3 calculateReflection(in float stepVS, in int maxNumSamples, in int numRefinements) {
 	vec2 texelSize = 1.0/textureSize(uDepthTexture, 0);
 
 	/// Восстанавливаем позицию и нормаль
@@ -39,7 +40,7 @@ vec3 calculateReflection(in float initialStep, in int numRefinements, in int max
 
 	vec3 v = -normalize(positionVS);
 	vec3 r = reflect(-v, normalVS);
-	vec3 dir = r * initialStep;
+	vec3 dir = r * stepVS;
 
 	vec3 prevPositionVS = positionVS;
 	vec3 curPositionVS = prevPositionVS + dir;
@@ -79,7 +80,7 @@ vec3 calculateReflection(in float initialStep, in int numRefinements, in int max
 }
 
 void main() {
-	vec3 reflectColor = calculateReflection(uViewSpaceStep, 10, uMaxNumSamples);
+	vec3 reflectColor = calculateReflection(uViewSpaceStep, uMaxNumSamples, uNumRefinements);
 	vec3 color = texture2D(uInputTexture, vTexCoord).xyz;
 
 	fResult = vec4(color * reflectColor + color, 1.0);

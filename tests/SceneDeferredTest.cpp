@@ -136,6 +136,7 @@ void Application::initialize() {
 
         HSlider* ssrrStep = (HSlider*) gui()->root()->find("ssrr_step", true);
         HSlider* ssrrMaxSamples = (HSlider*) gui()->root()->find("ssrr_max_samples", true);
+        HSlider* ssrrNumRefinements = (HSlider*) gui()->root()->find("ssrr_num_refinements", true);
         ToggleButton* ssrrEnabled = (ToggleButton*) gui()->root()->find("ssrr_enabled", true);
 
         Button* btnLogo = (Button*) gui()->root()->find("btn_logo", true);
@@ -193,6 +194,10 @@ void Application::initialize() {
         ssrrMaxSamples->onValueChanged += [&] (HSlider* slider) {
                 scene()->renderer()->reflections()->reflectionPass()->setMaxNumSamples(slider->value());
                 ((Text*)slider->parent()->find("ssrr_max_samples_value", false))->setText(std::to_string(slider->value()));
+        };
+        ssrrNumRefinements->onValueChanged += [&] (HSlider* slider) {
+                scene()->renderer()->reflections()->reflectionPass()->setNumRefinemetns(slider->value());
+                ((Text*)slider->parent()->find("ssrr_num_refinements_value", false))->setText(std::to_string(slider->value()));
         };
         ssrrEnabled->onClick += [&] (ToggleButton* button) { scene()->renderer()->reflections()->setEnabled(button->isChecked()); };
 

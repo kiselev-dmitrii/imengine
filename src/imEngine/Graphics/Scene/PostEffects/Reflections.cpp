@@ -13,6 +13,7 @@ ReflectionPass::ReflectionPass() :
 {
         setViewSpaceStep(0.2);
         setMaxNumSamples(100);
+        setNumRefinemetns(10);
 }
 
 void ReflectionPass::prepare() const {
@@ -32,6 +33,7 @@ void ReflectionPass::prepare() const {
 
         m_program->setUniform("uViewSpaceStep", m_viewSpaceStep);
         m_program->setUniform("uMaxNumSamples", m_maxNumSamples);
+        m_program->setUniform("uNumRefinements", m_numRefinements);
 }
 
 //############################ Reflections ###################################//
