@@ -30,7 +30,7 @@ uniform mat4 		uProjectionMatrix;
 uniform float 		uViewSpaceStep;
 uniform int 		uMaxNumSamples;
 
-void main() {
+vec3 calculateReflection(in float initialStep, in int numRefinements, in int maxNumSamples) {
 	vec2 texelSize = 1.0/textureSize(uDepthTexture, 0);
 
 	/// Восстанавливаем позицию и нормаль
@@ -39,25 +39,47 @@ void main() {
 
 	vec3 v = -normalize(positionVS);
 	vec3 r = reflect(-v, normalVS);
-	vec3 dir = r*uViewSpaceStep;
+	vec3 dir = r * initialStep;
 
-	vec3 reflectColor = vec3(0.0);
-	vec3 sampleVS = positionVS;
-	for (int i = 0; i < uMaxNumSamples; ++i) {
-		sampleVS += dir;
-		vec2 sampleTS = viewToTextureSpace(sampleVS, uProjectionMatrix);
+	vec3 prevPositionVS = positionVS;
+	vec3 curPositionVS = prevPositionVS + dir;
+	for (int i = 0; i < maxNumSamples; ++i) {
+		vec2 curPositionTS = viewToTextureSpace(curPositionVS, uProjectionMatrix);
+		if (any(greaterThan(curPositionTS, vec2(1.0))) || any(lessThan(curPositionTS, vec2(0.0)))) break;
 
-		if (any(greaterThan(sampleTS, vec2(1.0))) || any(lessThan(sampleTS, vec2(0.0)))) break;		//выход за границы
+		/// Если расстояние до поверхности меньше чем расстояние до луча, то мы внутри поверхности
+		float dist = depthToDistance(texture2D(uDepthTexture, curPositionTS).r, uNearDistance, uFarDistance);
+		bool wasIntersected = dist < -curPositionVS.z;	
+		if (wasIntersected)	{ 					
+			vec3 startVS = prevPositionVS;
+			vec3 endVS = curPositionVS;
+			vec3 centerVS = (startVS + endVS)/2.0f;
+			vec2 centerTS = viewToTextureSpace(centerVS, uProjectionMatrix);
+			for (int j = 0; j < numRefinements; ++j) {
+				float dst = depthToDistance(texture2D(uDepthTexture, centerTS).r, uNearDistance, uFarDistance);
+				bool intersected = dst < -centerVS.z;	
 
-		float dist = depthToDistance(texture2D(uDepthTexture, sampleTS).r, uNearDistance, uFarDistance);
-		if (dist < -sampleVS.z)	{ 		//поверхность ближе чем луч => луч врезался
-			vec3 sampleNormal = decodeNormal(sampleTS, uNormalTexture);
-			float orientation = dot(normalize(dir), sampleNormal);
-			if (orientation < 0) reflectColor = texture2D(uInputTexture, sampleTS).xyz;
-			break;
+				if (intersected) endVS = centerVS;
+				else startVS = centerVS;
+				centerVS = (startVS + endVS)/2.0f;
+				centerTS = viewToTextureSpace(centerVS, uProjectionMatrix);
+			}
+
+			vec3 curNormalVS = decodeNormal(centerTS, uNormalTexture);
+			float orientation = dot(normalize(dir), curNormalVS);
+			if (orientation < 0) return texture2D(uInputTexture, centerTS).rgb;
+			else return vec3(0,0,0);
 		}
+
+		prevPositionVS = curPositionVS;
+		curPositionVS = prevPositionVS + dir;
 	}
 
+	return vec3(0,0,0);
+}
+
+void main() {
+	vec3 reflectColor = calculateReflection(uViewSpaceStep, 10, uMaxNumSamples);
 	vec3 color = texture2D(uInputTexture, vTexCoord).xyz;
 
 	fResult = vec4(color * reflectColor + color, 1.0);
