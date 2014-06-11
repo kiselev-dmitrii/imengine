@@ -42,6 +42,11 @@ vec3 calculateReflection(in float stepVS, in int maxNumSamples, in int numRefine
 	vec3 r = reflect(-v, normalVS);
 	vec3 dir = r * stepVS;
 
+	vec3 originalColor = texture2D(uInputTexture, vTexCoord).xyz;
+	float reflectAbility = 0.05f + 0.95f * pow(1.0f - clamp(dot(v, normalVS), 0.0, 1.0), 4);
+
+	vec3 reflectColor = vec3(0,0,0);
+
 	vec3 prevPositionVS = positionVS;
 	vec3 curPositionVS = prevPositionVS + dir;
 	for (int i = 0; i < maxNumSamples; ++i) {
@@ -68,20 +73,17 @@ vec3 calculateReflection(in float stepVS, in int maxNumSamples, in int numRefine
 
 			vec3 curNormalVS = decodeNormal(centerTS, uNormalTexture);
 			float orientation = dot(normalize(dir), curNormalVS);
-			if (orientation < 0) return texture2D(uInputTexture, centerTS).rgb;
-			else return vec3(0,0,0);
+			if (orientation < 0) reflectColor = texture2D(uInputTexture, centerTS).rgb;
+			break;
 		}
 
 		prevPositionVS = curPositionVS;
 		curPositionVS = prevPositionVS + dir;
 	}
 
-	return vec3(0,0,0);
+	return mix(originalColor, reflectColor, reflectAbility);
 }
 
 void main() {
-	vec3 reflectColor = calculateReflection(uViewSpaceStep, uMaxNumSamples, uNumRefinements);
-	vec3 color = texture2D(uInputTexture, vTexCoord).xyz;
-
-	fResult = vec4(color * reflectColor + color, 1.0);
+	fResult = vec4(calculateReflection(uViewSpaceStep, uMaxNumSamples, uNumRefinements), 1.0);
 }

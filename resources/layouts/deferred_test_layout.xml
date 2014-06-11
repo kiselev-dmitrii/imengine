@@ -1,5 +1,5 @@
 <root>
-	<panel name="settings" size="340,600" opacity="0.9" padding="20,20,20,20" active="regular_panel.png">
+	<panel name="settings" size="340,650" opacity="0.9" padding="20,20,20,20" active="regular_panel.png">
 	<vbox>
 		<text text="Bloom:" font="resources/font/Lobster.ttf, 23"/>
 		<text text="Radius:" />
@@ -81,6 +81,7 @@
 			<hslider name="ssrr_step" min="0.0001" max="1" width="230" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
 			<text name="ssrr_step_value" text="0.0"/>
 		</hbox>
+		<text text="Max samples:" />
 		<hbox>
 			<hslider name="ssrr_max_samples" min="0" max="200" width="230" background="slider_background.png" selection="slider_selection.png" active="slider_btn_active.png" hover="slider_btn_hover.png" />
 			<text name="ssrr_max_samples_value" text="0.0"/>
