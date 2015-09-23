@@ -3,7 +3,7 @@
 
 #include <imEngine/Math/Vertex.h>
 #include <imEngine/Utils/Types.h>
-#include <assimp/aiMesh.h>
+#include <assimp/mesh.h>
 
 namespace imEngine {
 

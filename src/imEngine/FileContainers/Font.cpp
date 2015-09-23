@@ -159,7 +159,7 @@ IVec2 Font::calculateTextureSize(FT_Face face) const {
 
                 // Предполагается что глифы будут расположены в строчку
                 result.x += face->glyph->bitmap.width;
-                result.y = std::max(result.y, face->glyph->bitmap.rows);
+                result.y = std::max(result.y, (int)face->glyph->bitmap.rows);
         }
 
         return result;

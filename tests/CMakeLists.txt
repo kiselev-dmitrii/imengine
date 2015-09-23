@@ -16,7 +16,6 @@ set(TESTS
         TreeNodeTest
         FontTest
         TextTest
-        LuabindTest
         GuiManagerTest
         ButtonTest
         SignalTest

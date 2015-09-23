@@ -3,11 +3,11 @@
 #include <imEngine/Utils/Types.h>
 #include <imEngine/Utils/StringUtils.h>
 
-#include <assimp/assimp.hpp>
-#include <assimp/aiScene.h>
-#include <assimp/aiPostProcess.h>
-#include <assimp/aiMaterial.h>
-#include <assimp/aiMesh.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <assimp/material.h>
+#include <assimp/mesh.h>
 
 #include <map>
 #include <fstream>

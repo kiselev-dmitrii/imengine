@@ -72,7 +72,7 @@ if(NOT ASSIMP_FOUND)
         message(ERROR " Assimp not found!")
         return()
 else()
-        list(APPEND imEngineIncludeDirs ${ASSIMP_INCLUDE_DIR})
+        list(APPEND imEngineIncludeDirs ${ASSIMP_INCLUDE_DIRS})
         list(APPEND imEngineLibs ${ASSIMP_LIBRARIES})
 endif()
 
@@ -113,16 +113,6 @@ if(NOT JSONCPP_FOUND)
 else()
         list(APPEND imEngineIncludeDirs ${JSONCPP_INCLUDE_DIRS})
         list(APPEND imEngineLibs ${JSONCPP_LIBRARIES})
-endif()
-
-# Luabind
-find_package(Luabind REQUIRED)
-if(NOT LUABIND_FOUND)
-        message(ERROR " Luabind not found")
-        return()
-else()
-        list(APPEND imEngineIncludeDirs ${LUABIND_INCLUDE_DIRS})
-        list(APPEND imEngineLibs ${LUABIND_LIBRARIES})
 endif()
 
 

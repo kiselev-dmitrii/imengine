@@ -1,73 +1,50 @@
-# - try to find Luabind
-#
-# Users may optionally supply:
-# LUABIND_ROOT_DIR - a prefix to start searching
-#
-# Non-cache variables you might use in your CMakeLists.txt:
-# LUABIND_FOUND
-# LUABIND_DEFINITIONS
-# LUABIND_INCLUDE_DIRS
-# LUABIND_LIBRARIES
-#
-# Requires these CMake modules:
-# FindPackageHandleStandardArgs (known included with CMake >=2.6.2)
-#
-# Original Author:
-# 2009-2010 Ryan Pavlik <rpavlik@iastate.edu> <abiryan@ryand.net>
-# http://academic.cleardefinition.com
-# Iowa State University HCI Graduate Program/VRAC
-#
-# Copyright Iowa State University 2009-2010.
-# Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# - Locate Luabind library
+# This module defines
+#  LUABIND_LIBRARY, the library to link against
+#  LUABIND_FOUND, if false, do not try to link to LUABIND
+#  LUABIND_INCLUDE_DIR, where to find headers.
 
-set(LUABIND_ROOT_DIR
-        "${LUABIND_ROOT_DIR}"
-        CACHE
-        PATH
-        "Path to search for Luabind")
+IF(LUABIND_LIBRARY AND LUABIND_INCLUDE_DIR)
+  # in cache already
+  SET(LUABIND_FIND_QUIETLY TRUE)
+ENDIF(LUABIND_LIBRARY AND LUABIND_INCLUDE_DIR)
 
-###
-# Dependencies
-###
-find_package(Lua51 QUIET)
 
-###
-# Configure Luabind
-###
-find_path(LUABIND_INCLUDE_DIR
-        NAMES
-        luabind/luabind.hpp
-        HINTS
-        "${LUABIND_ROOT_DIR}"
-        PATH_SUFFIXES
-        include)
-mark_as_advanced(LUABIND_INCLUDE_DIR)
+FIND_PATH(LUABIND_INCLUDE_DIR
+  luabind.hpp
+  PATHS
+  $ENV{LUABIND_DIR}/include
+  /usr/local/include
+  /usr/include
+  /sw/include
+  /opt/local/include
+  /opt/csw/include
+  /opt/include
+  PATH_SUFFIXES luabind
+)
 
-find_library(LUABIND_LIBRARY
-        NAMES
-        luabind
-        HINTS
-        "${LUABIND_ROOT_DIR}"
-        PATH_SUFFIXES
-        lib64
-        lib)
-mark_as_advanced(LUABIND_LIBRARY)
+FIND_LIBRARY(LUABIND_LIBRARY
+  NAMES luabind libluabind luabind_d libluabind_d
+  PATHS
+  $ENV{LUABIND_DIR}/lib
+  /usr/local/lib
+  /usr/lib
+  /usr/local/X11R6/lib
+  /usr/X11R6/lib
+  /sw/lib
+  /opt/local/lib
+  /opt/csw/lib
+  /opt/lib
+  /usr/freeware/lib64
+)
 
-# handle the QUIETLY and REQUIRED arguments and set xxx_FOUND to TRUE if
-# all listed variables are TRUE
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(Luabind
-        DEFAULT_MSG
-        LUABIND_LIBRARY
-        LUABIND_INCLUDE_DIR
-        LUA_LIBRARIES
-        LUA_INCLUDE_DIR)
-
-if(LUABIND_FOUND)
-        set(LUABIND_INCLUDE_DIRS "${LUABIND_INCLUDE_DIR}" "${LUA_INCLUDE_DIR}")
-        set(LUABIND_LIBRARIES "${LUABIND_LIBRARY}" ${LUA_LIBRARIES})
-        set(LUABIND_DEFINITIONS "-DLUABIND_DYNAMIC_LINK")
-        mark_as_advanced(LUABIND_ROOT_DIR)
-endif()
+IF(LUABIND_LIBRARY AND LUABIND_INCLUDE_DIR)
+  SET(LUABIND_FOUND "YES")
+  IF(NOT LUABIND_FIND_QUIETLY)
+    MESSAGE(STATUS "Found Luabind: ${LUABIND_LIBRARY}")
+  ENDIF(NOT LUABIND_FIND_QUIETLY)
+ELSE(LUABIND_LIBRARY AND LUABIND_INCLUDE_DIR)
+  IF(NOT LUABIND_FIND_QUIETLY)
+    MESSAGE(STATUS "Warning: Unable to find Luabind!")
+  ENDIF(NOT LUABIND_FIND_QUIETLY)
+ENDIF(LUABIND_LIBRARY AND LUABIND_INCLUDE_DIR)
