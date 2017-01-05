@@ -1,0 +1,2 @@
+The imEngine is real-time rendering engine. It consists of two parts: imCore - low-level wrapper for graphic API and imFramework - high interface for a programmer.
+![multiple_lights1.png](https://bitbucket.org/repo/nKABpG/images/2952805745-multiple_lights1.png)
